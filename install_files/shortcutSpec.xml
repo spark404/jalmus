@@ -1,0 +1,43 @@
+<shortcuts>
+  <skipIfNotSupported/>
+  <programGroup defaultName="Jalmus"
+                location="startMenu"/>
+  <shortcut
+    name="Jalmus"
+    target="$INSTALL_PATH\bin\JalmusW.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH\bin"
+    description="This starts Jalmus"
+    iconFile="$INSTALL_PATH\icons\jalmus.ico"
+    iconIndex="0"
+    initialState="noShow"
+    programGroup="yes"
+    desktop="yes"
+    applications="no"
+    startMenu="no"
+    startup="no">
+
+    <createForPack name="Jalmus Binaries"/>
+   
+  </shortcut>
+
+ <shortcut
+    name="Uninstall Jalmus"
+    target="$INSTALL_PATH\Uninstaller\uninstaller.jar"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH\Uninstaller"
+    description="This uninstall Jalmus"
+    iconFile="$INSTALL_PATH\icons\uninstall.ico"
+    iconIndex="0"
+    initialState="noShow"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no">
+
+    <createForPack name="Jalmus Binaries"/>
+   
+  </shortcut>
+
+</shortcuts>

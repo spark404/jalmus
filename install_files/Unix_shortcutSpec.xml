@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+
+
+<shortcuts>
+
+  <programGroup defaultName="Jalmus" location="Applications"/>
+
+  
+  <shortcut
+    name="Jalmus"
+    target="$INSTALL_PATH/bin/jalmus-linux"
+    commandLine=""
+    workingDirectory=""
+ type="Application"
+     encoding="UTF-8"
+   createForAll="false"
+    description="This starts Jalmus"
+    iconFile="$INSTALL_PATH/icons/jalmus.png"
+    iconIndex="0"
+    initialState="noShow"
+    programGroup="yes"
+    desktop="yes"
+    applications="no"
+    startMenu="no"
+    startup="no">
+
+    <createForPack name="Jalmus Binaries"/>
+   
+  </shortcut>
+
+   
+      
+   <shortcut
+     name="Jalmus Uninstaller"
+     programGroup="yes"
+     desktop="yes"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="java"
+     commandLine="-jar $INSTALL_PATH/Uninstaller/uninstaller.jar"
+     
+     initialState="noShow"
+     iconFile="trashcan_full"
+     iconIndex="0" 
+     workingDirectory=""
+     type="Application"
+     encoding="UTF-8"
+   createForAll="false"
+     description="This uninstalls Jalmus">
+
+     <createForPack name="Jalmus Binaries"/>
+   </shortcut>
+   
+   
+</shortcuts>

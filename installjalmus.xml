@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<installation version="1.0"> 
+
+
+
+
+
+    <info>
+        <appname>Jalmus</appname>
+        <appversion>1.0</appversion>
+        <authors>
+            <author name="RICHARD Christophe" email="cvrichard@infonie.fr"/>
+        </authors>
+        <url>http://www.jalmus.net/</url>
+    </info> 
+
+    <guiprefs width="640" height="500" resizable="no"/> 
+
+ <variables>
+        <variable name="DesktopShortcutCheckboxEnabled" value="true" />
+    </variables>
+
+    <locale>
+        <langpack iso3="eng"/>
+        <langpack iso3="fra"/>
+	<langpack iso3="spa"/>
+	<langpack iso3="deu"/>
+	<langpack iso3="pol"/>
+    </locale>
+
+       <panels>
+        <panel classname="HelloPanel"/>
+        <panel classname="InfoPanel"/>
+        <panel classname="LicencePanel"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="PacksPanel"/>
+	<panel classname="SummaryPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ShortcutPanel"/>
+        <panel classname="FinishPanel"/>
+    </panels>
+
+     <resources>
+	<res src="install_files/logojalmus.png" id="installer.langsel.img"/>
+        <res id="InfoPanel.info" src="install_files/readme.txt"/>
+
+        <res id="LicencePanel.licence" src="install_files/licence.txt"/>
+     	<res src="install_files/shortcutSpec.xml" id="shortcutSpec.xml"/>
+	<res src="install_files/Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml"/>
+  	<res src="install_files/border1.png" id="Installer.image.0"/>
+        <res src="install_files/border2.png" id="Installer.image.1"/>
+        <res src="install_files/border3.png" id="Installer.image.2"/>
+        <res src="install_files/border4.png" id="Installer.image.3"/>
+        <res src="install_files/border5.png" id="Installer.image.4"/>
+        <res src="install_files/border5.png" id="Installer.image.5"/>
+        <res src="install_files/border6.png" id="Installer.image.6"/>
+        <res src="install_files/border7.png" id="Installer.image.7"/>
+        <res src="install_files/border8.png" id="Installer.image.8"/>
+    </resources>
+
+     <packs>
+     	<pack name="Jalmus Binaries" required="yes">
+            <description>Executables Windows, Linux and Mac OS </description>
+            <file src="bin" targetdir="$INSTALL_PATH"/>
+	    <file src="icons" targetdir="$INSTALL_PATH"/>
+	  <file src="install_files/licence.txt" targetdir="$INSTALL_PATH"/>
+
+ 	 <executable targetfile="$INSTALL_PATH/bin/jalmus-linux" stage="never"/>
+       
+        </pack> 
+
+	<pack name="Java Soundbank" required="no" override="false">
+            <description>Soundbank is required for JRE install on Windows.</description>
+	<os family="windows" />
+
+            <file src="install_files/soundbank-mid.gm" targetdir="$JAVA_HOME\lib\audio"/>
+	 </pack> 
+
+
+        <pack name="Docs" required="no" preselected="no">
+            <description>The documentation</description>
+
+            <file src="doc" targetdir="$INSTALL_PATH"/>
+        </pack> 
+      
+
+        <pack name="Sources" required="no">
+            <description>The sources</description>
+	
+            <file src="src" targetdir="$INSTALL_PATH"/>
+	  
+        </pack>
+    </packs>
+
+<native type="izpack" name="ShellLink.dll">
+<os family="windows"/> 
+</native>
+
+ </installation>
