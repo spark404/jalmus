@@ -1,2 +1,2 @@
 #!/bin/sh
-bin/compile /home/chris28/lecture_de_note/jlm/installjalmus.xml -b /home/chris28/lecture_de_note/jlm -o /home/chris28/lecture_de_note/jlm/installjalmus.jar -k standard
+bin/compile /home/christophe/Projet_Jalmus/installjalmus.xml -b /home/christophe/Projet_Jalmus -o /home/christophe/Projet_Jalmus/installjalmus12.jar -k standard

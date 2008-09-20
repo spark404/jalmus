@@ -92,137 +92,235 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, Etats-Unis.
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.applet.AudioClip;
+import java.io.File;
+import java.lang.Object;
 import java.lang.Math;
 import java.lang.Integer;
 import javax.sound.midi.*;
-import java.util.Vector;
 import pck_jlm.*;
 import com.centerkey.utils.BareBonesBrowserLaunch;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.awt.image.BufferStrategy;
+import javax.swing.plaf.ColorUIResource;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.util.Arrays;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.io.*;
+
 
 
 public class jalmus extends JFrame implements WindowListener, MetaEventListener, MouseListener, KeyListener, ActionListener, ItemListener
                 {
 
-// pour traduction
-String tlicence;
-
-String tcredits;
 
 
-  String pasclavier = "Pas de clavier MIDI             ";
-  String toutes = "Toutes      ";
-  String tous = "Tous";
-  String seconde;
-  String tierce;
-  String quarte;
-  String quinte;
-  String sixte;
-  String septieme;
-  String octave;
-  String mineur;
-  String majeur;
-  String diminuee;
-  String augmentee;
-  String juste;
+/******************************************************************/
+/******************** Translation variables ***********************/
+ /*****************************************************************/
+ String tlicence;
 
+ String tcredits;
 
-  String simples;
-  String renvers;
-  String DO;
-  String RE;
-  String MI;
-  String FA;
-  String SOL;
-  String LA;
-  String SI;
+ String pasclavier = "Pas de clavier MIDI             ";
+ String toutes = "Toutes      ";
+ String tous = "Tous";
+ String seconde;
+ String tierce;
+ String quarte;
+ String quinte;
+ String sixte;
+ String septieme;
+ String octave;
+ String mineur;
+ String majeur;
+ String diminuee;
+ String augmentee;
+ String juste;
 
-  String langue="en";
+ String simples;
+ String renvers;
+ String DO;
+ String RE;
+ String MI;
+ String FA;
+ String SOL;
+ String LA;
+ String SI;
 
- Locale locale         = null;
+ String langue = "en";
+
+ Locale locale = null;
  ResourceBundle bundle = null;
 
+
+ /******************************************************************/
+ /*************************** Main variables ***********************/
+ /*****************************************************************/
+
+
   int ecranjeu = 0; // 0 ecran presentation, 1 jeu1, 2 jeu2
-  MidiDevice.Info info;
-  MidiDevice	inputDevice = null;
-
-  boolean open = false;
-  String message = "";
-
-    boolean focussed = false;   // True when this applet has input focus.
-
-  int notejouee = 0; //pitch de la note jou�e
-  Note ncourante = new Note("","",0,25,0);
-  accord acourant = new accord(ncourante,ncourante,ncourante,"",0);
-  intervalle icourant = new intervalle(ncourante,ncourante,"");
-  Tonalite tcourante = new Tonalite(0,"");
-  boolean tonalitehasard = false; //indique si la tonalite est choisie au hasard
-  int intervrandom = 2;
-
-  int dportee = 110; //coordonn�e de la première ligne de port�e simple
+  Image icone;
+  boolean focussed = false;   // True when this applet has input focus.
 
 
-    Image icone;
+  /******************************************************************/
+  /******************* Lessons variables ***********************/
+ /*****************************************************************/
+Lessons currentlesson = new Lessons();
+ File LessonFile;
+
+ boolean isLessonmode = false;
+
+
+ String path;
+
+/******************************************************************/
+/******************* Note reading variables ***********************/
+ /*****************************************************************/
+
+
+ /******************** Midi ressources ****/
+
+ MidiDevice.Info info;
+ MidiDevice inputDevice = null;
+ MidiChannel[] mc;
+ Synthesizer syn = null;
+ Instrument[] instr;
+ String nomins;
+ int dureenote = 2000;
+ ChannelData channels[];
+ ChannelData cc; // current channel
+ boolean open = false;
+ String midimessage = "";
+
+ Piano piano;
+ int transpose = 0;  //number octave for MIDI keyboard transposition -2 -1 0 1 2
+
+
+/******************** Animation ressources ****/
+ RenderingThread renderingThread = new RenderingThread();
+ anim panelanim = new anim();
+ Tabimage ti = new Tabimage();
+
+
+ /************* Game Normal *************************/
+ int notejouee = 0; //pitch de la note jou�e
+ Note ncourante = new Note("", "", 0, 25, 0);
+ Chord acourant = new Chord(ncourante, ncourante, ncourante, "", 0);
+ Interval icourant = new Interval(ncourante, ncourante, "");
 
 
 
-    Tabimage ti = new Tabimage();
-
-    MidiChannel[] mc;
-    Synthesizer syn = null;
-    Instrument[] instr;
-    String nomins;
-    int dureenote = 2000;
-    ChannelData channels[];
-    ChannelData cc;    // current channel
-
-//cson.getState() & !erreurmidi
+ int dportee = 110; //coordonn�e de la première ligne de port�e simple
+ int choix = 0; // position de l'accord en cours
+ int posnote = 1; // position de la note courante dans l'accord ou l'intervalle
+ boolean alterationok = false;
 
 
 
-      Piano piano;
+ int margen = 220; //marge for note reading
+ int marger = 50; //marge for rythm reading
 
-    AudioClip songo;
-    AudioClip sonerreur;
-    //AudioClip sonjuste;
-    AudioClip sondo;
-    AudioClip sonmi;
+
+ Score currentScore = new Score();
+
+
+
+ NoteLevel nrlevel = new NoteLevel();
+
+
+/************* Learning Game *************************/
+
+ int notecounter = 1;
+
+/************* Game Inline *************************/
+ Note ligne[] = new Note[40]; // ligne de notes  TYPE EN LIGNE
+ Chord ligneacc[] = new Chord[40]; // ligne d'accords
+ Interval ligneint[] = new Interval[40];
+ int position = 0; // position de la note courante dans la liste
+ int precedente = 0; // position de la note précédente pour éviter les répétitions
+
+
+
+
+  boolean parti = false; //  partie commenc�e ou non
+ boolean paused = false;
+
+
+
+ boolean erreurmidi = false;
+
+
+ /******************************************************************/
+ /***************** Rhythm reading variables ***********************/
+ /*****************************************************************/
+
+ Rhythm ligner[] = new Rhythm[80]; // ligne de notes  TYPE EN LIGNE
+ int positionr = -1; // position de la note courante dans la liste
+
+ int tempo = 40; // tempo du sequencer - bouton bvitesse2
+ double nbtemps = 4; // nombre de temps par mesure
+ int nbmesures = 9;
+
+ Track track = null;
+ Track metronome = null;
+ static final int ppq = 12;
+ Sequence sequence = null;
+ Sequencer sm_sequencer = null;
+ Synthesizer sm_synthesizer = null;
+ private static final int VELOCITY = 64;
+
+ RhythmLevel nivcourant = new RhythmLevel(true, true, false, false, false);
+
 
 
 /****************************************************************/
-/****************************** MENU ****************************/
+/****************************** Menu ****************************/
 /****************************************************************/
 
    // Mise en place du menu
-         JMenuBar maBarre = new JMenuBar();
-         JMenu jeu = new JMenu();
-         JMenuItem lectnote = new JMenuItem(new ImageIcon(getClass().getResource("/images/note.png")));
-         JMenuItem lectrythme = new JMenuItem(new ImageIcon(getClass().getResource("/images/rythme.png")));
-         JMenuItem quitter = new JMenuItem(new ImageIcon(getClass().getResource("/images/exit.png")));
+   JMenuBar maBarre = new JMenuBar();
+   JMenu jeu = new JMenu();
+   JMenuItem menuNote = new JMenuItem(new ImageIcon(getClass().getResource(
+       "/images/note.png")));
+   JMenuItem menuRhythm = new JMenuItem(new ImageIcon(getClass().getResource(
+       "/images/rythme.png")));
+   JMenuItem menuLessons = new JMenuItem(new ImageIcon(getClass().getResource(
+       "/images/exercices.png")));
+   JMenuItem quitter = new JMenuItem(new ImageIcon(getClass().getResource(
+       "/images/exit.png")));
 
+   JMenu menuParameters = new JMenu();
+   JMenuItem menuPrefs = new JMenuItem(new ImageIcon(getClass().getResource(
+       "/images/prefs.png")));
+   JMenuItem menuMidi = new JMenuItem(new ImageIcon(getClass().getResource(
+       "/images/midi.png")));
+   JMenu langues = new JMenu();
+   JRadioButtonMenuItem rblanguefr = new JRadioButtonMenuItem();
+   JRadioButtonMenuItem rblanguede = new JRadioButtonMenuItem();
+   JRadioButtonMenuItem rblanguees = new JRadioButtonMenuItem();
+   JRadioButtonMenuItem rblangueen = new JRadioButtonMenuItem();
+   JRadioButtonMenuItem rblangueit = new JRadioButtonMenuItem();
+   JRadioButtonMenuItem rblangueda = new JRadioButtonMenuItem();
+   JRadioButtonMenuItem rblanguetr = new JRadioButtonMenuItem();
 
+   JMenu language = new JMenu("Langue");
 
-         JMenu parametres = new JMenu();
-         JMenuItem prefs = new JMenuItem(new ImageIcon(getClass().getResource("/images/prefs.png")));
-          JMenuItem midi = new JMenuItem(new ImageIcon(getClass().getResource("/images/midi.png")));
-          JMenu langues = new JMenu();
-          JRadioButtonMenuItem rblanguefr= new JRadioButtonMenuItem();
-          JRadioButtonMenuItem rblanguede= new JRadioButtonMenuItem();
-          JRadioButtonMenuItem rblanguees= new JRadioButtonMenuItem();
-          JRadioButtonMenuItem rblangueen = new JRadioButtonMenuItem();
+   JComboBox blangue; //langage de l'applet
 
-         JMenu language = new JMenu("Langue");
-
-         JComboBox blangue; //langage de l'applet
-
-         JMenu aide = new JMenu();
-         JMenuItem aidesommaire = new JMenuItem(new ImageIcon(getClass().getResource("/images/aide.png")));
-         JMenuItem siteinternet = new JMenuItem(new ImageIcon(getClass().getResource("/images/internet.png")));
-        /* JMenuItem paypal = new JMenuItem(new ImageIcon(getClass().getResource("/images/paypal.png")));*/
-         JMenuItem propos = new JMenuItem(new ImageIcon(getClass().getResource("/images/about.png")));
+   JMenu aide = new JMenu();
+   JMenuItem aidesommaire = new JMenuItem(new ImageIcon(getClass().getResource(
+       "/images/aide.png")));
+   JMenuItem siteinternet = new JMenuItem(new ImageIcon(getClass().getResource(
+       "/images/internet.png")));
+   JMenuItem propos = new JMenuItem(new ImageIcon(getClass().getResource(
+       "/images/about.png")));
 
 
 
@@ -252,26 +350,27 @@ String tcredits;
 
 
 
-    boolean erreurmidi = false;
 
-/*******************************************************/
+/****************************************************************/
+/****************************** Dialogs *************************/
+/****************************************************************/
 
-JDialog preferences; // Dialog Preferences
+    JDialog preferences; // Dialog Preferences
     JPanel ppref = new JPanel();
 
     JTabbedPane tabpref = new JTabbedPane(); // panel pour les parametres
-     JPanel pprefjeu1 = new JPanel();
-     JPanel ppref1jeu1 = new JPanel (); // panel pour le type du premier jeu
-        JComboBox btype; //type de jeux
-        JComboBox bvitesse;   // bouton pour choisir la vitesse
-     JPanel ppref2jeu1 = new JPanel (); // panel pour la clef du premier jeu
-        JComboBox bcle; //  bouton pour choisir la cl�
-        JComboBox btonalite; // bouton pour choisir la tonalite
-     JPanel ppref3jeu1 = new JPanel (); // panel pour le type de note du premier jeu
-        JComboBox bgroupes;  // bouton pour choisir le nombre de differentes note
-        JComboBox bselectnotes; // bouton de section pour le groupe
-        JComboBox bselectint; // bouton de section pour le groupe
-          JComboBox bselectacc; // bouton de section pour le groupe
+    JPanel pprefjeu1 = new JPanel();
+    JPanel ppref1jeu1 = new JPanel(); // panel pour le type du premier jeu
+    JComboBox btype; //type de jeux
+    JComboBox bvitesse; // bouton pour choisir la vitesse
+    JPanel ppref2jeu1 = new JPanel(); // panel pour la clef du premier jeu
+    JComboBox bcle; //  bouton pour choisir la cl�
+    JComboBox btonalite; // bouton pour choisir la tonalite
+    JPanel ppref3jeu1 = new JPanel(); // panel pour le type de note du premier jeu
+    JComboBox bgroupes; // bouton pour choisir le nombre de differentes note
+    JComboBox bselectnotes; // bouton de section pour le groupe
+    JComboBox bselectint; // bouton de section pour le groupe
+    JComboBox bselectacc; // bouton de section pour le groupe
 
 
 
@@ -287,19 +386,52 @@ JDialog preferences; // Dialog Preferences
      JCheckBox csilence;
      JCheckBox cmetronome;
      JPanel ppref3jeu2 = new JPanel (); // panel pour le type de rythme
+     JPanel pprefboutons = new JPanel (); // panel pour les boutons
 
      JButton okpref;
      JButton cancelpref;
 
     int sauvprefs[] = new int[16]; // pour bouton cancel
+
+/*********************************************************/
+    JDialog dLessons;
+
+    JPanel panelLessons = new JPanel();
+    JComboBox bLessons;
+
+    JPanel panelbuttonLessons = new JPanel();
+    JButton okLessons;
+    JButton cancelLessons;
+
+
+    JDialog levelMessage = new JDialog();
+    JPanel plevelMessage = new JPanel();
+    JLabel textlevelMessage = new JLabel();
+    JPanel pButtonlevelMessage = new JPanel();
+    JButton oklevelMessage = new JButton();
+
+
+/* JDialog for scoe message */
+    JDialog scoreMessage = new JDialog();
+    JPanel pscoreMessage = new JPanel();
+    JLabel textscoreMessage = new JLabel();
+    JPanel pButtonscoreMessage = new JPanel();
+    JButton okscoreMessage = new JButton();
+
 /******************************************************/
     JDialog dmidi;
     JPanel pmidi = new JPanel(); //panel principal midi
-    JPanel pmidi1 = new JPanel (); // panel pour le type du premier jeu
+    JPanel pmidi1 = new JPanel (); // panel midi keynoard
+    JPanel pmidiboutons = new JPanel (); // panel pour les boutons
+
     JCheckBox cson;
     JComboBox binstr;
-    JPanel pmidi2 = new JPanel (); // panel pour le type du premier jeu
-    JCheckBox cexacte; // pour utilisation avec petit clavier nom de note
+    JPanel pmidi2 = new JPanel (); // panel midi keyboard
+    JPanel pmidi20 = new JPanel (); // panel midi keyboard
+    JComboBox bkeyboardlength; // for length-number of touchs of keyboard
+    JComboBox btranspose; // for transposition MIDI keyboard
+
+
     JComboBox bmidiin;
     DefaultComboBoxModel model = new DefaultComboBoxModel();
 
@@ -308,9 +440,13 @@ JDialog preferences; // Dialog Preferences
      boolean selectmidi_forlang = false;
 
      int sauvmidi[] = new int[16]; // pour bouton cancel
+
+
 /******************************************************/
+
     JDialog dapropos;
     JPanel papropos = new JPanel();
+    JPanel paproposboutons = new JPanel (); // panel pour les boutons
     JTextArea texteapropos;
     JScrollPane ascenceur;
 
@@ -328,105 +464,12 @@ JDialog preferences; // Dialog Preferences
 
 
 
-   // ***********************DONNEES DU PROGRAMME
 
-   RenderingThread renderingThread = new RenderingThread();
-   anim panelanim = new anim();
+/***********************************************************/
+/*************** METHODE D'INITIALISATION ******************/
+/***********************************************************/
 
-                // DEFINITION DE LA NOTE *******************************
-
-
-
-    Note ligne [] = new Note [40];   // ligne de notes  TYPE EN LIGNE
-    accord ligneacc [] = new accord[40];  // ligne d'accords
-    intervalle ligneint [] = new intervalle [40];
-    int position = 0;        // position de la note courante dans la liste
-    int precedente = 0;       // position de la note précédente pour éviter les répétitions
-                 //**************************************************************
-
-
-    // TABLEAU D'ACCORDS
-
-
-    int choix = 0; // position de l'accord en cours
-    int posnote = 1;       // position de la note courante dans l'accord ou l'intervalle
-    boolean alterationok = false;
-
-    String clecourante = "sol";
-
-
-    int basesol = 25; // hauteur de la note de base choisie par l'utilisateur 20 = sol 4 = fa
-    int basefa = 5;
-
-    int marge = 220;
-
-    int score = 100;  // de O PERDU � 1000 GAGNE
-    int vitesse = 20;  // temps d'attente du thread = vitesse de la note de 20 � 2 bouton bvitesse
-    int nbnotessur = 1;   // nombre de notes au dessus  de la note de base
-    int nbnotessous = 1;   // nombre de notes en dessous de la note de base
-    int nbnotessurfa = 1;   // nombre de notes au dessus  de la note de base pour cle de fa deuxieme portee
-    int nbnotessousfa = 1;   // nombre de notes en dessous de la note de base
-
-    boolean toutesnotes = false;
-    String type = "NORMAL";  // type de jeu
-    String type2 = "NOTES";  // notes, accords ou intervalle
-    String typeaccord = "SIMPLE"; // accord simple ou accord avec renversement
-    String typeinterv = "SECONDES"; // type d'intervalle
-
-
-    boolean parti = false;   //  partie commenc�e ou non
-    String resultat  = "INDETERMINE";                        //  "GAGNE" ou "PERDU"
-
-
-    //**************DONNES POUR LES STATISTIQUES
-
-    int nberreur = 0;
-    int nbjuste = 0;
-
-
-    // ***********************DONNEES POUR L'ANIMATION DE LA NOTE
-
-   // Thread main=new Thread(this);
-
-
-
-/******************************************************************/
-/***************** DONNES LECTURE RYTHMIQUE ***********************/
-/*****************************************************************/
-
-    Rythme ligner[] = new Rythme[80]; // ligne de notes  TYPE EN LIGNE
-
-    int positionr = -1; // position de la note courante dans la liste
-
-    //**************************************************************
-
-
-     int tempo = 40; // tempo du sequencer - bouton bvitesse2
-
-    double nbtemps = 4; // nombre de temps par mesure
-    int nbmesures = 9;
-
-
-    Track track = null;
-    Track metronome = null;
-    static final int ppq = 12;
-
-    Niveau nivcourant = new Niveau(true,true,false,false,false);
-
-
-    //int dureerythme = 10000;
-   // ChannelData channels[];
-   // ChannelData cc; // current channel
-    Sequence sequence = null;
-    Sequencer sm_sequencer = null;
-      Synthesizer sm_synthesizer = null;
-    private static final int VELOCITY = 64;
-
-
-// ***********************METHODE D'INITIALISATION (gaphics et panels)
-
-
-    public void init(){
+    public void init(String paramlangue){
       Graphics g=getGraphics();
 
 
@@ -589,6 +632,8 @@ JDialog preferences; // Dialog Preferences
             pprefjeu2.add(ppref2jeu2);
             pprefjeu2.add(ppref3jeu2);
 
+            oklevelMessage = new JButton();
+            oklevelMessage.addActionListener(this);
 
             okpref = new JButton();
 
@@ -607,8 +652,12 @@ JDialog preferences; // Dialog Preferences
 
             ppref.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
             ppref.add(tabpref);
-            ppref.add(okpref);
-            ppref.add(cancelpref);
+            pprefboutons.add(okpref);
+            pprefboutons.add(cancelpref);
+            ppref.add(pprefboutons);
+
+
+
 
 /************************************************************/
 /****************** FENETRE OPTIONS MIDI  *******************/
@@ -617,9 +666,9 @@ JDialog preferences; // Dialog Preferences
        pmidi.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
       cson = new JCheckBox("", true);
-      cexacte = new JCheckBox("", true);
       bmidiin = new JComboBox();
-
+      bkeyboardlength =  new JComboBox();
+      btranspose = new JComboBox();
       model.addElement(pasclavier);
 
 
@@ -652,14 +701,39 @@ JDialog preferences; // Dialog Preferences
 
       bmidiin.addItemListener(this);
       binstr = new JComboBox();
-      for (int i = 0; i < 20; i++)
-        binstr.addItem(instr[i].getName());
+       if (instr != null){
+         for (int i = 0; i < 20; i++)
+           binstr.addItem(instr[i].getName());
+       }
+       else {
+         binstr.addItem("No instrument available");
+         System.out.println("No soundbank file : http://java.sun.com/products/java-media/sound/soundbanks.html");
+       }
       binstr.addItemListener(this);
+
+
+
+      bkeyboardlength.addItemListener(this);
+      btranspose.addItemListener(this);
 
       pmidi1.add(cson);
       pmidi1.add(binstr);
-      pmidi2.add(bmidiin);
-      pmidi2.add(cexacte);
+
+
+      panelLessons.setLayout(new BorderLayout());
+
+
+
+
+      pmidi2.setLayout(new BorderLayout());
+      pmidi20.add(bkeyboardlength);
+      pmidi20.add(btranspose);
+
+     // bmidiin.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+      pmidi2.add(bmidiin,BorderLayout.NORTH);
+      pmidi2.add(pmidi20,BorderLayout.CENTER);
+
+
 
       okmidi = new JButton();
       okmidi.addActionListener(this);
@@ -673,10 +747,13 @@ JDialog preferences; // Dialog Preferences
           createTitledBorder("Clavier"),
           BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
+
+
       pmidi.add(pmidi1);
       pmidi.add(pmidi2);
-      pmidi.add(okmidi);
-      pmidi.add(cancelmidi);
+      pmidiboutons.add(okmidi);
+      pmidiboutons.add(cancelmidi);
+      pmidi.add(pmidiboutons);
 
 
 
@@ -784,20 +861,37 @@ JDialog preferences; // Dialog Preferences
        dapropos.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
        dapropos.setResizable(false);
 
+       dLessons = new JDialog(this, true);
+       dLessons.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+       dLessons.setResizable(false);
+
+       levelMessage = new JDialog(this, true);
+  levelMessage.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+  levelMessage.setResizable(false);
+
+  scoreMessage = new JDialog(this, true);
+scoreMessage.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+scoreMessage.setResizable(false);
+
+
+
+
        jeu.setMnemonic(KeyEvent.VK_J);
-       jeu.add(lectnote);
-       jeu.add(lectrythme);
+       jeu.add(menuNote);
+       jeu.add(menuRhythm);
+       jeu.add(menuLessons);
        jeu.addSeparator();
        jeu.add(quitter);
-       lectnote.addActionListener(this);
-       lectrythme.addActionListener(this);
+       menuNote.addActionListener(this);
+       menuRhythm.addActionListener(this);
+       menuLessons.addActionListener(this);
        quitter.addActionListener(this);
        maBarre.add(jeu);
 
-       parametres.add(prefs);
-       prefs.addActionListener(this);
-       parametres.add(midi);
-       midi.addActionListener(this);
+       menuParameters.add(menuPrefs);
+       menuPrefs.addActionListener(this);
+       menuParameters.add(menuMidi);
+       menuMidi.addActionListener(this);
 
 
        //preferences.add(okpref);
@@ -825,11 +919,71 @@ JDialog preferences; // Dialog Preferences
 
 
       rblangueen = new JRadioButtonMenuItem("English");
-      rblangueen.setSelected(true);
       rblangueen.setMnemonic(KeyEvent.VK_A);
       rblangueen.addActionListener(this);
        group.add(rblangueen);
        langues.add(rblangueen);
+
+       rblangueit = new JRadioButtonMenuItem("Italiano");
+       rblangueit.setMnemonic(KeyEvent.VK_A);
+       rblangueit.addActionListener(this);
+       group.add(rblangueit);
+       langues.add(rblangueit);
+
+
+       rblangueda = new JRadioButtonMenuItem("Dansk");
+       rblangueda.setMnemonic(KeyEvent.VK_A);
+       rblangueda.addActionListener(this);
+       group.add(rblangueda);
+       langues.add(rblangueda);
+
+       rblanguetr = new JRadioButtonMenuItem("Turkish");
+       rblanguetr.setMnemonic(KeyEvent.VK_A);
+       rblanguetr.addActionListener(this);
+       group.add(rblanguetr);
+       langues.add(rblanguetr);
+
+
+
+       if (paramlangue.equals("es")) {
+         rblanguees.setSelected(true);
+         langue = "es";
+       }
+       else if (paramlangue.equals("it")) {
+         rblangueit.setSelected(true);
+         langue = "it";
+       }
+       else if (paramlangue.equals("de")) {
+         rblanguede.setSelected(true);
+         langue = "de";
+       }
+       else if (paramlangue.equals("fr")) {
+         rblanguefr.setSelected(true);
+         langue = "fr";
+       }
+       else if (paramlangue.equals("da")) {
+         rblangueda.setSelected(true);
+         langue = "da";
+       }
+       else if (paramlangue.equals("tr")) {
+       rblanguetr.setSelected(true);
+       langue = "tr";
+     }
+
+       else if (paramlangue.equals("en")) {
+         rblangueen.setSelected(true);
+         langue = "en";
+       }
+       else {
+
+         rblangueen.setSelected(true);
+         langue = "en";
+
+       }
+
+
+
+
 
        langues.setIcon(new ImageIcon(getClass().getResource("/images/language.png")));
 
@@ -838,21 +992,22 @@ JDialog preferences; // Dialog Preferences
        langues.addActionListener(this);
         langues.setMnemonic(KeyEvent.VK_L);
 
-        parametres.addSeparator();
-        parametres.add(langues);
-        parametres.setMnemonic(KeyEvent.VK_P);
-        maBarre.add(parametres);
+        menuParameters.addSeparator();
+        menuParameters.add(langues);
+        menuParameters.setMnemonic(KeyEvent.VK_P);
+        maBarre.add(menuParameters);
 
         aide.setMnemonic(KeyEvent.VK_A);
         aide.add(aidesommaire);
-        aide.addSeparator();
-        aide.add(siteinternet);
 
+        aide.add(siteinternet);
+        aide.addSeparator();
         aide.add(propos);
         aidesommaire.addActionListener(this);
         siteinternet.addActionListener(this);
 
         propos.addActionListener(this);
+
         maBarre.add(aide);
 
          this.setJMenuBar(maBarre);
@@ -879,7 +1034,7 @@ JDialog preferences; // Dialog Preferences
              bfermer.setIcon( new ImageIcon(getClass().getResource("/images/cancel.png")));
              bfermer.addActionListener(this);
 
-             dapropos.add(papropos);
+             dapropos.setContentPane(papropos);
 
 
              texteapropos = new JTextArea(12, 25);
@@ -899,11 +1054,77 @@ JDialog preferences; // Dialog Preferences
              // texteapropos.setBorder(new Border
              papropos.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
              papropos.add(ascenceur);
-             papropos.add(bcredits);
-             papropos.add(blicence);
+             paproposboutons.add(bcredits);
+             paproposboutons.add(blicence);
              blicence.setVisible(true);
-             papropos.add(bfermer);
+             paproposboutons.add(bfermer);
              bfermer.setVisible(true);
+             papropos.add(paproposboutons);
+
+
+/*******************************************************************/
+
+             panelLessons.setVisible(true);
+             bLessons = new JComboBox();
+             listeRepertoire();
+          bLessons.setVisible(true);
+           bLessons.addItemListener(this);
+
+                 okLessons = new JButton();
+           panelbuttonLessons.add(okLessons);
+           okLessons.addActionListener(this);
+    okLessons.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
+
+          cancelLessons = new JButton();
+           panelbuttonLessons.add(cancelLessons);
+           cancelLessons.setIcon( new ImageIcon(getClass().getResource("/images/cancel.png")));
+           cancelLessons.addActionListener(this);
+
+           panelLessons.setLayout(new BorderLayout());
+
+           panelLessons.add(bLessons,BorderLayout.NORTH);
+           panelbuttonLessons.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+           panelLessons.add(panelbuttonLessons,BorderLayout.CENTER);
+
+
+           plevelMessage.setVisible(true);
+           plevelMessage.setLayout(new GridLayout(2,1));
+
+           oklevelMessage = new JButton();
+           oklevelMessage.addActionListener(this);
+           oklevelMessage.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
+
+           textlevelMessage.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 2));
+           plevelMessage.add(textlevelMessage);
+           pButtonlevelMessage.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 5));
+
+           pButtonlevelMessage.add(oklevelMessage);
+           plevelMessage.add(pButtonlevelMessage);
+           levelMessage.setContentPane(plevelMessage);
+           levelMessage.setModal(false);
+           levelMessage.setVisible(false);
+
+
+           pscoreMessage.setVisible(true);
+     pscoreMessage.setLayout(new GridLayout(2,1));
+
+     okscoreMessage = new JButton();
+     okscoreMessage.addActionListener(this);
+     okscoreMessage.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
+
+     textscoreMessage.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 2));
+     pscoreMessage.add(textscoreMessage);
+     pButtonscoreMessage.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 5));
+
+     pButtonscoreMessage.add(okscoreMessage);
+     pscoreMessage.add(pButtonscoreMessage);
+     scoreMessage.setContentPane(pscoreMessage);
+     scoreMessage.setModal(false);
+     scoreMessage.setVisible(false);
+
+
+
+
 /*******************************************************************/
 
          principal.setLayout(new BorderLayout());
@@ -928,67 +1149,48 @@ JDialog preferences; // Dialog Preferences
 
 
 
-     piano = new Piano();
+       piano = new Piano(73, 40); //initialisation of keyboard 61 keys
 
-     Toolkit toolkit = Toolkit.getDefaultToolkit()  ;
+       Toolkit toolkit = Toolkit.getDefaultToolkit();
 
+       icone = toolkit.getImage(getClass().getClassLoader().getResource(
+           "images/icon.png"));
 
-     icone = toolkit.getImage(getClass().getClassLoader().getResource("images/icon.png"));
-
-
-
-
-
-     //     songo = getAudioClip(getCodeBase(),"sound/go.wav");
-      //sonerreur = getAudioClip(getCodeBase(),"sound/erreur.wav");
-      //sonjuste = getAudioClip(getCodeBase(),"sound/juste.wav");
-
-
-        //principal.setFocusable(true);
-
-
-      addKeyListener(this);
-      addMouseMotionListener(new MouseMotionAdapter() {
-        public void mouseMoved(MouseEvent e) {
-
-        if(ecranjeu==1){
-
-              Key key = piano.getKey(e.getPoint());
-
-              if (piano.Getprevkey() != null && piano.Getprevkey() != key) {
-                  piano.Getprevkey().off(cc,cson.isSelected() & !erreurmidi);
-              }
-              if (key != null && piano.Getprevkey() != key) {
-                  key.on(cc,cson.isSelected() & !erreurmidi);
-              }
-              piano.Setprevkey(key);
-              repaint();
-
-        }
-      }
-
-      });
-      addMouseListener(this);
-
-      addWindowListener(this);
-
-    // afficheportee(g);
-     // affichecle(g);
-     // affichescore(g,score);
-
-      // copie l'image dans le buffer
-     // buffer=createImage(getSize().width,getSize().height);
-     // bufferg=buffer.getGraphics();
-
-     setIconImage(icone);
-
-     langue="en";
-     updateLang();
+       //     songo = getAudioClip(getCodeBase(),"sound/go.wav");
+       //sonerreur = getAudioClip(getCodeBase(),"sound/erreur.wav");
+       //sonjuste = getAudioClip(getCodeBase(),"sound/juste.wav");
 
 
 
-      }
+       addKeyListener(this);
+       addMouseMotionListener(new MouseMotionAdapter() {
+         public void mouseMoved(MouseEvent e) {
 
+           if (ecranjeu == 1) {
+
+             Key key = piano.getKey(e.getPoint());
+
+             if (piano.Getprevkey() != null && piano.Getprevkey() != key) {
+               piano.Getprevkey().off(cc, cson.isSelected() & !erreurmidi);
+             }
+             if (key != null && piano.Getprevkey() != key) {
+               key.on(cc, cson.isSelected() & !erreurmidi);
+             }
+             piano.Setprevkey(key);
+             repaint();
+
+           }
+         }
+
+       });
+       addMouseListener(this);
+       addWindowListener(this);
+
+       setIconImage(icone);
+
+       updateLang();
+
+     }
 
       public void close() {
             if (syn != null) {
@@ -1006,70 +1208,177 @@ JDialog preferences; // Dialog Preferences
 //**************** METHODES D'ACTION DES BOUTONS ET CHOICES
 
 
-      // INITIALISE JEU  en cas de modification des paramètres le jeu redemarre
+         /** Initialyse note reading game if here is modification in parameters and game restart
 
-      public void initialisejeu() {
+               @param
+               @return No return
+        */
+
+       public void changescreen(){
+
+         if (isLessonmode) {
+             bgo.setVisible(false);
+             bpref.setVisible(false);
+
+             menuPrefs.setEnabled(false);
+
+         }
+         else {
+           bgo.setVisible(true);
+             bpref.setVisible(true);
+             menuPrefs.setEnabled(true);
+
+         }
+
+
+         if (ecranjeu == 1) {
+           pboutonjeu.setVisible(true);
+           pnotes.setVisible(true);
+           principal.setVisible(true);
+                System.out.println(nrlevel.getNbnotes());
+           if (nrlevel.isNotesgame() & nrlevel.getCurrentTonality().getNbalt() == 0){
+
+           bdiese.setVisible(false);
+           bdiese2.setVisible(false);
+           bbemol.setVisible(false);
+           bbemol2.setVisible(false);
+           pnotes.validate();
+           }
+           else {
+             bdiese.setVisible(true);
+             bdiese2.setVisible(true);
+             bbemol.setVisible(true);
+             bbemol2.setVisible(true);
+             pnotes.validate();
+
+        }
+
+        }
+
+        else if (ecranjeu == 2){
+          pboutonjeu.setVisible(true);
+          pnotes.setVisible(false);
+
+          principal.setVisible(true);
+
+        }
+
+       }
+
+
+      public void updatetonality(){
+        String stmp = "";
+
+        if (nrlevel.getRandomtonality()) { // to change tonality when randomly
+           int i = (int) Math.round( (Math.random() * 7));
+           double tmp = Math.random();
+           if (tmp < 0.1)
+             stmp = "";
+           else if (tmp >= 0.1 & tmp < 0.6)
+             stmp = "#";
+           else
+             stmp = "b";
+
+           nrlevel.getCurrentTonality().init(i, stmp);
+         }
+
+         else if (!isLessonmode & nrlevel.getCurrentTonality().getNbalt() == 0 ){
+           // Do Major when tonality is no sharp no  flat
+           double tmp = Math.random();
+           if (tmp < 0.5)
+             stmp = "#";
+           else
+             stmp = "b";
+             nrlevel.getCurrentTonality().init(0, stmp);
+         }
+
+      }
+
+      public void initnotegame() {
+
+
 
         parti = false;
-        score = 100;
-        nberreur = 0;
-        nbjuste = 0;
+        currentScore.initScore();
+
         precedente = 0;
-        resultat = "INDETERMINE";
-        precedente = 0;
+        notecounter = 1;
+
         dportee = 110;
+        paused = false;
         // stopson();
 
-        if ( (type2 == "NOTES" | type2 == "ALTERATIONS") & !toutesnotes) {
-          if (clecourante == "sol") {
-            piano.Setpositionbase2(0);
-            piano.Setpositionbase1(30 - basesol / 5);
-          }
-          else if (clecourante == "fa") {
-            piano.Setpositionbase1(0);
-            piano.Setpositionbase2(18 - basefa / 5);
-          }
-          else if (clecourante == "sol+fa") {
-            piano.Setpositionbase1(30 - basesol / 5);
-            piano.Setpositionbase2(18 - basefa / 5);
-          }
-        }
-        else {
-          piano.Setpositionbase1(0);
-          piano.Setpositionbase2(0);
-        }
+        ColorUIResource def = new ColorUIResource(238, 238, 238);
+        bdo.setBackground(def);
+        bre.setBackground(def);
+        bmi.setBackground(def);
+        bfa.setBackground(def);
+        bsol.setBackground(def);
+        bla.setBackground(def);
+        bsi.setBackground(def);
+        bdiese.setBackground(def);
+        bbemol2.setBackground(def);
 
-        if (type == "NORMAL") {
-          marge = 220;
+        piano.updatepositionbase(nrlevel);
+
+
+
+
+
+
+
+
+
+
+
+        if (nrlevel.isNormalgame() | nrlevel.isLearninggame()) {
+          margen = 220;
           repaint();
         }
 
-        else if (type == "LIGNE") {
-          marge = 30;
+        else if (nrlevel.isInlinegame()) {
+          margen = 30;
           repaint();
         }
       }
 
-       public void initialisejeu2() {
+
+      /** Initialyse rhythm reading game if here is modification in parameters and game restart
+
+            @param
+            @return No return
+        */
+
+       public void restartrhythmgame() {
 
          parti = false;
          positionr = -1;
          dportee = 100;
-         marge = 50;
+         marger = 50;
 
-         if (sm_sequencer != null) {
-
-           sm_sequencer.stop();
-         }
        }
 
-       public void stopjeux(){
-         if (ecranjeu == 1) initialisejeu();
-         else if (ecranjeu == 2)initialisejeu2();
+
+       /** Stop all games
+
+             @param
+             @return No return
+        */
+
+       public void stopgames(){
+        parti = false;
+
+        if (sm_sequencer != null) {
+
+          sm_sequencer.stop();
+        }
+
        }
 
-       public void lancementjeu2() {
-         initialisejeu2(); // arret du jeu pr�c�dent
+
+
+       public void startrhythmgame() {
+         restartrhythmgame(); // arret du jeu pr�c�dent
          String stmp = "";
 
          creationligner();
@@ -1117,133 +1426,310 @@ JDialog preferences; // Dialog Preferences
          }
 
          sm_sequencer.addMetaEventListener(this);
-
          sm_sequencer.setTempoInBPM(tempo);
-
          sm_sequencer.start();
-
          Track[] tracks = sequence.getTracks();
 
          for (int i = 0; i < tracks.length; i++) {
-
            sm_sequencer.setTrackMute(i, !cson.isSelected());
          }
-
          parti = true; // d�part du jeu
        }
 
 
 
-         public void lancementjeu(){
-           initialisejeu();     // arret du jeu précédent
-           String stmp = "";
+         public void startnotegame(){
+           initnotegame();     // to stop last game
+           updatetonality(); //when selected random tonality
 
 
-
-           if (tonalitehasard)  { // pour le changement de tonalite à chaque lancement
-             int i = (int)Math.round((Math.random()*7));
-             double tmp = Math.random();
-             if (tmp<0.1) stmp = "";
-             else if (tmp >= 0.1 & tmp<0.6) stmp = "#";
-             else stmp = "b";
-
-
-          tcourante.init(i,stmp);
-          }
-          if (typeinterv == "RANDOM")  intervrandom = (int)Math.round((Math.random()*6))+1;
-
-          if ((type2 == "ACCORDS" | type2 == "INTERVALLES")& tcourante.getNbalt() == 0){
-            // pour le changement d'alteration en DOM
-          double tmp = Math.random();
-          if (tmp<0.5) stmp = "#";
-          else stmp = "b";
-          tcourante.init(0,stmp);
-          }
-
-           if (type == "NORMAL") {
-             if (type2 == "NOTES" | type2 == "ALTERATIONS") {nouvellenote();}
-             else if (type2 == "ACCORDS") {nouvelaccord();}
-             else if (type2 == "INTERVALLES") {nouvelintervalle();}
+           if (nrlevel.isNormalgame() | nrlevel.isLearninggame()) {
+             if (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame()) {newnote();}
+             else if (nrlevel.isChordsgame()) {newchord();}
+             else if (nrlevel.isIntervalsgame()) {newinterval();}
            }
-           else if (type == "LIGNE") creationligne();
+           else if (nrlevel.isInlinegame()) createline();
 
-          // if (cson.getState()) songo.play();
 
-          // main.start();        // lance le thread pour l'animation
           parti = true;        // d�part du jeu
          }
 
+
+
+
          public void reponsejuste(){
-           nbjuste ++;
+           if (nrlevel.isLearninggame()) {
 
-           if (type2 == "NOTES" | type2 == "ALTERATIONS") {
-               if (score+10<500) {score = score + 10;}
-               else {score = 500; resultat = "GAGNE"; parti = false; afficheresultat();}}
-           else if (type2 == "ACCORDS" | type2 == "INTERVALLES") {
-                   if  (score+5<500) {score = score + 5;}
-             else {score = 500; resultat = "GAGNE"; parti = false; afficheresultat();};}
+             if (nrlevel.isChordsgame() | nrlevel.isIntervalsgame()) {
+              /* if (isLessonmode & notecounter < nrlevel.getLearningduration()){
+                 parti = false;
+                 nextlevel();
+               }
 
-           if(type == "LIGNE" & position == ligne.length-1) { // dernière note trouvée
-                      resultat = "GAGNE";
-                      parti = false;
-                      afficheresultat();
-                     };
-           if (type2 == "ACCORDS" | type2 == "INTERVALLES") {
-                       notesuivante();
-          }
-          else nouvellenote();
-         }
+          else*/
+            notesuivante();
 
-         public void reponsefausse(){
-           alterationok = false;
+           }
+           else
+           if (isLessonmode & notecounter == nrlevel.getLearningduration()){
+             parti = false;
+             nextlevel();
+           }
+           else
+             newnote();
 
-           nberreur++;
-          // if (cson.getState()) sonerreur.play();
-
-           if (type2 == "NOTES" | type2 == "ALTERATIONS") {
-             if(score-20<=0) {score = 0; resultat = "PERDU"; parti =  false; afficheresultat();  }
-             else {score = score - 20;}}
-           else if (type2 == "ACCORDS" | type2 == "INTERVALLES") {
-             if(score-10<=0) {score = 0; resultat = "PERDU"; parti =  false; afficheresultat();}
-             else {score = score - 10;}}
+           effacecouleurbouton();
            }
 
 
+           else {
+             currentScore.addNbtrue(1);
+
+             if (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame())
+               currentScore.addPoints(10);
+
+             else if (nrlevel.isChordsgame() | nrlevel.isIntervalsgame())
+               currentScore.addPoints(5);
+
+
+             if (currentScore.isWin()){
+               parti = false;
+               afficheresultat();
+
+             }
+
+             if (nrlevel.isInlinegame() & position == ligne.length - 1) { // dernière note trouvée
+               currentScore.setWin();
+               parti = false;
+               afficheresultat();
+
+             }
+             ;
+             if (nrlevel.isChordsgame() | nrlevel.isIntervalsgame()) {
+               notesuivante();
+             }
+             else
+               newnote();
+           }
+         }
+
+         public void startlevel(){
+
+           if (!nrlevel.isMessageEmpty()){
+
+             levelMessage.setTitle(bundle.getString("_information"));
+
+            textlevelMessage.setText("  " + nrlevel.getMessage()+"  ");
+             levelMessage.pack();
+             levelMessage.setLocationRelativeTo(this);
+             levelMessage.setVisible(true);
+
+                }
+
+
+                 else bgo.doClick();
+         }
+
+         public void nextlevel(){
+
+           if (!currentlesson.lastexercice()) {
+             stopgames();
+             currentlesson.nextLevel();
+
+
+                 nrlevel.copy(currentlesson.getLevel());
+                 nrlevel.updatenbnotes(piano);
+                 piano.updatepositionbase(nrlevel);
+
+                 initnotegame();
+                 changescreen();
+                 nrlevel.printtest();
+                 ecranjeu = 1;
+
+                 startlevel();
+
+
+
+           }
+           else {
+             System.out.println("End level");
+
+             int n = JOptionPane.showConfirmDialog(this,bundle.getString("_lessonfinished"),
+                 bundle.getString("_congratulations"),
+                 JOptionPane.OK_CANCEL_OPTION,
+                 JOptionPane.PLAIN_MESSAGE);
+
+             if (n == 0) {
+              menuLessons.doClick();
+             }
+
+
+           }
+         }
+
+
+
+         public void reponsefausse() {
+           alterationok = false;
+
+           if (!nrlevel.isLearninggame()) {
+
+             currentScore.addNbfalse(1);
+             // if (cson.getState()) sonerreur.play();
+
+             if (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame())
+               currentScore.addPoints( -20);
+
+             else if (nrlevel.isChordsgame() | nrlevel.isIntervalsgame())
+               currentScore.addPoints( -10);
+
+             if (currentScore.isLost()) {
+               parti = false;
+               afficheresultat();
+             }
+           }
+
+         }
+
+
+
+         public void listeRepertoire (  ) {
+
+           path = getClass().getName() + ".class";
+           URL url = getClass().getResource(path);
+          try {
+            path = URLDecoder.decode(url.toString(), "UTF-8");
+          }
+          catch (UnsupportedEncodingException ex) {
+          }
+
+         // suppression de  la classe ou du jar du path de l'url
+           int index = path.lastIndexOf("/");
+           path = path.substring(0, index);
+
+           index = path.lastIndexOf("/");
+
+
+
+           if (path.startsWith("jar:file:")) {
+             // suppression de jar:file: de l'url d'un jar
+             // ainsi que du path de la classe dans le jar
+             index = path.indexOf("!");
+             path = path.substring(9, index);
+           }
+           else {
+             // suppresion du file: de l'url si c'est une classe en dehors d'un jar
+             // et suppression du path du package si il est présent.
+             path = path.substring(5, path.length());
+             Package pack = getClass().getPackage();
+             if (null != pack) {
+               String packPath = pack.toString().replace('.', '/');
+               if (path.endsWith(packPath)) {
+                 path = path.substring(0, (path.length() - packPath.length()));
+               }
+             }
+           }
+
+
+            index = path.lastIndexOf("/");
+           path = path.substring(0, index);
+
+           index = path.lastIndexOf("/");
+           path = path.substring(0, index);
+
+
+           path = path + File.separator + "lessons" + File.separator + langue;
+        System.out.println("Directory for lessons : " + path);
+
+
+
+           File repertoire = new File(path);
+
+           bLessons.removeAllItems();
+
+                  if ( repertoire.isDirectory ( ) ) {
+                          File[] list = repertoire.listFiles();
+                          Arrays.sort(list);
+                          if (list != null){
+
+                            for ( int i = 0; i < list.length; i++) {
+
+                                     if (FileTools.getFileExtension(list[i]).equals("xml"))
+
+                                     bLessons.addItem(FileTools.getFileNameWithoutExtension(list[i]));
+                              }
+
+
+                          }
+                          } else {
+                                  System.err.println(repertoire + " : Erreur de lecture.");
+                          }
+                  }
+
 /************** FONCTIONS POUR SAISIE AU CLAVIER */
            public void keyTyped(KeyEvent evt) {
-            if (ecranjeu==1 & parti & type2 == "NOTES"){
-                char ch = evt.getKeyChar();  // The character typed.
+             char ch = evt.getKeyChar();  // The character typed.
+
+
+
               //  System.out.println(ch);
 
-                if (((langue == "fr" & (ch == 'Q' || ch == 'q'))
-                    || ((langue == "en" || langue == "es" || langue == "de") & (ch == 'A' || ch == 'a')))
-                  &  ncourante.getNom() == DO) {
-                       reponsejuste();
+              if (ecranjeu == 1 & parti) {
+                if (ch == 'P' || ch == 'p') {
+                  if (!paused)
+                    paused = true;
+
+                  int n = JOptionPane.showConfirmDialog(this,"",
+                      bundle.getString("_gamepaused"),
+                      JOptionPane.DEFAULT_OPTION,
+                      JOptionPane.PLAIN_MESSAGE);
+
+                  if (n == 0) {
+                    paused = false;
+                  }
 
                 }
-                else if ((ch == 'S' || ch == 's') & ncourante.getNom() == RE){
-                  reponsejuste();
-                }
-                else if ((ch == 'D' || ch == 'd') & ncourante.getNom() == MI){
-                  reponsejuste();
-                }
-                else if ((ch == 'F' || ch == 'f') & ncourante.getNom() == FA){
-                  reponsejuste();
-                }
-                else if ((ch == 'G' || ch == 'g') & ncourante.getNom() == SOL){
-                  reponsejuste();
-                }
-                else if ((ch == 'H' || ch == 'h') & ncourante.getNom() == LA){
-                  reponsejuste();
-                }
-                else if ((ch == 'J' || ch == 'j') & ncourante.getNom() == SI){
-                  reponsejuste();
-                }
-                else if ((ch == 'K' || ch == 'k') & ncourante.getNom() == DO){
-                  reponsejuste();
-                }
-                else  { reponsefausse();
+              }
 
+              if (ecranjeu == 1 & parti & !paused & nrlevel.isNotesgame()) {
+
+                if (ch == 'Q' || ch == 'q' || ch == 'A' || ch == 'a' ||  ch == 'S' || ch == 's' ||
+            ch == 'D' || ch == 'd' || ch == 'F' || ch == 'f' || ch == 'G' || ch == 'g' ||
+        ch == 'H' || ch == 'h' || ch == 'J' || ch == 'j' || ch == 'K' || ch == 'k'){
+
+                  if ( ( (langue == "fr" & (ch == 'Q' || ch == 'q'))
+                        ||
+                        ( (langue == "en" || langue == "es" || langue == "de") &
+                         (ch == 'A' || ch == 'a')))
+                      & ncourante.getNom() == DO) {
+                    reponsejuste();
+
+                  }
+                  else if ( (ch == 'S' || ch == 's') & ncourante.getNom().equals(RE)) {
+                    reponsejuste();
+                  }
+                  else if ( (ch == 'D' || ch == 'd') & ncourante.getNom().equals(MI)) {
+                    reponsejuste();
+                  }
+                  else if ( (ch == 'F' || ch == 'f') & ncourante.getNom().equals(FA)) {
+                    reponsejuste();
+                  }
+                  else if ( (ch == 'G' || ch == 'g') & ncourante.getNom().equals(SOL)) {
+                    reponsejuste();
+                  }
+                  else if ( (ch == 'H' || ch == 'h') & ncourante.getNom().equals(LA)) {
+                    reponsejuste();
+                  }
+                  else if ( (ch == 'J' || ch == 'j') & ncourante.getNom().equals(SI)) {
+                    reponsejuste();
+                  }
+                  else if ( (ch == 'K' || ch == 'k') & ncourante.getNom().equals(DO)) {
+                    reponsejuste();
+                  }
+                  else {
+                    reponsefausse();
+
+                  }
                 }
              }
              }  // end keyTyped()
@@ -1260,9 +1746,15 @@ public void mousePressed(MouseEvent e) {
    key = piano.getKey(e.getPoint());
    piano.Setprevkey(key);
    if (key != null)
-     if (key.Getknum() == 60 & !parti)
-       lancementjeu();
-     else if (key != null & parti) {
+     if (key.Getknum() == 60 & !parti){
+
+       this.requestFocus();
+       startnotegame();
+       if (!renderingThread.isAlive())
+         renderingThread.start();
+     }
+
+     else if (key != null & parti &!paused) {
        key.on(cc, cson.isSelected() & !erreurmidi);
        repaint();
 
@@ -1302,52 +1794,29 @@ public void keyPressed(KeyEvent evt) {
 
  // Called when the user has pressed a key, which can be
  // a special key such as an arrow key.
- if (ecranjeu==1 & !parti & (type2 == "NOTES" | type2 == "ALTERATIONS") &
-     !toutesnotes) {
    int key = evt.getKeyCode(); // keyboard code for the key that was pressed
+
+
+ if (ecranjeu == 1 & !parti & (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame()) &
+     !nrlevel.isAllnotesgame()) {
+
 
    if (key == KeyEvent.VK_LEFT) {
 
-     if (clecourante == "sol" & basesol < 45){
-       basesol = basesol + 5;
-       piano.Setpositionbase1(piano.Getpositionbase1() - 1);
-     }
-     //jusqu'� do
-     else if (clecourante == "fa" & basefa < 55) {
-       basefa = basefa + 5; //fa = 17kw
-       piano.Setpositionbase2(piano.Getpositionbase2() - 1);
-     }
-     else if (clecourante == "sol+fa" & basesol < 35) {
-       basefa = basefa - 5;
-       basesol = basesol + 5;
-       piano.Setpositionbase1(piano.Getpositionbase1()-1);
-       piano.Setpositionbase2(piano.Getpositionbase2()+1);
+  nrlevel.basenotetoLeft(piano);
+  piano.updatepositionbase(nrlevel);
 
-     }
-
-     repaint();
    }
+
    else if (key == KeyEvent.VK_RIGHT) {
 
-     if (clecourante == "sol" & basesol > -25) {
-       basesol = basesol - 5; //jusqu'� do
-       piano.Setpositionbase1(piano.Getpositionbase1()+1);
-     }
+       nrlevel.basenotetoRight(piano);
+       piano.updatepositionbase(nrlevel);
 
-     if (clecourante == "fa" & basefa > -15){
-       basefa = basefa - 5; //fa = 17kw
-       piano.Setpositionbase2(piano.Getpositionbase2()+1);
-     }
-     else if (clecourante == "sol+fa" & basesol > -25) {
-       basefa = basefa + 5;
-       basesol = basesol - 5;
-       piano.Setpositionbase1(piano.Getpositionbase1()+1);
-        piano.Setpositionbase2(piano.Getpositionbase2()-1);
-     }
-    repaint();
+
    }
  }
-
+repaint();
 } // end keyPressed()
 
 public void keyReleased(KeyEvent evt) {
@@ -1361,30 +1830,54 @@ public void actionPerformed(ActionEvent e) {
  if (e.getSource() ==rblangueen) {
    langue = "en";
    updateLang();
+   listeRepertoire();
  }
 
  if (e.getSource() ==rblanguede) {
    langue = "de";
    updateLang();
+   listeRepertoire();
  }
 
  if (e.getSource() ==rblanguees) {
    langue = "es";
    updateLang();
+   listeRepertoire();
  }
 
 
  if (e.getSource() ==rblanguefr) {
-  langue = "fr";
+   langue = "fr";
+   updateLang();
+   listeRepertoire();
+ }
+
+  if (e.getSource() ==rblangueit) {
+  langue = "it";
   updateLang();
+  listeRepertoire();
+
+}
+if (e.getSource() ==rblangueda) {
+langue = "da";
+updateLang();
+  listeRepertoire();
+
+
 }
 
+if (e.getSource() ==rblanguetr) {
+langue = "tr";
+updateLang();
+  listeRepertoire();
 
- else if (e.getSource() == prefs) {
-    stopjeux();
+}
+
+ else if (e.getSource() == menuPrefs) {
+    stopgames();
     sauvegardeprefs();
    preferences.setContentPane(ppref);
-   preferences.setSize(400, 330);
+   preferences.setSize(480, 345);
 
    preferences.setLocationRelativeTo(this);
    preferences.setVisible(true);
@@ -1392,38 +1885,80 @@ public void actionPerformed(ActionEvent e) {
  }
 
  else if (e.getSource() == aidesommaire) {
-   stopjeux();
-       JOptionPane.showMessageDialog(this,
-          "Not yet available",
-         "Information",
-         JOptionPane.INFORMATION_MESSAGE);
+   stopgames();
+   Object[] options = {bundle.getString("_yes"),
+                   bundle.getString("_no")};
+int n = JOptionPane.showOptionDialog(this,
+   bundle.getString("_wikidoc"),
+   "Information",
+   JOptionPane.YES_NO_OPTION,
+   JOptionPane.QUESTION_MESSAGE,
+   null,     //don't use a custom Icon
+   options,  //the titles of buttons
+   options[0]); //default button title
 
+if (n == 0){
+
+
+  String adresswiki = "http://www.jalmus.net/pmwiki/pmwiki.php/" + langue;
+  BareBonesBrowserLaunch.openURL(adresswiki);
+}
 
       }
  else if (e.getSource() == siteinternet) {
-   stopjeux();
-   BareBonesBrowserLaunch.openURL("http://jalmus.net");
+   stopgames();
+   String adress = "http://jalmus.net?lang="+langue;
+   BareBonesBrowserLaunch.openURL(adress);
  }
 
-/* else if (e.getSource() == paypal) {
-   stopjeux();
-   BareBonesBrowserLaunch.openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=cvrichard%40infonie%2efr&item_name=Suport%20Jalmus&no_shipping=2&no_note=1&tax=0&currency_code=EUR&bn=PP%2dDonationsBF&charset=UTF%2d8");
- }*/
 
+ else if (e.getSource() == oklevelMessage) {
+   levelMessage.dispose();
+
+   if (isLessonmode ) {
+
+     bgo.doClick();
+
+   }
+ }
+ else if (e.getSource() == okscoreMessage) {
+   scoreMessage.dispose();
+
+   if (isLessonmode) {
+     if (currentScore.isWin())
+
+           nextlevel();
+
+   else startlevel();
+   }
+ }
 
  else if (e.getSource() == okpref) {
 
-  if (!cronde.isSelected() & !cblanche.isSelected() & !cnoire.isSelected() & !ccroche.isSelected()) {
-    JOptionPane.showMessageDialog(this,
-    "Au moins un type de rythme doit être sélectionné.",
-    "Warning",
-    JOptionPane.WARNING_MESSAGE);
+   // update current level for note reading
+   nrlevel.inibasenote();
+   initnotegame();
+   nrlevel.updatenbnotes(piano);
 
-  }
-  else {
-    nivcourant.majniveau(cronde.isSelected(),cblanche.isSelected(),cnoire.isSelected(),ccroche.isSelected(),csilence.isSelected());
-    preferences.setVisible(false);
-  }
+   // update parameters for rythm reading
+   if (!cronde.isSelected() & !cblanche.isSelected() & !cnoire.isSelected() & !ccroche.isSelected()) {
+
+     JOptionPane.showMessageDialog(this,
+         bundle.getString("_leastrythm"),
+         "Warning",
+         JOptionPane.WARNING_MESSAGE);
+
+   }
+   else {
+     nivcourant.majniveau(cronde.isSelected(), cblanche.isSelected(), cnoire.isSelected(),
+         ccroche.isSelected(), csilence.isSelected());
+   }
+
+   //update screen
+    changescreen();
+     preferences.setVisible(false);
+     repaint();
+
 }
 
 else if (e.getSource() == cancelpref){
@@ -1432,11 +1967,12 @@ else if (e.getSource() == cancelpref){
 }
 
 
- else if (e.getSource() == midi) {
-    stopjeux();
+ else if (e.getSource() == menuMidi) {
+
+   if (parti) paused = true;
     sauvegardemidi();
    dmidi.setContentPane(pmidi);
-   dmidi.setSize(380, 250);
+   dmidi.setSize(310, 300);
    dmidi.setLocationRelativeTo(this);
    dmidi.setVisible(true);
    dmidi.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -1444,30 +1980,33 @@ else if (e.getSource() == cancelpref){
  }
 
  else if (e.getSource() == okmidi) {
-    dmidi.setVisible(false);
 
+    dmidi.setVisible(false);
+    if(paused) paused = false;
 }
 
 else if (e.getSource() == cancelmidi){
   restauremidi();
    dmidi.setVisible(false);
+   if(paused) paused = false;
 }
 
  else if (e.getSource() == bpref) {
 
 
    if (ecranjeu == 1) {
-     initialisejeu();
+      tabpref.setSelectedComponent(pprefjeu1);
+     stopgames();
    }
    else if (ecranjeu == 2) {
      tabpref.setSelectedComponent(pprefjeu2);
-     initialisejeu2();
+     restartrhythmgame();
    }
-   prefs.doClick();
+   menuPrefs.doClick();
  }
 
  else if (e.getSource() == quitter) {
-    stopjeux();
+    stopgames();
    this.dispose();
  }
 
@@ -1477,11 +2016,9 @@ else if (e.getSource() == cancelmidi){
 
 
  else if (e.getSource() == propos) {
-    stopjeux();
+    stopgames();
   dapropos.setContentPane(papropos);
   texteapropos.setText(tcredits);
-  //papropos.paintComponent(g);
-  papropos.setVisible(true);
   dapropos.setSize(400, 330);
   dapropos.setLocationRelativeTo(this);
   dapropos.setVisible(true);
@@ -1497,34 +2034,100 @@ else if (e.getSource() == bcredits) {
   texteapropos.setText(tcredits);
 }
 
- else if (e.getSource() == lectnote) {
-   stopjeux();
-   initialisejeu();
-   pboutonjeu.setVisible(true);
-   pnotes.setVisible(true);
-
-   principal.setVisible(true);
-
-   if (ecranjeu == 0) {
-    // main.start();
-   }
+ else if (e.getSource() == menuNote) {
+   stopgames();
+   initnotegame();
+   if (isLessonmode) nrlevel.init();
    ecranjeu = 1;
+   isLessonmode = false;
+   changescreen();
  }
- else if (e.getSource() == lectrythme) {
-   stopjeux();
-   initialisejeu2();
-   pboutonjeu.setVisible(true);
-   pnotes.setVisible(false);
 
-   principal.setVisible(true);
-
-
-   if (ecranjeu == 0) {
-     //main.start();
-   }
+ else if (e.getSource() == menuRhythm) {
+   stopgames();
+   restartrhythmgame();
    ecranjeu = 2;
+   if (isLessonmode) nrlevel.init();
+   isLessonmode = false;
+   changescreen();
 
  }
+
+ else if (e.getSource() == menuLessons) {
+  stopgames();
+  isLessonmode = true;
+
+  dLessons.setContentPane(panelLessons);
+
+   dLessons.setSize(300, 100);
+   dLessons.setLocationRelativeTo(this);
+   dLessons.setVisible(true);
+
+
+
+
+}
+
+else if (e.getSource() == okLessons) {
+  String parseerror = "";
+  try{
+// création d'une fabrique de parseurs SAX
+SAXParserFactory fabrique = SAXParserFactory.newInstance();
+
+// création d'un parseur SAX
+SAXParser parseur = fabrique.newSAXParser();
+currentlesson = new Lessons();
+// lecture d'un fichier XML avec un DefaultHandler
+
+LessonFile = new File(path + File.separator + bLessons.getSelectedItem()+".xml");
+parseur.parse(LessonFile, currentlesson);
+
+    nrlevel.copy(currentlesson.getLevel());
+    nrlevel.updatenbnotes(piano);
+    piano.updatepositionbase(nrlevel);
+
+    initnotegame();
+    ecranjeu = 1;
+    changescreen();
+    nrlevel.printtest();
+
+    dLessons.setVisible(false);
+
+    startlevel();
+
+}catch(ParserConfigurationException pce){
+  parseerror = "Configuration Parser error.";
+  dLessons.setVisible(false);
+JOptionPane.showMessageDialog(this, parseerror, "Warning",JOptionPane.WARNING_MESSAGE);
+
+}catch(SAXException se){
+    parseerror = "Parsing error : "+se.getMessage();
+    dLessons.setVisible(false);
+  JOptionPane.showMessageDialog(this, parseerror, "Warning",JOptionPane.WARNING_MESSAGE);
+
+  se.printStackTrace();
+}catch(IOException ioe){
+  parseerror = "Parsing error : I/O error";
+    dLessons.setVisible(false);
+  JOptionPane.showMessageDialog(this, parseerror, "Warning",JOptionPane.WARNING_MESSAGE);
+
+}
+
+
+
+
+
+
+
+   dLessons.setVisible(false);
+
+}
+
+else if (e.getSource() == cancelLessons){
+ //restauremidi();
+  dLessons.setVisible(false);
+}
+
 
 
 
@@ -1532,33 +2135,42 @@ else if (e.getSource() == bcredits) {
 
           if (e.getSource()==bgo) {  // POUR DEMARRAGE DU PROGRAMME
             if (ecranjeu == 1){
-               this.requestFocus();
-              lancementjeu();
-                  if (!renderingThread.isAlive()) renderingThread.start();
+               if (parti) {
+                 initnotegame(); //stop the game before restart
 
+                 this.requestFocus();
+               }
+               else{
+                 this.requestFocus();
+                 startnotegame();
+                 if (!renderingThread.isAlive())
+                   renderingThread.start();
+               }
             }
-          else if (ecranjeu ==2) lancementjeu2();
+          else if (ecranjeu ==2) startrhythmgame();
             }
 
 
             //  SI LE LABEL DU BOUTON SELECTIONNE EST EGAL A LA NOTE COURANTE   ----> GAGNE
 
-            else  if (parti & ecranjeu == 1) {
+            else  if ((parti & ecranjeu == 1 & !paused) & (e.getSource()==bdo | e.getSource()==bre | e.getSource()==bmi | e.getSource()==bfa
+               | e.getSource()==bsol | e.getSource()==bla | e.getSource()==bsi | e.getSource()==bdo2
+              | e.getSource()==bdiese | e.getSource()==bdiese2 | e.getSource()==bbemol | e.getSource()==bbemol2 ) ) {
 
 
-               if (ncourante.getAlteration() != "") {  // NOTES AVEC ALTERATION
-                  if (((JButton)e.getSource()).getText()== ncourante.getAlteration()){
+               if (!ncourante.getAlteration().equals("")) {  // NOTES AVEC ALTERATION
+                  if (((JButton)e.getSource()).getText().equals(ncourante.getAlteration())){
                   alterationok = true;}
-                  else if (alterationok & ((JButton)e.getSource()).getText()==ncourante.getNom())
+                  else if (alterationok & ((JButton)e.getSource()).getText().equals(ncourante.getNom()))
                     reponsejuste();
                  else reponsefausse();
                }
 
 
-              else if (ncourante.getAlteration() == "") { // NOTE SANS ALTERATION
-                System.out.println(ncourante.getNom());
+              else if (ncourante.getAlteration().equals("")) { // NOTE SANS ALTERATION
+           //     System.out.println(ncourante.getNom());
                    if (((JButton)e.getSource()).getText()== ncourante.getNom()){
-                     System.out.println( ( (JButton) e.getSource()).getText());
+                   //  System.out.println( ( (JButton) e.getSource()).getText());
                      reponsejuste();
                    }
               else reponsefausse();
@@ -1567,6 +2179,8 @@ else if (e.getSource() == bcredits) {
             }
             repaint();
           }
+
+
 
           public void windowOpened(java.awt.event.WindowEvent evt){
 
@@ -1650,7 +2264,8 @@ else if (e.getSource() == bcredits) {
    if (cson.isSelected()) sauvmidi[0] = 1; else sauvmidi[0] = 0;
    sauvmidi[1] = binstr.getSelectedIndex();
    sauvmidi[2] = bmidiin.getSelectedIndex();
-   if (cexacte.isSelected()) sauvmidi[3] = 1; else sauvmidi[3] = 0;
+   sauvmidi[3] = btranspose.getSelectedIndex();
+
 
 
  }
@@ -1660,9 +2275,13 @@ else if (e.getSource() == bcredits) {
    if (sauvmidi[0] == 1) cson.setSelected(true); else cson.setSelected(false);
     binstr.setSelectedIndex(sauvmidi[1]);
     bmidiin.setSelectedIndex(sauvmidi[2]) ;
-    if (sauvmidi[3] == 1) cexacte.setSelected(true); else cexacte.setSelected(false);
+    btranspose.setSelectedIndex(sauvmidi[3]);
 
  }
+
+
+
+
 
 
     public void itemStateChanged(ItemEvent evt){
@@ -1683,13 +2302,13 @@ else if (e.getSource() == bcredits) {
         smidiin = (String) bmidiin.getSelectedItem();
         if (smidiin != pasclavier & !open )
                         {
-        message = "Initialisation " + smidiin;
+        midimessage = "Initialisation " + smidiin;
 
                 info = MidiCommon.getMidiDeviceInfo(smidiin, false);
                   if (info == null){
 
-                  message = "nodevice";
-                  System.out.println(message);
+                  midimessage = "nodevice";
+                  System.out.println(midimessage);
                 }
 
                 else {
@@ -1703,8 +2322,8 @@ else if (e.getSource() == bcredits) {
                 }
                 catch (MidiUnavailableException e)
                                       {
-                                          message = "nodevice";
-                                          System.out.println(message);
+                                          midimessage = "nodevice";
+                                          System.out.println(midimessage);
                                       }
 
 
@@ -1716,160 +2335,114 @@ else if (e.getSource() == bcredits) {
                                 }
                         catch (MidiUnavailableException e)
                                 {
-                                        message ="wasn't able to connect the device's Transmitter to the Receiver:";
+                                        midimessage ="wasn't able to connect the device's Transmitter to the Receiver:";
                                         System.out.println(e);
                                         inputDevice.close();
                                         System.exit(1);
                                 }
-                        message = "Fin initialisation";
+                        midimessage = "End initialisation";
                         }
                        if (inputDevice.isOpen())
-                         System.out.println("Midi Device open : jouez une touche, si celle-ci ne change pas de couleur � l'�cran, vérifiez le nom du port");
+                         System.out.println("Midi Device open : play a key, if this key don't change his color at screen, verify the MIDI port name");
                        open = true;
                      }
         }
           // else if (inputDevice.isOpen()) inputDevice.close();
 
           else if (evt.getItemSelectable() == binstr){
-                     if(!erreurmidi){
+                     if(!erreurmidi & instr != null){
 
                        cc.getchannel().programChange(binstr.getSelectedIndex());
                      }
              }
 
           else if (evt.getItemSelectable() == bcle){
-            if (bcle.getSelectedIndex()==0){
-              initialisejeu();
-              clecourante = "sol";
-              repaint();
-            }
-            else if (bcle.getSelectedIndex()==1) {
-              initialisejeu();
-              clecourante = "fa";
-              repaint();
-            }
-            else if (bcle.getSelectedIndex()==2) {
-              initialisejeu();
-              basesol = 25; // hauteur de la note de base choisie par l'utilisateur 20 = sol 4 = fa
-              basefa = 5;
-              clecourante = "sol+fa";
-              repaint();
-            }
+            if (bcle.getSelectedIndex()==0) nrlevel.setCurrentclef("treble");
+            else if (bcle.getSelectedIndex()==1) nrlevel.setCurrentclef("bass");
+            else if (bcle.getSelectedIndex()==2) nrlevel.setCurrentclef("both");
+
           }
 
 
       // CHOIX ARMURE
 
       else if (evt.getItemSelectable() == btonalite){
-        initialisejeu();
+        initnotegame();
         String stmp = "";
 
         if (btonalite.getSelectedIndex()==0) {
-          if (type2 == "NOTES"){
-          bdiese.setVisible(false);
-          bdiese2.setVisible(false);
-          bbemol.setVisible(false);
-          bbemol2.setVisible(false);
-          pnotes.validate();
-          tcourante.init(0,"");
-          }
+          double tmp = Math.random();  // to choice same alteration for alterated notes
+            if (tmp<0.5) stmp = "#";
+            else stmp = "b";
+           nrlevel.setRandomtonality(false);
+           nrlevel.getCurrentTonality().init(0,stmp);
 
-          else if (type2 == "ALTERATIONS") tcourante.init(0,"");
-          else if (type2 == "ACCORDS" | type2 == "INTERVALLES"){
 
-           double tmp = Math.random();
-           if (tmp<0.5) stmp = "#";
-           else stmp = "b";
-           tcourante.init(0,stmp);
-            }
-           tonalitehasard = false;
         }
 
-        else {
-          bdiese.setVisible(true);
-          bdiese2.setVisible(true);
-          bbemol.setVisible(true);
-          bbemol2.setVisible(true);
-          pnotes.validate();
 
-          if (btonalite.getSelectedIndex()==15) {
+         else if (btonalite.getSelectedIndex()==15) {
             // choix de la tonalite au hasard au lancement du jeu
-          tonalitehasard = true;
-          tcourante.init(0,"");
+          nrlevel.setRandomtonality(true);
+          nrlevel.getCurrentTonality().init(0,"r");
           }
 
 
           else {
-             tonalitehasard = false;
-            if (btonalite.getSelectedIndex()==1)  tcourante.init(1,"#");
-            else if (btonalite.getSelectedIndex()==2)  tcourante.init(2,"#");
-            else if (btonalite.getSelectedIndex()==3)  tcourante.init(3,"#");
-            else if (btonalite.getSelectedIndex()==4)  tcourante.init(4,"#");
-            else if (btonalite.getSelectedIndex()==5)  tcourante.init(5,"#");
-            else if (btonalite.getSelectedIndex()==6)  tcourante.init(6,"#");
-            else if (btonalite.getSelectedIndex()==7)  tcourante.init(7,"#");
-            else if (btonalite.getSelectedIndex()==8)  tcourante.init(1,"b");
-            else if (btonalite.getSelectedIndex()==9)  tcourante.init(2,"b");
-            else if (btonalite.getSelectedIndex()==10)  tcourante.init(3,"b");
-            else if (btonalite.getSelectedIndex()==11)  tcourante.init(4,"b");
-            else if (btonalite.getSelectedIndex()==12)  tcourante.init(5,"b");
-            else if (btonalite.getSelectedIndex()==13)  tcourante.init(6,"b");
-            else if (btonalite.getSelectedIndex()==14)  tcourante.init(7,"b");
+             nrlevel.setRandomtonality(false);
+            if (btonalite.getSelectedIndex()==1)  nrlevel.getCurrentTonality().init(1,"#");
+            else if (btonalite.getSelectedIndex()==2)  nrlevel.getCurrentTonality().init(2,"#");
+            else if (btonalite.getSelectedIndex()==3)  nrlevel.getCurrentTonality().init(3,"#");
+            else if (btonalite.getSelectedIndex()==4)  nrlevel.getCurrentTonality().init(4,"#");
+            else if (btonalite.getSelectedIndex()==5)  nrlevel.getCurrentTonality().init(5,"#");
+            else if (btonalite.getSelectedIndex()==6)  nrlevel.getCurrentTonality().init(6,"#");
+            else if (btonalite.getSelectedIndex()==7)  nrlevel.getCurrentTonality().init(7,"#");
+            else if (btonalite.getSelectedIndex()==8)  nrlevel.getCurrentTonality().init(1,"b");
+            else if (btonalite.getSelectedIndex()==9)  nrlevel.getCurrentTonality().init(2,"b");
+            else if (btonalite.getSelectedIndex()==10)  nrlevel.getCurrentTonality().init(3,"b");
+            else if (btonalite.getSelectedIndex()==11)  nrlevel.getCurrentTonality().init(4,"b");
+            else if (btonalite.getSelectedIndex()==12)  nrlevel.getCurrentTonality().init(5,"b");
+            else if (btonalite.getSelectedIndex()==13)  nrlevel.getCurrentTonality().init(6,"b");
+            else if (btonalite.getSelectedIndex()==14)  nrlevel.getCurrentTonality().init(7,"b");
 
 
 
             }
-        }
 
-        repaint();
       }
-      // CHOIX DU JEU
-      else if (evt.getItemSelectable() == btype){
-        if (btype.getSelectedIndex()==0) {initialisejeu(); type = "NORMAL"; marge = 220; repaint();}
-        else if (btype.getSelectedIndex()==1) {initialisejeu(); type = "LIGNE"; marge = 30; repaint();};
-      }
-
-      // CHOIX DE LA VITESSE
-      else if (evt.getItemSelectable() == bvitesse){
-        if (bvitesse.getSelectedIndex()==0) {initialisejeu(); vitesse = 24; repaint();}
-        else  if (bvitesse.getSelectedIndex()==1) {initialisejeu(); vitesse = 20; repaint();}
-        else  if (bvitesse.getSelectedIndex()==2) {initialisejeu(); vitesse = 16; repaint();}
-        else  if (bvitesse.getSelectedIndex()==3) {initialisejeu(); vitesse = 12; repaint();}
-        else  if (bvitesse.getSelectedIndex()==4) {initialisejeu(); vitesse = 8; repaint();}
-       // System.out.println("-"+vitesse);
+      // Game type choice
+      else if (evt.getItemSelectable() == btype) {
+        if (btype.getSelectedIndex() == 0)
+          nrlevel.setGametype("normal");
+        else if (btype.getSelectedIndex() == 1)
+          nrlevel.setGametype("inline");
+        else if (btype.getSelectedIndex() == 2)
+          nrlevel.setGametype("learning");
       }
 
+      // Speed choice note reading
+      else if (evt.getItemSelectable() == bvitesse) {
+        if (bvitesse.getSelectedIndex() == 0)
+          nrlevel.setSpeed(24);
+        else if (bvitesse.getSelectedIndex() == 1)
+          nrlevel.setSpeed(20);
+        else if (bvitesse.getSelectedIndex() == 2)
+          nrlevel.setSpeed(16);
+        else if (bvitesse.getSelectedIndex() == 3)
+          nrlevel.setSpeed(12);
+        else if (bvitesse.getSelectedIndex() == 4)
+          nrlevel.setSpeed(4);
+        // System.out.println("-"+vitesse);
+      }
 
-      // CHOIX DE LA VITESSE
-      // CHOIX DE LA tempo
-             else if (evt.getItemSelectable() == bvitesse2) {
-               if (bvitesse2.getSelectedIndex()==0) {
-                 initialisejeu();
-                 tempo = 40;
-                 repaint();
-               }
-               else if (bvitesse2.getSelectedIndex()==1) {
-                 initialisejeu();
-                 tempo = 60;
-                 repaint();
-               }
-               else if (bvitesse.getSelectedIndex()==2) {
-                 initialisejeu();
-                 tempo = 110;
-                 repaint();
-               }
-               else if (bvitesse.getSelectedIndex()==3) {
-                 initialisejeu();
-                 tempo = 120;
-                 repaint();
-               }
-               else if (bvitesse.getSelectedIndex()==4) {
-                 initialisejeu();
-                 tempo = 160;
-                 repaint();
-               }
-
-             }
+      // Speed choice rhythm reading
+      else if (evt.getItemSelectable() == bvitesse2) {
+        if (bvitesse2.getSelectedIndex() == 0) tempo = 40;
+        else if (bvitesse2.getSelectedIndex() == 1) tempo = 60;
+        else if (bvitesse.getSelectedIndex() == 2) tempo = 110;
+        else if (bvitesse.getSelectedIndex() == 3) tempo = 120;
+        else if (bvitesse.getSelectedIndex() == 4) tempo = 160;
+      }
 
 
 
@@ -1877,179 +2450,86 @@ else if (e.getSource() == bcredits) {
       // CHOIX DU NOMBRE DE NOTES
      else if (evt.getItemSelectable() == bgroupes){
 
-       if(bgroupes.getSelectedIndex()==0 & type2 != "NOTES"){
-         initialisejeu();
-         type2 = "NOTES";
+       if (bgroupes.getSelectedIndex() == 0) {
+         nrlevel.setNotetype("notes");
+         ppref3jeu1.removeAll();
+         ppref3jeu1.add(bgroupes);
+         ppref3jeu1.add(bselectnotes);
+         ppref3jeu1.repaint();
+       }
+
+       if (bgroupes.getSelectedIndex() == 1) {
+         nrlevel.setNotetype("accidentals");
 
          ppref3jeu1.removeAll();
          ppref3jeu1.add(bgroupes);
          ppref3jeu1.add(bselectnotes);
          ppref3jeu1.repaint();
-
-         initialisejeu();
-         nbnotessur = 1;
-         nbnotessous = 1;
-         nbnotessurfa = 1;
-         nbnotessousfa = 1;
-         repaint();
-
-         if (tcourante.getAlteration().equals("")) {
-           repaint();
-           bdiese.setVisible(false);
-           bdiese2.setVisible(false);
-           bbemol.setVisible(false);
-           bbemol2.setVisible(false);
-           pnotes.validate();
-           repaint();
-         }
-       }
-
-
-
-       if (bgroupes.getSelectedIndex()==1 & type2 != "ALTERATIONS") {
-         initialisejeu();
-         type2 = "ALTERATIONS";
-         if (tcourante.getNbalt() == 0) tcourante.setAlteration("");
-
-         ppref3jeu1.removeAll();
-           ppref3jeu1.add(bgroupes);
-           ppref3jeu1.add(bselectnotes);
-           ppref3jeu1.repaint();
-
-           initialisejeu();
-           nbnotessur = 1; nbnotessous = 1;
-           nbnotessurfa = 1; nbnotessousfa = 1;
-           repaint();
-
-         bdiese.setVisible(true);
-         bdiese2.setVisible(true);
-         bbemol.setVisible(true);
-         bbemol2.setVisible(true);
-         pnotes.validate();
        }
 
        else  if (bgroupes.getSelectedIndex()==2) {
-            //initialisetabaccords();
-            initialisejeu();
-            type2 = "INTERVALLES";
-            basesol = 25; // hauteur de la note de base choisie par l'utilisateur 20 = sol 4 = fa
-            basefa = 5;
-            bdiese.setVisible(true);
-            bdiese2.setVisible(true);
-            bbemol.setVisible(true);
-            bbemol2.setVisible(true);
-
-            if (tcourante.getAlteration() == ""){
-              double tmp = Math.random();
-              if (tmp<0.5) tcourante.init(0,"#");
-              else tcourante.init(0,"b");
-            }
-
-
-           ppref3jeu1.removeAll();
-          ppref3jeu1.add(bgroupes);
-          ppref3jeu1.add(bselectint);
-          ppref3jeu1.repaint();
-
-       }
-       else  if (bgroupes.getSelectedIndex()==3) {
-         //initialisetabaccords();
-         initialisejeu();
-         basesol = 25; // hauteur de la note de base choisie par l'utilisateur 20 = sol 4 = fa
-          basefa = 5;
-
-         type2 = "ACCORDS";
-         bdiese.setVisible(true);
-         bdiese2.setVisible(true);
-         bbemol.setVisible(true);
-         bbemol2.setVisible(true);
-
-
+         nrlevel.setNotetype("intervals");
 
          ppref3jeu1.removeAll();
-          ppref3jeu1.add(bgroupes);
-          ppref3jeu1.add(bselectacc);
-          ppref3jeu1.repaint();
+         ppref3jeu1.add(bgroupes);
+         ppref3jeu1.add(bselectint);
+         ppref3jeu1.repaint();
+       }
+       else if (bgroupes.getSelectedIndex() == 3) {
 
+         nrlevel.setNotetype("chords");
 
-         if (tcourante.getAlteration() == ""){
-            double tmp = Math.random();
-            if (tmp<0.5) tcourante.init(0,"#");
-            else tcourante.init(0,"b");
-         }
+         ppref3jeu1.removeAll();
+         ppref3jeu1.add(bgroupes);
+         ppref3jeu1.add(bselectacc);
+         ppref3jeu1.repaint();
 
        }
-
-
-
      }
 
 
+     else if (evt.getItemSelectable() == bkeyboardlength){
+       if (bkeyboardlength.getSelectedIndex() == 0)  piano = new Piano(73, 40);
+        else if (bkeyboardlength.getSelectedIndex() == 1) piano= new Piano(61, 90);
+        }
+
+        else if (evt.getItemSelectable() == btranspose){
+               if (btranspose.getSelectedIndex() == 0)  transpose = -2;
+               else if (btranspose.getSelectedIndex() == 1)  { transpose = -1;}
+               else if (btranspose.getSelectedIndex() == 2)  { transpose = 0;}
+               else if (btranspose.getSelectedIndex() == 3)  { transpose = 1;}
+               else if (btranspose.getSelectedIndex() == 4)  { transpose = 2;}
+
+        }
 
        else if (evt.getItemSelectable() == bselectnotes){
-        if (bselectnotes.getSelectedIndex()==0) {
-          initialisejeu();
-          toutesnotes = false;
-          nbnotessur = 1; nbnotessous = 1;
-          nbnotessurfa = 1; nbnotessousfa = 1;
-          repaint();
-          }
-        else  if (bselectnotes.getSelectedIndex()==1) {
-          initialisejeu();
-          toutesnotes = false;
-          nbnotessur = 2; nbnotessous = 2;
-          nbnotessurfa = 2; nbnotessousfa = 2;
-          repaint();
-          }
-        else  if (bselectnotes.getSelectedIndex()==2) {
-          initialisejeu();
-          toutesnotes = false;
-          nbnotessur = 3; nbnotessous = 3;
-          nbnotessurfa = 3; nbnotessousfa = 3;
-          repaint();
-          }
-        else  if (bselectnotes.getSelectedIndex()==3) {
-          initialisejeu();
-          toutesnotes = false;
-          nbnotessur = 4; nbnotessous = 4;
-          nbnotessurfa = 4; nbnotessousfa = 4;
-          repaint();
-          }
-
-        else  if (bselectnotes.getSelectedIndex()==4) {
-          initialisejeu();
-          basesol = 25; // hauteur de la note de base choisie par l'utilisateur 20 = sol 4 = fa
-          basefa = 5;
-
-          toutesnotes = true;
-          if (clecourante == "sol") {nbnotessur = 14; nbnotessous = 8;}
-          else if (clecourante == "fa") {nbnotessur = 8; nbnotessous = 14;}
-          else if (clecourante == "sol+fa") {
-          nbnotessur = 14; nbnotessous = 6;
-          nbnotessurfa = 6; nbnotessousfa = 14;
-          }  // inversement pour cl� de fa
-          repaint();
-          }
+        if (bselectnotes.getSelectedIndex()==0)  nrlevel.setNbnotes(3);
+        else  if (bselectnotes.getSelectedIndex()==1) nrlevel.setNbnotes(5);
+        else  if (bselectnotes.getSelectedIndex()==2) nrlevel.setNbnotes(9);
+        else if (bselectnotes.getSelectedIndex() == 3) nrlevel.setNbnotes(15);
+        else  if (bselectnotes.getSelectedIndex()==4)  nrlevel.setNbnotes(0);;
        }
+
+
          else if (evt.getItemSelectable() == bselectacc){
-         if (bselectacc.getSelectedIndex()==0)  {initialisejeu(); typeaccord = "SIMPLE"; repaint();}
-      else  if (bselectacc.getSelectedIndex()==1)  {initialisejeu(); typeaccord = "RENV"; repaint();}
+         if (bselectacc.getSelectedIndex()==0)  nrlevel.setChordtype("root");
+      else  if (bselectacc.getSelectedIndex()==1)  nrlevel.setChordtype("inversion");
          }
 
          else if (evt.getItemSelectable() == bselectint){
 
-       if (bselectint.getSelectedIndex()==0)  {initialisejeu(); typeinterv = "SECONDES"; repaint();}
-      else  if (bselectint.getSelectedIndex()==1)  {initialisejeu(); typeinterv = "TIERCES"; repaint();}
-      else  if (bselectint.getSelectedIndex()==2)  {initialisejeu(); typeinterv = "QUARTES"; repaint();}
-      else  if (bselectint.getSelectedIndex()==3)  {initialisejeu(); typeinterv = "QUINTES"; repaint();}
-      else  if (bselectint.getSelectedIndex()==4)  {initialisejeu(); typeinterv = "SIXTES"; repaint();}
-      else  if (bselectint.getSelectedIndex()==5)  {initialisejeu(); typeinterv = "SEPTIEMES"; repaint();}
-      else  if (bselectint.getSelectedIndex()==6)  {initialisejeu(); typeinterv = "OCTAVES"; repaint();}
-      else  if (bselectint.getSelectedIndex()==7)  {initialisejeu(); typeinterv = "RANDOM"; repaint();}
-      else  if (bselectint.getSelectedIndex()==8)  {initialisejeu(); typeinterv = "TOUS"; repaint();}
-
-
+       if (bselectint.getSelectedIndex()==0)   nrlevel.setIntervaltype("second");
+      else  if (bselectint.getSelectedIndex()==1) nrlevel.setIntervaltype("third");
+      else  if (bselectint.getSelectedIndex()==2) nrlevel.setIntervaltype("fourth");
+      else  if (bselectint.getSelectedIndex()==3) nrlevel.setIntervaltype("fifth");
+      else  if (bselectint.getSelectedIndex()==4) nrlevel.setIntervaltype("sixth");
+      else  if (bselectint.getSelectedIndex()==5) nrlevel.setIntervaltype("seventh");
+      else  if (bselectint.getSelectedIndex()==6) nrlevel.setIntervaltype("octave");
+      else  if (bselectint.getSelectedIndex()==7) nrlevel.setIntervaltype("random");
+      else  if (bselectint.getSelectedIndex()==8) nrlevel.setIntervaltype("all");
        }
+
+
 
 
         }
@@ -2065,6 +2545,7 @@ else if (e.getSource() == bcredits) {
 
 
            bundle = ResourceBundle.getBundle("language", new Locale(langue));
+
            changeLanguage();
 
          }
@@ -2072,14 +2553,15 @@ else if (e.getSource() == bcredits) {
 
        public void changeLanguage() {
          jeu.setText(bundle.getString("_menuGame"));
-         lectnote.setText(bundle.getString("_menuNotereading"));
-         lectrythme.setText(bundle.getString("_menuRythmreading"));
+         menuNote.setText(bundle.getString("_menuNotereading"));
+         menuRhythm.setText(bundle.getString("_menuRythmreading"));
+         menuLessons.setText(bundle.getString("_menuLessons"));
          quitter.setText(bundle.getString("_menuExit"));
 
-         parametres.setText(bundle.getString("_menuSettings"));
-         prefs.setText(bundle.getString("_menuPreferences"));
+         menuParameters.setText(bundle.getString("_menuSettings"));
+         menuPrefs.setText(bundle.getString("_menuPreferences"));
          preferences.setTitle(bundle.getString("_menuPreferences"));
-         midi.setText(bundle.getString("_menuMidi"));
+         menuMidi.setText(bundle.getString("_menuMidi"));
          dmidi.setTitle(bundle.getString("_menuMidi"));
          langues.setText(bundle.getString("_menuLanguage"));
          aide.setText(bundle.getString("_menuHelp"));
@@ -2087,6 +2569,7 @@ else if (e.getSource() == bcredits) {
          siteinternet.setText(bundle.getString("_menuWeb"));
          propos.setText(bundle.getString("_menuAbout"));
          dapropos.setTitle(bundle.getString("_menuAbout"));
+         dLessons.setTitle(bundle.getString("_menuLessons"));
 
 
          tlicence = bundle.getString("_licence");
@@ -2106,12 +2589,13 @@ else if (e.getSource() == bcredits) {
          btype.removeAllItems();
          btype.addItem(bundle.getString("_normalgame"));
          btype.addItem(bundle.getString("_linegame"));
+         btype.addItem(bundle.getString("_learninggame"));
 
          bselectnotes.removeAllItems();
          bselectnotes.addItem("3 "+bundle.getString("_menuNotes"));
      bselectnotes.addItem("5 "+bundle.getString("_menuNotes"));
-     bselectnotes.addItem("7 "+bundle.getString("_menuNotes"));
      bselectnotes.addItem("9 "+bundle.getString("_menuNotes"));
+     bselectnotes.addItem("15 "+bundle.getString("_menuNotes"));
      bselectnotes.addItem(bundle.getString("_all"));
 
      btonalite.removeAllItems();
@@ -2132,6 +2616,17 @@ else if (e.getSource() == bcredits) {
     btonalite.addItem("7 "+bundle.getString("_flat"));
     btonalite.addItem(bundle.getString("_random"));
 
+    bkeyboardlength.removeAllItems();
+    bkeyboardlength.addItem("73 "+bundle.getString("_keys"));
+    bkeyboardlength.addItem("61 "+bundle.getString("_keys"));
+
+    btranspose.removeAllItems();
+    btranspose.addItem("-2 "+bundle.getString("_octave"));
+    btranspose.addItem("-1 "+bundle.getString("_octave"));
+    btranspose.addItem(bundle.getString("_notransposition"));
+    btranspose.addItem("1 "+bundle.getString("_octave"));
+    btranspose.addItem("2 "+bundle.getString("_octave"));
+    btranspose.setSelectedIndex(2);
 
 
          ppref1jeu1.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(bundle.getString("_menuGame")),
@@ -2180,7 +2675,6 @@ else if (e.getSource() == bcredits) {
            bselectacc.addItem(bundle.getString("_inversion"));
 
            cson.setText(bundle.getString("_sound"));
-           cexacte.setText(bundle.getString("_exactnote"));
            cmetronome.setText(bundle.getString("_menuMetronom"));
 
          //  bmidiin.removeItemAt(0);
@@ -2205,6 +2699,8 @@ else if (e.getSource() == bcredits) {
                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
            okpref.setText(bundle.getString("_buttonok"));
+           oklevelMessage.setText(bundle.getString("_buttonok"));
+           okscoreMessage.setText(bundle.getString("_buttonok"));
            cancelpref.setText(bundle.getString("_buttoncancel"));
            okmidi.setText(bundle.getString("_buttonok"));
            cancelmidi.setText(bundle.getString("_buttoncancel"));
@@ -2213,6 +2709,8 @@ else if (e.getSource() == bcredits) {
            blicence.setText(bundle.getString("_buttonlicense"));
            bgo.setText(bundle.getString("_start"));
            bpref.setText(bundle.getString("_menuPreferences"));
+           okLessons.setText(bundle.getString("_buttonok"));
+           cancelLessons.setText(bundle.getString("_buttoncancel"));
 
            DO = bundle.getString("_do");
            RE = bundle.getString("_re");
@@ -2241,13 +2739,6 @@ else if (e.getSource() == bcredits) {
 
 
 
-        //*******VERSION
-
-      public void afficheversion(Graphics g,Color c){
-        g.setColor(c);
-        g.setFont(new Font("Arial",Font.BOLD,14));
-        g.drawString("V 4.10",625,420);
-        }
 
 
 
@@ -2257,18 +2748,18 @@ else if (e.getSource() == bcredits) {
 
       public void affichecle(Graphics g){
         if (ecranjeu == 1){
-          if (clecourante.equals("sol"))
-            g.drawImage(ti.Getimage(0), marge, dportee - 15, this);
-          else if (clecourante.equals("fa"))
-            g.drawImage(ti.Getimage(1), marge, dportee, this);
-          else if (clecourante.equals("sol+fa")) {
-            g.drawImage(ti.Getimage(0), marge, dportee - 15, this);
-            g.drawImage(ti.Getimage(1), marge, dportee + 90, this);
+          if (nrlevel.isCurrentclefTreble())
+            g.drawImage(ti.Getimage(0), margen, dportee - 15, this);
+          else if (nrlevel.isCurrentclefBass())
+            g.drawImage(ti.Getimage(1), margen, dportee, this);
+          else if (nrlevel.isCurrentclefBoth()) {
+            g.drawImage(ti.Getimage(0), margen, dportee - 15, this);
+            g.drawImage(ti.Getimage(1), margen, dportee + 90, this);
           }
         }
         else if (ecranjeu ==2){
           for (int nbportee = 0; nbportee < 3; nbportee++){
-                       g.drawImage(ti.Getimage(0), marge, dportee - 16 + nbportee*100, this);
+                       g.drawImage(ti.Getimage(0), marger, dportee - 16 + nbportee*100, this);
                      }
         }
       }
@@ -2285,18 +2776,18 @@ else if (e.getSource() == bcredits) {
 
 
         for(yd=dportee;yd<=dportee+40;yd=yd+10){ //  1ere ligne � 144;   derni�re � 176
-          g.drawLine(marge, yd, d.width-marge,yd);
+          g.drawLine(margen, yd, d.width-margen,yd);
           };
 
-          if (clecourante == "sol+fa"){  // dessine la deuxi�me port�e 72 points en dessous
+          if (nrlevel.isCurrentclefBoth()){  // dessine la deuxi�me port�e 72 points en dessous
             for(yd=dportee+90;yd<=dportee+130;yd=yd+10){  //  1ere ligne � 196;   derni�re � 228
-              g.drawLine(marge, yd, d.width-marge,yd);
+              g.drawLine(margen, yd, d.width-margen,yd);
               };
             }
-          if (type == "LIGNE") {
+          if (nrlevel.isInlinegame()) {
             g.setColor(Color.red);
-            g.drawLine(marge+98, dportee-30, marge+98, dportee+70);
-            if (clecourante == "sol+fa"){ g.drawLine(marge+98, dportee+20, marge+98, dportee+160);}
+            g.drawLine(margen+98, dportee-30, margen+98, dportee+70);
+            if (nrlevel.isCurrentclefBoth()){ g.drawLine(margen+98, dportee+20, margen+98, dportee+160);}
             }
         }
 
@@ -2306,19 +2797,19 @@ else if (e.getSource() == bcredits) {
 
          for (int nbportee = 0; nbportee < 3; nbportee++) {
            for (int yd = dportee; yd <= dportee + 40; yd = yd + 10) { //  1ere ligne � 144;   derni�re � 176
-             g.drawLine(marge, yd + nbportee * 100, d.width - marge,
+             g.drawLine(marger, yd + nbportee * 100, d.width - marger,
                         yd + nbportee * 100);
            }
            ;
 
-           g.drawLine(marge + 240, dportee + nbportee * 100, marge + 240,
+           g.drawLine(marger + 240, dportee + nbportee * 100, marger + 240,
                       dportee + nbportee * 100 + 40);
-           g.drawLine(marge + 458, dportee + nbportee * 100, marge + 458,
+           g.drawLine(marger + 458, dportee + nbportee * 100, marger + 458,
                       dportee + nbportee * 100 + 40);
-           g.drawLine(d.width - marge, dportee + nbportee * 100, d.width - marge,
+           g.drawLine(d.width - marger, dportee + nbportee * 100, d.width - marger,
                       dportee + nbportee * 100 + 40);
          }
-         g.drawLine(d.width - marge - 3, dportee + 2 * 100, d.width - marge - 3,
+         g.drawLine(d.width - marger - 3, dportee + 2 * 100, d.width - marger - 3,
                     dportee + 2 * 100 + 40);
 
        }
@@ -2327,65 +2818,66 @@ else if (e.getSource() == bcredits) {
 
       //*******NOTE
 
-        public boolean memenote(int p1, int p2){ //compare deux pitch pour saisie clavier
-          int i;
-          boolean rep = false;
+        public boolean samenote(int p1, int p2){ //compare deux pitch pour saisie clavier
 
-          for (i = 0;i<=6;i++){
-            if((p1>=p2) & (p1-i*12 == p2)) rep = true;
-            else if ((p1<p2) & (p1+i*12 == p2)) rep = true;
-          }
-          return rep;
+
+          return p1+(12*transpose) == p2;
         }
 
 
-
-      public int choixhauteur(){
+        /**
+            * To choice a random hight for a note according to base note
+            *
+            * @param nbupper1 and nbunder1 are tne number of notes upper or under the base note for alone clef
+            * @param nbupper2 and nbunder2 are tne number of notes upper or under the base note for bass clef when here are both clefs
+   */
+      public int notehightchoice(int nbupper1, int nbunder1, int nbupper2, int nbunder2){
         int i;
         int h = 0;
         int dessousbase = 0;
         double tmp, tmpcle;
 
 
-//CHOIX NOTE DE DEPART
 
-        // DEUX CAS : CLES SIMPLES ET CLES DOUBLES
+// FIRST CASE alone clef
+
+         if (nrlevel.isCurrentclefTreble() | nrlevel.isCurrentclefBass()) {
 
 
-         if (clecourante == "sol" | clecourante == "fa") {
 
            tmp = Math.random();
-           if (tmp<0.5) {  i = (int)Math.round((Math.random()*nbnotessur));}   // nombre entre 0 et le nb de notes au dessus
-           else { i = -(int)Math.round((Math.random()*nbnotessous));};          // nombre n�gatif entre le nb de notes en dessous et 0
-           if (clecourante == "sol") h = (dportee+basesol)- (i*5); // 20 pour sol
-         else h = (dportee+basefa)- (i*5); // 4 pour FA
+           if (tmp<0.5) {  i = (int)Math.round((Math.random()*nbupper1));}   // nombre entre 0 et le nb de notes au dessus
+           else { i = -(int)Math.round((Math.random()*nbunder1));};          // nombre n�gatif entre le nb de notes en dessous et 0
+           if (nrlevel.isCurrentclefTreble()) h = (dportee+nrlevel.getBasetreble())- (i*5); // 20 pour sol
+         else h = (dportee+nrlevel.getBasebass())- (i*5); // 4 pour FA
                                                      //   dportee+20  =  Sol en cl� de sol  128 = Fa en cl� de fa
            }
 
-           // DEUXIEME CAS DOUBLE CLE pour les limites nb notes on utilise l'inverse pour la cl� de FA
-          else if (clecourante == "sol+fa"){
-            if (nbnotessurfa <0) dessousbase = nbnotessurfa;
+
+// SECOND CASE DOUBLE CLE
+          else if (nrlevel.isCurrentclefBoth()){
+            if (nbupper2 <0) dessousbase = nbupper2;
             else dessousbase = 0;
 
             tmpcle = Math.random();
             if (tmpcle<0.5) { // cl� de sol
               tmp = Math.random();
-              if (tmp<0.5) {  i = (int)Math.round((Math.random()*nbnotessur));}              // nombre entre 0 et le nb de notes au dessus
-              else { i = -(int)Math.round((Math.random()*nbnotessous));};           // nombre n�gatif entre le nb de notes en dessous et 0
-              h = dportee+basesol - (i*5);     //   dportee+20  =  Sol en cl� de sol
+              if (tmp<0.5) {  i = (int)Math.round((Math.random()*nbupper1));}              // nombre entre 0 et le nb de notes au dessus
+              else { i = -(int)Math.round((Math.random()*nbunder1));};           // nombre n�gatif entre le nb de notes en dessous et 0
+              h = dportee+nrlevel.getBasetreble() - (i*5);     //   dportee+20  =  Sol en cl� de sol
                                              }
 
             else {       // cl� de fa
               tmp = Math.random();
               if (tmp<0.5) {
-                i = (int)Math.round((Math.random()*nbnotessurfa)+dessousbase);
+                i = (int)Math.round((Math.random()*nbupper2)+dessousbase);
 
-              }                        // inverse de cl� de sol
-              else { i = -(int)Math.round((Math.random()*nbnotessousfa))+dessousbase;};
+              }
+              else { i = -(int)Math.round((Math.random()*nbunder2))+dessousbase;};
               //System.out.println(i);
               //System.out.println(tmp);
 
-              h = dportee+basefa+90 - (i*5);  //   dportee+76  =  Fa en cl� de fa
+              h = dportee+nrlevel.getBasebass()+90 - (i*5);
               }
             }
             return h;
@@ -2394,48 +2886,46 @@ else if (e.getSource() == bcredits) {
 
 
 
-          public intervalle choixintervalle(){
-                      int i;
+          public Interval intervalchoice(){
+                      int i = 1;
                       int h = 0;
                       Note n1;
                       Note n2;
 
                       String nom = "";
-                      intervalle inter;
+                      Interval inter;
                       double tmp;
 
-                      if (typeinterv == "SECONDES") i = 1;
-                      else if (typeinterv == "TIERCES") i = 2;
-                      else if (typeinterv == "QUARTES") i = 3;
-                      else if (typeinterv == "QUINTES") i = 4;
-                      else if (typeinterv == "SIXTES") i = 5;
-                      else if (typeinterv == "SEPTIEMES") i = 6;
-                      else if (typeinterv == "OCTAVES") i = 7;
-                      else if (typeinterv == "RANDOM") i = intervrandom;
 
-                       else i = (int)Math.round((Math.random()*6))+1; //entre 1 et 7 pour l'octave
 
-                       if (clecourante == "sol+fa") {
-                          nbnotessur = 13-i;
-                          nbnotessous = 5;
-                          nbnotessurfa = 6-i;
-                          nbnotessousfa = 10;
+                      if (nrlevel.isSecondInterval()) i = 1;
+                      else if (nrlevel.isThirdInterval()) i = 2;
+                      else if (nrlevel.isFourthInterval()) i = 3;
+                      else if (nrlevel.isFifthInterval()) i = 4;
+                      else if (nrlevel.isSixthInterval()) i = 5;
+                      else if (nrlevel.isSeventhInterval()) i = 6;
+                      else if (nrlevel.isOctaveInterval()) i = 7;
+                      else if (nrlevel.isRandomInterval())  i = (int) Math.round( (Math.random() * 6)) + 1;
+
+
+                       if (nrlevel.isCurrentclefBoth()) {
+                         h = notehightchoice(13-i,5,6-i,10);
+                          while(h == precedente) h = notehightchoice(13-i,5,6-i,10);
+
                        }
                        else {
-                         nbnotessur = 13-i;
-                         nbnotessous = 8;
+                         h = notehightchoice(13-i,8,13-i,8);
+                          while(h == precedente) h = notehightchoice(13-i,8,13-i,8);
+
                        }
 
 
-                          h = choixhauteur();
-                          while(h == precedente) h = choixhauteur();
+
                           tmp = Math.random();
-                          //if (tmp<0.2) { n1 = new Note ("#","",h,marge+98,0);}
-                          //else if (tmp>= 0.2 & tmp<0.4) {  n1 = new Note ("b","",h,marge+98,0);}
-                          //else  n1 = new Note ("","",h,marge+98,0);
-                          n1 = new Note ("","",h,marge+98,0);
-                          n1.majnote(clecourante,dportee,bundle);
-                          n1.majalteration(tcourante, type2,bundle);
+
+                          n1 = new Note ("","",h,margen+98,0);
+                          n1.majnote(nrlevel,dportee,bundle);
+                          n1.majalteration(nrlevel,bundle);
 
                           tmp = Math.random();
                           /*if (n1.getAlteration() == "#"){
@@ -2449,9 +2939,9 @@ else if (e.getSource() == bcredits) {
                             else if (tmp<0.4)   n2 = new Note ("b","",h-i*4,marge+98,0);
                             else n2 = new Note ("","",h-i*4,marge+98,0);*/
 
-                          n2 = new Note ("","",h-i*5,marge+98,0);
-                          n2.majnote(clecourante, dportee,bundle);
-                          n2.majalteration(tcourante, type2,bundle);
+                          n2 = new Note ("","",h-i*5,margen+98,0);
+                          n2.majnote(nrlevel, dportee,bundle);
+                          n2.majalteration(nrlevel,bundle);
 
 
                           if (n2.getPitch()-n1.getPitch() == 0 & i == 1) nom = bundle.getString("_seconddim");
@@ -2480,31 +2970,31 @@ else if (e.getSource() == bcredits) {
                           else if (n2.getPitch()-n1.getPitch() == 12 & i == 7) nom = bundle.getString("_octaveper");
                           else if (n2.getPitch()-n1.getPitch() == 13 & i == 7) nom = bundle.getString("_octaveaug");
 
-                          inter = new intervalle (n1,n2,nom);
+                          inter = new Interval (n1,n2,nom);
                           precedente = n1.getHauteur();
 
                           return inter;
                         }
 
 
-          public void nouvelintervalle(){
+          public void newinterval(){
 
 
-                   icourant.copy(choixintervalle());
-                   if (type == "NORMAL") {
+                   icourant.copy(intervalchoice());
+                   if (nrlevel.isNormalgame() | nrlevel.isLearninggame()) {
                      posnote = 0;
-                     ncourante = icourant.interv [posnote];
+                     ncourante = icourant.getNote(posnote);
                      if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
                     }
 
-                    else if (type == "LIGNE") {
+                    else if (nrlevel.isInlinegame()) {
                        if (position < ligne.length-1) {
                          position = position + 1;
                          icourant.copy(ligneint[position]);
 
                          posnote = 0;
                         //acourant.convertir(clecourante,typeaccord);
-                        ncourante = icourant.interv [posnote];
+                        ncourante = icourant.getNote(posnote);
                         if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
 
 
@@ -2512,154 +3002,628 @@ else if (e.getSource() == bcredits) {
     }
                  }
 
-        public accord choixaccord(){
-          int h = 0;
-          Note n1 = new Note ("","",0,0,0);
-          Note n2 = new Note ("","",0,0,0);
-          Note n3 = new Note ("","",0,0,0);
-          accord a;
-          String minmaj = "";
-          String salt = "";
-          boolean ok = false;
+                 public Chord chordchoice() {
+                   int h = 0;
+                   Note n1 = new Note("", "", 0, 0, 0);
+                   Note n2 = new Note("", "", 0, 0, 0);
+                   Note n3 = new Note("", "", 0, 0, 0);
+                   Chord a;
+                   String minmaj = "";
+                   String salt = "";
+                   boolean ok = false;
 
-          if (clecourante == "sol+fa") {
-            nbnotessur = 6;
-            nbnotessous = 5;
-            nbnotessurfa = -2;
-            nbnotessousfa = 10;
-          }
-          else {
-            nbnotessur = 6;
-            nbnotessous = 8;
-          }
+                   if (nrlevel.isCurrentclefBoth()) {
+                     h = notehightchoice(6,5,-2,10);
+                while (h == precedente)   h = notehightchoice(6,5,-2,10);
 
-          while (!ok){
+                                      }
+                   else {
+                     h = notehightchoice(6,8,6,8);
+               while (h == precedente)   h = notehightchoice(6,8,6,8);
 
-          h = choixhauteur();
-          while(h == precedente) h = choixhauteur();
+                   }
 
-
-          n1 = new Note ("","",h,marge+98,0);
-          n1.majnote(clecourante, dportee,bundle);
-          n1.majalteration(tcourante, type2,bundle);
+                   while (!ok) {
 
 
 
-          n2 = new Note ("","",h-2*5,marge+98,0);
-          n2.majnote(clecourante, dportee,bundle);
-          n2.majalteration(tcourante,n1.getPitch(),2,bundle);//deuxieme note
+                     n1 = new Note("", "", h, margen + 98, 0);
+                     n1.majnote(nrlevel, dportee, bundle);
+                     n1.majalteration(nrlevel, bundle);
+
+                     n2 = new Note("", "", h - 2 * 5, margen + 98, 0);
+                     n2.majnote(nrlevel, dportee, bundle);
+                     n2.majalteration(nrlevel.getCurrentTonality(), n1.getPitch(), 2, bundle); //deuxieme note
+
+                     n3 = new Note("", "", h - 4 * 5, margen + 98, 0);
+                     n3.majnote(nrlevel, dportee, bundle);
+                     n3.majalteration(nrlevel.getCurrentTonality(), n1.getPitch(), 3, bundle); //troisieme note
+
+                     if (n2.getPitch() - n1.getPitch() == 3 &
+                         n3.getPitch() - n1.getPitch() == 7) {
+                       minmaj = mineur;
+                       ok = true;
+                     }
+                     else if (n2.getPitch() - n1.getPitch() == 3 &
+                              n3.getPitch() - n1.getPitch() == 6) {
+                       minmaj = "dim";
+                       ok = true;
+                     }
+                     else if (n2.getPitch() - n1.getPitch() == 4 &
+                              n3.getPitch() - n1.getPitch() == 7) {
+                       minmaj = majeur;
+                       ok = true;
+                     }
+                     else if (n2.getPitch() - n1.getPitch() == 4 &
+                              n3.getPitch() - n1.getPitch() == 8) {
+                       minmaj = "aug";
+                       ok = true;
+                     }
+                     else
+                       ok = false;
+
+                     if (n1.getAlteration() == "n")
+                       salt = "";
+                     else
+                       salt = n1.getAlteration();
+                     // if (!ok) System.out.println("faux"+n1.getNom() +salt);
 
 
-          n3 = new Note ("","",h-4*5,marge+98,0);
-          n3.majnote(clecourante, dportee,bundle);
-          n3.majalteration(tcourante,n1.getPitch(),3,bundle);//troisieme note
+                   }
+                   a = new Chord(n1, n2, n3, n1.getNom() + salt + " " + minmaj, 0);
+                   precedente = n1.getHauteur();
+                   return a;
 
-          if (n2.getPitch()-n1.getPitch() == 3 & n3.getPitch()-n1.getPitch() == 7) {minmaj = mineur; ok = true;}
-          else if (n2.getPitch()-n1.getPitch() == 3 & n3.getPitch()-n1.getPitch() == 6) {minmaj = "dim"; ok = true;}
-          else if (n2.getPitch()-n1.getPitch() == 4 & n3.getPitch()-n1.getPitch() == 7) {minmaj = majeur; ok = true;}
-          else if (n2.getPitch()-n1.getPitch() == 4 & n3.getPitch()-n1.getPitch() == 8) {minmaj = "aug"; ok = true;}
-          else ok = false;
+                 }
+
+                 public void effacecouleurbouton() {
+
+                   ColorUIResource def = new ColorUIResource(238, 238, 238);
+                   bdo.setBackground(def);
+                   bre.setBackground(def);
+                   bmi.setBackground(def);
+                   bfa.setBackground(def);
+                   bsol.setBackground(def);
+                   bla.setBackground(def);
+                   bsi.setBackground(def);
+                   bdiese.setBackground(def);
+                   bbemol2.setBackground(def);
+
+                 }
+
+                 public void colorebouton() {
+                   Color red = new Color(242, 179, 112);
+                   Dimension d = getSize();
+
+                   effacecouleurbouton();
+
+                   if (ncourante.getNom().equals(bdo.getText()))
+                     bdo.setBackground(red);
+                   else if (ncourante.getNom().equals(bre.getText()))
+                     bre.setBackground(red);
+                   else if (ncourante.getNom().equals(bmi.getText()))
+                     bmi.setBackground(red);
+                   else if (ncourante.getNom().equals( bfa.getText()))
+                     bfa.setBackground(red);
+                   else if (ncourante.getNom().equals(bsol.getText()))
+                     bsol.setBackground(red);
+                   else if (ncourante.getNom().equals(bla.getText()))
+                     bla.setBackground(red);
+                   else if (ncourante.getNom().equals(bsi.getText()))
+                     bsi.setBackground(red);
+
+                   if (ncourante.getAlteration().equals(bdiese.getText()))
+                     bdiese.setBackground(red);
+                   else if (ncourante.getAlteration().equals(bbemol.getText()))
+                     bbemol2.setBackground(red);
+
+                 }
+
+                 public void afficheaccord(Chord a, Graphics g, boolean accordcourant) {
+                   Dimension d = getSize();
+                   int i; // compteur
+
+                   if (a.getNote(posnote).getX() < d.width - margen &
+                       a.getNote(posnote).getX() >= margen + 98 & parti) {
+                     // NOTE DANS LIMITES
+                     a.paint( posnote, nrlevel, g, accordcourant, ti, this,
+                             dportee, bundle);
+                     //g.drawString("Renv" + a.renvst,100,100);
+                   }
+
+                   else {
+                     if (nrlevel.isNormalgame()) {
+                       currentScore.addPoints(-20);
+
+                       if (currentScore.isLost()){
+                         parti = false;
+                         afficheresultat();
+                       }
 
 
-          if (n1.getAlteration() == "n") salt = "";
-          else salt = n1.getAlteration();
-         // if (!ok) System.out.println("faux"+n1.getNom() +salt);
+                       newchord();
+                     }
 
+                     else if (nrlevel.isLearninggame()) {
+                       newchord();
+                       effacecouleurbouton();
+                     }
+                     else if (nrlevel.isInlinegame() & parti) {
+                       if (nrlevel.isChordsgame() &
+                           ligneacc[position].getNote(0).getX() < margen + 98) {
+                         // If the current note (except the last) touch the limit
+                         currentScore.setPoints(0);
+                         currentScore.setLost();
+                         parti = false;
+                         afficheresultat();
+                       }
+                     }
+                   }
+                 }
 
-          }
-          a = new accord(n1,n2,n3, n1.getNom() +salt+ " " + minmaj,0);
-          precedente = n1.getHauteur();
-          return a;
+                 public void Synthnote(int nNoteNumber, int nVelocity, int nDuration) {
 
-        }
+                   cc.jouenote(!erreurmidi, nNoteNumber);
 
+                 }
 
+                 public void newnote() {
+                   double tmp;
 
+                   if (nrlevel.isNormalgame() | nrlevel.isLearninggame()) {
+                     notecounter ++;
+                     if (precedente != 0)
+                       stopson();
+                     ncourante.init();
+                     ncourante.setHauteur(notehightchoice(nrlevel.getNbnotesupper(),nrlevel.getNbnotesunder(),nrlevel.getNbnotesupper(),nrlevel.getNbnotesunder()));
+                     while (ncourante.getHauteur() == precedente)
+                       ncourante.setHauteur(notehightchoice(nrlevel.getNbnotesupper(),nrlevel.getNbnotesunder(),nrlevel.getNbnotesupper(),nrlevel.getNbnotesunder()));
+                     ncourante.majnote(nrlevel, dportee, bundle);
 
+                     ncourante.majalteration(nrlevel, bundle);
+                     precedente = ncourante.getHauteur();
+                     ncourante.setX(margen + 98);
+                     // System.out.println(ncourante.getNom());
+                     //System.out.println(ncourante.getHauteur());
+                     //if (cson.isSelected()) sons[indiceson(ncourante.getHauteur())].play();
 
-           public void afficheaccord(accord a,Graphics g,boolean accordcourant){
-                       Dimension d = getSize();
-                     int i;   // compteur
+                     if (cson.isSelected())
+                       Synthnote(ncourante.getPitch(), 80, dureenote);
 
+                   }
+                   else if (nrlevel.isInlinegame()) {
+                     //sons[indiceson(ncourante.getHauteur())].stop();
+                     stopson();
+                     if (position < ligne.length - 1) {
+                       position = position + 1;
+                       ncourante.copy(ligne[position]);
+                     }
+                     //if (cson.isSelected()) sons[indiceson(ncourante.getHauteur())].play();
+                     if (cson.isSelected())
+                       Synthnote(ncourante.getPitch(), 80, dureenote);
+                   }
+                 }
 
-                     if(a.acc[posnote].getX()< d.width-marge & a.acc[posnote].getX() >= marge+98 & parti) {
-                       // NOTE DANS LIMITES
-                       a.paint(clecourante, tcourante, posnote,type,g,accordcourant, this);
-                       //g.drawString("Renv" + a.renvst,100,100);
+                 public void stopson() {
+                   //if (cson.isSelected())
+                   //for (int i=0;i<37;i=i+1){
+                   //sons[i].stop();
+                   cc.stopnotes(cson.isSelected() & !erreurmidi);
+
+                   //}
+
+                 }
+
+                 public void affichenote(Note n, Graphics g, Color couleur) {
+                   Dimension d = getSize();
+                   int i; // compteur
+
+                   g.setColor(couleur);
+                   if (n.getX() < d.width - margen & n.getX() >= margen + 98 & parti) { // NOTE DANS LIMITES
+                     if (nrlevel.isAccidentalsgame())
+                       n.paint(nrlevel, g, 9, 0, dportee, ti, this, couleur,
+                               bundle);
+                     else
+                       n.paint(nrlevel, g, 0, 0, dportee, ti, this, couleur,
+                               bundle);
+                   }
+
+                   else {
+                     if (nrlevel.isNormalgame()) {
+                      currentScore.addPoints(-20);
+                      if (currentScore.isLost()){
+                         parti = false;
+                         afficheresultat();
+
+                       }
+                       newnote();
+
+                     }
+                     else if (nrlevel.isLearninggame()) {
+                       newnote();
+                       effacecouleurbouton();
+                     }
+                     else if (nrlevel.isInlinegame() & parti) {
+                       if (ligne[position].getX() < margen + 98) { // Si la note courant (sauf la derni�re)d�passe la limite ici marge +25
+                         currentScore.setPoints(0);
+                         currentScore.setLost();
+                         parti = false;
+                         afficheresultat();
+
+                       }
+                     }
+                   }
+                 }
+
+                 /*************************************************************************/
+                 /*********** LECTURE RYTHMIQUE *******************************************/
+                 /*************************************************************************/
+
+                 public void rythmesuivant() {
+
+                   if (ligner[positionr].getValeur() != 0) {
+                     if (positionr < ligner.length - 1) {
+                       positionr = positionr + 1;
+                       repaint();
+                       /* if (cson.getState() & !ligne[position].silence) Synthnote(71,80,dureerythme);*/
+                     }
+                   }
+                 }
+
+                 public void meta(MetaMessage meta) {
+                   byte[] abData = meta.getData();
+                   String strText = new String(abData);
+                   if (strText.equals("depart")) {
+                     positionr = 0;
+                     repaint();
+                   }
+                   else {
+                     rythmesuivant();
+                     repaint();
+                   }
+                   //System.out.println(positionr);
+
+                 }
+
+                 public void creationmetronome() {
+
+                   final int TEXT = 0x01;
+                   String textd = "depart";
+
+                   try {
+                     ShortMessage sm = new ShortMessage();
+                     sm.setMessage(ShortMessage.PROGRAM_CHANGE, 1, 12, 0);
+                     metronome.add(new MidiEvent(sm, 0));
+
+                     addEvent(metronome, TEXT, textd.getBytes(), (int) nbtemps * ppq);
+
+                     if (cmetronome.isSelected()) {
+                       for (int l = 0; l <= 60; l++) {
+                         ShortMessage mess = new ShortMessage();
+                         ShortMessage mess2 = new ShortMessage();
+                         mess.setMessage(ShortMessage.NOTE_ON, 1, 60, 40);
+
+                         metronome.add(new MidiEvent(mess, l * ppq));
+                         mess2.setMessage(ShortMessage.NOTE_OFF, 1, 60, 0);
+                         metronome.add(new MidiEvent(mess2, l * ppq + 1));
+                       }
+                     }
+
+                   }
+                   catch (InvalidMidiDataException e) {
+                     e.printStackTrace();
+                     System.exit(1);
+                   }
+
+                 }
+
+                 private void addEvent(Track track, int type, byte[] data, long tick) {
+                   MetaMessage message = new MetaMessage();
+                   try {
+                     message.setMessage(type, data, data.length);
+                     MidiEvent event = new MidiEvent(message, tick);
+                     track.add(event);
+                   }
+                   catch (InvalidMidiDataException e) {
+                     e.printStackTrace();
+                   }
+                 }
+
+                 private static MidiEvent createNoteOnEvent(int nKey, long lTick) {
+                   return createNoteEvent(ShortMessage.NOTE_ON, nKey, VELOCITY, lTick);
+                 }
+
+                 private static MidiEvent createNoteOffEvent(int nKey, long lTick) {
+                   return createNoteEvent(ShortMessage.NOTE_OFF, nKey, 0, lTick);
+                 }
+
+                 private static MidiEvent createNoteEvent(int nCommand, int nKey,
+                                                          int nVelocity, long lTick) {
+                   ShortMessage message = new ShortMessage();
+                   try {
+                     message.setMessage(nCommand,
+                                        0, // always on channel 1
+                                        nKey,
+                                        nVelocity);
+                   }
+                   catch (InvalidMidiDataException e) {
+                     e.printStackTrace();
+                     System.exit(1);
+                   }
+                   MidiEvent event = new MidiEvent(message,
+                                                   lTick);
+                   return event;
+                 }
+
+                 public int ajouterythme(int duree, int i, int tickcourant, int nbmes,
+                                         int poscourante) {
+                   double tmpsilence;
+                   int tick = tickcourant;
+
+                   final int TEXT = 0x01;
+                   String text = "off";
+
+                   tmpsilence = Math.random();
+                   if (!nivcourant.getSilence() | (nivcourant.getSilence() & tmpsilence < 0.85)) {
+                     if (nbmes <= 3)
+                       ligner[i] = new Rhythm(duree, poscourante, 0, false, false, 0);
+                     else if (nbmes <= 6)
+                       ligner[i] = new Rhythm(duree, poscourante, 1, false, false, 0);
+                     else if (nbmes <= 9)
+                       ligner[i] = new Rhythm(duree, poscourante, 2, false, false, 0);
+
+                     track.add(createNoteOnEvent(71, tick));
+                     tick = tick + (int) (4.0 / duree * ppq);
+                     addEvent(track, TEXT, text.getBytes(), tick);
+                     track.add(createNoteOffEvent(71, tick));
+
+                   }
+
+                   else {
+                     if (nbmes <= 3)
+                       ligner[i] = new Rhythm(duree, poscourante, 0, false, true, 0);
+                     else if (nbmes <= 6)
+                       ligner[i] = new Rhythm(duree, poscourante, 1, false, true, 0);
+                     else if (nbmes <= 9)
+                       ligner[i] = new Rhythm(duree, poscourante, 2, false, true, 0);
+
+                     track.add(createNoteOffEvent(71, tick));
+
+                     tick = tick + (int) (4.0 / duree * ppq);
+                     addEvent(track, TEXT, text.getBytes(), tick);
+                   }
+                   return tick;
+                 }
+
+                 public boolean debutdemesure(int i) {
+                   double d = 0;
+                   boolean reponse = false;
+                   for (int j = 0; j < i; j++) {
+                     d = d + 4.0 / ligner[j].getValeur();
+                   }
+
+                   for (int k = 1; k < nbmesures; k++)
+                     if (d == nbtemps * k)
+                       reponse = true;
+                   return reponse;
+                 }
+
+                 public void creationligner() {
+
+                   Dimension d = getSize();
+
+                   int poscourante = 82;
+                   int tickcourant = (int) (nbtemps * ppq);
+                   double tpsmes = 0; // nombre de temps
+                   int nbmes = 1; //numero de la mesure
+
+                   int i = 0;
+                   double tmp;
+
+                   // INNITIALISATION Sequence et tracks
+                   try {
+                     sequence = new Sequence(Sequence.PPQ, ppq);
+                   }
+                   catch (InvalidMidiDataException e) {
+                     e.printStackTrace();
+                     System.exit(1);
+                   }
+
+                   track = sequence.createTrack();
+                   metronome = sequence.createTrack();
+
+                   creationmetronome();
+
+                   try {
+                     ShortMessage sm = new ShortMessage();
+                     sm.setMessage(ShortMessage.PROGRAM_CHANGE, 0, binstr.getSelectedIndex(),
+                                   0);
+
+                     track.add(new MidiEvent(sm, 0));
+                   }
+                   catch (InvalidMidiDataException e) {
+                     e.printStackTrace();
+                     System.exit(1);
+                   }
+
+                   while (i < ligner.length) {
+                     if (nbmes <= nbmesures) {
+                       while (tpsmes != nbtemps) {
+                         tmp = Math.random();
+                         if (nivcourant.getRonde() & tpsmes + 4 <= nbtemps & tmp < 0.2) { //ronde
+                           tpsmes = tpsmes + 4;
+                           tickcourant = ajouterythme(1, i, tickcourant, nbmes, poscourante);
+                           poscourante = poscourante + 216;
+                           i++;
+                         }
+                         else if (nivcourant.getBlanche() & tpsmes + 2 <= nbtemps & tmp < 0.4) { //blanche
+                           tpsmes = tpsmes + 2;
+                           tickcourant = ajouterythme(2, i, tickcourant, nbmes, poscourante);
+                           poscourante = poscourante + 108;
+                           i++;
+                         }
+                         else if (nivcourant.getNoire() & tpsmes + 1 <= nbtemps & tmp < 0.7) { //noire
+                           tpsmes = tpsmes + 1;
+                           tickcourant = ajouterythme(4, i, tickcourant, nbmes, poscourante);
+                           poscourante = poscourante + 54;
+                           i++;
+                         }
+                         else if (nivcourant.getCroche() & tpsmes + 0.5 <= nbtemps) { //croche
+                           tpsmes = tpsmes + 0.5;
+                           tickcourant = ajouterythme(8, i, tickcourant, nbmes, poscourante);
+                           poscourante = poscourante + 27;
+                           i++;
+                         }
+
+                       }
+
+                       tpsmes = 0;
+                       nbmes = nbmes + 1;
+                       if (nbmes == 4 | nbmes == 7)
+                         poscourante = 82;
+
                      }
 
                      else {
-                       if (type == "NORMAL"){
-                         if(score-20<=0) {score = 0; resultat = "PERDU"; parti = false;afficheresultat();}
-                         else {
-                             score = score - 20;
-                           //  if (cson.isSelected()) sonerreur.play();
-                             }
-
-                             nouvelaccord();
-                                             }
-                       else if (type == "LIGNE" & parti){
-                        if (type2 == "ACCORDS" & ligneacc [position].acc[0].getX() < marge+98)
-                       {  // Si la note courant (sauf la derni�re)d�passe la limite ici marge +25
-                           score = 0;
-                           resultat = "PERDU";
-                           parti =  false;
-                           afficheresultat();
-                         }
-                       }
+                       ligner[i] = new Rhythm(0, 0, 0, false, false, 0);
+                       i++;
                      }
-      }
+                   }
 
-     public void Synthnote(int nNoteNumber,int nVelocity,int nDuration)
-              {
+                   regroupenotes();
 
-      /* Instrument[] instr = syn.getDefaultSoundbank().getInstruments();
-       syn.loadInstrument(instr[21]);
-       mc = syn.getChannels();
-       //Thread t = new Thread();*/
+                 }
 
-      // mc[5].noteOn(nNoteNumber, nVelocity);
+                 public void regroupenotes() {
+                   for (int i = 0; i < ligner.length - 1; i++) {
+                     if (ligner[i].getValeur() == 8 & ligner[i + 1].getValeur() == 8 &
+                         !ligner[i + 1].getSilence() & !ligner[i].getSilence() &
+                         !debutdemesure(i + 1)) {
+                       ligner[i].setGroupee(1);
+                       ligner[i + 1].setGroupee(2);
+                     }
 
-       cc.jouenote(!erreurmidi,nNoteNumber);
+                   }
+                 }
 
-
-              }
-
-
-
-
-    public void nouvellenote(){
-      double tmp;
-
-      if (type == "NORMAL") {
-        if (precedente!=0) stopson();
-        ncourante.init();
-        ncourante.setHauteur(choixhauteur());
-        while(ncourante.getHauteur() == precedente) ncourante.setHauteur(choixhauteur());
-        ncourante.majnote(clecourante, dportee,bundle);
+                 // LIGNE DE NOTES
 
 
-        ncourante.majalteration(tcourante, type2,bundle);
-        precedente = ncourante.getHauteur();
-        ncourante.setX(marge+98);
-        System.out.println(ncourante.getNom());
-        System.out.println(ncourante.getHauteur());
-        //if (cson.isSelected()) sons[indiceson(ncourante.getHauteur())].play();
+                 public void createline() {
+                   Dimension d = getSize();
+                   Chord a = new Chord(ncourante, ncourante, ncourante, "", 0);
+                   Interval inter = new Interval(ncourante, ncourante, "");
+                   int tmph;
+                   String tmpa = "";
+                   double tmp;
 
-        if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
+                   // System.out.println(type2);
 
-        }
-      else if (type == "LIGNE") {
-        //sons[indiceson(ncourante.getHauteur())].stop();
-        stopson();
-        if (position < ligne.length-1) {
-          position = position + 1;
-          ncourante.copy(ligne[position]);
-          }
-          //if (cson.isSelected()) sons[indiceson(ncourante.getHauteur())].play();
-          if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
-      }
-    }
+                   if (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame()) {
+                     ligne[0] = new Note("", "", notehightchoice(nrlevel.getNbnotesupper(),nrlevel.getNbnotesunder(),nrlevel.getNbnotesupper(),nrlevel.getNbnotesunder()), d.width - margen, 0);
+                     ligne[0].majnote(nrlevel, dportee, bundle);
+                     ligne[0].majalteration(nrlevel, bundle);
+
+                     for (int i = 1; i < ligne.length; i++) {
+                       tmph = notehightchoice(nrlevel.getNbnotesupper(),nrlevel.getNbnotesunder(),nrlevel.getNbnotesupper(),nrlevel.getNbnotesunder());
+                       while (tmph == ligne[i - 1].getHauteur())
+                         tmph = notehightchoice(nrlevel.getNbnotesupper(),nrlevel.getNbnotesunder(),nrlevel.getNbnotesupper(),nrlevel.getNbnotesunder()); // pour �viter les r�p�titions
+
+                       ligne[i] = new Note(tmpa, "", tmph, d.width - margen + i * 35, 0);
+                       ligne[i].majnote(nrlevel, dportee, bundle);
+                       ligne[i].majalteration(nrlevel, bundle);
+                     }
+
+                     position = 0;
+                     ncourante = ligne[position]; // initialisa tion avec la premi�re note
+                     //if (cson.isSelected()) sons[indiceson(ncourante.getHauteur())].play(); // d�part du son de la premi�re note
+                     if (cson.isSelected())
+                       Synthnote(ncourante.getPitch(), 80, dureenote);
+                   }
+
+                   else if (nrlevel.isChordsgame()) {
+                     // voir pour precedant
+                     for (int i = 0; i < ligne.length; i++) {
+
+                       a.copy(chordchoice());
+
+                       a.updatex(d.width - margen + i * 50);
+                       ligneacc[i] = new Chord(a.getNote(0), a.getNote(1), a.getNote(2),
+                                               a.getName(), a.getInversion());
+                       ligneacc[i].convert(nrlevel);
+
+                     }
+                     position = 0;
+                     posnote = 0;
+
+                     acourant.copy(ligneacc[position]);
+                     // acourant.convertir(clecourante,typeaccord);
+                     ncourante = acourant.getNote(acourant.realposition(posnote));
+                     if (cson.isSelected())
+                       Synthnote(ncourante.getPitch(), 80, dureenote);
+                   }
+
+                   else if (nrlevel.isIntervalsgame()) {
+                     // voir pour precedant
+                     for (int i = 0; i < ligne.length; i++) {
+                       inter.copy(intervalchoice());
+                       //i = nouvelintervalle();
+                       inter.updatex(d.width - margen + i * 65);
+                       ligneint[i] = new Interval(inter.getNote(0), inter.getNote(1),
+                                                  inter.getName());
+
+                     }
+                     position = 0;
+                     posnote = 0;
+
+                     icourant.copy(ligneint[position]);
+                     ncourante = icourant.getNote(posnote); //0
+                     if (cson.isSelected())
+                       Synthnote(ncourante.getPitch(), 80, dureenote);
+
+                   }
+                 }
+
+                 public void afficheligne(Graphics g) {
+
+                   for (int i = position; i < ligne.length; i++) {
+                     // n'affiche que la ligne � partir de la position
+                     if (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame())
+                       affichenote(ligne[i], g, Color.black);
+                     else if (nrlevel.isChordsgame())
+                       afficheaccord(ligneacc[i], g, i == position);
+                     else if (nrlevel.isIntervalsgame())
+                       afficheintervalle(ligneint[i], g, i == position);
+                   }
+
+                 }
+
+                 public void afficheligner(Graphics g) {
+                   int precedant = 0;
+                   int suivant = 0;
+
+                   for (int i = 0; i < ligner.length; i++) {
+                     // System.out.println(i);
+                     if (ligner[i].getValeur() != 0) {
+                       if (i != 0)
+                         precedant = ligner[i - 1].getValeur();
+                       else
+                         precedant = 0;
+                       if (i != ligner.length - 1)
+                         suivant = ligner[i + 1].getValeur();
+                       else
+                         suivant = 0;
+                       if (i != positionr)
+
+                         ligner[i].paint(g, 9, false, dportee, ti, this);
+                       else
+
+                         ligner[i].paint(g, 9, true, dportee, ti, this);
+                     }
+                   }
+                 }
+
+                 //***************ACCORDS
 
 
 
@@ -2667,1277 +3631,557 @@ else if (e.getSource() == bcredits) {
 
 
 
+                  public void newchord() {
 
+                    if (nrlevel.isNormalgame() | nrlevel.isLearninggame()) {
 
-    public void stopson(){
-      //if (cson.isSelected())
-      //for (int i=0;i<37;i=i+1){
-       //sons[i].stop();
-       cc.stopnotes(cson.isSelected() & !erreurmidi);
+                      posnote = 0;
+                      acourant.copy(chordchoice());
+                      acourant.convert(nrlevel);
+                      ncourante = acourant.getNote(acourant.realposition(posnote));
+                      if (cson.isSelected())
+                        Synthnote(ncourante.getPitch(), 80, dureenote);
 
-      //}
+                    }
+                    else if (nrlevel.isInlinegame()) {
+                      if (position < ligne.length - 1) {
+                        position = position + 1;
+                        acourant.copy(ligneacc[position]);
 
-    }
+                        posnote = 0;
+                        //acourant.convertir(clecourante,typeaccord);
+                        ncourante = acourant.getNote(acourant.realposition(posnote));
+                        if (cson.isSelected())
+                          Synthnote(ncourante.getPitch(), 80, dureenote);
 
-
-    public void affichenote(Note n, Graphics g, Color couleur){
-      Dimension d = getSize();
-      int i;   // compteur
-
-      g.setColor(couleur);
-      if(n.getX()< d.width-marge & n.getX() >= marge+98 & parti) { // NOTE DANS LIMITES
-        if (type2 == "ALTERATIONS") n.paint(clecourante, tcourante,g,9,0,dportee, ti, this, couleur,bundle);
-        else n.paint(clecourante, tcourante, g,0,0,dportee, ti, this, couleur,bundle);
-      }
-
-
-      else {
-        if (type == "NORMAL"){
-          if(score-20<=0) {score = 0; resultat = "PERDU"; parti = false;afficheresultat();}
-          else {
-              score = score - 20;
-          //    if (cson.isSelected()) sonerreur.play();
-
-              }
-          nouvellenote();
-
-                              }
-        else if (type == "LIGNE" & parti){
-          if (ligne [position].getX() < marge+98) {  // Si la note courant (sauf la derni�re)d�passe la limite ici marge +25
-            score = 0;
-
-            resultat = "PERDU";
-            parti =  false;
-            afficheresultat();
-
-          }
-        }
-      }
-    }
-
-
-/*************************************************************************/
-/*********** LECTURE RYTHMIQUE *******************************************/
-/*************************************************************************/
-
-    public void rythmesuivant() {
-
-                    if (ligner[positionr].getValeur() != 0) {
-                      if (positionr < ligner.length - 1) {
-                        positionr = positionr + 1;
-                        repaint();
-                            /* if (cson.getState() & !ligne[position].silence) Synthnote(71,80,dureerythme);*/
                       }
                     }
                   }
 
-
-    public void meta(MetaMessage meta) {
-               byte[] abData = meta.getData();
-               String strText = new String(abData);
-               if (strText.equals("depart")) {
-                 positionr = 0;
-                 repaint();
-               }
-               else {
-                 rythmesuivant();
-               repaint();
-               }
-                 //System.out.println(positionr);
-
-             }
-
-
-    public void creationmetronome() {
-
-                  final int TEXT = 0x01;
-                  String textd = "depart";
-
-
-                    try {
-                      ShortMessage sm = new ShortMessage();
-                      sm.setMessage(ShortMessage.PROGRAM_CHANGE, 1, 12, 0);
-                      metronome.add(new MidiEvent(sm, 0));
-
-                      addEvent(metronome, TEXT, textd.getBytes(), (int)nbtemps * ppq);
-
-                      if(cmetronome.isSelected()){
-                        for (int l = 0; l <= 60; l++) {
-                          ShortMessage mess = new ShortMessage();
-                          ShortMessage mess2 = new ShortMessage();
-                          mess.setMessage(ShortMessage.NOTE_ON, 1, 60, 40);
-
-                          metronome.add(new MidiEvent(mess, l * ppq));
-                          mess2.setMessage(ShortMessage.NOTE_OFF, 1, 60, 0);
-                          metronome.add(new MidiEvent(mess2, l * ppq + 1));
-                        }
-                    }
-
-                }
-                catch (InvalidMidiDataException e) {
-                  e.printStackTrace();
-                  System.exit(1);
-                }
-
-                }
-
-
-    private void addEvent(Track track, int type, byte[] data, long tick) {
-               MetaMessage message = new MetaMessage();
-               try {
-                 message.setMessage(type, data, data.length);
-                 MidiEvent event = new MidiEvent(message, tick);
-                 track.add(event);
-               }
-               catch (InvalidMidiDataException e) {
-                 e.printStackTrace();
-               }
-             }
-
-             private static MidiEvent createNoteOnEvent(int nKey, long lTick) {
-               return createNoteEvent(ShortMessage.NOTE_ON, nKey, VELOCITY, lTick);
-             }
-
-             private static MidiEvent createNoteOffEvent(int nKey, long lTick) {
-               return createNoteEvent(ShortMessage.NOTE_OFF, nKey, 0, lTick);
-             }
-
-             private static MidiEvent createNoteEvent(int nCommand, int nKey,
-                                                      int nVelocity, long lTick) {
-               ShortMessage message = new ShortMessage();
-               try {
-                 message.setMessage(nCommand,
-                                    0, // always on channel 1
-                                    nKey,
-                                    nVelocity);
-               }
-               catch (InvalidMidiDataException e) {
-                 e.printStackTrace();
-                 System.exit(1);
-               }
-               MidiEvent event = new MidiEvent(message,
-                                               lTick);
-               return event;
-             }
-
-
-    public int ajouterythme(int duree, int i, int tickcourant, int nbmes,
-                            int poscourante) {
-      double tmpsilence;
-      int tick = tickcourant;
-
-      final int TEXT = 0x01;
-      String text = "off";
-
-      tmpsilence = Math.random();
-      if (!nivcourant.getSilence() | (nivcourant.getSilence() & tmpsilence < 0.85)) {
-        if (nbmes <= 3)
-          ligner[i] = new Rythme(duree, poscourante, 0, false, false, 0);
-        else if (nbmes <= 6)
-          ligner[i] = new Rythme(duree, poscourante, 1, false, false, 0);
-        else if (nbmes <= 9)
-          ligner[i] = new Rythme(duree, poscourante, 2, false, false, 0);
-
-        track.add(createNoteOnEvent(71, tick));
-        tick = tick + (int) (4.0 / duree * ppq);
-        addEvent(track, TEXT, text.getBytes(), tick);
-        track.add(createNoteOffEvent(71, tick));
-
-      }
-
-      else {
-        if (nbmes <= 3)
-          ligner[i] = new Rythme(duree, poscourante, 0, false, true, 0);
-        else if (nbmes <= 6)
-          ligner[i] = new Rythme(duree, poscourante, 1, false, true, 0);
-        else if (nbmes <= 9)
-          ligner[i] = new Rythme(duree, poscourante, 2, false, true, 0);
-
-        track.add(createNoteOffEvent(71, tick));
-
-        tick = tick + (int) (4.0 / duree * ppq);
-        addEvent(track, TEXT, text.getBytes(), tick);
-      }
-      return tick;
-    }
-
-    public boolean debutdemesure(int i) {
-      double d = 0;
-      boolean reponse = false;
-      for (int j = 0; j < i; j++) {
-        d = d + 4.0 / ligner[j].getValeur();
-      }
-
-      for (int k = 1; k < nbmesures; k++)
-        if (d == nbtemps * k)
-          reponse = true;
-      return reponse;
-    }
-
-    public void creationligner() {
-
-      Dimension d = getSize();
-
-      int poscourante = 82;
-      int tickcourant = (int) (nbtemps * ppq);
-      double tpsmes = 0; // nombre de temps
-      int nbmes = 1; //numero de la mesure
-
-      int i = 0;
-      double tmp;
-
-      // INNITIALISATION Sequence et tracks
-      try {
-        sequence = new Sequence(Sequence.PPQ, ppq);
-      }
-      catch (InvalidMidiDataException e) {
-        e.printStackTrace();
-        System.exit(1);
-      }
-
-      track = sequence.createTrack();
-      metronome = sequence.createTrack();
-
-      creationmetronome();
-
-      try {
-        ShortMessage sm = new ShortMessage();
-        sm.setMessage(ShortMessage.PROGRAM_CHANGE, 0, binstr.getSelectedIndex(), 0);
-
-        track.add(new MidiEvent(sm, 0));
-      }
-      catch (InvalidMidiDataException e) {
-        e.printStackTrace();
-        System.exit(1);
-      }
-
-      while (i < ligner.length) {
-        if (nbmes <= nbmesures) {
-          while (tpsmes != nbtemps) {
-            tmp = Math.random();
-            if (nivcourant.getRonde() & tpsmes + 4 <= nbtemps & tmp < 0.2) { //ronde
-              tpsmes = tpsmes + 4;
-              tickcourant = ajouterythme(1, i, tickcourant, nbmes, poscourante);
-              poscourante = poscourante + 216;
-              i++;
-            }
-            else if (nivcourant.getBlanche() & tpsmes + 2 <= nbtemps & tmp < 0.4) { //blanche
-              tpsmes = tpsmes + 2;
-              tickcourant = ajouterythme(2, i, tickcourant, nbmes, poscourante);
-              poscourante = poscourante + 108;
-              i++;
-            }
-            else if (nivcourant.getNoire() & tpsmes + 1 <= nbtemps & tmp < 0.7) { //noire
-              tpsmes = tpsmes + 1;
-              tickcourant = ajouterythme(4, i, tickcourant, nbmes, poscourante);
-              poscourante = poscourante + 54;
-              i++;
-            }
-            else if (nivcourant.getCroche() & tpsmes + 0.5 <= nbtemps) { //croche
-              tpsmes = tpsmes + 0.5;
-              tickcourant = ajouterythme(8, i, tickcourant, nbmes, poscourante);
-              poscourante = poscourante + 27;
-              i++;
-            }
-
-          }
-
-          tpsmes = 0;
-          nbmes = nbmes + 1;
-          if (nbmes == 4 | nbmes == 7)
-            poscourante = 82;
-
-        }
-
-        else {
-          ligner[i] = new Rythme(0, 0, 0, false, false, 0);
-          i++;
-        }
-      }
-
-      regroupenotes();
-
-    }
-
-
-
-    public void regroupenotes() {
-      for (int i = 0; i < ligner.length - 1; i++) {
-        if (ligner[i].getValeur() == 8 & ligner[i + 1].getValeur() == 8 &
-            !ligner[i + 1].getSilence() & !ligner[i].getSilence() & !debutdemesure(i + 1)) {
-          ligner[i].setGroupee(1);
-          ligner[i + 1].setGroupee(2);
-        }
-
-      }
-    }
-
-  // LIGNE DE NOTES
-
-
-  public void creationligne(){
-    Dimension d = getSize();
-    accord a = new accord(ncourante,ncourante,ncourante,"",0);
-    intervalle inter = new intervalle(ncourante,ncourante,"");
-    int tmph;
-    String tmpa = "";
-    double tmp;
-
-   // System.out.println(type2);
-
-    if (type2 == "NOTES" | type2 == "ALTERATIONS") {
-    ligne [0] = new Note("","",choixhauteur(),d.width-marge,0);
-    ligne[0].majnote(clecourante, dportee,bundle);
-    ligne[0].majalteration(tcourante, type2, bundle);
-
-    for (int i=1;i<ligne.length;i++) {
-      tmph = choixhauteur();
-      while (tmph == ligne [i-1].getHauteur())  tmph = choixhauteur();   // pour �viter les r�p�titions
-
-
-
-      ligne [i] = new Note(tmpa,"",tmph,d.width-marge + i*35,0);
-      ligne[i].majnote(clecourante, dportee,bundle);
-      ligne[i].majalteration(tcourante, type2,bundle);
-      }
-
-      position = 0;
-      ncourante = ligne[position];// initialisa tion avec la premi�re note
-      //if (cson.isSelected()) sons[indiceson(ncourante.getHauteur())].play(); // d�part du son de la premi�re note
-      if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
-    }
-
-
-    else if (type2 == "ACCORDS"){
-      // voir pour precedant
-      for (int i=0;i<ligne.length;i++) {
-
-       a.copy(choixaccord());
-
-        a.modifiex(d.width-marge + i*50);
-        ligneacc[i] = new accord(a.acc[0],a.acc[1],a.acc[2],a.nom,a.renvst);
-        ligneacc[i].convertir(typeaccord);
-
-      }
-      position = 0;
-      posnote = 0;
-
-      acourant.copy(ligneacc[position]);
-      // acourant.convertir(clecourante,typeaccord);
-      ncourante = acourant.acc [acourant.posreelle(posnote)];
-      if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
-    }
-
-    else if (type2 == "INTERVALLES"){
-         // voir pour precedant
-         for (int i=0;i<ligne.length;i++) {
-           inter.copy(choixintervalle());
-           //i = nouvelintervalle();
-           inter.modifiex(d.width-marge + i*65);
-           ligneint[i] = new intervalle(inter.interv[0],inter.interv[1],inter.nom);
-
-
-         }
-         position = 0;
-         posnote = 0;
-
-         icourant.copy(ligneint[position]);
-         ncourante = icourant.interv [posnote]; //0
-         if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
-
-    }
-    }
-
-
-
-
-    public void afficheligne(Graphics g) {
-
-      for (int i = position; i < ligne.length; i++) {
-        // n'affiche que la ligne � partir de la position
-        if (type2 == "NOTES" | type2 == "ALTERATIONS")
-          affichenote(ligne[i], g, Color.black);
-        else if (type2 == "ACCORDS")
-          afficheaccord(ligneacc[i], g, i == position);
-        else if (type2 == "INTERVALLES")
-          afficheintervalle(ligneint[i], g, i == position);
-      }
-
-    }
-
-
-
-
-    public void afficheligner(Graphics g) {
-      int precedant = 0;
-      int suivant = 0;
-
-
-      for (int i = 0; i < ligner.length; i++) {
-       // System.out.println(i);
-        if (ligner[i].getValeur() != 0) {
-          if (i != 0)
-            precedant = ligner[i - 1].getValeur();
-          else
-            precedant = 0;
-          if (i != ligner.length - 1)
-            suivant = ligner[i + 1].getValeur();
-          else
-            suivant = 0;
-          if (i != positionr)
-
-            ligner[i].paint(g, 9, false, dportee, ti,this);
-          else
-
-          ligner[i].paint(g, 9, true, dportee, ti,this);
-        }
-      }
-    }
-
-
-  //***************ACCORDS
-
-
-
-
-
-
-
-  public void nouvelaccord(){
-
-
-
-    if (type == "NORMAL") {
-    //  choix = (int)Math.round((Math.random()*(tabaccords.length-1)));
-
-
-          posnote = 0;
-          acourant.copy(choixaccord());
-          acourant.convertir(typeaccord);
-          ncourante = acourant.acc [acourant.posreelle(posnote)];
-          if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
-
-
-      }
-    else if (type == "LIGNE") {
-      if (position < ligne.length-1) {
-        position = position + 1;
-        acourant.copy(ligneacc[position]);
-
-        posnote = 0;
-       //acourant.convertir(clecourante,typeaccord);
-       ncourante = acourant.acc [acourant.posreelle(posnote)];
-       if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
-
-
-          }
-    }
-    }
-
-    public void afficheintervalle(intervalle inter,Graphics g,boolean intervallecourant){
-      Dimension d = getSize();
-    int i;   // compteur
-
-
-    if(inter.interv[posnote].getX()< d.width-marge & inter.interv[posnote].getX() >= marge+98 & parti) {
-      // NOTE DANS LIMITES
-      inter.paint(clecourante, tcourante,posnote,type,g,intervallecourant,this);
-      //g.drawString("Renv" + a.renvst,100,100);
-    }
-
-    else {
-      if (type == "NORMAL"){
-        if(score-20<=0) {score = 0; resultat = "PERDU"; parti = false;afficheresultat();}
-        else {
-            score = score - 20;
-            /*if (cson.isSelected()) sonerreur.play();*/
-            }
-
-            nouvelintervalle();
-                            }
-      else if (type == "LIGNE" & parti){
-       if (ligneint [position].interv[0].getX() < marge+98) {  // Si la note courant d�passe la limite ici marge +25
-          score = 0;
-                System.out.println("toto");
-          resultat = "PERDU";
-          parti =  false;
-          afficheresultat();
-        }
-      }
-    }
-      }
-
-
-    public void notesuivante(){
-
-      if (type2 == "ACCORDS") {
-        if (posnote<2){
-          posnote = posnote + 1;
-
-          ncourante = acourant.acc[acourant.posreelle(posnote)];
-          alterationok = false;
-          if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
-
-          }
-
-          else { nouvelaccord();}
-          }
-
-
-    else if (type2 == "INTERVALLES") {
-       if (posnote == 0) {
-         posnote = posnote + 1;
-
-         ncourante = icourant.interv[posnote];
-         alterationok = false;
-         if (cson.isSelected()) Synthnote(ncourante.getPitch(),80,dureenote);
-
-         }
-
-         else { nouvelintervalle();}
-         }
-    }
-
-
-   /* }
-      else if (type == "LIGNE")
-        if (!cherchemode) cherchemode = true;
-        else nouvelaccord();
-    }*/
-
-
-
-  //*******SCORE
-
-  public void affichescore(Graphics g, int s){
-    Color c;
-
-    g.setColor(Color.black);
-    g.draw3DRect(260,420,251,20,true);
-    for (int tmp=0; tmp<s; tmp=tmp+10){
-      if (tmp<100) g.setColor(c=new Color(60+(tmp+10)/2,26,26));
-      else g.setColor(c=new Color(110,26+(tmp-90)/2,26));
-      g.fillRect(261+tmp/2,421,5,19);
-    }
-    g.setFont(new Font("Arial",Font.BOLD,25));
-    // g.drawString("     SCORE :   " + s,240,420);
-    }
-
-
-    public void afficheresultat(){
-
-      if (resultat == "GAGNE") {
-        JOptionPane.showMessageDialog(this,
-           nbjuste + " " + bundle.getString("_correct") + " / " + nberreur + " " + bundle.getString("_wrong"),
-          bundle.getString("_congratulations"),
-          JOptionPane.INFORMATION_MESSAGE);
-        stopjeux();
-
-
-      }
-      else if (resultat == "PERDU") {
-        JOptionPane.showMessageDialog(this,
-           nbjuste + " " + bundle.getString("_correct") + " / " + nberreur + " " + bundle.getString("_wrong"),
-          bundle.getString("_sorry"),
-          JOptionPane.INFORMATION_MESSAGE);
-        stopjeux();
-
-      };
-
-      }
-
-
-
-
-
-//****************     METHODES D'ANIMATION DE LA NOTE THREAD (run et stop)
-
-       class RenderingThread extends Thread{
-         /**
-          *  Ce thread appelle le rafraichissement de notre fenêtre
-          *  toutes les 10 milli-secondes
-          */
-         public void run() {
-
-
-
-
-                 while (true) {
-                   try {
-
-                     if (type2 == "NOTES" | type2 == "ALTERATIONS") {
-                       sleep(vitesse);
-
+                 public void afficheintervalle(Interval inter, Graphics g,
+                                               boolean Intervallecourant) {
+                   Dimension d = getSize();
+                   int i; // compteur
+
+                   if (inter.getNote(posnote).getX() < d.width - margen &
+                       inter.getNote(posnote).getX() >= margen + 98 & parti) {
+                     // NOTE DANS LIMITES
+                     inter.paint(posnote, nrlevel, g, dportee,
+                                 ti, bundle, Intervallecourant, this);
+                     //g.drawString("Renv" + a.renvst,100,100);
+                   }
+
+                   else {
+                     if (nrlevel.isNormalgame()) {
+                       currentScore.addPoints(-20);
+                       if (currentScore.isLost()){
+                         parti = false;
+                         afficheresultat();
+                       }
+
+                       newinterval();
                      }
-                     else if (type2 == "INTERVALLES")
-                       sleep(vitesse * 3 / 2);
-                     else if (type2 == "ACCORDS")
-                       sleep(vitesse * 2);
-                     else
-                       sleep(vitesse + 18);
-
-                     if (parti) {
-                       if (type == "NORMAL" &
-                           (type2 == "NOTES" | type2 == "ALTERATIONS"))
-                         ncourante.setX(ncourante.getX() + 1);
-                       else if (type == "NORMAL" & type2 == "ACCORDS")
-                         acourant.avance(1);
-                       else if (type == "NORMAL" & type2 == "INTERVALLES")
-                         icourant.avance(1);
-                       else if (type == "LIGNE" &
-                                (type2 == "NOTES" | type2 == "ALTERATIONS"))
-                         for (int i = 0; i < ligne.length; i++) {
-
-                           ligne[i].setX(ligne[i].getX() - 1);
-                         }
-
-                       else if (type == "LIGNE" & type2 == "ACCORDS")
-                         for (int i = 0; i < ligneacc.length; i++) {
-                           ligneacc[i].avance( -1);
-                         }
-
-                       else if (type == "LIGNE" & type2 == "INTERVALLES")
-                         for (int i = 0; i < ligneint.length; i++) {
-                           ligneint[i].avance( -1);
-
-                         }
-
-                       panelanim.repaint();
+                     else if (nrlevel.isLearninggame()) {
+                       newinterval();
+                       effacecouleurbouton();
+                     }
+                     else if (nrlevel.isInlinegame() & parti) {
+                       if (ligneint[position].getNote(0).getX() < margen + 98) { // Si la note courant d�passe la limite ici marge +25
+                         currentScore.setPoints(0);
+                       currentScore.setLost();
+                         parti = false;
+                         afficheresultat();
+                       }
                      }
                    }
-                   catch (Exception e) {}
                  }
 
-         }
-       }
-
-
-
-  public void stop(){
-   // main = null;
-    //if(main!=null){main.stop();}
-    }
-
-
-
-
-
-
-
-//************** METHODE PAINT ET UPDATE POUT L'AFFICHAGE DE L'APPLET
-
-
-
-
-  /*  public void update(Graphics g){
-
-      Dimension d=getSize();
-
-      if (ecranjeu) {
-      bufferg.setColor(Color.white);
-      bufferg.fillRect(0, 0, d.width, d.height);
-      affichefocus(bufferg);
-      if (parti & type == "NORMAL") {
-        if (type2 == "NOTES"| type2 == "ALTERATIONS")  affichenote(ncourante,bufferg,Color.black);
-        //on affiche la note que lorsque la partie a commenc�e
-        else if (type2 == "ACCORDS") afficheaccord(acourant,bufferg,true);
-        else if (type2 == "INTERVALLES") afficheintervalle(icourant,bufferg,true);
-        }
-      else if ((parti & type == "LIGNE")) afficheligne(bufferg);
-      afficheportee(bufferg);
-      affichecle(bufferg);
-      tcourante.paint(clecourante,bufferg, marge, dportee, diese, bemol, this);
-      afficheversion(bufferg,Color.black);     // VERSION DE L'APPLET
-      affichescore(bufferg,score);
-      afficheresultat(bufferg);
-      piano.paint(bufferg);
-   //  bufferg.drawString("note courante:   " + notecourante,125,dureenote);
-
-// if (open) bufferg.drawString("OPEN" ,300,100);
-    // bufferg.drawString(message,290,105);
-      //bufferg.drawString(nomins,325,310);
-      }
-      else {
-          buffer=createImage(getSize().width,getSize().height);
-     bufferg=buffer.getGraphics();
-        bufferg.drawImage(imagefond,0,0,this);
-        // affichefocus(bufferg);
-        Color c = new Color(5,5,100);
-        bufferg.setColor(c);
-        afficheversion(bufferg,c);
-        bufferg.setFont(new Font("Arial",Font.BOLD,40));
-        bufferg.drawString("LECTURE DE NOTE",140,210);
-        bufferg.drawString("    NOTE READING",140,260);
-        bufferg.setFont(new Font("Arial",Font.BOLD,15));
-        bufferg.drawString("Copyright (C) 2003-2004 RICHARD Christophe" ,10,460);
-      }
-
-      g.drawImage(buffer,0,0,this);    // affiche le buffer
-
-      }*/
-
-
-
-
-
-
-
-
-//#############################################################################
-//################################ CLASSE ACCORD ##############################
-//#############################################################################
-
-
-      class accord{
-        Note acc [] = new Note [3];
-        String nom;
-        int renvst; // 0 non renvers� 1 1er renversement 2 second renversement
-        //AudioClip son;
-
-        public accord (Note n1, Note n2, Note n3, String m, int r){
-
-            this.acc[0] = n1;
-            this.acc[1] = n2;
-            this.acc[2] = n3;
-            this.nom = m;
-            this.renvst = r;
-
-        }
-
-       public void copy (accord a){
-          this.acc[0] = new Note(a.acc[0].getAlteration(),a.acc[0].getNom(),a.acc[0].getHauteur(),a.acc[0].getX(),a.acc[0].getPitch());
-          this.acc[1] = new Note(a.acc[1].getAlteration(),a.acc[1].getNom(),a.acc[1].getHauteur(),a.acc[1].getX(),a.acc[1].getPitch());
-          this.acc[2] = new Note(a.acc[2].getAlteration(),a.acc[2].getNom(),a.acc[2].getHauteur(),a.acc[2].getX(),a.acc[2].getPitch());
-          this.nom = a.nom;
-          this.renvst = a.renvst;
-
-        }
-
-        public int decalage(int pos){
-          int nbalt = 0;
-          int resultat = 10;
-          int pr = 0;
-
-          //pr = this.posreelle(pos);
-          if (this.acc[pos].getAlteration() == "") resultat = 0;
-          else {
-            for (int i=0;i<3;i=i+1){
-            if (((this.acc[i].getAlteration() == "#" | this.acc[i].getAlteration() == "b")& !this.acc[i].alteree(tcourante,bundle))
-              | this.acc[i].getAlteration() == "n")
-              nbalt++;
-            }
-
-            if (nbalt == 0) resultat = 0;
-              else if (nbalt == 1) resultat = 10;
-              else if (nbalt == 2) {
-                if (this.renvst == 0) {
-                  if (pos == 0) resultat = 10;
-               else if (pos == 1 & this.acc[0].getAlteration() != "") resultat = 20;
-                else if (pos == 1 & this.acc[2].getAlteration() != "") resultat = 10;
-                /*else if (pos == 2 & this.acc[0].getAlteration() != "") resultat = 8;*/
-                else resultat = 20;
-                }
-                else if (this.renvst == 1) {
-                  if (pos ==0 &  this.acc[2].getAlteration() != "") resultat = 20;
-                  else if (pos == 2 &  this.acc[1].getAlteration() != "") resultat = 20;
-                  else resultat = 10;
-
-                }
-                else if (this.renvst == 2) {
-                  if (pos == 1 &  this.acc[0].getAlteration() != "") resultat = 20;
-                   else if (pos == 0 &  this.acc[2].getAlteration() != "") resultat = 20;
-                  else resultat = 10;
-                }
-              }
-
-                else if (nbalt == 3) {
-                  if (this.renvst == 0) {
-                  if (pos == 0) resultat = 14;
-                  else if (pos == 1) resultat = 24;
-                    else if (pos == 2) resultat = 8;
-                  }
-                  else if (this.renvst == 1) {
-                  if (pos == 2) resultat = 24;
-                  else if (pos == 0) resultat = 8;
-                  else resultat = 14;
-
-                }
-                else if (this.renvst == 2) {
-                  if (pos == 0) resultat = 24;
-                  else if (pos == 1) resultat = 8;
-                  else resultat = 14;
-                }
-                }
-          }
-
-          return resultat;
-        }
-
-        public void affichenom (Graphics g){
-
-          g.setColor(Color.green);
-         g.setFont(new Font("Arial",Font.BOLD,17));
-            g.drawString(this.nom,380-this.nom.length()*4,55);
-
-
-        }
-
-        public void paint(String cle, Tonalite t, int position, String type,Graphics g,boolean accordcourant, Component j){
-            Color c = new Color(147,22,22);
-
-          //if (type == "NORMAL")
-
-          for (int i=0;i<3;i=i+1){
-
-           if (!(i== this.posreelle(position)& accordcourant))
-             acc[i].paint(cle, t, g,this.decalage(i),0, dportee, ti, j, Color.black,bundle);
-          }
-          if (accordcourant) acc[this.posreelle(position)].paint(cle,t,g,this.decalage(this.posreelle(position)),0, dportee, ti, j, c, bundle);
-          // on affiche la note courante en dernier pour garder la couleur rouge de la ligne sup
-
-          if (type == "NORMAL" | (type == "LIGNE" & accordcourant))this.affichenom(g);
-
-          /*else if (type == "LIGNE") // seul l'accord est demand� -> notes en noir
-            for (int i=0;i<3;i=i+1)
-             acc[i].paint(cle,g,this.decalage(i),Color.black);*/
-
-
-          }
-
-
-          public void avance(int nb){
-
-            for (int i=0;i<3;i=i+1)
-              this.acc[i].setX(this.acc[i].getX()+nb);
-          }
-
-          public void modifiex(int newx){
-         // il faut mettre � jour la coordonn�e de l'accord pour le jeu en ligne
-
-         for (int i=0;i<3;i=i+1)
-           this.acc[i].setX(newx);
-          }
-
-          public int posreelle(int pos){
-           int res = 0;
-
-           if (this.renvst == 0) res = pos;
-             else if (this.renvst == 1){
-               if (pos == 0) res = 1;
-               else if (pos == 1) res = 2;
-               else if (pos == 2) res = 0;}
-              else {
-                if (pos == 0) res = 2;
-              else if (pos == 1) res = 0;
-               else if (pos == 2) res = 1;}
-
-                    return res;
-
-          }
-
-          public void convertir(String typeacc){ //renvoie le type de renversement
-            // convertit l'accord courant pris dans le tableau en fonction de la cl�
-             int differencecle = 0;
-             double tmp;
-
-
-
-                 // convertit l'accord en son inversement
-            if (typeacc == "RENV") {
-              tmp = Math.random();
-              this.renvst = 0;
-              if (tmp<0.33) {  // 1er inversement
-                this.renvst = 1;
-                   this.acc[0].setHauteur(this.acc[0].getHauteur()-35) ;
-                   this.acc[0].setPitch(this.acc[0].getPitch()+12);
-                  }
-              else if (tmp>0.33 & tmp <0.66) {  // 2�me inversement
-                this.renvst = 2;
-                    this.acc[0].setHauteur(this.acc[0].getHauteur()-35);
-                    this.acc[0].setPitch(this.acc[0].getPitch()+12) ;
-                    this.acc[1].setHauteur(this.acc[1].getHauteur()-35);
-                    this.acc[1].setPitch(this.acc[1].getPitch()+12);
-                  }
-            }
-
-          }
-
-      }
-
-//#############################################################################
-//################################ CLASSE INTERVALLE ##########################
-//#############################################################################
-
-
-      class intervalle{
-        Note interv [] = new Note [2];
-        String nom;
-
-
-        public intervalle (Note n1, Note n2,  String m){
-
-            this.interv[0] = n1;
-            this.interv[1] = n2;
-            this.nom = m;
-        }
-
-
-       public void copy (intervalle a){
-          this.interv[0] = new Note(a.interv[0].getAlteration(),a.interv[0].getNom(),a.interv[0].getHauteur(),a.interv[0].getX(),a.interv[0].getPitch());
-          this.interv[1] = new Note(a.interv[1].getAlteration(),a.interv[1].getNom(),a.interv[1].getHauteur(),a.interv[1].getX(),a.interv[1].getPitch());
-          this.nom = a.nom;
-       }
-
-
-
-          public void avance(int nb){
-
-            for (int i=0;i<2;i=i+1)
-              this.interv[i].setX(this.interv[i].getX()+nb);
-          }
-
-        public void affichenom (Graphics g){
-
-          g.setColor(Color.green);
-         g.setFont(new Font("Arial",Font.BOLD,16));
-          g.drawString(this.nom,380-this.nom.length()*4,55);
-        }
-
-        public void paint(String cle, Tonalite t, int position, String type,Graphics g, boolean intervcourant, Component j){
-          Color c = new Color(147,22,22);
-
-
-          //if (type == "NORMAL")
-
-
-             if (position == 0 & intervcourant) interv[0].paint(cle,t,g,9,0,dportee, ti, j,c, bundle);
-             else interv[0].paint(cle,t,g,9,0,dportee, ti, j,Color.black, bundle);
-
-              if (position == 1 & intervcourant) interv[1].paint(cle,t,g,-19,28, dportee,  ti, j, c, bundle);
-              else interv[1].paint(cle,t,g,-19,28,dportee, ti, j, Color.black, bundle);
-
-
-
-
-          if (type == "NORMAL" | (type == "LIGNE" & intervcourant))this.affichenom(g);
-
-          }
-
-
-
-          public void modifiex(int newx){
-         // il faut mettre � jour la coordonn�e de l'accord pour le jeu en ligne
-
-         for (int i=0;i<2;i=i+1)
-           this.interv[i].setX(newx);
-          }
-
-
-
-          public void convertir(String cle,String typeacc){ //renvoie le type de renversement
-            // convertit l'accord courant pris dans le tableau en fonction de la cl�
-             int differencecle = 0;
-             double tmp;
-
-
-
-            if (cle == "sol") differencecle = 0;
-            else if (cle == "fa") differencecle = 8;
-            else if (cle == "sol+fa"){
-              tmp = Math.random();
-              if (tmp<0.5) {  // CLE DE FA
-                differencecle = 80;
-
-              }
-              else differencecle = 0; //CLE DE SOL
-
-            }
-
-            for (int i=0;i<3;i=i+1)
-              this.interv[i].setHauteur(this.interv[i].getHauteur()+differencecle);
-
-
-            if ((cle == "fa") | ((cle == "sol+fa") & (this.interv[0].getHauteur()>dportee+55))){
-            // convertit le son pour la cl� de FA
-           this.interv[0].setPitch(this.interv[0].getPitch()-24);
-           this.interv[1].setPitch(this.interv[1].getPitch()-24);
-
-           }
-
-
-          }
-
-      }
-
-
-
-      public class anim extends JPanel
-  {
-    int dep = 0;
-    Timer timer;
-    int largeur = 680, hauteur = 480;
-
-    public void anim() {
-       setPreferredSize(new Dimension(largeur, hauteur));
-       setDoubleBuffered(true);
-
-
-    }
-
-
-
-    public void paintComponent(Graphics g) {
-      int i, j;
-      Dimension d = getSize();
-
-      g.setColor(Color.white);
-      g.fillRect(0, 0, d.width, d.height);
-
-
-
-
-
-      if (ecranjeu == 1) {
-
-        super.paintComponent(g);
-
-        if (parti & type == "NORMAL") {
-          if (type2 == "NOTES" | type2 == "ALTERATIONS")
-            affichenote(ncourante, g, Color.black);
-          //on affiche la note que lorsque la partie a commenc�e
-          else if (type2 == "ACCORDS")
-            afficheaccord(acourant, g, true);
-          else if (type2 == "INTERVALLES")
-            afficheintervalle(icourant, g, true);
-        }
-        else if ( (parti & type == "LIGNE"))
-          afficheligne(g);
-        afficheportee(g);
-        affichecle(g);
-        tcourante.paint(clecourante, g, marge, dportee, ti, this, bundle);
-
-      affichescore(g, score);
-
-        piano.paint(g, clecourante);
-
-        // pnotes.setVisible(true);
-        // System.out.println(piano.Getpositionbase());
-        // principal.setVisible(true);
-        //  bufferg.drawString("note courante:   " + notecourante,125,dureenote);
-
-      }
-      else if (ecranjeu == 0) {
-
-        g.drawImage(ti.Getimage(24), 0, 0, this);
-        Color c = new Color(5, 5, 100);
-        g.setColor(c);
-        // afficheversion(g, c);
-        g.setFont(new Font("Arial", Font.BOLD, 60));
-        g.drawString("Jalmus", 300, 250);
-        g.setFont(new Font("Arial", Font.BOLD, 30));
-        g.drawString("Java Lecture Musicale", 240, 300);
-        g.setFont(new Font("Arial", Font.BOLD, 15));
-        g.drawString("Copyright (C) 2003-2006 RICHARD Christophe", 10, 500);
-      }
-      else if (ecranjeu == 2) {
-      //  super.paintComponent(g);
-         afficheportee2(g);
-          affichecle(g);
-        if (parti) {
-       afficheligner(g);
-           afficheportee2(g);
-
-
-
-
-        }
-      }
-    }
-  }
-
-
-  public class apropos extends JPanel
-{
-
-  int largeur = 680, hauteur = 480;
-
-  public void apropos() {
-    // setPreferredSize(new Dimension(largeur, hauteur));
-
-  }
-
-
-
-  public void paintComponent(Graphics g) {
-    int i, j;
-    Dimension d = getSize();
-
-    setOpaque(true);
-
-
-      g.drawImage(ti.Getimage(24), 0, 0, this);
-      Color c = new Color(5, 5, 100);
-      g.setColor(c);
-      // afficheversion(g, c);
-      g.setFont(new Font("Arial", Font.BOLD, 20));
-      g.drawString("Jalmus", 80, 30);
-      g.setFont(new Font("Arial", Font.BOLD, 10));
-      g.drawString("Java Lecture Musicale", 20, 50);
-      g.setFont(new Font("Arial", Font.BOLD, 10));
-      g.drawString("Copyright (C) 2003-2006 RICHARD Christophe", 10, 80);
-
-
-
-
-
-
-  }
-}
-
-      class DumpReceiver implements Receiver
-           {
-
-
-   public DumpReceiver()
-           {
-
-           }
-
-
-
-   public void send(MidiMessage event,long time)
-           {
-
-       Integer i=new Integer(0);
-           String output = "";
-
-           if (ecranjeu == 1){
-
-             if (event instanceof ShortMessage) {
-               if (!open) {
-                 open = true;
-
-               }
-               switch (event.getStatus() & 0xf0) {
-                 case 0x90:
-                   output = ("   Note On Key: " + ( (ShortMessage) event).getData1() +
-                             " Velocity: " + ( (ShortMessage) event).getData2());
-                   notejouee = ( (ShortMessage) event).getData1();
-
-
-                   //System.out.println(((ShortMessage)event).getData2());
-
-                   // touche C3 pour lancer le jeu au clavier
-                   if (!parti & ( (ShortMessage) event).getData1() == 60) { //C3 pour commencer
-
-                     lancementjeu();
+                 public void notesuivante() {
+
+                   if (nrlevel.isChordsgame()) {
+                     if (posnote < 2) {
+                       posnote = posnote + 1;
+
+                       ncourante = acourant.getNote(acourant.realposition(posnote));
+                       alterationok = false;
+                       if (cson.isSelected())
+                         Synthnote(ncourante.getPitch(), 80, dureenote);
+
+                     }
+
+                     else {
+                       if (isLessonmode & notecounter == nrlevel.getLearningduration()) {
+                         parti = false;
+                         nextlevel();
+                       }
+                       else {
+                         newchord();
+                         notecounter++;
+                       }
+                     }
                    }
 
-                   if ( ( (ShortMessage) event).getData2() != 0)
-                     piano.notejouee(cc, cson.isSelected() & !erreurmidi, notejouee, 1);
-                   else
-                     piano.notejouee(cc, cson.isSelected() & !erreurmidi, notejouee, 0);
+                   else if (nrlevel.isIntervalsgame()) {
+                     if (posnote == 0) {
+                       posnote = posnote + 1;
 
-                   if ( ( (ShortMessage) event).getData2() != 0 & parti) {
-                     System.out.print(((ShortMessage) event).getData1());
-                     System.out.println("-"+ncourante.getPitch());
-                     if ( (cexacte.isSelected() &
-                           ( (ShortMessage) event).getData1() == ncourante.getPitch())
-                         |
-                         (!cexacte.isSelected() &
-                          (memenote( ( (ShortMessage) event).getData1(),
-                                    ncourante.getPitch()))))
+                       ncourante = icourant.getNote(posnote);
+                       alterationok = false;
+                       if (cson.isSelected())
+                         Synthnote(ncourante.getPitch(), 80, dureenote);
 
-                       reponsejuste();
+                     }
 
-                     else
-                       reponsefausse();
+                     else {
+                       if (isLessonmode & notecounter == nrlevel.getLearningduration()) {
+                         parti = false;
+                         nextlevel();
+                       }
+                       else {
+                         newinterval();
+                         notecounter++;
+                       }
+                     }
+                     }
+                 }
 
-                     repaint();
+                 //*******SCORE
+
+                  public void affichescore(Graphics g, int s) {
+                    Color c;
+
+                    g.setColor(Color.black);
+                    g.draw3DRect(260, 420, 251, 20, true);
+                    for (int tmp = 0; tmp < s; tmp = tmp + 10) {
+                      if (tmp < 100)
+                        g.setColor(c = new Color(60 + (tmp + 10) / 2, 26, 26));
+                      else
+                        g.setColor(c = new Color(110, 26 + (tmp - 90) / 2, 26));
+                      g.fillRect(261 + tmp / 2, 421, 5, 19);
+                    }
+                    g.setFont(new Font("Arial", Font.BOLD, 25));
+                    // g.drawString("     SCORE :   " + s,240,420);
+                  }
+
+                 public void afficheresultat() {
+
+                   if (currentScore.isWin()) {
+                     scoreMessage.setTitle(bundle.getString("_congratulations"));
+
+                     textscoreMessage.setText("  " + currentScore.getNbtrue()+ " " + bundle.getString("_correct") +
+                                                   " / " + currentScore.getNbfalse() + " " +
+                                                   bundle.getString("_wrong") + "  ");
+                      scoreMessage.pack();
+                      scoreMessage.setLocationRelativeTo(this);
+
+                      scoreMessage.setVisible(true);
+
+
+                      stopgames();
+
+
+                   }
+                   else if (currentScore.isLost()) {
+                     scoreMessage.setTitle(bundle.getString("_sorry"));
+
+                     textscoreMessage.setText("  " + currentScore.getNbtrue() + " " + bundle.getString("_correct") +
+                                                     " / " + currentScore.getNbfalse() + " " +
+                                                     bundle.getString("_wrong") + "  ");
+                    scoreMessage.pack();
+                    scoreMessage.setLocationRelativeTo(this);
+                    scoreMessage.setVisible(true);
+                    scoreMessage.setVisible(true);
+
+
+                     stopgames();
+
+                   }
+                   ;
+
+                 }
+
+               //****************     METHODES D'ANIMATION DE LA NOTE THREAD (run et stop)
+
+                  class RenderingThread
+                      extends Thread {
+                    /**
+                     *  Ce thread appelle le rafraichissement de notre fenêtre
+                     *  toutes les 10 milli-secondes
+                     */
+                    public void run() {
+
+                      while (true) {
+                        try {
+
+                          if (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame()) {
+                            sleep(nrlevel.getSpeed());
+
+                          }
+                          else if (nrlevel.isIntervalsgame())
+                            sleep(nrlevel.getSpeed() * 3 / 2);
+                          else if (nrlevel.isChordsgame())
+                            sleep(nrlevel.getSpeed() * 2);
+                          else
+                            sleep(nrlevel.getSpeed() + 18);
+
+                          if (parti & !paused) {
+                            if ( (nrlevel.isNormalgame() | nrlevel.isLearninggame()) &
+                                (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame()))
+                              ncourante.setX(ncourante.getX() + 1);
+                            else if ( (nrlevel.isNormalgame() | nrlevel.isLearninggame()) &
+                                     nrlevel.isChordsgame())
+                              acourant.move(1);
+                            else if ( (nrlevel.isNormalgame() | nrlevel.isLearninggame()) &
+                                     nrlevel.isIntervalsgame())
+                              icourant.move(1);
+                            else if (nrlevel.isInlinegame() &
+                                     (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame()))
+                              for (int i = 0; i < ligne.length; i++) {
+
+                                ligne[i].setX(ligne[i].getX() - 1);
+                              }
+
+                            else if (nrlevel.isInlinegame() & nrlevel.isChordsgame())
+                              for (int i = 0; i < ligneacc.length; i++) {
+                                ligneacc[i].move( -1);
+                              }
+
+                            else if (nrlevel.isInlinegame() & nrlevel.isIntervalsgame())
+                              for (int i = 0; i < ligneint.length; i++) {
+                                ligneint[i].move( -1);
+
+                              }
+
+                            panelanim.repaint();
+                          }
+                        }
+                        catch (Exception e) {}
+                      }
+
+                    }
+                  }
+
+                 public void stop() {
+                   // main = null;
+                   //if(main!=null){main.stop();}
+                 }
+
+               //************** METHODE PAINT ET UPDATE POUT L'AFFICHAGE DE L'APPLET
+
+
+
+
+                  /*  public void update(Graphics g){
+                      Dimension d=getSize();
+
+                      if (ecranjeu) {
+                      bufferg.setColor(Color.white);
+                      bufferg.fillRect(0, 0, d.width, d.height);
+                      affichefocus(bufferg);
+                      if (parti & type == "NORMAL") {
+                        if (type2 == "NOTES"| type2 == "ALTERATIONS")  affichenote(ncourante,bufferg,Color.black);
+                        //on affiche la note que lorsque la partie a commenc�e
+                        else if (type2 == "ACCORDS") afficheaccord(acourant,bufferg,true);
+                   else if (type2 == "INTERVALLES") afficheintervalle(icourant,bufferg,true);
+                        }
+                      else if ((parti & type == "LIGNE")) afficheligne(bufferg);
+                      afficheportee(bufferg);
+                      affichecle(bufferg);
+                   tcourante.paint(clecourante,bufferg, marge, dportee, diese, bemol, this);
+                      afficheversion(bufferg,Color.black);     // VERSION DE L'APPLET
+                      affichescore(bufferg,score);
+                      afficheresultat(bufferg);
+                      piano.paint(bufferg);
+                   //  bufferg.drawString("note courante:   " + notecourante,125,dureenote);
+
+               // if (open) bufferg.drawString("OPEN" ,300,100);
+                    // bufferg.drawString(message,290,105);
+                      //bufferg.drawString(nomins,325,310);
+                      }
+                      else {
+                          buffer=createImage(getSize().width,getSize().height);
+                     bufferg=buffer.getGraphics();
+                        bufferg.drawImage(imagefond,0,0,this);
+                        // affichefocus(bufferg);
+                        Color c = new Color(5,5,100);
+                        bufferg.setColor(c);
+                        afficheversion(bufferg,c);
+                        bufferg.setFont(new Font("Arial",Font.BOLD,40));
+                        bufferg.drawString("LECTURE DE NOTE",140,210);
+                        bufferg.drawString("    NOTE READING",140,260);
+                        bufferg.setFont(new Font("Arial",Font.BOLD,15));
+                   bufferg.drawString("Copyright (C) 2003-2004 RICHARD Christophe" ,10,460);
+                      }
+
+                      g.drawImage(buffer,0,0,this);    // affiche le buffer
+
+                      }*/
+
+
+
+
+
+
+
+
+
+
+                  public class anim
+                      extends JPanel {
+                    int dep = 0;
+                    Timer timer;
+                    int largeur = 680, hauteur = 480;
+
+                    public void anim() {
+                      setPreferredSize(new Dimension(largeur, hauteur));
+                      setDoubleBuffered(true);
+
+                    }
+
+                    public void paintComponent(Graphics g) {
+                      int i, j;
+                      Dimension d = getSize();
+
+                      if (ecranjeu == 1) {
+
+                        super.paintComponent(g);
+
+                        g.setColor(Color.white);
+                        g.fillRect(0, 0, d.width, d.height);
+
+                        if (parti & !paused & (nrlevel.isNormalgame() | nrlevel.isLearninggame())) {
+                          if (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame())
+                            affichenote(ncourante, g, Color.black);
+                          //on affiche la note que lorsque la partie a commenc�e
+                          else if (nrlevel.isChordsgame())
+                            afficheaccord(acourant, g, true);
+                          else if (nrlevel.isIntervalsgame())
+                            afficheintervalle(icourant, g, true);
+                        }
+                        else if ( (parti & !paused & nrlevel.isInlinegame()))
+                          afficheligne(g);
+
+                        afficheportee(g);
+                        affichecle(g);
+                        nrlevel.getCurrentTonality().paint(nrlevel, g, margen, dportee, ti, this, bundle);
+
+                        if (!nrlevel.isLearninggame())
+                          currentScore.paint(g);
+
+                        //  if (type == "LEARNING" & parti & ncourante.getX()> (d.width-20)/2) {
+                        if (nrlevel.isLearninggame() & parti) {
+                          if (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame())
+                            piano.paint(g, ncourante.getPitch(), 0, 0);
+                          else if (nrlevel.isIntervalsgame())
+                            piano.paint(g, icourant.getNote(0).getPitch(),
+                                        icourant.getNote(1).getPitch(), 0);
+
+                          else if (nrlevel.isChordsgame())
+                            piano.paint(g, acourant.getNote(0).getPitch(),
+                                        acourant.getNote(1).getPitch(),
+                                        acourant.getNote(2).getPitch());
+                          colorebouton();
+                        }
+
+                        else
+
+                          piano.paint(g, 0, 0, 0);
+
+                        // pnotes.setVisible(true);
+                        // System.out.println(piano.Getpositionbase());
+                        // principal.setVisible(true);
+                        //  bufferg.drawString("note courante:   " + notecourante,125,dureenote);
+
+
+
+                      }
+                      else if (ecranjeu == 0) {
+
+                        g.drawImage(ti.Getimage(24), 0, 0, this);
+                        Color c = new Color(5, 5, 100);
+                        g.setColor(c);
+                        // afficheversion(g, c);
+                        g.setFont(new Font("Arial", Font.BOLD, 60));
+                        g.drawString("Jalmus", 300, 250);
+                        g.setFont(new Font("Arial", Font.BOLD, 30));
+                        g.drawString("Java Lecture Musicale", 240, 300);
+                        g.setFont(new Font("Arial", Font.BOLD, 15));
+                        g.drawString("Copyright (C) 2003-2006 RICHARD Christophe", 10, 500);
+                      }
+                      else if (ecranjeu == 2) {
+                        //  super.paintComponent(g);
+
+                        g.setColor(Color.white);
+                        g.fillRect(0, 0, d.width, d.height);
+                        pboutonjeu.setBackground(Color.white);
+
+                        afficheportee2(g);
+                        affichecle(g);
+                        if (parti) {
+                          afficheligner(g);
+                          afficheportee2(g);
+
+                        }
+                      }
+                    }
+                  }
+
+                 class DumpReceiver
+                     implements Receiver {
+
+                   public DumpReceiver() {
+
                    }
 
-                   break;
-                 case 0x80:
-                   output = ("   Note Off  Key: " + ( (ShortMessage) event).getData1() +
-                             " Velocity: " + ( (ShortMessage) event).getData2());
-                   break;
-                 case 0xb0:
-                   if ( ( (ShortMessage) event).getData1() < 120)
-                     output = ("   Controller No.: " + ( (ShortMessage) event).getData1() +
-                               " Value: " + ( (ShortMessage) event).getData2());
+                   public void send(MidiMessage event, long time) {
+
+                     Integer i = new Integer(0);
+                     String output = "";
+
+
+               if (ecranjeu == 1) {
+
+                       if (event instanceof ShortMessage) {
+                         if (!open) {
+                           open = true;
+
+                         }
+                         switch (event.getStatus() & 0xf0) {
+                           case 0x90:
+                             output = ("   Note On Key: " + ( (ShortMessage) event).getData1() +
+                                       " Velocity: " + ( (ShortMessage) event).getData2());
+                             notejouee = ( (ShortMessage) event).getData1()+transpose*12;
+
+                             //System.out.println(((ShortMessage)event).getData2());
+
+                             // touche C3 pour lancer le jeu au clavier
+
+
+
+                             if (!parti & (((ShortMessage) event).getData2() != 0) & ((ShortMessage) event).getData1() == 60){
+                               if (levelMessage.isVisible()){
+                                 System.out.println("levelmessage");
+
+                                 oklevelMessage.doClick();
+                               }
+                              else if (scoreMessage.isVisible()){
+
+                                okscoreMessage.doClick();
+
+                              }
+                              else if (!renderingThread.isAlive())
+                             renderingThread.start();
+
+
+                             }
+
+                             else {
+                               if ( ( (ShortMessage) event).getData2() != 0)
+                                 piano.notejouee(cc, cson.isSelected() & !erreurmidi, notejouee,
+                                     1);
+                               else
+                                 piano.notejouee(cc, cson.isSelected() & !erreurmidi, notejouee,
+                                     0);
+
+                               repaint();
+
+                               if ( ( (ShortMessage) event).getData2() != 0 & parti & !paused) {
+                                 System.out.print( ( (ShortMessage) event).getData1());
+                                 System.out.println("-" + ncourante.getPitch());
+
+                                 if ( samenote( ( (ShortMessage) event).getData1(),
+                                     ncourante.getPitch()))
+
+                                   reponsejuste();
+
+                                 else
+                                   reponsefausse();
+
+                                 repaint();
+                               }
+                             }
+                             break;
+                           case 0x80:
+                             output = ("   Note Off  Key: " + ( (ShortMessage) event).getData1() +
+                                       " Velocity: " + ( (ShortMessage) event).getData2());
+                             break;
+                           case 0xb0:
+                             if ( ( (ShortMessage) event).getData1() < 120)
+                               output = ("   Controller No.: " +
+                                         ( (ShortMessage) event).getData1() +
+                                         " Value: " + ( (ShortMessage) event).getData2());
+                             else
+                               output = ("   ChannelMode Message No.: " +
+                                         ( (ShortMessage) event).getData1() + " Value: " +
+                                         ( (ShortMessage) event).getData2());
+                             break;
+                           case 0xe0:
+                             output = ("   Pitch lsb: " + ( (ShortMessage) event).getData1() +
+                                       " msb: " + ( (ShortMessage) event).getData2());
+                             break;
+                           case 0xc0:
+                             output = ("   Program Change No: " +
+                                       ( (ShortMessage) event).getData1() +
+                                       " Just for Test: " + ( (ShortMessage) event).getData2());
+                             break;
+                           case 0xd0:
+                             output = ("   Channel Aftertouch Pressure: " +
+                                       ( (ShortMessage) event).getData1() + " Just for Test: " +
+                                       ( (ShortMessage) event).getData2());
+                             break;
+                         }
+                       }
+                       else if (event instanceof SysexMessage) {
+                         output = ("   SysexMessage: " + (event.getStatus() - 256));
+                         byte[] data = ( (SysexMessage) event).getData();
+                         for (int x = 0; x < data.length; x++)
+                           output = (" " + i.toHexString(data[x]));
+                       }
+                       else
+                         output = ("   MetaEvent");
+                       //  if (output != "") System.out.println(output);
+                     }
+                   }
+
+                   public void close() {}
+
+                 }
+
+
+
+                 public static void main(String arg[]) {
+                   // Event pour la gestion des Evenements et principalement le message EXIT
+                   // Constructions de la frame
+
+                   jalmus l = new jalmus();
+                   // Initialisation
+                   if (arg.length == 0)
+                     l.init("en");
                    else
-                     output = ("   ChannelMode Message No.: " +
-                               ( (ShortMessage) event).getData1() + " Value: " +
-                               ( (ShortMessage) event).getData2());
-                   break;
-                 case 0xe0:
-                   output = ("   Pitch lsb: " + ( (ShortMessage) event).getData1() +
-                             " msb: " + ( (ShortMessage) event).getData2());
-                   break;
-                 case 0xc0:
-                   output = ("   Program Change No: " + ( (ShortMessage) event).getData1() +
-                             " Just for Test: " + ( (ShortMessage) event).getData2());
-                   break;
-                 case 0xd0:
-                   output = ("   Channel Aftertouch Pressure: " +
-                             ( (ShortMessage) event).getData1() + " Just for Test: " +
-                             ( (ShortMessage) event).getData2());
-                   break;
+                     l.init(arg[0]);
+
+                   // Forcer la taille
+                   l.setSize(790, 590);
+                   // Affichage
+                   l.repaint();
+
+                   l.setVisible(true);
+                   l.setFocusable(true);
+
+                   l.setResizable(false);
+
+                   l.setTitle("Jalmus"); //On donne un titre à l'application
+
+                   l.setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
+
+                   l.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //On dit à l'application de se fermer
+                   //lors du clic sur la croix
+
+
+
+                 }
+
                }
-             }
-             else if (event instanceof SysexMessage) {
-               output = ("   SysexMessage: " + (event.getStatus() - 256));
-               byte[] data = ( (SysexMessage) event).getData();
-               for (int x = 0; x < data.length; x++)
-                 output = (" " + i.toHexString(data[x]));
-             }
-             else
-               output = ("   MetaEvent");
-             //  if (output != "") System.out.println(output);
-           }
-         }
-
-public void close() {}
-
-}
-
-
- public static void main(String arg[]) {
-  // Event pour la gestion des Evenements et principalement le message EXIT
-        // Constructions de la frame
-        jalmus l = new jalmus();
-        // Initialisation
-        l.init();
-        // Forcer la taille
-       l.setSize(790,590);
-        // Affichage
-       l.repaint();
-
-
-        l.setVisible(true);
-        l.setFocusable(true);
-
-
-        l.setResizable(false);
-
-        l.setTitle("Jalmus"); //On donne un titre à l'application
-
-                        l.setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
-
-                        l.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //On dit à l'application de se fermer
-		//lors du clic sur la croix
-
-
-
-  }
-
-
-
-
-
-
-
-                }
 
 
 

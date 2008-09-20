@@ -1,5 +1,5 @@
-Version 1.0beta
+Version 1.2
 
-Language available : English, French, Espanol, Deutsch
-Visit the Web site http://jalmus.net 
-for help us to translate Jalmus or report bugs.
+Languages supported : English, French, Spanish, German, Italian, Danish, Turkish
+Visit the Web site http://www.jalmus.net 
+for help us to translate Jalmus, report bugs or add new lessons.

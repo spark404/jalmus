@@ -8,14 +8,14 @@
 
     <info>
         <appname>Jalmus</appname>
-        <appversion>1.0</appversion>
+        <appversion>1.2</appversion>
         <authors>
-            <author name="RICHARD Christophe" email="cvrichard@infonie.fr"/>
+            <author name="RICHARD Christophe" email="crichard@jalmus.net"/>
         </authors>
         <url>http://www.jalmus.net/</url>
     </info> 
 
-    <guiprefs width="640" height="500" resizable="no"/> 
+    <guiprefs width="680" height="550" resizable="yes"/> 
 
  <variables>
         <variable name="DesktopShortcutCheckboxEnabled" value="true" />
@@ -26,7 +26,9 @@
         <langpack iso3="fra"/>
 	<langpack iso3="spa"/>
 	<langpack iso3="deu"/>
-	<langpack iso3="pol"/>
+	<langpack iso3="ita"/>
+	<langpack iso3="dan"/>
+	<langpack iso3="tur"/>
     </locale>
 
        <panels>
@@ -67,7 +69,13 @@
 	  <file src="install_files/licence.txt" targetdir="$INSTALL_PATH"/>
 
  	 <executable targetfile="$INSTALL_PATH/bin/jalmus-linux" stage="never"/>
-       
+    	 <executable targetfile="$INSTALL_PATH/bin/jalmus-mac" stage="never"/>  
+  
+        </pack> 
+
+	<pack name="Jalmus Lessons" required="yes">
+            <description>Lessons files</description>
+            <file src="lessons" targetdir="$INSTALL_PATH"/>
         </pack> 
 
 	<pack name="Java Soundbank" required="no" override="false">
@@ -78,18 +86,12 @@
 	 </pack> 
 
 
-        <pack name="Docs" required="no" preselected="no">
-            <description>The documentation</description>
-
-            <file src="doc" targetdir="$INSTALL_PATH"/>
-        </pack> 
-      
 
         <pack name="Sources" required="no">
-            <description>The sources</description>
+            <description>Sources and Javadoc</description>
 	
             <file src="src" targetdir="$INSTALL_PATH"/>
-	  
+	   <file src="doc" targetdir="$INSTALL_PATH"/>
         </pack>
     </packs>
 

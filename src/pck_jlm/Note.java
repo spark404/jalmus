@@ -80,7 +80,7 @@ import java.util.ResourceBundle;
 
 
 
-        public void paint(String cle, Tonalite t, Graphics g, int decalagea, int decalagen, int dportee,  Tabimage tab, Component j, Color couleur, ResourceBundle b){
+        public void paint(NoteLevel nrlevel, Graphics g, int decalagea, int decalagen, int dportee,  Tabimage tab, Component j, Color couleur, ResourceBundle b){
 
           // decalagea est utilis� pour le d�calage des alt�rations dans l'accord
           // decalagen est utilis� pour le d�calage des notes dans l'intervalle
@@ -91,19 +91,19 @@ import java.util.ResourceBundle;
              if (couleur==Color.black) {
 
                g.drawImage(tab.Getimage(22), this.X + decalagen, this.Hauteur, j);
-               if ((this.Alteration != "" & !this.alteree(t,b)) | (this.Alteration == "n"))
-             if (this.Alteration == "#") g.drawImage(tab.Getimage(17), this.X-(decalagea+1),  this.Hauteur-10,j); //diese y-8 bemol y-14
-           else if (this.Alteration == "b")  g.drawImage(tab.Getimage(18), this.X-(decalagea+1),  this.Hauteur-11, j);
-          else if (this.Alteration == "n")  g.drawImage(tab.Getimage(16), this.X-(decalagea-1),  this.Hauteur-7, j);
+               if ((!this.Alteration.equals("") & !this.alteree(nrlevel.getCurrentTonality(),b)) | (this.Alteration.equals("n")))
+             if (this.Alteration.equals("#")) g.drawImage(tab.Getimage(17), this.X-(decalagea+1),  this.Hauteur-10,j); //diese y-8 bemol y-14
+           else if (this.Alteration.equals("b"))  g.drawImage(tab.Getimage(18), this.X-(decalagea+1),  this.Hauteur-11, j);
+          else if (this.Alteration.equals("n"))  g.drawImage(tab.Getimage(16), this.X-(decalagea-1),  this.Hauteur-7, j);
 
              }
              else {
 
                g.drawImage(tab.Getimage(23), this.X + decalagen, this.Hauteur, j);
-               if ((this.Alteration != "" & !this.alteree(t,b)) | (this.Alteration == "n"))
-            if (this.Alteration == "#") g.drawImage(tab.Getimage(20), this.X-(decalagea+1),  this.Hauteur-10,j); //diese y-8 bemol y-14
-          else if (this.Alteration == "b")  g.drawImage(tab.Getimage(21), this.X-(decalagea+1),  this.Hauteur-11, j);
-         else if (this.Alteration == "n")  g.drawImage(tab.Getimage(19), this.X-(decalagea-1),  this.Hauteur-7, j);
+               if ((!this.Alteration.equals("") & !this.alteree(nrlevel.getCurrentTonality(),b)) | (this.Alteration.equals("n")))
+            if (this.Alteration.equals("#")) g.drawImage(tab.Getimage(20), this.X-(decalagea+1),  this.Hauteur-10,j); //diese y-8 bemol y-14
+          else if (this.Alteration.equals("b"))  g.drawImage(tab.Getimage(21), this.X-(decalagea+1),  this.Hauteur-11, j);
+         else if (this.Alteration.equals("n"))  g.drawImage(tab.Getimage(19), this.X-(decalagea-1),  this.Hauteur-7, j);
 
              }
 
@@ -112,7 +112,7 @@ import java.util.ResourceBundle;
              // DEUX CAS  Simple clé ou double clés
 
 
-             if (cle == "sol" | cle == "fa") {
+             if (nrlevel.isCurrentclefTreble() | nrlevel.isCurrentclefBass()) {
                if (this.Hauteur>=dportee+45) { // <DO en dessous de la port�e en cl� de sol
                  for(i=dportee+50; i<=this.Hauteur+5; i=i+10){
                    if (i != this.Hauteur+5) g.setColor(Color.black); //!= this.Hauteur+4
@@ -134,7 +134,7 @@ import java.util.ResourceBundle;
 
              // CAS DE LA DOUBLE CLE SOL ET FA
 
-             else if( cle == "sol+fa") {
+             else if( nrlevel.isCurrentclefBoth()) {
 
                // cas de la cl� de sol
                if (this.Hauteur>=dportee+45 & this.Hauteur <= dportee+55) { // du DO jusqu'au LA en dessous de la port�e
@@ -172,7 +172,7 @@ import java.util.ResourceBundle;
                 return b;
                 }
 
-          public boolean alteree(Tonalite t, ResourceBundle bundle){
+          public boolean alteree(Tonality t, ResourceBundle bundle){
 
             String DO = bundle.getString("_do");
             String RE = bundle.getString("_re");
@@ -205,45 +205,45 @@ import java.util.ResourceBundle;
           }
 
 
-          public void majalteration(Tonalite t, String type2, ResourceBundle b){
+          public void majalteration( NoteLevel nrlevel, ResourceBundle b){
             int alt = 0;
             double tmp = 0;
 
-            if (type2 != "NOTES" ) {
+            if (!nrlevel.isNotesgame()) {
               tmp = Math.random();
 
-              if (this.alteree(t,b)){
-                if (tmp<0.8) this.Alteration = t.Alteration;
-                else this.Alteration = "n";
-                }
+              if (this.alteree(nrlevel.getCurrentTonality(), b)) {
+                if (tmp < 0.9)
+                  this.Alteration = nrlevel.getCurrentTonality().Alteration;
+                else
+                  this.Alteration = "n";
+              }
               else {
-                if (!t.Alteration.equals("")){
-                  if (tmp<0.2)  this.Alteration = t.Alteration;
-                else  this.Alteration = "";
-                }
-                else // CAS DO MAJEUR
-                  if (tmp<0.1)  this.Alteration = "#";
-                else if (tmp<0.2) this .Alteration = "b";
-                else this.Alteration = "";
-                }
+
+                if (tmp < 0.9)
+                  this.Alteration = "";
+                                 else
+                   this.Alteration = nrlevel.getCurrentTonality().Alteration;
+
+              }
             }
-            else if (this.alteree(t,b))
-              this.Alteration = t.Alteration;
+            else if (this.alteree(nrlevel.getCurrentTonality(),b))
+              this.Alteration = nrlevel.getCurrentTonality().Alteration;
 
             else this.Alteration = "";
 
 //System.out.println(this.Alteration);
 
               // MODIFICATION DU PITCH MIDI EN FONCTION DE L'ALTERATION
-        if (this.Alteration == "#") alt = 1;
-          else  if (this.Alteration == "b") alt = -1;
+        if (this.Alteration.equals("#")) alt = 1;
+          else  if (this.Alteration.equals("b")) alt = -1;
           else alt = 0;
 
           this.Pitch = this.Pitch+alt;
                 }
 
 
-         public void majalteration(Tonalite t, int pitch0, int nnote, ResourceBundle b){ //pour les accords
+         public void majalteration(Tonality t, int pitch0, int nnote, ResourceBundle b){ //pour les accords
                   int alt = 0;
                   int minmaj = 0;
                   double tmp = 0;
@@ -254,12 +254,12 @@ import java.util.ResourceBundle;
                   if (nnote == 2) { //deuxieme note de l'accord tierce majeure ou mineure
 
                     if (this.Pitch-pitch0 == 2){
-                      if (t.Alteration == "#") this.Alteration = "#";
+                      if (t.Alteration.equals("#")) this.Alteration = "#";
 
                     }
 
                     else if (this.Pitch-pitch0 == 3){
-                      if (tmp<0.4 | t.Alteration == "b") {//laisser tierce mineure
+                      if (tmp<0.4 | t.Alteration.equals("b")) {//laisser tierce mineure
                         if (this.alteree(t,b)) this.Alteration = "n";
                       }
                     else //passer a tierce majeure
@@ -269,7 +269,7 @@ import java.util.ResourceBundle;
 
 
                     else if (this.Pitch-pitch0 == 4){
-                      if (tmp<0.4 | t.Alteration == "#") { //laisser tierce majeure
+                      if (tmp<0.4 | t.Alteration.equals("#")) { //laisser tierce majeure
                         if (this.alteree(t,b)) this.Alteration = "n";
                       }
                       else //passer a tierce mineure
@@ -277,7 +277,7 @@ import java.util.ResourceBundle;
                     }
 
                     else if (this.Pitch-pitch0 == 5){
-                      if (t.Alteration == "b") this.Alteration = "b";
+                      if (t.Alteration.equals("b")) this.Alteration = "b";
 
                     }
 
@@ -286,7 +286,7 @@ import java.util.ResourceBundle;
                   else if (nnote == 3) { // troisieme note de l'accord quinte juste
 
                     if (this.Pitch-pitch0 == 6){
-                      if (tmp<0.4 | t.Alteration == "b") {//laisser quinte diminuee
+                      if (tmp<0.4 | t.Alteration.equals("b")) {//laisser quinte diminuee
                         if (this.alteree(t,b)) this.Alteration = "n";
                       }
                       else this.Alteration = "#";
@@ -294,15 +294,15 @@ import java.util.ResourceBundle;
                     }
 
                     else if (this.Pitch-pitch0 == 7){
-                      if (tmp<0.1 & t.Alteration == "b") this.Alteration = "b"; // quinte diminuee
-                      else  if (tmp<0.2 & t.Alteration == "#") this.Alteration = "#"; // quinte augmentee
+                      if (tmp<0.1 & t.Alteration.equals("b")) this.Alteration = "b"; // quinte diminuee
+                      else  if (tmp<0.2 & t.Alteration.equals("#")) this.Alteration = "#"; // quinte augmentee
 
                        else if (this.alteree(t,b)) this.Alteration = "n";
                     }
 
 
                     else if (this.Pitch-pitch0 == 8){
-                      if (tmp<0.4 | t.Alteration == "#") {//laisser quinte augmentee
+                      if (tmp<0.4 | t.Alteration.equals("#")) {//laisser quinte augmentee
                         if (this.alteree(t,b)) this.Alteration = "n";
                       }
                       else this.Alteration = "b";
@@ -314,8 +314,8 @@ import java.util.ResourceBundle;
 //System.out.println(this.Alteration);
 
                   // MODIFICATION DU PITCH MIDI EN FONCTION DE L'ALTERATION
-                  if (this.Alteration == "#") alt = 1;
-                  else  if (this.Alteration == "b") alt = -1;
+                  if (this.Alteration.equals("#")) alt = 1;
+                  else  if (this.Alteration.equals("b")) alt = -1;
                   else alt = 0;
 
                   this.Pitch = this.Pitch+alt;
@@ -329,7 +329,7 @@ import java.util.ResourceBundle;
 
 
 
-          public void majnote(String cle, int dportee, ResourceBundle bundle){
+          public void majnote(NoteLevel nrlevel, int dportee, ResourceBundle bundle){
 
 
            String DO = bundle.getString("_do");
@@ -341,7 +341,7 @@ import java.util.ResourceBundle;
         String SI = bundle.getString("_si");
 
 
-            if (cle == "sol"){//base cl� de sol : SOL = dportee+25
+            if (nrlevel.isCurrentclefTreble()){//base cl� de sol : SOL = dportee+25
 
               if (this.identiques(dportee+10)) { this.Nom = DO; this.Pitch = 72-(this.Hauteur-(dportee+10))/28*12;}
               else if (this.identiques(dportee+15)) { this.Nom = SI; this.Pitch = 71-(this.Hauteur-(dportee+15))/28*12;}
@@ -352,7 +352,7 @@ import java.util.ResourceBundle;
               else if (this.identiques(dportee+40)) { this.Nom = RE;this.Pitch = 62-(this.Hauteur-(dportee+40))/28*12;}
               }
 
-            else if (cle == "fa"){ //base cl� de fa : FA = dportee+5
+            else if (nrlevel.isCurrentclefBass()){ //base cl� de fa : FA = dportee+5
 
               if (this.identiques(dportee+20)) { this.Nom = DO; this.Pitch = 48-(this.Hauteur-(dportee+20))/28*12;}
               else if (this.identiques(dportee+25)) { this.Nom = SI;this.Pitch = 47-(this.Hauteur-(dportee+25))/28*12;}
@@ -363,7 +363,7 @@ import java.util.ResourceBundle;
               else if (this.identiques(dportee+15)) { this.Nom = RE;this.Pitch = 50-(this.Hauteur-(dportee+15))/28*12;};
               }
 
-            else if (cle == "sol+fa"){
+            else if (nrlevel.isCurrentclefBoth()){
               if (this.Hauteur<=dportee+55){   // CLE DE SOL
                 if (this.identiques(dportee+10)) { this.Nom = DO; this.Pitch = 72-(this.Hauteur-(dportee+10))/28*12;}
               else if (this.identiques(dportee+15)) { this.Nom = SI; this.Pitch = 71-(this.Hauteur-(dportee+15))/28*12;}
