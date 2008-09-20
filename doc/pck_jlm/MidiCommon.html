@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><!--JBuilder QuickDoc-->
+<HEAD>
+<TITLE>Class pck_jlm.MidiCommon</TITLE><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+</HEAD>
+<BODY>
+
+<H2>
+<FONT SIZE="-1">pck_jlm</FONT>
+<BR>Classe MidiCommon</H2>
+<DL>
+<DT>public class <B>MidiCommon</B>
+</DL>
+<TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
+<TR BGCOLOR="#CCCCFF"><TD COLSPAN=1><FONT SIZE="+2">
+<B>Détail de la méthode</B>
+</FONT></TD></TR></TABLE>
+
+<A NAME="listDevicesAndExit(boolean, boolean)"></A>
+
+<H3>listDevicesAndExit</H3>
+<PRE>
+public static void <B>listDevicesAndExit</B>(boolean&nbsp;bForInput,
+                                      boolean&nbsp;bForOutput)</PRE>
+<DL><DD>TODO: todo: flag long<DL><DD></DD></DL></DD>
+</DL>
+<DL></DL>
+<HR>
+
+<A NAME="getMidiDeviceInfo(java.lang.String, boolean)"></A>
+
+<H3>getMidiDeviceInfo</H3>
+<PRE>
+public static javax.sound.midi.MidiDevice$Info <B>getMidiDeviceInfo</B>(java.lang.String&nbsp;strDeviceName,
+                                                                 boolean&nbsp;bForOutput)</PRE>
+<DL><DD>Retrieve a MidiDevice.Info for a given name. This method tries to return a MidiDevice.Info whose name matches the passed name. If no matching MidiDevice.Info is found, null is returned. If bForOutput is true, then only output devices are searched, otherwise only input devices.<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Paramètres:</B><DD><CODE>strDeviceName</CODE> - the name of the device for which an info object should be retrieved.</DD>
+<DD><CODE>bForOutput</CODE> - If true, only output devices are considered. If false, only input devices are considered.</DD>
+<DT><B>Retourne:</B><DD>A MidiDevice.Info object matching the passed device name or null if none could be found.</DD>
+</DL>
+<HR>
+
+<A NAME="getMidiDeviceInfo(int)"></A>
+
+<H3>getMidiDeviceInfo</H3>
+<PRE>
+public static javax.sound.midi.MidiDevice$Info <B>getMidiDeviceInfo</B>(int&nbsp;index)</PRE>
+<DL><DD>Retrieve a MidiDevice.Info by index number. This method returns a MidiDevice.Info whose index is specified as parameter. This index matches the number printed in the listDevicesAndExit method. If index is too small or too big, null is returned.<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Paramètres:</B><DD><CODE>index</CODE> - the index of the device to be retrieved</DD>
+<DT><B>Retourne:</B><DD>A MidiDevice.Info object of the specified index or null if none could be found.</DD>
+</DL>
+<HR>
+
+</BODY>
+</HTML>

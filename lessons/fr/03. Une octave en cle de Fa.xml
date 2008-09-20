@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Une octave en cle de Fa.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: première leçon pour apprendre la clé de Fa
+-->
+
+<levels>
+<notereading id = '0'>
+<message>Nous allons tout d'abord étudier lentement les trois notes Mi Fa Sol </message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Maintenant les mêmes notes sans aide - le point vert correspondant au Fa</message>
+<game>normal</game>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>Les trois notes suivantes Sol La Si</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>20</speed>
+<startingnote>2</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>Maintenant les mêmes notes sans aide - le point vert correspondant au La</message>
+<game>normal</game>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>2</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>Les trois notes précédant la première série : Do Ré Mi</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>20</speed>
+<startingnote>-2</startingnote>
+</notereading>
+
+<notereading id = '5'>
+<message>Maintenant les mêmes notes sans aide - le point vert correspondant au Ré</message>
+<game>normal</game>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>-2</startingnote>
+</notereading>
+
+<notereading id = '6'>
+<message>Toutes les notes : Do Ré Mi Fa Sol La Si</message>
+<game>learning</game>
+<learningduration>30</learningduration>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>7</nbnotes>
+<speed>20</speed>
+</notereading>
+
+<notereading id = '6'>
+<message>Toutes les notes en ligne, vous devez donner la première note de la ligne</message>
+<game>inline</game>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>7</nbnotes>
+<speed>30</speed>
+</notereading>
+
+</levels>

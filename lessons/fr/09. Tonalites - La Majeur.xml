@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Tonalites La Majeur.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: exercices sur les tonalités : La Majeur
+-->
+
+<levels>
+
+<notereading id = '0'>
+<message>En La Majeur, nous avons une armure de trois dièses Fa Do Sol</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<tonality>3#</tonality>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '1'>
+<message>Même exercice mais en ligne et un peu plus vite</message>
+<game>inline</game>
+<clef>treble</clef>
+<tonality>3#</tonality>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>10</speed>
+</notereading>
+
+<notereading id = '2'>
+<message>Après la clé de Sol, nous allons étudier la clé de Fa</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>bass</clef>
+<tonality>3#</tonality>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '3'>
+<message>Toujours en clé de Fa mais en ligne</message>
+<game>inline</game>
+<learningduration>15</learningduration>
+<clef>bass</clef>
+<tonality>3#</tonality>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>10</speed>
+</notereading>
+
+<notereading id = '4'>
+<message>Sur une portée de piano en ajoutant des altérations accidentelles</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>3#</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '5'>
+<message>Etudions maintenant les intervalles de tierces dans cette tonalité</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>3#</tonality>
+<notes>intervals</notes>
+<intervals>third</intervals>
+<speed>10</speed>
+</notereading>
+
+</levels>
+
+
+
+

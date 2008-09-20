@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Notes aigues en cle de Sol.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: pour travailler les notes aiguës et suraiguës an clé de Sol - si votre clavier MIDI est trop petit vous pouvez utiliser l'option transpose dans les paramètres MIDI
+-->
+
+<levels>
+<notereading id = '0'>
+<message>Nous allons tout d'abord étudier les cinq notes La Si Do Ré Mi</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>5</nbnotes>
+<speed>20</speed>
+<startingnote>10</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Maintenant les mêmes notes sans aide - le point vert correspondant au Do</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>5</nbnotes>
+<speed>15</speed>
+<startingnote>10</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>Les cinq notes suivantes : Do Ré Mi Fa Sol</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>5</nbnotes>
+<speed>20</speed>
+<startingnote>12</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>Les mêmes notes sans aide - le point vert correspondant au Mi</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>12</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>Les cinq notes les plus aiguës : Mi Fa Sol La Si</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>5</nbnotes>
+<speed>20</speed>
+<startingnote>14</startingnote>
+</notereading>
+
+<notereading id = '5'>
+<message>Les mêmes notes sans aide - le point vert correspondant au Sol</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>14</startingnote>
+</notereading>
+
+
+<notereading id = '6'>
+<message>Toutes les notes en ligne, vous devez donner la première note de la ligne</message>
+<game>inline</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>25</speed>
+<startingnote>12</startingnote>
+</notereading>
+
+</levels>

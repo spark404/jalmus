@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Une octave en cle de Sol.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: première leçon pour apprendre la clé de Sol
+-->
+
+<levels>
+<notereading id = '0'>
+<message>Nous allons tout d'abord étudier lentement les trois notes Fa Sol La</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>40</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Maintenant les mêmes notes sans aide - le point vert correspondant au Sol</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>40</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>Les trois notes suivantes : La Si Do</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>40</speed>
+<startingnote>2</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>Les mêmes notes sans aide - le point vert correspondant au Si</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>40</speed>
+<startingnote>2</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>Les trois notes précédant la première série : Ré Mi Fa</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>40</speed>
+<startingnote>-2</startingnote>
+</notereading>
+
+<notereading id = '5'>
+<message>Les mêmes notes sans aide - le point vert correspondant au Mi</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>40</speed>
+<startingnote>-2</startingnote>
+</notereading>
+
+<notereading id = '6'>
+<message>Toutes les notes : Ré Mi Fa Sol La Si Do</message>
+<game>learning</game>
+<learningduration>30</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>7</nbnotes>
+<speed>40</speed>
+</notereading>
+
+<notereading id = '6'>
+<message>Toutes les notes en ligne, vous devez donner la première note de la ligne</message>
+<game>inline</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>7</nbnotes>
+<speed>40</speed>
+</notereading>
+
+</levels>

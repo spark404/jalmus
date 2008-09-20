@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : An octave on treble clef.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: first lesson to learn notes on treble clef
+-->
+
+<levels>
+<notereading id = '0'>
+<message>First we are working slowly on the three notes F G A </message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Now same notes F G A without help - G correspond to the key with a green point</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>Next three notes A B C</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>20</speed>
+<startingnote>2</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>Same notes A B C without help - B correspond to the key with a green point</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>2</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>Next three notes D E F</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>20</speed>
+<startingnote>-2</startingnote>
+</notereading>
+
+<notereading id = '5'>
+<message>Same notes D E F without help - E correspond to the key with a green point</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>-2</startingnote>
+</notereading>
+
+<notereading id = '6'>
+<message>All the notes D E F G A B C</message>
+<game>learning</game>
+<learningduration>30</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>7</nbnotes>
+<speed>20</speed>
+</notereading>
+
+<notereading id = '6'>
+<message>All the notes in line, you should find the first note of the line</message>
+<game>inline</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>7</nbnotes>
+<speed>30</speed>
+</notereading>
+
+</levels>

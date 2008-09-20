@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Treble notes on treble clef.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: to learn treble notes on treble clef (only for 73 keys and using transposition)
+-->
+
+<levels>
+<notereading id = '0'>
+<message>First we are working slowly on the five notes A B C D E</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>5</nbnotes>
+<speed>20</speed>
+<startingnote>10</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Now same notes without help - C correspond to the key with a green point</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>5</nbnotes>
+<speed>15</speed>
+<startingnote>10</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>Next five notes C D E F G</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>5</nbnotes>
+<speed>20</speed>
+<startingnote>12</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>Same notes without help - E correspond to the key with a green point</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>12</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>Next five notes E F G A B</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>5</nbnotes>
+<speed>20</speed>
+<startingnote>14</startingnote>
+</notereading>
+
+<notereading id = '5'>
+<message>Same notes without help - G correspond to the key with a green point</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>14</startingnote>
+</notereading>
+
+
+<notereading id = '6'>
+<message>All the notes in line, you should find the first note of the line</message>
+<game>inline</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>25</speed>
+<startingnote>12</startingnote>
+</notereading>
+
+</levels>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Les notes sur une portee de piano.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: pour apprendre toutes les notes sur la portée de piano : clé de Sol et clé de Fa
+-->
+
+<levels>
+<notereading id = '0'>
+<message>Nous allons tout d'abord étudier toute une octave sur la portée de piano</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>both</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Maintenant les mêmes notes sans aide - le point vert correspondant au Do</message>
+<game>normal</game>
+<clef>both</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>Mêmes notes en ligne, vous devez donner la première note de la ligne</message>
+<game>inline</game>
+<clef>both</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>Même exercice avec plus de notes (2 octaves)</message>
+<game>inline</game>
+<clef>both</clef>
+<notes>notes</notes>
+<nbnotes>15</nbnotes>
+<speed>25</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>Plus vite. Accrochez-vous !!!</message>
+<game>inline</game>
+<clef>both</clef>
+<notes>notes</notes>
+<nbnotes>15</nbnotes>
+<speed>15</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+
+</levels>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : All tonality with sharps.xml
+Created on : 07 aout 2007, 15:11
+Author : RICHARD Christophe
+Description: in line game tonality with sharps in piano staff
+-->
+
+<levels>
+
+<notereading id = '0'>
+<message>C Major : 15 notes inline in piano staff</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>0#</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>G Major : 15 notes inline in piano staff</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>1#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>D Major : 15 notes inline in piano staff</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>2#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>A Major : 15 notes inline in piano staff</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>3#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message> E Major : 15 notes inline in piano staff</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>4#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '5'>
+<message> B Major : 15 notes inline in piano staff</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>5#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '6'>
+<message> F Sharp Major : 15 notes inline in piano staff</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>6#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '7'>
+<message> C Sharp Major : 15 notes inline in piano staff</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>7#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+
+
+</levels>

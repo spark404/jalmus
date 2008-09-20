@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><!--JBuilder QuickDoc-->
+<HEAD>
+<TITLE>Class pck_jlm.Piano</TITLE><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+</HEAD>
+<BODY>
+
+<H2>
+<FONT SIZE="-1">pck_jlm</FONT>
+<BR>Classe Piano</H2>
+<DL>
+<DT>public class <B>Piano</B>
+</DL>
+<TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
+<TR BGCOLOR="#CCCCFF"><TD COLSPAN=1><FONT SIZE="+2">
+<B>Détail de la méthode</B>
+</FONT></TD></TR></TABLE>
+
+<A NAME="getKey(java.awt.Point)"></A>
+
+<H3>getKey</H3>
+<PRE>
+public pck_jlm.Key <B>getKey</B>(java.awt.Point&nbsp;point)</PRE>
+<DL><DD>To return Key of the Piano where the mouse aim<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Paramètres:</B><DD><CODE>Point</CODE> - of the mouse pointer</DD>
+<DT><B>Retourne:</B><DD>Key of the piano where the mouse aim</DD>
+</DL>
+<HR>
+
+<A NAME="updatepositionbase(pck_jlm.NoteLevel)"></A>
+
+<H3>updatepositionbase</H3>
+<PRE>
+public void <B>updatepositionbase</B>(pck_jlm.NoteLevel&nbsp;nrlevel)</PRE>
+<DL><DD>To update base note position for notes game according to clef<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Paramètres:</B><DD><CODE>Level</CODE> - for note reading game</DD>
+</DL>
+<HR>
+
+<A NAME="notejouee(pck_jlm.ChannelData, boolean, int, int)"></A>
+
+<H3>notejouee</H3>
+<PRE>
+public void <B>notejouee</B>(pck_jlm.ChannelData&nbsp;cc,
+                      boolean&nbsp;midiok,
+                      int&nbsp;pitch,
+                      int&nbsp;onoff)</PRE>
+<DL><DD>To play or stop the midi sound of a note when key of piano is pressed<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Paramètres:</B><DD><CODE>ChannelData</CODE> - where the note should be play, boolean indicate if the midi channel work and if sound is activate, int represent pitch of the note, int onoff if the note is already play or not.</DD>
+</DL>
+<HR>
+
+</BODY>
+</HTML>

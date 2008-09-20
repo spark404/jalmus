@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Toutes les tonalites avec dieses.xml
+Created on : 07 aout 2007, 15:11
+Author : RICHARD Christophe
+Description: exercices en ligne sur toutes les tonalités en dièses avec altérations accidentelles
+-->
+
+<levels>
+
+<notereading id = '0'>
+<message>Do Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>0#</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Sol Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>1#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>Ré Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>2#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>La Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>3#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>Mi Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>4#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '5'>
+<message>Si Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>5#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '6'>
+<message>Fa Dièse Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>6#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '7'>
+<message>Do Dièse Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>7#</tonality>
+<notes>accidentals</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+
+
+</levels>

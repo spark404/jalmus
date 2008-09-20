@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Intervalles - tierces et quintes.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: exercices sur les intervalles : tierces et quintes
+-->
+
+<levels>
+
+<notereading id = '0'>
+<message>Intervalles de tierce en clé de Sol</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>intervals</notes>
+<intervals>third</intervals>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '1'>
+<message>Intervalles de quinte en clé de Sol</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>intervals</notes>
+<intervals>fifth</intervals>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '2'>
+<message>Intervalles de tierce en clé de Fa</message>
+<game>normal</game>
+<clef>bass</clef>
+<notes>intervals</notes>
+<intervals>third</intervals>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '3'>
+<message>Intervalles de quinte en clé de Fa</message>
+<game>normal</game>
+<clef>bass</clef>
+<notes>intervals</notes>
+<intervals>fifth</intervals>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '4'>
+<message>Intervalles de tierce sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<notes>intervals</notes>
+<intervals>third</intervals>
+<speed>25</speed>
+</notereading>
+
+<notereading id = '5'>
+<message>Intervalles de quinte sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<notes>intervals</notes>
+<intervals>fifth</intervals>
+<speed>25</speed>
+</notereading>
+
+</levels>
+
+
+
+

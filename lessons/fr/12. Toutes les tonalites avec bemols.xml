@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Toutes les tonalites avec bemols.xml
+Created on : 07 aout 2007, 15:11
+Author : RICHARD Christophe
+Description: exercices en ligne sur toutes les tonalités en bémols avec altérations accidentelles
+-->
+
+<levels>
+
+<notereading id = '0'>
+<message>Do Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>0b</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Fa Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>1b</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>Si Bémol Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>2b</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>Mi Bémol Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>3b</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>La Bémol Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>4b</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '5'>
+<message>Ré Bémol Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>5b</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '6'>
+<message>Sol Bémol Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>6b</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '7'>
+<message>Do Bémol Majeur : 15 notes en ligne sur une portée de piano</message>
+<game>inline</game>
+<clef>both</clef>
+<tonality>7b</tonality>
+<notes>accidentals</notes>
+<nbnotes>15</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+
+
+</levels>
