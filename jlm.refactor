@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refactor PUBLIC "-//Borland Software Corporation//Refactor 1.0//EN" "http://www.borland.com/devsupport/jbuilder/dtds/refactor_1_0.dtd">
+
+<refactor>
+  <rename-class id="7AP08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 17:35:53.342 CEST 2007">
+    <old-class-name>pck_jlm.Rythme</old-class-name>
+    <new-class-name>pck_jlm.Rhythm</new-class-name>
+  </rename-class>
+  <rename-method id="6AP08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 18:26:30.366 CEST 2007">
+    <declaring-class-name>pck_jlm.Intervalle</declaring-class-name>
+    <declared-method-signature>(Ljava/awt/Graphics;)V</declared-method-signature>
+    <old-method-name>affichenom</old-method-name>
+    <new-method-name>printname</new-method-name>
+  </rename-method>
+  <rename-class id="5AP08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 18:34:54.223 CEST 2007">
+    <old-class-name>pck_jlm.Intervalle</old-class-name>
+    <new-class-name>pck_jlm.Interval</new-class-name>
+  </rename-class>
+  <rename-method id="4AP08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 18:38:08.409 CEST 2007">
+    <declaring-class-name>pck_jlm.Interval</declaring-class-name>
+    <declared-method-signature>(I)V</declared-method-signature>
+    <old-method-name>modifiex</old-method-name>
+    <new-method-name>updatex</new-method-name>
+  </rename-method>
+  <rename-method id="3AP08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 20:05:26.875 CEST 2007">
+    <declaring-class-name>pck_jlm.Interval</declaring-class-name>
+    <declared-method-signature>(I)V</declared-method-signature>
+    <old-method-name>avance</old-method-name>
+    <new-method-name>move</new-method-name>
+  </rename-method>
+  <rename-method id="2AP08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 20:07:51.379 CEST 2007">
+    <declaring-class-name>pck_jlm.Interval</declaring-class-name>
+    <declared-method-signature>(Ljava/lang/String;Ljava/lang/String;I)V</declared-method-signature>
+    <old-method-name>convertir</old-method-name>
+    <new-method-name>convert</new-method-name>
+  </rename-method>
+  <rename-class id="1AP08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:11:11.265 CEST 2007">
+    <old-class-name>pck_jlm.Accord</old-class-name>
+    <new-class-name>pck_jlm.Chord</new-class-name>
+  </rename-class>
+  <rename-method id="0AP08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:11:52.424 CEST 2007">
+    <declaring-class-name>pck_jlm.Chord</declaring-class-name>
+    <declared-method-signature>()Ljava/lang/String;</declared-method-signature>
+    <old-method-name>getNom</old-method-name>
+    <new-method-name>getName</new-method-name>
+  </rename-method>
+  <rename-method id="Z9P08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:15:43.443 CEST 2007">
+    <declaring-class-name>pck_jlm.Chord</declaring-class-name>
+    <declared-method-signature>()I</declared-method-signature>
+    <old-method-name>getRenvst</old-method-name>
+    <new-method-name>getInversion</new-method-name>
+  </rename-method>
+  <rename-method id="Y9P08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:17:54.190 CEST 2007">
+    <declaring-class-name>pck_jlm.Chord</declaring-class-name>
+    <declared-method-signature>(ILpck_jlm/Tonalite;Ljava/util/ResourceBundle;)I</declared-method-signature>
+    <old-method-name>decalage</old-method-name>
+    <new-method-name>getNotegap</new-method-name>
+  </rename-method>
+  <rename-method id="X9P08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:18:14.719 CEST 2007">
+    <declaring-class-name>pck_jlm.Chord</declaring-class-name>
+    <declared-method-signature>(Ljava/awt/Graphics;)V</declared-method-signature>
+    <old-method-name>affichenom</old-method-name>
+    <new-method-name>printname</new-method-name>
+  </rename-method>
+  <rename-method id="W9P08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:18:36.251 CEST 2007">
+    <declaring-class-name>pck_jlm.Chord</declaring-class-name>
+    <declared-method-signature>(I)V</declared-method-signature>
+    <old-method-name>avance</old-method-name>
+    <new-method-name>move</new-method-name>
+  </rename-method>
+  <rename-method id="V9P08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:22:07.620 CEST 2007">
+    <declaring-class-name>pck_jlm.Chord</declaring-class-name>
+    <declared-method-signature>(ILpck_jlm/Tonalite;Ljava/util/ResourceBundle;)I</declared-method-signature>
+    <old-method-name>getNotegap</old-method-name>
+    <new-method-name>getNoteposition</new-method-name>
+  </rename-method>
+  <rename-method id="U9P08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:22:54.038 CEST 2007">
+    <declaring-class-name>pck_jlm.Chord</declaring-class-name>
+    <declared-method-signature>(Ljava/lang/String;)V</declared-method-signature>
+    <old-method-name>convertir</old-method-name>
+    <new-method-name>convert</new-method-name>
+  </rename-method>
+  <rename-method id="T9P08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:25:53.085 CEST 2007">
+    <declaring-class-name>pck_jlm.Chord</declaring-class-name>
+    <declared-method-signature>(I)I</declared-method-signature>
+    <old-method-name>posreelle</old-method-name>
+    <new-method-name>realposition</new-method-name>
+  </rename-method>
+  <rename-method id="S9P08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:26:16.982 CEST 2007">
+    <declaring-class-name>pck_jlm.Chord</declaring-class-name>
+    <declared-method-signature>(I)V</declared-method-signature>
+    <old-method-name>modifiex</old-method-name>
+    <new-method-name>updatex</new-method-name>
+  </rename-method>
+  <rename-class id="R9P08UTMIC0FNXPADTLFK8Z" creation-time="Tue Apr 10 22:28:15.050 CEST 2007">
+    <old-class-name>pck_jlm.Niveau</old-class-name>
+    <new-class-name>pck_jlm.RhythmLevel</new-class-name>
+  </rename-class>
+  <rename-method id="7AP0WM205F0FM8IT7TLFK8Z" creation-time="Thu Apr 12 13:37:35.495 CEST 2007">
+    <declaring-class-name>pck_jlm.Piano</declaring-class-name>
+    <declared-method-signature>(II)V</declared-method-signature>
+    <old-method-name>update</old-method-name>
+    <new-method-name>updatepiano</new-method-name>
+  </rename-method>
+  <rename-method id="7AP0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:08:15.373 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isNotetypeNotes</old-method-name>
+    <new-method-name>isNotesgame</new-method-name>
+  </rename-method>
+  <rename-method id="6AP0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:08:39.073 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isNotetypeAccidentals</old-method-name>
+    <new-method-name>isAccidentalsgame</new-method-name>
+  </rename-method>
+  <rename-method id="5AP0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:08:57.851 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isNotetypeIntervals</old-method-name>
+    <new-method-name>isIntervalsgame</new-method-name>
+  </rename-method>
+  <rename-method id="4AP0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:09:12.638 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isNotetypeChords</old-method-name>
+    <new-method-name>isChordsgame</new-method-name>
+  </rename-method>
+  <rename-method id="3AP0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:09:32.106 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isGametypeNormal</old-method-name>
+    <new-method-name>isNormalgame</new-method-name>
+  </rename-method>
+  <rename-method id="2AP0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:09:52.373 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isGametypeInline</old-method-name>
+    <new-method-name>isInlinegame</new-method-name>
+  </rename-method>
+  <rename-method id="1AP0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:10:08.526 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isGametypeLearning</old-method-name>
+    <new-method-name>isLearninggame</new-method-name>
+  </rename-method>
+  <rename-method id="0AP0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:14:12.578 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>initialisejeu</old-method-name>
+    <new-method-name>restartnotegame</new-method-name>
+  </rename-method>
+  <rename-method id="Z9P0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:17:09.509 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>lancementjeu</old-method-name>
+    <new-method-name>startnotegame</new-method-name>
+  </rename-method>
+  <rename-method id="Y9P0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:18:05.711 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>lancementjeu2</old-method-name>
+    <new-method-name>startrhythmgame</new-method-name>
+  </rename-method>
+  <rename-method id="X9P0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:18:35.744 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>stopjeux</old-method-name>
+    <new-method-name>stopgames</new-method-name>
+  </rename-method>
+  <rename-method id="W9P0LMN9KI0FEVUGHTLFK8Z" creation-time="Sat Apr 14 23:19:02.106 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>initialisejeu2</old-method-name>
+    <new-method-name>restartrhythmgame</new-method-name>
+  </rename-method>
+  <rename-class id="7AP0GQ3HZK0FNJT8TLFK8Z" creation-time="Mon Apr 16 15:49:29.221 CEST 2007">
+    <old-class-name>pck_jlm.Tonalite</old-class-name>
+    <new-class-name>pck_jlm.Tonality</new-class-name>
+  </rename-class>
+  <rename-method id="6AP0GQ3HZK0FNJT8TLFK8Z" creation-time="Mon Apr 16 18:20:09.260 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isIntervaltypeSecond</old-method-name>
+    <new-method-name>isSecondInterval</new-method-name>
+  </rename-method>
+  <rename-method id="5AP0GQ3HZK0FNJT8TLFK8Z" creation-time="Mon Apr 16 18:20:27.838 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isIntervaltypeThird</old-method-name>
+    <new-method-name>isThirdInterval</new-method-name>
+  </rename-method>
+  <rename-method id="4AP0GQ3HZK0FNJT8TLFK8Z" creation-time="Mon Apr 16 18:20:47.763 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isIntervaltypeFourth</old-method-name>
+    <new-method-name>isFourthInterval</new-method-name>
+  </rename-method>
+  <rename-method id="3AP0GQ3HZK0FNJT8TLFK8Z" creation-time="Mon Apr 16 18:21:07.359 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isIntervaltypeFifth</old-method-name>
+    <new-method-name>isFifthInterval</new-method-name>
+  </rename-method>
+  <rename-method id="2AP0GQ3HZK0FNJT8TLFK8Z" creation-time="Mon Apr 16 18:21:22.618 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isIntervaltypeSixth</old-method-name>
+    <new-method-name>isSixthInterval</new-method-name>
+  </rename-method>
+  <rename-method id="1AP0GQ3HZK0FNJT8TLFK8Z" creation-time="Mon Apr 16 18:21:37.074 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isIntervaltypeSeventh</old-method-name>
+    <new-method-name>isSeventhInterval</new-method-name>
+  </rename-method>
+  <rename-method id="0AP0GQ3HZK0FNJT8TLFK8Z" creation-time="Mon Apr 16 18:21:59.050 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isIntervaltypeOctave</old-method-name>
+    <new-method-name>isOctaveInterval</new-method-name>
+  </rename-method>
+  <rename-method id="Z9P0GQ3HZK0FNJT8TLFK8Z" creation-time="Mon Apr 16 18:22:15.457 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isIntervaltypeRandom</old-method-name>
+    <new-method-name>isRandomInterval</new-method-name>
+  </rename-method>
+  <rename-method id="Y9P0GQ3HZK0FNJT8TLFK8Z" creation-time="Mon Apr 16 18:22:35.590 CEST 2007">
+    <declaring-class-name>pck_jlm.NoteLevel</declaring-class-name>
+    <declared-method-signature>()Z</declared-method-signature>
+    <old-method-name>isIntervaltypeAll</old-method-name>
+    <new-method-name>isAllInterval</new-method-name>
+  </rename-method>
+  <rename-class id="7AP05MAOQN0FIY7YHTLFK8Z" creation-time="Wed Apr 18 14:06:26.615 CEST 2007">
+    <old-class-name>pck_jlm.Exercices</old-class-name>
+    <new-class-name>pck_jlm.Lessons</new-class-name>
+  </rename-class>
+  <rename-method id="7AP0TO4PYO0FKLAADTLFK8Z" creation-time="Thu Apr 19 10:38:48.962 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>restartnotegame</old-method-name>
+    <new-method-name>initnotegame</new-method-name>
+  </rename-method>
+  <rename-method id="7AP0RHSFLZ0FV2GI4TLFK8Z" creation-time="Thu Apr 26 21:13:06.241 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>nextexercice</old-method-name>
+    <new-method-name>nextlevel</new-method-name>
+  </rename-method>
+  <rename-method id="7AP0BEYQ6I1FLBKL1TLFK8Z" creation-time="Wed May 09 21:29:30.270 CEST 2007">
+    <declaring-class-name>pck_jlm.Lessons</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>nextExercice</old-method-name>
+    <new-method-name>nextLevel</new-method-name>
+  </rename-method>
+  <rename-method id="7AP02UIR7L1F49R27XSFK8Z" creation-time="Sat May 12 00:21:14.898 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>creationligne</old-method-name>
+    <new-method-name>createline</new-method-name>
+  </rename-method>
+  <rename-method id="7AP0RF3THD5F858F1XSFK8Z" creation-time="Wed Aug 15 09:19:04.349 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>(II)Z</declared-method-signature>
+    <old-method-name>memenote</old-method-name>
+    <new-method-name>samenote</new-method-name>
+  </rename-method>
+  <rename-method id="6AP0RF3THD5F858F1XSFK8Z" creation-time="Wed Aug 15 10:17:28.744 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()Lpck_jlm/Chord;</declared-method-signature>
+    <old-method-name>choixaccord</old-method-name>
+    <new-method-name>chordchoice</new-method-name>
+  </rename-method>
+  <rename-method id="5AP0RF3THD5F858F1XSFK8Z" creation-time="Wed Aug 15 10:18:20.594 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>(IIII)I</declared-method-signature>
+    <old-method-name>choixhauteur</old-method-name>
+    <new-method-name>notehightchoice</new-method-name>
+  </rename-method>
+  <rename-method id="4AP0RF3THD5F858F1XSFK8Z" creation-time="Wed Aug 15 10:18:43.849 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()Lpck_jlm/Interval;</declared-method-signature>
+    <old-method-name>choixintervalle</old-method-name>
+    <new-method-name>intervalchoice</new-method-name>
+  </rename-method>
+  <rename-method id="3AP0RF3THD5F858F1XSFK8Z" creation-time="Wed Aug 15 10:19:28.012 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>nouvelaccord</old-method-name>
+    <new-method-name>newchord</new-method-name>
+  </rename-method>
+  <rename-method id="2AP0RF3THD5F858F1XSFK8Z" creation-time="Wed Aug 15 10:19:51.963 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>nouvelintervalle</old-method-name>
+    <new-method-name>newinterval</new-method-name>
+  </rename-method>
+  <rename-method id="1AP0RF3THD5F858F1XSFK8Z" creation-time="Wed Aug 15 10:20:17.602 CEST 2007">
+    <declaring-class-name>jalmus</declaring-class-name>
+    <declared-method-signature>()V</declared-method-signature>
+    <old-method-name>nouvellenote</old-method-name>
+    <new-method-name>newnote</new-method-name>
+  </rename-method>
+</refactor>
+
