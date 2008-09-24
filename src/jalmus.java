@@ -170,9 +170,9 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class jalmus extends JFrame implements WindowListener, MetaEventListener, MouseListener, KeyListener, ActionListener, ItemListener {
 
-    /******************************************************************/
-    /******************** Translation variables ***********************/
-    /*****************************************************************/
+    //----------------------------------------------------------------
+    // Translation variables
+
     private String tlicence;
 
     private String tcredits;
@@ -193,8 +193,6 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
     private String augmentee;
     private String juste;
 
-    private String simples;
-    private String renvers;
     private String DO;
     private String RE;
     private String MI;
@@ -205,39 +203,32 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     private String langue="en";
 
-    private Locale locale;
     private ResourceBundle bundle;
 
-    /******************************************************************/
-    /*************************** Main variables ***********************/
-    /*****************************************************************/
+    //----------------------------------------------------------------
+    // Main variables
 
     private int ecranjeu; // 0 ecran presentation, 1 jeu1, 2 jeu2
     private Image icone;
-    private boolean focussed;   // True when this applet has input focus.
 
-    /******************************************************************/
-    /******************* Lessons variables ***********************/
-    /*****************************************************************/
+    //----------------------------------------------------------------
+    // Lesson variables
     private Lessons currentlesson=new Lessons();
     private File LessonFile;
 
-    private boolean isLessonmode=false;
+    private boolean isLessonMode;
 
     private String path;
 
-    /******************************************************************/
-    /******************* Note reading variables ***********************/
-    /*****************************************************************/
+    //----------------------------------------------------------------
+    // Note reading variables
 
-    /******************** Midi ressources ****/
+    // Midi Resources
 
     private MidiDevice.Info info;
     private MidiDevice inputDevice;
-    private MidiChannel[] mc;
     private Synthesizer syn;
     private Instrument[] instr;
-    private String nomins;
     private int dureenote=2000;
     private ChannelData[] channels;
     private ChannelData cc; // current channel
@@ -247,21 +238,21 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
     private Piano piano;
     private int transpose;  //number octave for MIDI keyboard transposition -2 -1 0 1 2
 
-    /******************** Animation ressources ****/
+    // Animation Resources
+
     private RenderingThread renderingThread=new RenderingThread();
     private Anim panelanim=new Anim();
     private Tabimage ti=new Tabimage();
 
-    /************* Game Normal *************************/
+    // Normal Game
     private int notejouee; //pitch de la note jou�e
     private Note ncourante=new Note("", "", 0, 25, 0);
     private Chord acourant=new Chord(ncourante, ncourante, ncourante, "", 0);
     private Interval icourant=new Interval(ncourante, ncourante, "");
 
     private int dportee=110; //coordonn�e de la première ligne de port�e simple
-    private int choix=0; // position de l'accord en cours
     private int posnote=1; // position de la note courante dans l'accord ou l'intervalle
-    private boolean alterationok=false;
+    private boolean alterationok;
 
     private int margen=220; //marge for note reading
     private int marger=50; //marge for rythm reading
@@ -270,11 +261,11 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     private NoteLevel nrlevel=new NoteLevel();
 
-    /************* Learning Game *************************/
+    // Learning Game
 
     private int notecounter=1;
 
-    /************* Game Inline *************************/
+    // Line Game
     private Note[] ligne=new Note[40]; // ligne de notes  TYPE EN LIGNE
     private Chord[] ligneacc=new Chord[40]; // ligne d'accords
     private Interval[] ligneint=new Interval[40];
@@ -286,9 +277,8 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     private boolean erreurmidi;
 
-    /******************************************************************/
-    /***************** Rhythm reading variables ***********************/
-    /*****************************************************************/
+    //----------------------------------------------------------------
+    // Rhythm reading variables
 
     private Rhythm[] ligner=new Rhythm[80]; // ligne de notes  TYPE EN LIGNE
     private int positionr=-1; // position de la note courante dans la liste
@@ -307,9 +297,8 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     private RhythmLevel nivcourant=new RhythmLevel(true, true, false, false, false);
 
-    /****************************************************************/
-    /****************************** Menu ****************************/
-    /****************************************************************/
+    //----------------------------------------------------------------
+    // Menu
 
     // Mise en place du menu
     private JMenuBar maBarre=new JMenuBar();
@@ -333,16 +322,13 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     private JMenu language=new JMenu("Langue");
 
-    private JComboBox blangue; //langage de l'applet
-
     private JMenu aide=new JMenu();
     private JMenuItem aidesommaire=new JMenuItem(new ImageIcon(getClass().getResource("/images/aide.png")));
     private JMenuItem siteinternet=new JMenuItem(new ImageIcon(getClass().getResource("/images/internet.png")));
     private JMenuItem propos=new JMenuItem(new ImageIcon(getClass().getResource("/images/about.png")));
 
-    /****************************************************************/
-    /***********************BOUTONS JEU - NOTES/GO *****************/
-    /****************************************************************/
+    //----------------------------------------------------------------
+    // BOUTONS JEU - NOTES/GO
     private JPanel pboutonjeu=new JPanel();
 
     private JButton bdo;
@@ -362,9 +348,8 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
     private JButton bgo;    // bouton pour démarrer le jeu
     private JButton bpref;  // bouton pour acceder directement aux prefernces jeu
 
-    /****************************************************************/
-    /****************************** Dialogs *************************/
-    /****************************************************************/
+    //----------------------------------------------------------------
+    // Dialogs
 
     private JDialog preferences; // Dialog Preferences
     private JPanel ppref=new JPanel();
@@ -402,7 +387,8 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     private int[] sauvprefs=new int[16]; // pour bouton cancel
 
-    /*********************************************************/
+    //----
+
     private JDialog dLessons;
 
     private JPanel panelLessons=new JPanel();
@@ -418,14 +404,15 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
     private JPanel pButtonlevelMessage=new JPanel();
     private JButton oklevelMessage=new JButton();
 
-    /* JDialog for scoe message */
+    // JDialog for score message
     private JDialog scoreMessage=new JDialog();
     private JPanel pscoreMessage=new JPanel();
     private JLabel textscoreMessage=new JLabel();
     private JPanel pButtonscoreMessage=new JPanel();
     private JButton okscoreMessage=new JButton();
 
-    /******************************************************/
+    //----
+
     private JDialog dmidi;
     private JPanel pmidi=new JPanel(); //panel principal midi
     private JPanel pmidi1=new JPanel(); // panel midi keynoard
@@ -447,7 +434,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     private int[] sauvmidi=new int[16]; // pour bouton cancel
 
-    /******************************************************/
+    //----
 
     private JDialog dapropos;
     private JPanel papropos=new JPanel();
@@ -459,15 +446,14 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
     private JButton blicence;
     private JButton bfermer;
 
-    /******************************************************/
+    //----
 
     private JPanel principal=new JPanel(); // panel principal
 
-    /***********************************************************/
-    /*************** METHODE D'INITIALISATION ******************/
-    /***********************************************************/
+    //################################################################
+    // Initialization methods
 
-    public void init(String paramlangue) {
+    private void init(String paramlangue) {
         Graphics g=getGraphics();
 
         try {
@@ -1102,7 +1088,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void close() {
+    private void close() {
         if (syn!=null) {
             syn.close();
         }
@@ -1116,17 +1102,14 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         inputDevice=null;
     }
 
-    //**************** METHODES D'ACTION DES BOUTONS ET CHOICES
+    //################################################################
+    // METHODES D'ACTION DES BOUTONS ET CHOICES
 
-    /** Initialyse note reading game if here is modification in parameters and game restart
+    /** Initialize note reading game if there is modification in
+     * parameters and game restart. */
+    private void changeScreen() {
 
-     @param
-     @return No return
-     */
-
-    public void changescreen() {
-
-        if (isLessonmode) {
+        if (isLessonMode) {
             bgo.setVisible(false);
             bpref.setVisible(false);
 
@@ -1170,7 +1153,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void updatetonality() {
+    private void updatetonality() {
         String stmp="";
 
         if (nrlevel.getRandomtonality()) { // to change tonality when randomly
@@ -1186,7 +1169,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
             nrlevel.getCurrentTonality().init(i, stmp);
         } else
-        if (!isLessonmode&nrlevel.getCurrentTonality().getNbalt()==0) {
+        if (!isLessonMode&nrlevel.getCurrentTonality().getNbalt()==0) {
             // Do Major when tonality is no sharp no  flat
             double tmp=Math.random();
             if (tmp<0.5) {
@@ -1199,7 +1182,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void initnotegame() {
+    private void initNoteGame() {
 
         parti=false;
         currentScore.initScore();
@@ -1233,13 +1216,9 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    /** Initialyse rhythm reading game if here is modification in parameters and game restart
-
-     @param
-     @return No return
-     */
-
-    public void restartrhythmgame() {
+    /** Initialise rhythm reading game if there is modification in
+     * parameters and game restart. */
+    private void restartRhythmGame() {
 
         parti=false;
         positionr=-1;
@@ -1248,13 +1227,8 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    /** Stop all games
-
-     @param
-     @return No return
-     */
-
-    public void stopgames() {
+    /** Stops all games. */
+    private void stopgames() {
         parti=false;
 
         if (sm_sequencer!=null) {
@@ -1264,8 +1238,8 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void startrhythmgame() {
-        restartrhythmgame(); // arret du jeu pr�c�dent
+    private void startrhythmgame() {
+        restartRhythmGame(); // arret du jeu pr�c�dent
         String stmp="";
 
         creationligner();
@@ -1323,8 +1297,8 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         parti=true; // d�part du jeu
     }
 
-    public void startnotegame() {
-        initnotegame();     // to stop last game
+    private void startnotegame() {
+        initNoteGame();     // to stop last game
         updatetonality(); //when selected random tonality
 
         if (nrlevel.isNormalgame()|nrlevel.isLearninggame()) {
@@ -1342,11 +1316,11 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         parti=true;        // d�part du jeu
     }
 
-    public void reponsejuste() {
+    private void reponsejuste() {
         if (nrlevel.isLearninggame()) {
 
             if (nrlevel.isChordsgame()|nrlevel.isIntervalsgame()) {
-                /* if (isLessonmode & notecounter < nrlevel.getLearningduration()){
+                /* if (isLessonMode & notecounter < nrlevel.getLearningduration()){
                        parti = false;
                        nextlevel();
                      }
@@ -1355,7 +1329,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
                 notesuivante();
 
             } else
-            if (isLessonmode&notecounter==nrlevel.getLearningduration()) {
+            if (isLessonMode&notecounter==nrlevel.getLearningduration()) {
                 parti=false;
                 nextlevel();
             } else {
@@ -1393,7 +1367,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public void startlevel() {
+    private void startlevel() {
 
         if (!nrlevel.isMessageEmpty()) {
 
@@ -1409,7 +1383,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public void nextlevel() {
+    private void nextlevel() {
 
         if (!currentlesson.lastexercice()) {
             stopgames();
@@ -1419,8 +1393,8 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
             nrlevel.updatenbnotes(piano);
             piano.updatepositionbase(nrlevel);
 
-            initnotegame();
-            changescreen();
+            initNoteGame();
+            changeScreen();
             nrlevel.printtest();
             ecranjeu=1;
 
@@ -1443,7 +1417,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public void reponsefausse() {
+    private void reponsefausse() {
         alterationok=false;
 
         if (!nrlevel.isLearninggame()) {
@@ -1465,7 +1439,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void listeRepertoire() {
+    private void listeRepertoire() {
 
         path=getClass().getName()+".class";
         URL url=getClass().getResource(path);
@@ -1533,7 +1507,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    /************** FONCTIONS POUR SAISIE AU CLAVIER */
+    /** FONCTIONS POUR SAISIE AU CLAVIER */
     public void keyTyped(KeyEvent evt) {
         char ch=evt.getKeyChar();  // The character typed.
 
@@ -1761,7 +1735,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         } else if (e.getSource()==oklevelMessage) {
             levelMessage.dispose();
 
-            if (isLessonmode) {
+            if (isLessonMode) {
 
                 bgo.doClick();
 
@@ -1769,7 +1743,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         } else if (e.getSource()==okscoreMessage) {
             scoreMessage.dispose();
 
-            if (isLessonmode) {
+            if (isLessonMode) {
                 if (currentScore.isWin())
 
                 {
@@ -1782,7 +1756,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
             // update current level for note reading
             nrlevel.inibasenote();
-            initnotegame();
+            initNoteGame();
             nrlevel.updatenbnotes(piano);
 
             // update parameters for rythm reading
@@ -1799,7 +1773,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
             }
 
             //update screen
-            changescreen();
+            changeScreen();
             preferences.setVisible(false);
             repaint();
 
@@ -1837,7 +1811,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
                 stopgames();
             } else if (ecranjeu==2) {
                 tabpref.setSelectedComponent(pprefjeu2);
-                restartrhythmgame();
+                restartRhythmGame();
             }
             menuPrefs.doClick();
         } else if (e.getSource()==quitter) {
@@ -1860,26 +1834,26 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
             texteapropos.setText(tcredits);
         } else if (e.getSource()==menuNote) {
             stopgames();
-            initnotegame();
-            if (isLessonmode) {
+            initNoteGame();
+            if (isLessonMode) {
                 nrlevel.init();
             }
             ecranjeu=1;
-            isLessonmode=false;
-            changescreen();
+            isLessonMode=false;
+            changeScreen();
         } else if (e.getSource()==menuRhythm) {
             stopgames();
-            restartrhythmgame();
+            restartRhythmGame();
             ecranjeu=2;
-            if (isLessonmode) {
+            if (isLessonMode) {
                 nrlevel.init();
             }
-            isLessonmode=false;
-            changescreen();
+            isLessonMode=false;
+            changeScreen();
 
         } else if (e.getSource()==menuLessons) {
             stopgames();
-            isLessonmode=true;
+            isLessonMode=true;
 
             dLessons.setContentPane(panelLessons);
 
@@ -1906,9 +1880,9 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
                 nrlevel.updatenbnotes(piano);
                 piano.updatepositionbase(nrlevel);
 
-                initnotegame();
+                initNoteGame();
                 ecranjeu=1;
-                changescreen();
+                changeScreen();
                 nrlevel.printtest();
 
                 dLessons.setVisible(false);
@@ -1943,7 +1917,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         if (e.getSource()==bgo) {  // POUR DEMARRAGE DU PROGRAMME
             if (ecranjeu==1) {
                 if (parti) {
-                    initnotegame(); //stop the game before restart
+                    initNoteGame(); //stop the game before restart
 
                     this.requestFocus();
                 } else {
@@ -2213,7 +2187,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         // CHOIX ARMURE
 
         else if (evt.getItemSelectable()==btonalite) {
-            initnotegame();
+            initNoteGame();
             String stmp="";
 
             if (btonalite.getSelectedIndex()==0) {
@@ -2408,8 +2382,9 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    //**************************** METHODES DE TRADUCTION
-    public void updateLang() {
+    // METHODES DE TRADUCTION
+
+    private void updateLang() {
 
         bundle=ResourceBundle.getBundle("language", new Locale(langue));
 
@@ -2417,7 +2392,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void changeLanguage() {
+    private void changeLanguage() {
         jeu.setText(bundle.getString("_menuGame"));
         menuNote.setText(bundle.getString("_menuNotereading"));
         menuRhythm.setText(bundle.getString("_menuRythmreading"));
@@ -2595,11 +2570,11 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    //**************************** METHODES D'AFFICHAGE
+    // METHODES D'AFFICHAGE
 
-    //*******CLE
+    // CLE
 
-    public void affichecle(Graphics g) {
+    private void affichecle(Graphics g) {
         if (ecranjeu==1) {
             if (nrlevel.isCurrentclefTreble()) {
                 g.drawImage(ti.Getimage(0), margen, dportee-15, this);
@@ -2616,9 +2591,9 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    //*******PORTEE
+    // PORTEE
 
-    public void afficheportee(Graphics g) {
+    private void afficheportee(Graphics g) {
         Dimension d=getSize();
         g.setColor(Color.black);
         int yd=dportee;
@@ -2643,7 +2618,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public void afficheportee2(Graphics g) {
+    private void afficheportee2(Graphics g) {
         Dimension d=getSize();
         g.setColor(Color.black);
 
@@ -2666,9 +2641,9 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    //*******NOTE
+    // NOTE
 
-    public boolean samenote(int p1, int p2) { //compare deux pitch pour saisie clavier
+    private boolean samenote(int p1, int p2) { //compare deux pitch pour saisie clavier
 
         return p1+(12*transpose)==p2;
     }
@@ -2679,7 +2654,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
      * @param nbupper1 and nbunder1 are tne number of notes upper or under the base note for alone clef
      * @param nbupper2 and nbunder2 are tne number of notes upper or under the base note for bass clef when here are both clefs
      */
-    public int notehightchoice(int nbupper1, int nbunder1, int nbupper2, int nbunder2) {
+    private int notehightchoice(int nbupper1, int nbunder1, int nbupper2, int nbunder2) {
         int i;
         int h=0;
         int dessousbase=0;
@@ -2742,7 +2717,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         return h;
     }
 
-    public Interval intervalchoice() {
+    private Interval intervalchoice() {
         int i=1;
         int h=0;
         Note n1;
@@ -2866,7 +2841,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         return inter;
     }
 
-    public void newinterval() {
+    private void newinterval() {
 
         icourant.copy(intervalchoice());
         if (nrlevel.isNormalgame()|nrlevel.isLearninggame()) {
@@ -2892,7 +2867,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public Chord chordchoice() {
+    private Chord chordchoice() {
         int h=0;
         Note n1=new Note("", "", 0, 0, 0);
         Note n2=new Note("", "", 0, 0, 0);
@@ -2964,7 +2939,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void effacecouleurbouton() {
+    private void effacecouleurbouton() {
 
         ColorUIResource def=new ColorUIResource(238, 238, 238);
         bdo.setBackground(def);
@@ -2979,7 +2954,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void colorebouton() {
+    private void colorebouton() {
         Color red=new Color(242, 179, 112);
         Dimension d=getSize();
 
@@ -3009,7 +2984,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void afficheaccord(Chord a, Graphics g, boolean accordcourant) {
+    private void afficheaccord(Chord a, Graphics g, boolean accordcourant) {
         Dimension d=getSize();
         int i; // compteur
 
@@ -3045,13 +3020,13 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public void Synthnote(int nNoteNumber, int nVelocity, int nDuration) {
+    private void Synthnote(int nNoteNumber, int nVelocity, int nDuration) {
 
         cc.jouenote(!erreurmidi, nNoteNumber);
 
     }
 
-    public void newnote() {
+    private void newnote() {
         double tmp;
 
         if (nrlevel.isNormalgame()|nrlevel.isLearninggame()) {
@@ -3091,7 +3066,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public void stopson() {
+    private void stopson() {
         //if (cson.isSelected())
         //for (int i=0;i<37;i=i+1){
         //sons[i].stop();
@@ -3101,7 +3076,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void affichenote(Note n, Graphics g, Color couleur) {
+    private void affichenote(Note n, Graphics g, Color couleur) {
         Dimension d=getSize();
         int i; // compteur
 
@@ -3139,15 +3114,14 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    /*************************************************************************/
-    /*********** LECTURE RYTHMIQUE *******************************************/
-    /*************************************************************************/
+    //################################################################
+    // LECTURE RYTHMIQUE
 
-    public void rythmesuivant() {
+    private void rythmesuivant() {
 
         if (ligner[positionr].getValeur()!=0) {
             if (positionr<ligner.length-1) {
-                positionr=positionr+1;
+                positionr++;
                 repaint();
                 /* if (cson.getState() & !ligne[position].silence) Synthnote(71,80,dureerythme);*/
             }
@@ -3168,7 +3142,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void creationmetronome() {
+    private void creationmetronome() {
 
         final int TEXT=0x01;
         String textd="depart";
@@ -3238,7 +3212,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         return event;
     }
 
-    public int ajouterythme(int duree, int i, int tickcourant, int nbmes,
+    private int ajouterythme(int duree, int i, int tickcourant, int nbmes,
         int poscourante) {
         double tmpsilence;
         int tick=tickcourant;
@@ -3278,7 +3252,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         return tick;
     }
 
-    public boolean debutdemesure(int i) {
+    private boolean debutdemesure(int i) {
         double d=0;
         boolean reponse=false;
         for (int j=0; j<i; j++) {
@@ -3293,7 +3267,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         return reponse;
     }
 
-    public void creationligner() {
+    private void creationligner() {
 
         Dimension d=getSize();
 
@@ -3378,7 +3352,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void regroupenotes() {
+    private void regroupenotes() {
         for (int i=0; i<ligner.length-1; i++) {
             if (ligner[i].getValeur()==8&ligner[i+1].getValeur()==8&
                 !ligner[i+1].getSilence()&!ligner[i].getSilence()&
@@ -3392,7 +3366,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     // LIGNE DE NOTES
 
-    public void createline() {
+    private void createline() {
         Dimension d=getSize();
         Chord a=new Chord(ncourante, ncourante, ncourante, "", 0);
         Interval inter=new Interval(ncourante, ncourante, "");
@@ -3467,7 +3441,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public void afficheligne(Graphics g) {
+    private void afficheligne(Graphics g) {
 
         for (int i=position; i<ligne.length; i++) {
             // n'affiche que la ligne � partir de la position
@@ -3482,7 +3456,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public void afficheligner(Graphics g) {
+    private void afficheligner(Graphics g) {
         int precedant=0;
         int suivant=0;
 
@@ -3512,9 +3486,9 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    //***************ACCORDS
+    // ACCORDS
 
-    public void newchord() {
+    private void newchord() {
 
         if (nrlevel.isNormalgame()|nrlevel.isLearninggame()) {
 
@@ -3542,7 +3516,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public void afficheintervalle(Interval inter, Graphics g,
+    private void afficheintervalle(Interval inter, Graphics g,
         boolean Intervallecourant) {
         Dimension d=getSize();
         int i; // compteur
@@ -3576,7 +3550,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public void notesuivante() {
+    private void notesuivante() {
 
         if (nrlevel.isChordsgame()) {
             if (posnote<2) {
@@ -3589,7 +3563,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
                 }
 
             } else {
-                if (isLessonmode&notecounter==nrlevel.getLearningduration()) {
+                if (isLessonMode&notecounter==nrlevel.getLearningduration()) {
                     parti=false;
                     nextlevel();
                 } else {
@@ -3608,7 +3582,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
                 }
 
             } else {
-                if (isLessonmode&notecounter==nrlevel.getLearningduration()) {
+                if (isLessonMode&notecounter==nrlevel.getLearningduration()) {
                     parti=false;
                     nextlevel();
                 } else {
@@ -3619,26 +3593,9 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    //*******SCORE
+    // SCORE
 
-    public void affichescore(Graphics g, int s) {
-        Color c;
-
-        g.setColor(Color.black);
-        g.draw3DRect(260, 420, 251, 20, true);
-        for (int tmp=0; tmp<s; tmp=tmp+10) {
-            if (tmp<100) {
-                g.setColor(c=new Color(60+(tmp+10)/2, 26, 26));
-            } else {
-                g.setColor(c=new Color(110, 26+(tmp-90)/2, 26));
-            }
-            g.fillRect(261+tmp/2, 421, 5, 19);
-        }
-        g.setFont(new Font("Arial", Font.BOLD, 25));
-        // g.drawString("     SCORE :   " + s,240,420);
-    }
-
-    public void afficheresultat() {
+    private void afficheresultat() {
 
         if (currentScore.isWin()) {
             scoreMessage.setTitle(bundle.getString("_congratulations"));
@@ -3674,8 +3631,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     //****************     METHODES D'ANIMATION DE LA NOTE THREAD (run et stop)
 
-    class RenderingThread
-        extends Thread {
+    private class RenderingThread extends Thread {
 
         /**
          *  Ce thread appelle le rafraichissement de notre fenêtre
@@ -3738,61 +3694,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    public void stop() {
-        // main = null;
-        //if(main!=null){main.stop();}
-    }
-
-    //************** METHODE PAINT ET UPDATE POUT L'AFFICHAGE DE L'APPLET
-
-    /*  public void update(Graphics g){
-    Dimension d=getSize();
-
-    if (ecranjeu) {
-    bufferg.setColor(Color.white);
-    bufferg.fillRect(0, 0, d.width, d.height);
-    affichefocus(bufferg);
-    if (parti & type == "NORMAL") {
-      if (type2 == "NOTES"| type2 == "ALTERATIONS")  affichenote(ncourante,bufferg,Color.black);
-      //on affiche la note que lorsque la partie a commenc�e
-      else if (type2 == "ACCORDS") afficheaccord(acourant,bufferg,true);
- else if (type2 == "INTERVALLES") afficheintervalle(icourant,bufferg,true);
-      }
-    else if ((parti & type == "LIGNE")) afficheligne(bufferg);
-    afficheportee(bufferg);
-    affichecle(bufferg);
- tcourante.paint(clecourante,bufferg, marge, dportee, diese, bemol, this);
-    afficheversion(bufferg,Color.black);     // VERSION DE L'APPLET
-    affichescore(bufferg,score);
-    afficheresultat(bufferg);
-    piano.paint(bufferg);
- //  bufferg.drawString("note courante:   " + notecourante,125,dureenote);
-
-// if (open) bufferg.drawString("OPEN" ,300,100);
-  // bufferg.drawString(message,290,105);
-    //bufferg.drawString(nomins,325,310);
-    }
-    else {
-        buffer=createImage(getSize().width,getSize().height);
-   bufferg=buffer.getGraphics();
-      bufferg.drawImage(imagefond,0,0,this);
-      // affichefocus(bufferg);
-      Color c = new Color(5,5,100);
-      bufferg.setColor(c);
-      afficheversion(bufferg,c);
-      bufferg.setFont(new Font("Arial",Font.BOLD,40));
-      bufferg.drawString("LECTURE DE NOTE",140,210);
-      bufferg.drawString("    NOTE READING",140,260);
-      bufferg.setFont(new Font("Arial",Font.BOLD,15));
- bufferg.drawString("Copyright (C) 2003-2004 RICHARD Christophe" ,10,460);
-    }
-
-    g.drawImage(buffer,0,0,this);    // affiche le buffer
-
-    }*/
-
-    public class Anim
-        extends JPanel {
+    private class Anim extends JPanel {
 
         int dep=0;
         Timer timer;
@@ -3891,8 +3793,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }
 
-    class DumpReceiver
-        implements Receiver {
+    private class DumpReceiver implements Receiver {
 
         public DumpReceiver() {
 
@@ -4009,7 +3910,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }
 
-    public static void main(String arg[]) {
+    public static void main(String[] arg) {
         // Event pour la gestion des Evenements et principalement le message EXIT
         // Constructions de la frame
 
@@ -4041,8 +3942,3 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
     }
 
 }
-
-
-
-
-
