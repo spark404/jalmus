@@ -1,4 +1,4 @@
-package pck_jlm;
+package net.jalmus;
 
 /**
  * <p>Title: Java Lecture Musicale</p>
@@ -9,7 +9,9 @@ package pck_jlm;
  * @version 1.0
  */
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.util.ResourceBundle;
 
  public class Note{

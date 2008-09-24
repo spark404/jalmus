@@ -83,20 +83,6 @@ package net.jalmus;
 
 import com.centerkey.utils.BareBonesBrowserLaunch;
 import org.xml.sax.SAXException;
-import pck_jlm.ChannelData;
-import pck_jlm.Chord;
-import pck_jlm.FileTools;
-import pck_jlm.Interval;
-import pck_jlm.Key;
-import pck_jlm.Lessons;
-import pck_jlm.MidiCommon;
-import pck_jlm.Note;
-import pck_jlm.NoteLevel;
-import pck_jlm.Piano;
-import pck_jlm.Rhythm;
-import pck_jlm.RhythmLevel;
-import pck_jlm.Score;
-import pck_jlm.Tabimage;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -215,7 +201,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     //----------------------------------------------------------------
     // Lesson variables
-    private Lessons currentlesson=new Lessons();
+    private net.jalmus.Lessons currentlesson=new net.jalmus.Lessons();
     private File LessonFile;
 
     private boolean isLessonMode;
@@ -237,14 +223,14 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
     private boolean open;
     private String midimessage="";
 
-    private Piano piano;
+    private net.jalmus.Piano piano;
     private int transpose;  //number octave for MIDI keyboard transposition -2 -1 0 1 2
 
     // Animation Resources
 
     private RenderingThread renderingThread=new RenderingThread();
     private Anim panelanim=new Anim();
-    private Tabimage ti=new Tabimage();
+    private net.jalmus.Tabimage ti=new net.jalmus.Tabimage();
 
     // Normal Game
     private int notejouee; //pitch de la note jou�e
@@ -259,9 +245,9 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
     private int margen=220; //marge for note reading
     private int marger=50; //marge for rythm reading
 
-    private Score currentScore=new Score();
+    private Score currentScore=new net.jalmus.Score();
 
-    private NoteLevel nrlevel=new NoteLevel();
+    private net.jalmus.NoteLevel nrlevel=new net.jalmus.NoteLevel();
 
     // Learning Game
 
@@ -282,7 +268,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
     //----------------------------------------------------------------
     // Rhythm reading variables
 
-    private Rhythm[] ligner=new Rhythm[80]; // ligne de notes  TYPE EN LIGNE
+    private Rhythm[] ligner=new net.jalmus.Rhythm[80]; // ligne de notes  TYPE EN LIGNE
     private int positionr=-1; // position de la note courante dans la liste
 
     private int tempo=40; // tempo du sequencer - bouton bvitesse2
@@ -297,7 +283,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
     private Synthesizer sm_synthesizer;
     private static final int VELOCITY=64;
 
-    private RhythmLevel nivcourant=new RhythmLevel(true, true, false, false, false);
+    private RhythmLevel nivcourant=new net.jalmus.RhythmLevel(true, true, false, false, false);
 
     //----------------------------------------------------------------
     // Menu
@@ -1049,7 +1035,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
         panelanim.setVisible(true);
         panelanim.setBackground(Color.white);
 
-        piano=new Piano(73, 40); //initialisation of keyboard 61 keys
+        piano=new net.jalmus.Piano(73, 40); //initialisation of keyboard 61 keys
 
         Toolkit toolkit=Toolkit.getDefaultToolkit();
 
@@ -1066,7 +1052,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
 
                 if (ecranjeu==1) {
 
-                    Key key=piano.getKey(e.getPoint());
+                    net.jalmus.Key key=piano.getKey(e.getPoint());
 
                     if (piano.Getprevkey()!=null && piano.Getprevkey()!=key) {
                         piano.Getprevkey().off(cc, cson.isSelected()&!erreurmidi);
@@ -1495,10 +1481,10 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
 
                 for (int i=0; i<list.length; i++) {
 
-                    if (FileTools.getFileExtension(list[i]).equals("xml"))
+                    if (net.jalmus.FileTools.getFileExtension(list[i]).equals("xml"))
 
                     {
-                        bLessons.addItem(FileTools.getFileNameWithoutExtension(list[i]));
+                        bLessons.addItem(net.jalmus.FileTools.getFileNameWithoutExtension(list[i]));
                     }
                 }
 
@@ -1577,7 +1563,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     public void mousePressed(MouseEvent e) {
         requestFocus();
-        Key key;
+        net.jalmus.Key key;
         if (ecranjeu==1) {
             key=piano.getKey(e.getPoint());
             piano.Setprevkey(key);
@@ -1872,7 +1858,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
 
                 // création d'un parseur SAX
                 SAXParser parseur=fabrique.newSAXParser();
-                currentlesson=new Lessons();
+                currentlesson=new net.jalmus.Lessons();
                 // lecture d'un fichier XML avec un DefaultHandler
 
                 LessonFile=new File(path+File.separator+bLessons.getSelectedItem()+".xml");
@@ -2131,7 +2117,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
             if (smidiin!=pasclavier&!open) {
                 midimessage="Initialisation "+smidiin;
 
-                info=MidiCommon.getMidiDeviceInfo(smidiin, false);
+                info=net.jalmus.MidiCommon.getMidiDeviceInfo(smidiin, false);
                 if (info==null) {
 
                     midimessage="nodevice";
@@ -2322,9 +2308,9 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
             }
         } else if (evt.getItemSelectable()==bkeyboardlength) {
             if (bkeyboardlength.getSelectedIndex()==0) {
-                piano=new Piano(73, 40);
+                piano=new net.jalmus.Piano(73, 40);
             } else if (bkeyboardlength.getSelectedIndex()==1) {
-                piano=new Piano(61, 90);
+                piano=new net.jalmus.Piano(61, 90);
             }
         } else if (evt.getItemSelectable()==btranspose) {
             if (btranspose.getSelectedIndex()==0) {
@@ -2719,14 +2705,14 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
         return h;
     }
 
-    private Interval intervalchoice() {
+    private net.jalmus.Interval intervalchoice() {
         int i=1;
         int h=0;
         Note n1;
         Note n2;
 
         String nom="";
-        Interval inter;
+        net.jalmus.Interval inter;
         double tmp;
 
         if (nrlevel.isSecondInterval()) {
@@ -3345,7 +3331,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
                 }
 
             } else {
-                ligner[i]=new Rhythm(0, 0, 0, false, false, 0);
+                ligner[i]=new net.jalmus.Rhythm(0, 0, 0, false, false, 0);
                 i++;
             }
         }
@@ -3407,7 +3393,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
                 a.copy(chordchoice());
 
                 a.updatex(d.width-margen+i*50);
-                ligneacc[i]=new Chord(a.getNote(0), a.getNote(1), a.getNote(2),
+                ligneacc[i]=new net.jalmus.Chord(a.getNote(0), a.getNote(1), a.getNote(2),
                     a.getName(), a.getInversion());
                 ligneacc[i].convert(nrlevel);
 

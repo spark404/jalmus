@@ -1,4 +1,4 @@
-package pck_jlm;
+package net.jalmus;
 
 /**
  * <p>Title: Java Lecture Musicale</p>
@@ -9,7 +9,7 @@ package pck_jlm;
  * @version 1.0
  */
 
-import javax.sound.midi.*;
+import javax.sound.midi.MidiChannel;
 
 public class ChannelData {
 

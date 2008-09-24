@@ -1,4 +1,4 @@
-package pck_jlm;
+package net.jalmus;
 
 /**
  * <p>Title: Java Lecture Musicale</p>
@@ -13,8 +13,8 @@ package pck_jlm;
  * @version 1.0
  */
 
-import java.awt.*;
-import javax.imageio.*;
+import java.awt.Image;
+import javax.imageio.ImageIO;
 
 public class Tabimage {
    Image T [] = new Image [25];

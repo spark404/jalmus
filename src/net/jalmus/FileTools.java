@@ -1,4 +1,4 @@
-package pck_jlm;
+package net.jalmus;
 
 import java.io.File;
 

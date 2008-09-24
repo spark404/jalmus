@@ -1,6 +1,5 @@
-package pck_jlm;
+package net.jalmus;
 
-import java.awt.Font;
 import java.awt.Color;
 import java.awt.Graphics;
 

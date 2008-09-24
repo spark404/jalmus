@@ -1,4 +1,4 @@
-package pck_jlm;
+package net.jalmus;
 
 /**
  * <p>Title: Java Lecture Musicale</p>
@@ -8,13 +8,11 @@ package pck_jlm;
  * @author RICHARD Christophe
  * @version 1.0
  */
-import java.awt.*;
-import java.awt.event.*;
 
-import java.lang.Math;
-import java.lang.Integer;
-
-
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.util.Vector;
 
 public class Piano {
@@ -26,7 +24,7 @@ public class Piano {
   Color red = new Color(242, 179, 112);
   Color pink = new Color(255, 175, 175);
 
-  Key prevKey;
+  net.jalmus.Key prevKey;
   int positionbase1 = 0; // 0 si pas de note de base � afficher sinon position sur le clavier
   int positionbase2 = 0; // 0 pour deuxième clé
   final int kw = 16, kh = 80;
@@ -60,25 +58,25 @@ public class Piano {
     for (int i = 0, x = 3; i < octavanumber; i++) {
       for (int j = 0; j < 7; j++, x += kw) {
         int keyNum = i * 12 + whiteIDs[j] + transpose;
-        whiteKeys.add(new Key(x + marge, haut, kw, kh, keyNum));
+        whiteKeys.add(new net.jalmus.Key(x + marge, haut, kw, kh, keyNum));
       }
     }
 
-    whiteKeys.add(new Key(7 * octavanumber * kw + marge + 3, haut, kw, kh,
+    whiteKeys.add(new net.jalmus.Key(7 * octavanumber * kw + marge + 3, haut, kw, kh,
                           octavanumber * 12 + transpose));
 
     for (int i = 0, x = 3; i < octavanumber; i++, x += kw) {
       int keyNum = i * 12 + transpose;
-      blackKeys.add(new Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
+      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
                             keyNum + 1));
-      blackKeys.add(new Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
+      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
                             keyNum + 3));
       x += kw;
-      blackKeys.add(new Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
+      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
                             keyNum + 6));
-      blackKeys.add(new Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
+      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
                             keyNum + 8));
-      blackKeys.add(new Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
+      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
                             keyNum + 10));
     }
     keys.addAll(blackKeys);
@@ -103,11 +101,11 @@ public class Piano {
     this.positionbase2 = posnotebase;
   }
 
-  public void Setprevkey(Key k) {
+  public void Setprevkey(net.jalmus.Key k) {
     this.prevKey = k;
   }
 
-  public Key Getprevkey() {
+  public net.jalmus.Key Getprevkey() {
     return this.prevKey;
   }
 
@@ -124,14 +122,14 @@ public class Piano {
      * @return Key of the piano where the mouse aim
      * @param Point of the mouse pointer
    */
-  public Key getKey(Point point) {
+  public net.jalmus.Key getKey(Point point) {
     Point p = new Point();
 
     p.setLocation(point.getX(), point.getY() - 100);
 
     for (int i = 0; i < keys.size(); i++) {
-      if ( ( (Key) keys.get(i)).contains(p)) {
-        return (Key) keys.get(i);
+      if ( ( (net.jalmus.Key) keys.get(i)).contains(p)) {
+        return (net.jalmus.Key) keys.get(i);
       }
     }
     return null;
@@ -142,7 +140,7 @@ public class Piano {
    *
    * @param Level for note reading game
    */
-  public void updatepositionbase(NoteLevel nrlevel) {
+  public void updatepositionbase(net.jalmus.NoteLevel nrlevel) {
     if ( (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame()) &
         !nrlevel.isAllnotesgame()) {
       if (nrlevel.isCurrentclefTreble()) {
@@ -172,18 +170,18 @@ public class Piano {
      *  int represent pitch of the note,
      *  int onoff if the note is already play or not.
    */
-  public void notejouee(ChannelData cc, boolean midiok, int pitch, int onoff) {
+  public void notejouee(net.jalmus.ChannelData cc, boolean midiok, int pitch, int onoff) {
     // System.out.println("note jouee");
 
     for (int i = 0; i < whiteKeys.size(); i++) {
-      Key key = (Key) whiteKeys.get(i);
+      net.jalmus.Key key = (net.jalmus.Key) whiteKeys.get(i);
       if (onoff == 1 & key.kNum == pitch)
         key.on(cc, midiok);
       else if (onoff == 0 & key.kNum == pitch)
         key.off(cc, midiok);
     }
     for (int i = 0; i < blackKeys.size(); i++) {
-      Key key = (Key) blackKeys.get(i);
+      net.jalmus.Key key = (net.jalmus.Key) blackKeys.get(i);
       if (onoff == 1 & key.kNum == pitch)
         key.on(cc, midiok);
       else if (onoff == 0 & key.kNum == pitch)
@@ -222,7 +220,7 @@ public class Piano {
     g2.setColor(Color.black);
     // g2.drawRect(marge+3,haut,42*kw,kh);
     for (int i = 0; i < whiteKeys.size(); i++) {
-      Key key = (Key) whiteKeys.get(i);
+      net.jalmus.Key key = (net.jalmus.Key) whiteKeys.get(i);
       if (key.isNoteOn()) {
         g2.setColor(jfcBlue);
         g2.fill(key);
@@ -243,7 +241,7 @@ public class Piano {
       g2.draw(key);
     }
     for (int i = 0; i < blackKeys.size(); i++) {
-      Key key = (Key) blackKeys.get(i);
+      net.jalmus.Key key = (net.jalmus.Key) blackKeys.get(i);
       if (key.isNoteOn()) {
         g2.setColor(jfcBlue);
         g2.fill(key);

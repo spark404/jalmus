@@ -1,4 +1,4 @@
-package pck_jlm;
+package net.jalmus;
 
 /**
  * <p>Title: Java Lecture Musicale</p>

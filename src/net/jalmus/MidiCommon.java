@@ -1,4 +1,4 @@
-package pck_jlm;
+package net.jalmus;
 
 /**
  * <p>Title: Java Lecture Musicale</p>
@@ -8,7 +8,10 @@ package pck_jlm;
  * @author RICHARD Christophe
  * @version 1.0
  */
-import javax.sound.midi.*;
+
+import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 
 public class MidiCommon {
 

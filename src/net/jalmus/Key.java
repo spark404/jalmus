@@ -1,4 +1,4 @@
-package pck_jlm;
+package net.jalmus;
 
 /**
  * <p>Title: Java Lecture Musicale</p>
@@ -8,16 +8,8 @@ package pck_jlm;
  * @author RICHARD Christophe
  * @version 1.0
  */
-import java.awt.*;
-import java.awt.event.*;
 
-import java.lang.Math;
-import java.lang.Integer;
-
-
-
-
-
+import java.awt.Rectangle;
 
 public class Key extends Rectangle {
   final int ON = 0, OFF = 1;
@@ -39,13 +31,13 @@ public class Key extends Rectangle {
 
 
 
-                public void on(ChannelData cc, boolean midiok) {
+                public void on(net.jalmus.ChannelData cc, boolean midiok) {
                   setNoteState(ON);
 
                     cc.jouenote(midiok, kNum);
                 }
 
-                public void off(ChannelData cc, boolean midiok) {
+                public void off(net.jalmus.ChannelData cc, boolean midiok) {
                   setNoteState(OFF);
                  cc.stopnote(midiok, kNum);
 

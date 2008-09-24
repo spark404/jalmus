@@ -1,4 +1,4 @@
-package pck_jlm;
+package net.jalmus;
 
 /**
  * <p>Title: Java Lecture Musicale</p>
@@ -9,8 +9,10 @@ package pck_jlm;
  * @version 1.0
  */
 
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ResourceBundle;
 
@@ -64,7 +66,7 @@ public class Tonality {
 
 
 
-  public void paint(NoteLevel nrlevel, Graphics g, int marge, int dportee, Tabimage tab, Component j, ResourceBundle bundle) {
+  public void paint(NoteLevel nrlevel, Graphics g, int marge, int dportee, net.jalmus.Tabimage tab, Component j, ResourceBundle bundle) {
     int i = 0;
     int decalagecle = 0;
     boolean ok = false;

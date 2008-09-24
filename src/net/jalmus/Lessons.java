@@ -1,12 +1,10 @@
-package pck_jlm;
+package net.jalmus;
 
-import java.util.LinkedList;
-import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import java.lang.Math;
+import org.xml.sax.helpers.DefaultHandler;
 
-
+import java.util.LinkedList;
 
 /**
  * <p>Title: Jalmus</p>

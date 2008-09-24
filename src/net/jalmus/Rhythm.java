@@ -1,8 +1,8 @@
-package pck_jlm;
+package net.jalmus;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.*;
 
 /**
  * <p>Title: Jalmus</p>
