@@ -79,6 +79,8 @@ E-mail : cvrichard@infonie.fr */
 
 /* NEED JDK 1.4.2 */
 
+package net.jalmus;
+
 import com.centerkey.utils.BareBonesBrowserLaunch;
 import org.xml.sax.SAXException;
 import pck_jlm.ChannelData;
@@ -168,7 +170,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class jalmus extends JFrame implements WindowListener, MetaEventListener, MouseListener, KeyListener, ActionListener, ItemListener {
+public class Jalmus extends JFrame implements WindowListener, MetaEventListener, MouseListener, KeyListener, ActionListener, ItemListener {
 
     //----------------------------------------------------------------
     // Translation variables
@@ -3914,7 +3916,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
         // Event pour la gestion des Evenements et principalement le message EXIT
         // Constructions de la frame
 
-        jalmus l=new jalmus();
+        Jalmus l=new Jalmus();
         // Initialisation
         if (arg.length==0) {
             l.init("en");
