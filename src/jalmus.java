@@ -173,58 +173,58 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
     /******************************************************************/
     /******************** Translation variables ***********************/
     /*****************************************************************/
-    String tlicence;
+    private String tlicence;
 
-    String tcredits;
+    private String tcredits;
 
-    String pasclavier="Pas de clavier MIDI             ";
-    String toutes="Toutes      ";
-    String tous="Tous";
-    String seconde;
-    String tierce;
-    String quarte;
-    String quinte;
-    String sixte;
-    String septieme;
-    String octave;
-    String mineur;
-    String majeur;
-    String diminuee;
-    String augmentee;
-    String juste;
+    private String pasclavier="Pas de clavier MIDI             ";
+    private String toutes="Toutes      ";
+    private String tous="Tous";
+    private String seconde;
+    private String tierce;
+    private String quarte;
+    private String quinte;
+    private String sixte;
+    private String septieme;
+    private String octave;
+    private String mineur;
+    private String majeur;
+    private String diminuee;
+    private String augmentee;
+    private String juste;
 
-    String simples;
-    String renvers;
-    String DO;
-    String RE;
-    String MI;
-    String FA;
-    String SOL;
-    String LA;
-    String SI;
+    private String simples;
+    private String renvers;
+    private String DO;
+    private String RE;
+    private String MI;
+    private String FA;
+    private String SOL;
+    private String LA;
+    private String SI;
 
-    String langue="en";
+    private String langue="en";
 
-    Locale locale=null;
-    ResourceBundle bundle=null;
+    private Locale locale;
+    private ResourceBundle bundle;
 
     /******************************************************************/
     /*************************** Main variables ***********************/
     /*****************************************************************/
 
-    int ecranjeu=0; // 0 ecran presentation, 1 jeu1, 2 jeu2
-    Image icone;
-    boolean focussed=false;   // True when this applet has input focus.
+    private int ecranjeu; // 0 ecran presentation, 1 jeu1, 2 jeu2
+    private Image icone;
+    private boolean focussed;   // True when this applet has input focus.
 
     /******************************************************************/
     /******************* Lessons variables ***********************/
     /*****************************************************************/
-    Lessons currentlesson=new Lessons();
-    File LessonFile;
+    private Lessons currentlesson=new Lessons();
+    private File LessonFile;
 
-    boolean isLessonmode=false;
+    private boolean isLessonmode=false;
 
-    String path;
+    private String path;
 
     /******************************************************************/
     /******************* Note reading variables ***********************/
@@ -232,236 +232,236 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     /******************** Midi ressources ****/
 
-    MidiDevice.Info info;
-    MidiDevice inputDevice=null;
-    MidiChannel[] mc;
-    Synthesizer syn=null;
-    Instrument[] instr;
-    String nomins;
-    int dureenote=2000;
-    ChannelData channels[];
-    ChannelData cc; // current channel
-    boolean open=false;
-    String midimessage="";
+    private MidiDevice.Info info;
+    private MidiDevice inputDevice;
+    private MidiChannel[] mc;
+    private Synthesizer syn;
+    private Instrument[] instr;
+    private String nomins;
+    private int dureenote=2000;
+    private ChannelData[] channels;
+    private ChannelData cc; // current channel
+    private boolean open;
+    private String midimessage="";
 
-    Piano piano;
-    int transpose=0;  //number octave for MIDI keyboard transposition -2 -1 0 1 2
+    private Piano piano;
+    private int transpose;  //number octave for MIDI keyboard transposition -2 -1 0 1 2
 
     /******************** Animation ressources ****/
-    RenderingThread renderingThread=new RenderingThread();
-    anim panelanim=new anim();
-    Tabimage ti=new Tabimage();
+    private RenderingThread renderingThread=new RenderingThread();
+    private Anim panelanim=new Anim();
+    private Tabimage ti=new Tabimage();
 
     /************* Game Normal *************************/
-    int notejouee=0; //pitch de la note jou�e
-    Note ncourante=new Note("", "", 0, 25, 0);
-    Chord acourant=new Chord(ncourante, ncourante, ncourante, "", 0);
-    Interval icourant=new Interval(ncourante, ncourante, "");
+    private int notejouee; //pitch de la note jou�e
+    private Note ncourante=new Note("", "", 0, 25, 0);
+    private Chord acourant=new Chord(ncourante, ncourante, ncourante, "", 0);
+    private Interval icourant=new Interval(ncourante, ncourante, "");
 
-    int dportee=110; //coordonn�e de la première ligne de port�e simple
-    int choix=0; // position de l'accord en cours
-    int posnote=1; // position de la note courante dans l'accord ou l'intervalle
-    boolean alterationok=false;
+    private int dportee=110; //coordonn�e de la première ligne de port�e simple
+    private int choix=0; // position de l'accord en cours
+    private int posnote=1; // position de la note courante dans l'accord ou l'intervalle
+    private boolean alterationok=false;
 
-    int margen=220; //marge for note reading
-    int marger=50; //marge for rythm reading
+    private int margen=220; //marge for note reading
+    private int marger=50; //marge for rythm reading
 
-    Score currentScore=new Score();
+    private Score currentScore=new Score();
 
-    NoteLevel nrlevel=new NoteLevel();
+    private NoteLevel nrlevel=new NoteLevel();
 
     /************* Learning Game *************************/
 
-    int notecounter=1;
+    private int notecounter=1;
 
     /************* Game Inline *************************/
-    Note ligne[]=new Note[40]; // ligne de notes  TYPE EN LIGNE
-    Chord ligneacc[]=new Chord[40]; // ligne d'accords
-    Interval ligneint[]=new Interval[40];
-    int position=0; // position de la note courante dans la liste
-    int precedente=0; // position de la note précédente pour éviter les répétitions
+    private Note[] ligne=new Note[40]; // ligne de notes  TYPE EN LIGNE
+    private Chord[] ligneacc=new Chord[40]; // ligne d'accords
+    private Interval[] ligneint=new Interval[40];
+    private int position; // position de la note courante dans la liste
+    private int precedente; // position de la note précédente pour éviter les répétitions
 
-    boolean parti=false; //  partie commenc�e ou non
-    boolean paused=false;
+    private boolean parti; //  partie commenc�e ou non
+    private boolean paused;
 
-    boolean erreurmidi=false;
+    private boolean erreurmidi;
 
     /******************************************************************/
     /***************** Rhythm reading variables ***********************/
     /*****************************************************************/
 
-    Rhythm ligner[]=new Rhythm[80]; // ligne de notes  TYPE EN LIGNE
-    int positionr=-1; // position de la note courante dans la liste
+    private Rhythm[] ligner=new Rhythm[80]; // ligne de notes  TYPE EN LIGNE
+    private int positionr=-1; // position de la note courante dans la liste
 
-    int tempo=40; // tempo du sequencer - bouton bvitesse2
-    double nbtemps=4; // nombre de temps par mesure
-    int nbmesures=9;
+    private int tempo=40; // tempo du sequencer - bouton bvitesse2
+    private double nbtemps=4; // nombre de temps par mesure
+    private int nbmesures=9;
 
-    Track track=null;
-    Track metronome=null;
-    static final int ppq=12;
-    Sequence sequence=null;
-    Sequencer sm_sequencer=null;
-    Synthesizer sm_synthesizer=null;
+    private Track track;
+    private Track metronome;
+    private static final int ppq=12;
+    private Sequence sequence;
+    private Sequencer sm_sequencer;
+    private Synthesizer sm_synthesizer;
     private static final int VELOCITY=64;
 
-    RhythmLevel nivcourant=new RhythmLevel(true, true, false, false, false);
+    private RhythmLevel nivcourant=new RhythmLevel(true, true, false, false, false);
 
     /****************************************************************/
     /****************************** Menu ****************************/
     /****************************************************************/
 
     // Mise en place du menu
-    JMenuBar maBarre=new JMenuBar();
-    JMenu jeu=new JMenu();
-    JMenuItem menuNote=new JMenuItem(new ImageIcon(getClass().getResource("/images/note.png")));
-    JMenuItem menuRhythm=new JMenuItem(new ImageIcon(getClass().getResource("/images/rythme.png")));
-    JMenuItem menuLessons=new JMenuItem(new ImageIcon(getClass().getResource("/images/exercices.png")));
-    JMenuItem quitter=new JMenuItem(new ImageIcon(getClass().getResource("/images/exit.png")));
+    private JMenuBar maBarre=new JMenuBar();
+    private JMenu jeu=new JMenu();
+    private JMenuItem menuNote=new JMenuItem(new ImageIcon(getClass().getResource("/images/note.png")));
+    private JMenuItem menuRhythm=new JMenuItem(new ImageIcon(getClass().getResource("/images/rythme.png")));
+    private JMenuItem menuLessons=new JMenuItem(new ImageIcon(getClass().getResource("/images/exercices.png")));
+    private JMenuItem quitter=new JMenuItem(new ImageIcon(getClass().getResource("/images/exit.png")));
 
-    JMenu menuParameters=new JMenu();
-    JMenuItem menuPrefs=new JMenuItem(new ImageIcon(getClass().getResource("/images/prefs.png")));
-    JMenuItem menuMidi=new JMenuItem(new ImageIcon(getClass().getResource("/images/midi.png")));
-    JMenu langues=new JMenu();
-    JRadioButtonMenuItem rblanguefr=new JRadioButtonMenuItem();
-    JRadioButtonMenuItem rblanguede=new JRadioButtonMenuItem();
-    JRadioButtonMenuItem rblanguees=new JRadioButtonMenuItem();
-    JRadioButtonMenuItem rblangueen=new JRadioButtonMenuItem();
-    JRadioButtonMenuItem rblangueit=new JRadioButtonMenuItem();
-    JRadioButtonMenuItem rblangueda=new JRadioButtonMenuItem();
-    JRadioButtonMenuItem rblanguetr=new JRadioButtonMenuItem();
+    private JMenu menuParameters=new JMenu();
+    private JMenuItem menuPrefs=new JMenuItem(new ImageIcon(getClass().getResource("/images/prefs.png")));
+    private JMenuItem menuMidi=new JMenuItem(new ImageIcon(getClass().getResource("/images/midi.png")));
+    private JMenu langues=new JMenu();
+    private JRadioButtonMenuItem rblanguefr=new JRadioButtonMenuItem();
+    private JRadioButtonMenuItem rblanguede=new JRadioButtonMenuItem();
+    private JRadioButtonMenuItem rblanguees=new JRadioButtonMenuItem();
+    private JRadioButtonMenuItem rblangueen=new JRadioButtonMenuItem();
+    private JRadioButtonMenuItem rblangueit=new JRadioButtonMenuItem();
+    private JRadioButtonMenuItem rblangueda=new JRadioButtonMenuItem();
+    private JRadioButtonMenuItem rblanguetr=new JRadioButtonMenuItem();
 
-    JMenu language=new JMenu("Langue");
+    private JMenu language=new JMenu("Langue");
 
-    JComboBox blangue; //langage de l'applet
+    private JComboBox blangue; //langage de l'applet
 
-    JMenu aide=new JMenu();
-    JMenuItem aidesommaire=new JMenuItem(new ImageIcon(getClass().getResource("/images/aide.png")));
-    JMenuItem siteinternet=new JMenuItem(new ImageIcon(getClass().getResource("/images/internet.png")));
-    JMenuItem propos=new JMenuItem(new ImageIcon(getClass().getResource("/images/about.png")));
+    private JMenu aide=new JMenu();
+    private JMenuItem aidesommaire=new JMenuItem(new ImageIcon(getClass().getResource("/images/aide.png")));
+    private JMenuItem siteinternet=new JMenuItem(new ImageIcon(getClass().getResource("/images/internet.png")));
+    private JMenuItem propos=new JMenuItem(new ImageIcon(getClass().getResource("/images/about.png")));
 
     /****************************************************************/
     /***********************BOUTONS JEU - NOTES/GO *****************/
     /****************************************************************/
-    JPanel pboutonjeu=new JPanel();
+    private JPanel pboutonjeu=new JPanel();
 
-    JButton bdo;
-    JButton bre;
-    JButton bmi;
-    JButton bfa;
-    JButton bsol;
-    JButton bla;
-    JButton bsi;
-    JButton bdo2;
-    JButton bbemol;
-    JButton bdiese;
-    JButton bbemol2;
-    JButton bdiese2;
-    JPanel pnotes=new JPanel();
+    private JButton bdo;
+    private JButton bre;
+    private JButton bmi;
+    private JButton bfa;
+    private JButton bsol;
+    private JButton bla;
+    private JButton bsi;
+    private JButton bdo2;
+    private JButton bbemol;
+    private JButton bdiese;
+    private JButton bbemol2;
+    private JButton bdiese2;
+    private JPanel pnotes=new JPanel();
 
-    JButton bgo;    // bouton pour démarrer le jeu
-    JButton bpref;  // bouton pour acceder directement aux prefernces jeu
+    private JButton bgo;    // bouton pour démarrer le jeu
+    private JButton bpref;  // bouton pour acceder directement aux prefernces jeu
 
     /****************************************************************/
     /****************************** Dialogs *************************/
     /****************************************************************/
 
-    JDialog preferences; // Dialog Preferences
-    JPanel ppref=new JPanel();
+    private JDialog preferences; // Dialog Preferences
+    private JPanel ppref=new JPanel();
 
-    JTabbedPane tabpref=new JTabbedPane(); // panel pour les parametres
-    JPanel pprefjeu1=new JPanel();
-    JPanel ppref1jeu1=new JPanel(); // panel pour le type du premier jeu
-    JComboBox btype; //type de jeux
-    JComboBox bvitesse; // bouton pour choisir la vitesse
-    JPanel ppref2jeu1=new JPanel(); // panel pour la clef du premier jeu
-    JComboBox bcle; //  bouton pour choisir la cl�
-    JComboBox btonalite; // bouton pour choisir la tonalite
-    JPanel ppref3jeu1=new JPanel(); // panel pour le type de note du premier jeu
-    JComboBox bgroupes; // bouton pour choisir le nombre de differentes note
-    JComboBox bselectnotes; // bouton de section pour le groupe
-    JComboBox bselectint; // bouton de section pour le groupe
-    JComboBox bselectacc; // bouton de section pour le groupe
+    private JTabbedPane tabpref=new JTabbedPane(); // panel pour les parametres
+    private JPanel pprefjeu1=new JPanel();
+    private JPanel ppref1jeu1=new JPanel(); // panel pour le type du premier jeu
+    private JComboBox btype; //type de jeux
+    private JComboBox bvitesse; // bouton pour choisir la vitesse
+    private JPanel ppref2jeu1=new JPanel(); // panel pour la clef du premier jeu
+    private JComboBox bcle; //  bouton pour choisir la cl�
+    private JComboBox btonalite; // bouton pour choisir la tonalite
+    private JPanel ppref3jeu1=new JPanel(); // panel pour le type de note du premier jeu
+    private JComboBox bgroupes; // bouton pour choisir le nombre de differentes note
+    private JComboBox bselectnotes; // bouton de section pour le groupe
+    private JComboBox bselectint; // bouton de section pour le groupe
+    private JComboBox bselectacc; // bouton de section pour le groupe
 
-    JPanel pprefjeu2=new JPanel();
-    JPanel ppref1jeu2=new JPanel(); // panel pour le type de jeu
-    JComboBox btype2;
-    JComboBox bvitesse2;
-    JPanel ppref2jeu2=new JPanel(); // panel pour le type de rythme
-    JCheckBox cronde;
-    JCheckBox cblanche;
-    JCheckBox cnoire;
-    JCheckBox ccroche;
-    JCheckBox csilence;
-    JCheckBox cmetronome;
-    JPanel ppref3jeu2=new JPanel(); // panel pour le type de rythme
-    JPanel pprefboutons=new JPanel(); // panel pour les boutons
+    private JPanel pprefjeu2=new JPanel();
+    private JPanel ppref1jeu2=new JPanel(); // panel pour le type de jeu
+    private JComboBox btype2;
+    private JComboBox bvitesse2;
+    private JPanel ppref2jeu2=new JPanel(); // panel pour le type de rythme
+    private JCheckBox cronde;
+    private JCheckBox cblanche;
+    private JCheckBox cnoire;
+    private JCheckBox ccroche;
+    private JCheckBox csilence;
+    private JCheckBox cmetronome;
+    private JPanel ppref3jeu2=new JPanel(); // panel pour le type de rythme
+    private JPanel pprefboutons=new JPanel(); // panel pour les boutons
 
-    JButton okpref;
-    JButton cancelpref;
+    private JButton okpref;
+    private JButton cancelpref;
 
-    int sauvprefs[]=new int[16]; // pour bouton cancel
+    private int[] sauvprefs=new int[16]; // pour bouton cancel
 
     /*********************************************************/
-    JDialog dLessons;
+    private JDialog dLessons;
 
-    JPanel panelLessons=new JPanel();
-    JComboBox bLessons;
+    private JPanel panelLessons=new JPanel();
+    private JComboBox bLessons;
 
-    JPanel panelbuttonLessons=new JPanel();
-    JButton okLessons;
-    JButton cancelLessons;
+    private JPanel panelbuttonLessons=new JPanel();
+    private JButton okLessons;
+    private JButton cancelLessons;
 
-    JDialog levelMessage=new JDialog();
-    JPanel plevelMessage=new JPanel();
-    JLabel textlevelMessage=new JLabel();
-    JPanel pButtonlevelMessage=new JPanel();
-    JButton oklevelMessage=new JButton();
+    private JDialog levelMessage=new JDialog();
+    private JPanel plevelMessage=new JPanel();
+    private JLabel textlevelMessage=new JLabel();
+    private JPanel pButtonlevelMessage=new JPanel();
+    private JButton oklevelMessage=new JButton();
 
     /* JDialog for scoe message */
-    JDialog scoreMessage=new JDialog();
-    JPanel pscoreMessage=new JPanel();
-    JLabel textscoreMessage=new JLabel();
-    JPanel pButtonscoreMessage=new JPanel();
-    JButton okscoreMessage=new JButton();
+    private JDialog scoreMessage=new JDialog();
+    private JPanel pscoreMessage=new JPanel();
+    private JLabel textscoreMessage=new JLabel();
+    private JPanel pButtonscoreMessage=new JPanel();
+    private JButton okscoreMessage=new JButton();
 
     /******************************************************/
-    JDialog dmidi;
-    JPanel pmidi=new JPanel(); //panel principal midi
-    JPanel pmidi1=new JPanel(); // panel midi keynoard
-    JPanel pmidiboutons=new JPanel(); // panel pour les boutons
+    private JDialog dmidi;
+    private JPanel pmidi=new JPanel(); //panel principal midi
+    private JPanel pmidi1=new JPanel(); // panel midi keynoard
+    private JPanel pmidiboutons=new JPanel(); // panel pour les boutons
 
-    JCheckBox cson;
-    JComboBox binstr;
-    JPanel pmidi2=new JPanel(); // panel midi keyboard
-    JPanel pmidi20=new JPanel(); // panel midi keyboard
-    JComboBox bkeyboardlength; // for length-number of touchs of keyboard
-    JComboBox btranspose; // for transposition MIDI keyboard
+    private JCheckBox cson;
+    private JComboBox binstr;
+    private JPanel pmidi2=new JPanel(); // panel midi keyboard
+    private JPanel pmidi20=new JPanel(); // panel midi keyboard
+    private JComboBox bkeyboardlength; // for length-number of touchs of keyboard
+    private JComboBox btranspose; // for transposition MIDI keyboard
 
-    JComboBox bmidiin;
-    DefaultComboBoxModel model=new DefaultComboBoxModel();
+    private JComboBox bmidiin;
+    private DefaultComboBoxModel model=new DefaultComboBoxModel();
 
-    JButton okmidi;
-    JButton cancelmidi;
-    boolean selectmidi_forlang=false;
+    private JButton okmidi;
+    private JButton cancelmidi;
+    private boolean selectmidi_forlang;
 
-    int sauvmidi[]=new int[16]; // pour bouton cancel
-
-    /******************************************************/
-
-    JDialog dapropos;
-    JPanel papropos=new JPanel();
-    JPanel paproposboutons=new JPanel(); // panel pour les boutons
-    JTextArea texteapropos;
-    JScrollPane ascenceur;
-
-    JButton bcredits;
-    JButton blicence;
-    JButton bfermer;
+    private int[] sauvmidi=new int[16]; // pour bouton cancel
 
     /******************************************************/
 
-    JPanel principal=new JPanel(); // panel principal
+    private JDialog dapropos;
+    private JPanel papropos=new JPanel();
+    private JPanel paproposboutons=new JPanel(); // panel pour les boutons
+    private JTextArea texteapropos;
+    private JScrollPane ascenceur;
+
+    private JButton bcredits;
+    private JButton blicence;
+    private JButton bfermer;
+
+    /******************************************************/
+
+    private JPanel principal=new JPanel(); // panel principal
 
     /***********************************************************/
     /*************** METHODE D'INITIALISATION ******************/
@@ -3791,7 +3791,7 @@ public class jalmus extends JFrame implements WindowListener, MetaEventListener,
 
     }*/
 
-    public class anim
+    public class Anim
         extends JPanel {
 
         int dep=0;
