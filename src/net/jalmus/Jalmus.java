@@ -99,10 +99,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowListener;
+import java.awt.event.WindowAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -156,7 +156,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class Jalmus extends JFrame implements WindowListener, MetaEventListener, MouseListener, KeyListener, ActionListener, ItemListener {
+public class Jalmus extends JFrame implements MetaEventListener, KeyListener, ActionListener, ItemListener {
 
     //----------------------------------------------------------------
     // Translation variables
@@ -1039,8 +1039,7 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
 
         Toolkit toolkit=Toolkit.getDefaultToolkit();
 
-        icone=toolkit.getImage(getClass().getClassLoader().getResource(
-            "images/icon.png"));
+        icone=toolkit.getImage(getClass().getClassLoader().getResource("images/icon.png"));
 
         //     songo = getAudioClip(getCodeBase(),"sound/go.wav");
         //sonerreur = getAudioClip(getCodeBase(),"sound/erreur.wav");
@@ -1067,8 +1066,70 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
             }
 
         });
-        addMouseListener(this);
-        addWindowListener(this);
+
+        addMouseListener(new MouseAdapter() {
+
+            public void mousePressed(MouseEvent e) {
+                requestFocus();
+                if (ecranjeu==1) {
+                    Key key=piano.getKey(e.getPoint());
+                    piano.Setprevkey(key);
+                    if (key!=null) {
+                        if (key.Getknum()==60&!parti) {
+
+                            requestFocus();
+                            startnotegame();
+                            if (!renderingThread.isAlive()) {
+                                renderingThread.start();
+                            }
+                        } else if (key!=null&parti&!paused) {
+                            key.on(cc, cson.isSelected()&!erreurmidi);
+                            repaint();
+
+                            if (key.Getknum()==ncourante.getPitch()) {
+                                reponsejuste();
+                            } else {
+                                reponsefausse();
+                            }
+                        }
+                    }
+                }
+            }
+
+            public void mouseReleased(MouseEvent e) {
+                if (ecranjeu==1) {
+                    if (piano.Getprevkey()!=null) {
+                        piano.Getprevkey().off(cc, cson.isSelected()&!erreurmidi);
+                        repaint();
+                    }
+                }
+            }
+
+            public void mouseExited(MouseEvent e) {
+                if (ecranjeu==1) {
+                    if (piano.Getprevkey()!=null) {
+                        piano.Getprevkey().off(cc, cson.isSelected()&!erreurmidi);
+                        repaint();
+                        piano.Setprevkey(null);
+                    }
+                }
+            }
+
+        });
+
+        addWindowListener(new WindowAdapter() {
+
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                dispose();
+                System.exit(0);
+            }
+
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                dispose();
+                System.exit(0);
+            }
+
+        });
 
         setIconImage(icone);
 
@@ -1561,57 +1622,6 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
         }
     }  // end keyTyped()
 
-    public void mousePressed(MouseEvent e) {
-        requestFocus();
-        net.jalmus.Key key;
-        if (ecranjeu==1) {
-            key=piano.getKey(e.getPoint());
-            piano.Setprevkey(key);
-            if (key!=null) {
-                if (key.Getknum()==60&!parti) {
-
-                    this.requestFocus();
-                    startnotegame();
-                    if (!renderingThread.isAlive()) {
-                        renderingThread.start();
-                    }
-                } else if (key!=null&parti&!paused) {
-                    key.on(cc, cson.isSelected()&!erreurmidi);
-                    repaint();
-
-                    if (key.Getknum()==ncourante.getPitch()) {
-                        reponsejuste();
-                    } else {
-                        reponsefausse();
-                    }
-                }
-            }
-        }
-    }
-
-    public void mouseReleased(MouseEvent e) {
-        if (ecranjeu==1) {
-            if (piano.Getprevkey()!=null) {
-                piano.Getprevkey().off(cc, cson.isSelected()&!erreurmidi);
-                repaint();
-            }
-        }
-    }
-
-    public void mouseExited(MouseEvent e) {
-        if (ecranjeu==1) {
-            if (piano.Getprevkey()!=null) {
-                piano.Getprevkey().off(cc, cson.isSelected()&!erreurmidi);
-                repaint();
-                piano.Setprevkey(null);
-            }
-        }
-    }
-
-    public void mouseClicked(MouseEvent e) {}
-
-    public void mouseEntered(MouseEvent e) {}
-
     public void keyPressed(KeyEvent evt) {
 
         // Called when the user has pressed a key, which can be
@@ -1642,8 +1652,6 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
     }
 
     public void actionPerformed(ActionEvent e) {
-        Graphics g=getGraphics();
-        int x;
 
         if (e.getSource()==rblangueen) {
             langue="en";
@@ -1679,8 +1687,6 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
             langue="da";
             updateLang();
             listeRepertoire();
-
-
         }
 
         if (e.getSource()==rblanguetr) {
@@ -1949,38 +1955,6 @@ public class Jalmus extends JFrame implements WindowListener, MetaEventListener,
 
         }
         repaint();
-    }
-
-    public void windowOpened(java.awt.event.WindowEvent evt) {
-
-    }
-
-    public void windowClosed(java.awt.event.WindowEvent evt) {
-        dispose();
-        System.exit(0);
-
-    }
-
-    public void windowIconified(java.awt.event.WindowEvent evt) {
-
-    }
-
-    public void windowDeiconified(java.awt.event.WindowEvent evt) {
-
-    }
-
-    public void windowActivated(java.awt.event.WindowEvent evt) {
-
-    }
-
-    public void windowDeactivated(java.awt.event.WindowEvent evt) {
-
-    }
-
-    public void windowClosing(java.awt.event.WindowEvent evt) {
-        dispose();
-        System.exit(0);
-
     }
 
     public void sauvegardeprefs() {
