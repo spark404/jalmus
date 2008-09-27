@@ -286,11 +286,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     // Mise en place du menu
     private JMenuBar maBarre=new JMenuBar();
-    private JMenu jeu=new JMenu();
-    private JMenuItem menuNote=new JMenuItem(new ImageIcon(getClass().getResource("/images/note.png")));
-    private JMenuItem menuRhythm=new JMenuItem(new ImageIcon(getClass().getResource("/images/rythme.png")));
-    private JMenuItem menuLessons=new JMenuItem(new ImageIcon(getClass().getResource("/images/exercices.png")));
-    private JMenuItem quitter=new JMenuItem(new ImageIcon(getClass().getResource("/images/exit.png")));
 
     private JMenu menuParameters=new JMenu();
     private JMenuItem menuPrefs=new JMenuItem(new ImageIcon(getClass().getResource("/images/prefs.png")));
@@ -529,17 +524,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         scoreMessage.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         scoreMessage.setResizable(false);
 
-        jeu.setMnemonic(KeyEvent.VK_J);
-        jeu.add(menuNote);
-        jeu.add(menuRhythm);
-        jeu.add(menuLessons);
-        jeu.addSeparator();
-        jeu.add(quitter);
-        menuNote.addActionListener(this);
-        menuRhythm.addActionListener(this);
-        menuLessons.addActionListener(this);
-        quitter.addActionListener(this);
-        maBarre.add(jeu);
+
+        maBarre.add(buildGameMenu());
 
         menuParameters.add(menuPrefs);
         menuPrefs.addActionListener(this);
@@ -857,6 +843,51 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         updateLang();
 
+    }
+
+    //----------------------------------------------------------------
+    private JMenu buildGameMenu() {
+        JMenuItem noteReadingMenuItem=new JMenuItem(new ImageIcon(getClass().getResource("/images/note.png")));
+        localizables.add(new Localizable.Button(noteReadingMenuItem, "_menuNotereading"));
+        noteReadingMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleNoteReadingMenuItem();
+            }
+        });
+
+        JMenuItem rhythmReadingMenuItem=new JMenuItem(new ImageIcon(getClass().getResource("/images/rythme.png")));
+        localizables.add(new Localizable.Button(rhythmReadingMenuItem, "_menuRythmreading"));
+        rhythmReadingMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleRhythmReadingMenuItem();
+            }
+        });
+
+        JMenuItem lessonsMenuItem=new JMenuItem(new ImageIcon(getClass().getResource("/images/exercices.png")));
+        localizables.add(new Localizable.Button(lessonsMenuItem, "_menuLessons"));
+        lessonsMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleLessonsMenuItem();
+            }
+        });
+
+        JMenuItem exitMenuItem=new JMenuItem(new ImageIcon(getClass().getResource("/images/exit.png")));
+        localizables.add(new Localizable.Button(exitMenuItem, "_menuExit"));
+        exitMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleExitMenuItem();
+            }
+        });
+
+        JMenu gameMenu=new JMenu();
+        localizables.add(new Localizable.Button(gameMenu, "_menuGame"));
+        gameMenu.setMnemonic(KeyEvent.VK_J);
+        gameMenu.add(noteReadingMenuItem);
+        gameMenu.add(rhythmReadingMenuItem);
+        gameMenu.add(lessonsMenuItem);
+        gameMenu.addSeparator();
+        gameMenu.add(exitMenuItem);
+        return gameMenu;
     }
 
     //----------------------------------------------------------------
@@ -1483,7 +1514,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 JOptionPane.PLAIN_MESSAGE);
 
             if (n==0) {
-                menuLessons.doClick();
+                handleLessonsMenuItem();
             }
 
 
@@ -1755,9 +1786,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             backupMidiOptions();
             midiOptionsDialog.setLocationRelativeTo(this);
             midiOptionsDialog.setVisible(true);
-        } else if (e.getSource()==quitter) {
-            stopGames();
-            dispose();
         } else if (e.getSource()==bfermer) {
             aboutDialog.setVisible(false);
         } else if (e.getSource()==propos) {
@@ -1773,36 +1801,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         } else if (e.getSource()==bcredits) {
             texteapropos.setText(tcredits);
-        } else if (e.getSource()==menuNote) {
-            stopGames();
-            initNoteGame();
-            if (isLessonMode) {
-                noteLevel.init();
-            }
-            selectedGame=1;
-            isLessonMode=false;
-            changeScreen();
-        } else if (e.getSource()==menuRhythm) {
-            stopGames();
-            restartRhythmGame();
-            selectedGame=2;
-            if (isLessonMode) {
-                noteLevel.init();
-            }
-            isLessonMode=false;
-            changeScreen();
-
-        } else if (e.getSource()==menuLessons) {
-            stopGames();
-            isLessonMode=true;
-
-            lessonsDialog.setContentPane(panelLessons);
-
-            lessonsDialog.setSize(300, 100);
-            lessonsDialog.setLocationRelativeTo(this);
-            lessonsDialog.setVisible(true);
-
-
         } else if (e.getSource()==okLessons) {
             String parseerror;
             try {
@@ -1883,6 +1881,44 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         }
         repaint();
+    }
+
+    private void handleExitMenuItem() {
+        stopGames();
+        dispose();
+    }
+
+    private void handleLessonsMenuItem() {
+        stopGames();
+        isLessonMode=true;
+
+        lessonsDialog.setContentPane(panelLessons);
+
+        lessonsDialog.setSize(300, 100);
+        lessonsDialog.setLocationRelativeTo(this);
+        lessonsDialog.setVisible(true);
+    }
+
+    private void handleRhythmReadingMenuItem() {
+        stopGames();
+        restartRhythmGame();
+        selectedGame=2;
+        if (isLessonMode) {
+            noteLevel.init();
+        }
+        isLessonMode=false;
+        changeScreen();
+    }
+
+    private void handleNoteReadingMenuItem() {
+        stopGames();
+        initNoteGame();
+        if (isLessonMode) {
+            noteLevel.init();
+        }
+        selectedGame=1;
+        isLessonMode=false;
+        changeScreen();
     }
 
     private void handleMidiOptionsCancelClicked() {
@@ -2365,12 +2401,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             Localizable localizable=(Localizable)itr.next();
             localizable.update(bundle);
         }
-
-        jeu.setText(bundle.getString("_menuGame"));
-        menuNote.setText(bundle.getString("_menuNotereading"));
-        menuRhythm.setText(bundle.getString("_menuRythmreading"));
-        menuLessons.setText(bundle.getString("_menuLessons"));
-        quitter.setText(bundle.getString("_menuExit"));
 
         menuParameters.setText(bundle.getString("_menuSettings"));
         menuPrefs.setText(bundle.getString("_menuPreferences"));
