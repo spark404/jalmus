@@ -335,9 +335,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     // Dialogs
 
     private JDialog preferencesDialog;
+    private static final int NOTE_READING_TAB=0;
+    private static final int RHYTM_READING_TAB=1;
 
     private JTabbedPane preferencesTabbedPane=new JTabbedPane(); // panel pour les parametres
-    private JPanel pprefjeu1=new JPanel();
     private JPanel ppref1jeu1=new JPanel(); // panel pour le type du premier jeu
     private JComboBox btype; //type de jeux
     private JComboBox bvitesse; // bouton pour choisir la vitesse
@@ -350,7 +351,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JComboBox bselectint; // bouton de section pour le groupe
     private JComboBox bselectacc; // bouton de section pour le groupe
 
-    private JPanel pprefjeu2=new JPanel();
+    private JPanel rhythmReadingPanel=new JPanel();
     private JPanel ppref1jeu2=new JPanel(); // panel pour le type de jeu
     private JComboBox btype2;
     private JComboBox bvitesse2;
@@ -999,12 +1000,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         /******* PREFERENCES JEU 1 LECTURE DE NOTE  *****************/
         /************************************************************/
 
-        pprefjeu1.setLayout(new GridLayout(3, 1));
-
         /* 1er panel - type de jeu */
 
         btype=new JComboBox();
-
         btype.addItemListener(this);
         ppref1jeu1.add(btype);
 
@@ -1018,7 +1016,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         ppref1jeu1.add(bvitesse);
 
-        pprefjeu1.add(ppref1jeu1);
 
         /* 2ème panel - clef */
 
@@ -1032,7 +1029,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         btonalite.addItemListener(this);
         ppref2jeu1.add(btonalite);
 
-        pprefjeu1.add(ppref2jeu1);
 
         /* 3ème panel - Notes */
 
@@ -1040,7 +1036,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         bgroupes.addItemListener(this);
         ppref3jeu1.add(bgroupes);
-        //bgroupes.setSelectedItem(notes);
 
         bselectnotes=new JComboBox();
 
@@ -1053,14 +1048,16 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         bselectacc=new JComboBox();
         bselectacc.addItemListener(this);
 
-        //bselectnotes.setSelectedItem("3 notes");
-
-        pprefjeu1.add(ppref3jeu1);
+        JPanel noteReadingPanel=new JPanel();
+        noteReadingPanel.setLayout(new GridLayout(3, 1));
+        noteReadingPanel.add(ppref1jeu1);
+        noteReadingPanel.add(ppref2jeu1);
+        noteReadingPanel.add(ppref3jeu1);
 
         /************************************************************/
         /******* PREFERENCES JEU 2 LECTURE RYTHMIQUE  ***************/
         /************************************************************/
-        pprefjeu2.setLayout(new GridLayout(3, 1));
+        rhythmReadingPanel.setLayout(new GridLayout(3, 1));
 
         /* 1er panel - type de jeu */
 
@@ -1076,10 +1073,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         bvitesse2.addItem("Allegro");
         bvitesse2.addItem("Presto");
         bvitesse2.addItemListener(this);
-        //bvitesse.setSelectedItem("Moderato");
         ppref1jeu2.add(bvitesse2);
 
-        pprefjeu2.add(ppref1jeu2);
+        rhythmReadingPanel.add(ppref1jeu2);
 
         /* 2ème panel - RYTHME */
 
@@ -1097,8 +1093,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         ppref3jeu2.add(metronomeCheckBox);
 
-        pprefjeu2.add(ppref2jeu2);
-        pprefjeu2.add(ppref3jeu2);
+        rhythmReadingPanel.add(ppref2jeu2);
+        rhythmReadingPanel.add(ppref3jeu2);
+
+        preferencesTabbedPane.addTab(null, new ImageIcon(getClass().getResource("/images/note.png")), noteReadingPanel);
+        m_localizables.add(new Localizable.Tab(preferencesTabbedPane, NOTE_READING_TAB, "_menuNotereading"));
+        preferencesTabbedPane.addTab(null, new ImageIcon(getClass().getResource("/images/rythme.png")), rhythmReadingPanel);
+        m_localizables.add(new Localizable.Tab(preferencesTabbedPane, RHYTM_READING_TAB, "_menuRythmreading"));
 
         // buttons below tabs
 
@@ -1123,9 +1124,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         JPanel buttonPanel=new JPanel();
         buttonPanel.add(preferencesOkButton);
         buttonPanel.add(preferencesCancelButton);
-
-        preferencesTabbedPane.addTab("Lecture de note", new ImageIcon(getClass().getResource("/images/note.png")), pprefjeu1);
-        preferencesTabbedPane.addTab("Lecture rythmique", new ImageIcon(getClass().getResource("/images/rythme.png")), pprefjeu2);
 
         JPanel contentPanel=new JPanel();
         contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
@@ -1912,10 +1910,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void handlePreferencesClicked() {
         if (selectedGame==1) {
-            preferencesTabbedPane.setSelectedComponent(pprefjeu1);
+            preferencesTabbedPane.setSelectedIndex(NOTE_READING_TAB);
             stopGames();
         } else if (selectedGame==2) {
-            preferencesTabbedPane.setSelectedComponent(pprefjeu2);
+            preferencesTabbedPane.setSelectedIndex(RHYTM_READING_TAB);
             restartRhythmGame();
         }
         menuPrefs.doClick();
@@ -2446,9 +2444,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         ppref3jeu2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(bundle.getString("_menuMetronom")),
             BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
-        preferencesTabbedPane.setTitleAt(0, bundle.getString("_menuNotereading"));
-        preferencesTabbedPane.setTitleAt(1, bundle.getString("_menuRythmreading"));
 
         seconde=bundle.getString("_second");
         tierce=bundle.getString("_third");

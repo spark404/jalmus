@@ -2,6 +2,7 @@ package net.jalmus;
 
 import java.util.ResourceBundle;
 import javax.swing.AbstractButton;
+import javax.swing.JTabbedPane;
 
 //--------------------------------------------------------------------
 /** (description of class)
@@ -38,4 +39,19 @@ public interface Localizable {
         }
     }
 
+    class Tab implements Localizable {
+        private final JTabbedPane m_tabbedPane;
+        private final int m_nTabIndex;
+        private final String m_sKey;
+
+        public Tab(JTabbedPane tabbedPane, int nTabIndex, String sKey) {
+            m_tabbedPane=tabbedPane;
+            m_nTabIndex=nTabIndex;
+            m_sKey=sKey;
+        }
+
+        public void update(ResourceBundle resourceBundle) {
+            m_tabbedPane.setTitleAt(m_nTabIndex, resourceBundle.getString(m_sKey));
+        }
+    }
 }
