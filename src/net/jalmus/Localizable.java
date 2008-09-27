@@ -2,7 +2,10 @@ package net.jalmus;
 
 import java.util.ResourceBundle;
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
+import javax.swing.border.Border;
 
 //--------------------------------------------------------------------
 /** (description of class)
@@ -11,6 +14,7 @@ public interface Localizable {
     void update(ResourceBundle resourceBundle);
 
 
+    //----------------------------------------------------------------
     class Button implements Localizable {
         private final AbstractButton m_button;
         private final String m_sKey;
@@ -25,6 +29,7 @@ public interface Localizable {
         }
     }
 
+    //----------------------------------------------------------------
     class Dialog implements Localizable {
         private final java.awt.Dialog m_dialog;
         private final String m_sKey;
@@ -39,6 +44,7 @@ public interface Localizable {
         }
     }
 
+    //----------------------------------------------------------------
     class Tab implements Localizable {
         private final JTabbedPane m_tabbedPane;
         private final int m_nTabIndex;
@@ -52,6 +58,24 @@ public interface Localizable {
 
         public void update(ResourceBundle resourceBundle) {
             m_tabbedPane.setTitleAt(m_nTabIndex, resourceBundle.getString(m_sKey));
+        }
+    }
+
+    //----------------------------------------------------------------
+    class NamedGroup implements Localizable {
+        private final JComponent m_component;
+        private final String m_sKey;
+
+        public NamedGroup(JComponent component, String sKey) {
+            m_component=component;
+            m_sKey=sKey;
+        }
+
+        public void update(ResourceBundle resourceBundle) {
+            Border titledBorder=BorderFactory.createTitledBorder(resourceBundle.getString(m_sKey));
+            Border emptyBorder=BorderFactory.createEmptyBorder(5, 5, 5, 5);
+            m_component.setBorder(BorderFactory.createCompoundBorder(titledBorder, emptyBorder));
+
         }
     }
 }
