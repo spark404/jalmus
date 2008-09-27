@@ -414,7 +414,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void init(String paramlangue) {
 
-        if (initializeMidi()) return;
+        if (!initializeMidi()) {
+            return;
+        }
 
         startButton=new JButton();
         localizables.add(new Localizable.Button(startButton, "_start"));
@@ -897,7 +899,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 if ((syn=MidiSystem.getSynthesizer())==null) {
                     System.out.println("getSynthesizer() failed!");
 
-                    return true;
+                    return false;
                 }
             }
             syn.open();
@@ -929,7 +931,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
             currentChannel=channels[0];
         }
-        return false;
+        return true;
     }
 
     //----------------------------------------------------------------
