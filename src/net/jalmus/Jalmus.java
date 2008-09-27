@@ -328,14 +328,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JButton bdiese2;
     private JPanel pnotes=new JPanel();
 
-    private JButton bgo;    // bouton pour démarrer le jeu
-    private JButton bpref;  // bouton pour acceder directement aux prefernces jeu
+    private JButton startButton;    // bouton pour démarrer le jeu
+    private JButton preferencesButton;  // bouton pour acceder directement aux prefernces jeu
 
     //----------------------------------------------------------------
     // Dialogs
 
-    private JDialog preferences; // Dialog Preferences
-    private JPanel ppref=new JPanel();
+    private JDialog preferencesDialog;
 
     private JTabbedPane preferencesTabbedPane=new JTabbedPane(); // panel pour les parametres
     private JPanel pprefjeu1=new JPanel();
@@ -361,9 +360,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JCheckBox cnoire;
     private JCheckBox ccroche;
     private JCheckBox csilence;
-    private JCheckBox cmetronome;
+    private JCheckBox metronomeCheckBox;
     private JPanel ppref3jeu2=new JPanel(); // panel pour le type de rythme
-    private JPanel pprefboutons=new JPanel(); // panel pour les boutons
 
     private int[] sauvprefs=new int[16]; // pour bouton cancel
 
@@ -473,139 +471,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
 
         /************************************************************/
-        /******* PREFERENCES JEU 1 LECTURE DE NOTE  *****************/
-        /************************************************************/
-        pprefjeu1.setLayout(new GridLayout(3, 1));
-
-        /* 1er panel - type de jeu */
-
-        btype=new JComboBox();
-
-        btype.addItemListener(this);
-        ppref1jeu1.add(btype);
-
-        bvitesse=new JComboBox();
-        bvitesse.addItem("Largo");
-        bvitesse.addItem("Adagio");
-        bvitesse.addItem("Moderato");
-        bvitesse.addItem("Allegro");
-        bvitesse.addItem("Presto");
-        bvitesse.addItemListener(this);
-
-        ppref1jeu1.add(bvitesse);
-
-        pprefjeu1.add(ppref1jeu1);
-
-        /* 2ème panel - clef */
-
-        bcle=new JComboBox();
-
-        bcle.addItemListener(this);
-        ppref2jeu1.add(bcle);
-
-        btonalite=new JComboBox();
-
-        btonalite.addItemListener(this);
-        ppref2jeu1.add(btonalite);
-
-        pprefjeu1.add(ppref2jeu1);
-
-        /* 3ème panel - Notes */
-
-        bgroupes=new JComboBox();
-
-        bgroupes.addItemListener(this);
-        ppref3jeu1.add(bgroupes);
-        //bgroupes.setSelectedItem(notes);
-
-        bselectnotes=new JComboBox();
-
-        bselectnotes.addItemListener(this);
-        ppref3jeu1.add(bselectnotes);
-
-        bselectint=new JComboBox();
-        bselectint.addItemListener(this);
-
-        bselectacc=new JComboBox();
-        bselectacc.addItemListener(this);
-
-        //bselectnotes.setSelectedItem("3 notes");
-
-        pprefjeu1.add(ppref3jeu1);
-
-        /************************************************************/
-        /******* PREFERENCES JEU 2 LECTURE RYTHMIQUE  ***************/
-        /************************************************************/
-        pprefjeu2.setLayout(new GridLayout(3, 1));
-
-        /* 1er panel - type de jeu */
-
-        btype2=new JComboBox();
-        btype2.addItem("Normal");
-        btype2.addItemListener(this);
-        ppref1jeu2.add(btype2);
-
-        bvitesse2=new JComboBox();
-        bvitesse2.addItem("Largo");
-        bvitesse2.addItem("Adagio");
-        bvitesse2.addItem("Moderato");
-        bvitesse2.addItem("Allegro");
-        bvitesse2.addItem("Presto");
-        bvitesse2.addItemListener(this);
-        //bvitesse.setSelectedItem("Moderato");
-        ppref1jeu2.add(bvitesse2);
-
-        pprefjeu2.add(ppref1jeu2);
-
-        /* 2ème panel - RYTHME */
-
-        cronde=new JCheckBox("", true);
-        cblanche=new JCheckBox("", true);
-        cnoire=new JCheckBox("", false);
-        ccroche=new JCheckBox("", false);
-        csilence=new JCheckBox("", true);
-        cmetronome=new JCheckBox("", true);
-        ppref2jeu2.add(cronde);
-        ppref2jeu2.add(cblanche);
-        ppref2jeu2.add(cnoire);
-        ppref2jeu2.add(ccroche);
-        ppref2jeu2.add(csilence);
-
-        ppref3jeu2.add(cmetronome);
-
-        pprefjeu2.add(ppref2jeu2);
-        pprefjeu2.add(ppref3jeu2);
-
-        // buttons below tabs
-
-        JButton preferencesOkButton=new JButton();
-        preferencesOkButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                handlePreferencesOkClicked();
-            }
-        });
-        preferencesOkButton.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
-        m_localizables.add(new Localizable.Button(preferencesOkButton, "_buttonok"));
-
-        JButton preferencesCancelButton=new JButton();
-        preferencesCancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                handlePreferencesCancelClicked();
-            }
-        });
-        preferencesCancelButton.setIcon(new ImageIcon(getClass().getResource("/images/cancel.png")));
-        m_localizables.add(new Localizable.Button(preferencesCancelButton, "_buttoncancel"));
-
-        preferencesTabbedPane.addTab("Lecture de note", new ImageIcon(getClass().getResource("/images/note.png")), pprefjeu1);
-        preferencesTabbedPane.addTab("Lecture rythmique", new ImageIcon(getClass().getResource("/images/rythme.png")), pprefjeu2);
-
-        ppref.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
-        ppref.add(preferencesTabbedPane);
-        pprefboutons.add(preferencesOkButton);
-        pprefboutons.add(preferencesCancelButton);
-        ppref.add(pprefboutons);
-
-        /************************************************************/
         /****************** FENETRE OPTIONS MIDI  *******************/
         /************************************************************/
 
@@ -688,13 +553,23 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         pmidiboutons.add(cancelmidi);
         pmidi.add(pmidiboutons);
 
-        bgo=new JButton();
+        startButton=new JButton();
+        m_localizables.add(new Localizable.Button(startButton, "_start"));
+        startButton.setPreferredSize(new Dimension(150, 20));
+        startButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleStartButtonClicked();
+            }
+        });
 
-        bgo.addActionListener(this);
-
-        bpref=new JButton();
-
-        bpref.addActionListener(this);
+        preferencesButton=new JButton();
+        m_localizables.add(new Localizable.Button(preferencesButton, "_menuPreferences"));
+        preferencesButton.setPreferredSize(new Dimension(150, 20));
+        preferencesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handlePreferencesClicked();
+            }
+        });
 
         bdo=new JButton();
         bdo.addActionListener(this);
@@ -760,21 +635,17 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         //add(pnotes);
 
         pboutonjeu.setLayout(new FlowLayout());
-        pboutonjeu.add(bgo);
-        bgo.setPreferredSize(new Dimension(150, 20));
+        pboutonjeu.add(startButton);
         pnotes.setPreferredSize(new Dimension(450, 40));
-        bpref.setPreferredSize(new Dimension(150, 20));
         pboutonjeu.add(pnotes);
-        pboutonjeu.add(bpref);
+        pboutonjeu.add(preferencesButton);
         pnotes.setBackground(Color.white);
         pboutonjeu.setBackground(Color.white);
 
         /************************************************************************/
         /******************************** MENU *********************************/
         /***********************************************************************/
-        preferences=new JDialog(this, true);
-        preferences.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        preferences.setResizable(false);
+        preferencesDialog=buildPreferencesDialog();
 
         dmidi=new JDialog(this, true);
         dapropos=new JDialog(this, true);
@@ -1015,7 +886,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         principal.setLayout(new BorderLayout());
 
-        //  principal.add(bgo); //ajout du bouton de d�marrage au panel principal
         principal.add(pboutonjeu, BorderLayout.NORTH);
         principal.add(panelanim, BorderLayout.CENTER);
 
@@ -1124,6 +994,154 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     }
 
+    private JDialog buildPreferencesDialog() {
+        /************************************************************/
+        /******* PREFERENCES JEU 1 LECTURE DE NOTE  *****************/
+        /************************************************************/
+
+        pprefjeu1.setLayout(new GridLayout(3, 1));
+
+        /* 1er panel - type de jeu */
+
+        btype=new JComboBox();
+
+        btype.addItemListener(this);
+        ppref1jeu1.add(btype);
+
+        bvitesse=new JComboBox();
+        bvitesse.addItem("Largo");
+        bvitesse.addItem("Adagio");
+        bvitesse.addItem("Moderato");
+        bvitesse.addItem("Allegro");
+        bvitesse.addItem("Presto");
+        bvitesse.addItemListener(this);
+
+        ppref1jeu1.add(bvitesse);
+
+        pprefjeu1.add(ppref1jeu1);
+
+        /* 2ème panel - clef */
+
+        bcle=new JComboBox();
+
+        bcle.addItemListener(this);
+        ppref2jeu1.add(bcle);
+
+        btonalite=new JComboBox();
+
+        btonalite.addItemListener(this);
+        ppref2jeu1.add(btonalite);
+
+        pprefjeu1.add(ppref2jeu1);
+
+        /* 3ème panel - Notes */
+
+        bgroupes=new JComboBox();
+
+        bgroupes.addItemListener(this);
+        ppref3jeu1.add(bgroupes);
+        //bgroupes.setSelectedItem(notes);
+
+        bselectnotes=new JComboBox();
+
+        bselectnotes.addItemListener(this);
+        ppref3jeu1.add(bselectnotes);
+
+        bselectint=new JComboBox();
+        bselectint.addItemListener(this);
+
+        bselectacc=new JComboBox();
+        bselectacc.addItemListener(this);
+
+        //bselectnotes.setSelectedItem("3 notes");
+
+        pprefjeu1.add(ppref3jeu1);
+
+        /************************************************************/
+        /******* PREFERENCES JEU 2 LECTURE RYTHMIQUE  ***************/
+        /************************************************************/
+        pprefjeu2.setLayout(new GridLayout(3, 1));
+
+        /* 1er panel - type de jeu */
+
+        btype2=new JComboBox();
+        btype2.addItem("Normal");
+        btype2.addItemListener(this);
+        ppref1jeu2.add(btype2);
+
+        bvitesse2=new JComboBox();
+        bvitesse2.addItem("Largo");
+        bvitesse2.addItem("Adagio");
+        bvitesse2.addItem("Moderato");
+        bvitesse2.addItem("Allegro");
+        bvitesse2.addItem("Presto");
+        bvitesse2.addItemListener(this);
+        //bvitesse.setSelectedItem("Moderato");
+        ppref1jeu2.add(bvitesse2);
+
+        pprefjeu2.add(ppref1jeu2);
+
+        /* 2ème panel - RYTHME */
+
+        cronde=new JCheckBox("", true);
+        cblanche=new JCheckBox("", true);
+        cnoire=new JCheckBox("", false);
+        ccroche=new JCheckBox("", false);
+        csilence=new JCheckBox("", true);
+        metronomeCheckBox=new JCheckBox("", true);
+        ppref2jeu2.add(cronde);
+        ppref2jeu2.add(cblanche);
+        ppref2jeu2.add(cnoire);
+        ppref2jeu2.add(ccroche);
+        ppref2jeu2.add(csilence);
+
+        ppref3jeu2.add(metronomeCheckBox);
+
+        pprefjeu2.add(ppref2jeu2);
+        pprefjeu2.add(ppref3jeu2);
+
+        // buttons below tabs
+
+        JButton preferencesOkButton=new JButton();
+        preferencesOkButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handlePreferencesOkClicked();
+            }
+        });
+        preferencesOkButton.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
+        m_localizables.add(new Localizable.Button(preferencesOkButton, "_buttonok"));
+
+        JButton preferencesCancelButton=new JButton();
+        preferencesCancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handlePreferencesCancelClicked();
+            }
+        });
+        preferencesCancelButton.setIcon(new ImageIcon(getClass().getResource("/images/cancel.png")));
+        m_localizables.add(new Localizable.Button(preferencesCancelButton, "_buttoncancel"));
+
+        JPanel buttonPanel=new JPanel();
+        buttonPanel.add(preferencesOkButton);
+        buttonPanel.add(preferencesCancelButton);
+
+        preferencesTabbedPane.addTab("Lecture de note", new ImageIcon(getClass().getResource("/images/note.png")), pprefjeu1);
+        preferencesTabbedPane.addTab("Lecture rythmique", new ImageIcon(getClass().getResource("/images/rythme.png")), pprefjeu2);
+
+        JPanel contentPanel=new JPanel();
+        contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
+        contentPanel.add(preferencesTabbedPane);
+        contentPanel.add(buttonPanel);
+
+        JDialog dialog=new JDialog(this, true);
+        m_localizables.add(new Localizable.Dialog(dialog, "_menuPreferences"));
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        dialog.setResizable(false);
+        dialog.setContentPane(contentPanel);
+        dialog.setSize(480, 345);
+
+        return dialog;
+    }
+
     private void close() {
         if (syn!=null) {
             syn.close();
@@ -1146,14 +1164,14 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void changeScreen() {
 
         if (isLessonMode) {
-            bgo.setVisible(false);
-            bpref.setVisible(false);
+            startButton.setVisible(false);
+            preferencesButton.setVisible(false);
 
             menuPrefs.setEnabled(false);
 
         } else {
-            bgo.setVisible(true);
-            bpref.setVisible(true);
+            startButton.setVisible(true);
+            preferencesButton.setVisible(true);
             menuPrefs.setEnabled(true);
 
         }
@@ -1425,7 +1443,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             levelMessage.setVisible(true);
 
         } else {
-            bgo.doClick();
+            startButton.doClick();
         }
     }
 
@@ -1680,12 +1698,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         } else if (e.getSource()==menuPrefs) {
             stopGames();
-            sauvegardeprefs();
-            preferences.setContentPane(ppref);
-            preferences.setSize(480, 345);
+            backupPreferences();
 
-            preferences.setLocationRelativeTo(this);
-            preferences.setVisible(true);
+            preferencesDialog.setLocationRelativeTo(this);
+            preferencesDialog.setVisible(true);
 
         } else if (e.getSource()==aidesommaire) {
             stopGames();
@@ -1746,16 +1762,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             if (paused) {
                 paused=false;
             }
-        } else if (e.getSource()==bpref) {
-
-            if (selectedGame==1) {
-                preferencesTabbedPane.setSelectedComponent(pprefjeu1);
-                stopGames();
-            } else if (selectedGame==2) {
-                preferencesTabbedPane.setSelectedComponent(pprefjeu2);
-                restartRhythmGame();
-            }
-            menuPrefs.doClick();
         } else if (e.getSource()==quitter) {
             stopGames();
             dispose();
@@ -1856,28 +1862,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             dLessons.setVisible(false);
         }
 
-        if (e.getSource()==bgo) {  // POUR DEMARRAGE DU PROGRAMME
-            if (selectedGame==1) {
-                if (parti) {
-                    initNoteGame(); //stop the game before restart
-
-                    requestFocus();
-                } else {
-                    requestFocus();
-                    startNoteGame();
-                    if (!renderingThread.isAlive()) {
-                        renderingThread.start();
-                    }
-                }
-            } else if (selectedGame==2) {
-                startRhythmGame();
-            }
-        }
-
         //  SI LE LABEL DU BOUTON SELECTIONNE EST EGAL A LA NOTE COURANTE   ----> GAGNE
 
-        else
-        if ((parti&selectedGame==1 && !paused) && (e.getSource()==bdo || e.getSource()==bre || e.getSource()==bmi || e.getSource()==bfa
+        if ((parti && selectedGame==1 && !paused) && (e.getSource()==bdo || e.getSource()==bre || e.getSource()==bmi || e.getSource()==bfa
             || e.getSource()==bsol || e.getSource()==bla || e.getSource()==bsi || e.getSource()==bdo2
             || e.getSource()==bdiese || e.getSource()==bdiese2 || e.getSource()==bbemol || e.getSource()==bbemol2)) {
 
@@ -1885,7 +1872,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 if (((JButton)e.getSource()).getText().equals(ncourante.getAlteration())) {
                     alterationok=true;
                 } else
-                if (alterationok&((JButton)e.getSource()).getText().equals(ncourante.getNom())) {
+                if (alterationok && ((JButton)e.getSource()).getText().equals(ncourante.getNom())) {
                     reponsejuste();
                 } else {
                     reponsefausse();
@@ -1905,19 +1892,45 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         repaint();
     }
 
+    private void handleStartButtonClicked() {
+        if (selectedGame==1) {
+            if (parti) {
+                initNoteGame(); //stop the game before restart
+
+                requestFocus();
+            } else {
+                requestFocus();
+                startNoteGame();
+                if (!renderingThread.isAlive()) {
+                    renderingThread.start();
+                }
+            }
+        } else if (selectedGame==2) {
+            startRhythmGame();
+        }
+    }
+
+    private void handlePreferencesClicked() {
+        if (selectedGame==1) {
+            preferencesTabbedPane.setSelectedComponent(pprefjeu1);
+            stopGames();
+        } else if (selectedGame==2) {
+            preferencesTabbedPane.setSelectedComponent(pprefjeu2);
+            restartRhythmGame();
+        }
+        menuPrefs.doClick();
+    }
+
     private void handleLevelOkClicked() {
         levelMessage.dispose();
-
         if (isLessonMode) {
-
-            bgo.doClick();
-
+            startButton.doClick();
         }
     }
 
     private void handlePreferencesCancelClicked() {
-        restaureprefs();
-        preferences.setVisible(false);
+        restorePreferences();
+        preferencesDialog.setVisible(false);
     }
 
     private void handlePreferencesOkClicked() {
@@ -1942,11 +1955,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         // update screen
         changeScreen();
-        preferences.setVisible(false);
+        preferencesDialog.setVisible(false);
         repaint();
     }
 
-    private void sauvegardeprefs() {
+    private void backupPreferences() {
         sauvprefs[0]=btype.getSelectedIndex();
         sauvprefs[1]=bvitesse.getSelectedIndex();
         sauvprefs[2]=bcle.getSelectedIndex();
@@ -1987,7 +2000,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else {
             sauvprefs[14]=0;
         }
-        if (cmetronome.isSelected()) {
+        if (metronomeCheckBox.isSelected()) {
             sauvprefs[15]=1;
         } else {
             sauvprefs[15]=0;
@@ -1995,7 +2008,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     }
 
-    private void restaureprefs() {
+    private void restorePreferences() {
 
         btype.setSelectedIndex(sauvprefs[0]);
         bvitesse.setSelectedIndex(sauvprefs[1]);
@@ -2038,9 +2051,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             csilence.setSelected(false);
         }
         if (sauvprefs[10]==1) {
-            cmetronome.setSelected(true);
+            metronomeCheckBox.setSelected(true);
         } else {
-            cmetronome.setSelected(false);
+            metronomeCheckBox.setSelected(false);
         }
 
     }
@@ -2354,7 +2367,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         menuParameters.setText(bundle.getString("_menuSettings"));
         menuPrefs.setText(bundle.getString("_menuPreferences"));
-        preferences.setTitle(bundle.getString("_menuPreferences"));
         menuMidi.setText(bundle.getString("_menuMidi"));
         dmidi.setTitle(bundle.getString("_menuMidi"));
         langues.setText(bundle.getString("_menuLanguage"));
@@ -2467,7 +2479,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         bselectacc.addItem(bundle.getString("_inversion"));
 
         cson.setText(bundle.getString("_sound"));
-        cmetronome.setText(bundle.getString("_menuMetronom"));
+        metronomeCheckBox.setText(bundle.getString("_menuMetronom"));
 
         //  bmidiin.removeItemAt(0);
         selectmidi_forlang=true;
@@ -2495,8 +2507,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         bfermer.setText(bundle.getString("_buttonclose"));
         bcredits.setText(bundle.getString("_buttoncredits"));
         blicence.setText(bundle.getString("_buttonlicense"));
-        bgo.setText(bundle.getString("_start"));
-        bpref.setText(bundle.getString("_menuPreferences"));
         okLessons.setText(bundle.getString("_buttonok"));
         cancelLessons.setText(bundle.getString("_buttoncancel"));
 
@@ -3090,7 +3100,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             addEvent(metronome, TEXT, textd.getBytes(), (int)nbtemps*ppq);
 
-            if (cmetronome.isSelected()) {
+            if (metronomeCheckBox.isSelected()) {
                 for (int l=0; l<=60; l++) {
                     ShortMessage mess=new ShortMessage();
                     ShortMessage mess2=new ShortMessage();
@@ -3851,29 +3861,29 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         // Event pour la gestion des Evenements et principalement le message EXIT
         // Constructions de la frame
 
-        Jalmus l=new Jalmus();
+        Jalmus jalmus=new Jalmus();
         // Initialisation
         if (arg.length==0) {
-            l.init("en");
+            jalmus.init("en");
         } else {
-            l.init(arg[0]);
+            jalmus.init(arg[0]);
         }
 
         // Forcer la taille
-        l.setSize(790, 590);
+        jalmus.setSize(790, 590);
         // Affichage
-        l.repaint();
+        jalmus.repaint();
 
-        l.setVisible(true);
-        l.setFocusable(true);
+        jalmus.setVisible(true);
+        jalmus.setFocusable(true);
 
-        l.setResizable(false);
+        jalmus.setResizable(false);
 
-        l.setTitle("Jalmus"); //On donne un titre à l'application
+        jalmus.setTitle("Jalmus"); //On donne un titre à l'application
 
-        l.setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
+        jalmus.setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
 
-        l.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //On dit à l'application de se fermer
+        jalmus.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //On dit à l'application de se fermer
         //lors du clic sur la croix
 
     }

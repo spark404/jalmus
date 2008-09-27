@@ -24,4 +24,18 @@ public interface Localizable {
         }
     }
 
+    class Dialog implements Localizable {
+        private final java.awt.Dialog m_dialog;
+        private final String m_sKey;
+
+        public Dialog(java.awt.Dialog dialog, String sKey) {
+            m_dialog=dialog;
+            m_sKey=sKey;
+        }
+
+        public void update(ResourceBundle resourceBundle) {
+            m_dialog.setTitle(resourceBundle.getString(m_sKey));
+        }
+    }
+
 }
