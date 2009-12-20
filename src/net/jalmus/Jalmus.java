@@ -1355,8 +1355,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void startRhythmGame() {
-        restartRhythmGame(); // arret du jeu pr�c�dent
-
+      
+        if (sm_sequencer !=null) {
+        	  restartRhythmGame(); // arret du jeu pr�c�dent
+        	sm_sequencer.close();
+        	repaint();
+        
+        }
         creationligner();
 
         try {
@@ -3216,7 +3221,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void creationligner() {
-
+    	 repaint();
         int tickcourant=(int)(nbtemps*ppq);
 
         // INNITIALISATION Sequence et tracks
@@ -3230,7 +3235,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         track=sequence.createTrack();
         metronome=sequence.createTrack();
 
-        createMetronome();
+        createMetronome();	
+       
 
         try {
             ShortMessage sm=new ShortMessage();
