@@ -9,8 +9,8 @@
   
   <shortcut
     name="Jalmus"
-    target="$INSTALL_PATH/bin/jalmus-linux"
-    commandLine=""
+    target="java"
+    commandLine="-jar $INSTALL_PATH/bin/jalmus.jar"
     workingDirectory=""
  type="Application"
      encoding="UTF-8"
