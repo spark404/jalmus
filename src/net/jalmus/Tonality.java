@@ -67,9 +67,9 @@ public class Tonality {
 
 
   public void paint(NoteLevel nrlevel, Graphics g, int marge, int dportee, net.jalmus.Tabimage tab, Component j, ResourceBundle bundle) {
-    int i = 0;
+
     int decalagecle = 0;
-    boolean ok = false;
+
     Image diese = tab.Getimage(17);
     Image bemol = tab.Getimage(18);
 

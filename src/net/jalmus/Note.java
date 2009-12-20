@@ -247,7 +247,7 @@ import java.util.ResourceBundle;
 
          public void majalteration(Tonality t, int pitch0, int nnote, ResourceBundle b){ //pour les accords
                   int alt = 0;
-                  int minmaj = 0;
+ 
                   double tmp = 0;
                   //System.out.println(this.Pitch-pitch0+" AVANT");
                   tmp = Math.random();
