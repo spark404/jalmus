@@ -18,10 +18,9 @@
     description="This starts Jalmus"
     iconFile="$INSTALL_PATH/icons/jalmus.png"
     iconIndex="0"
+    application="yes"
     initialState="noShow"
     programGroup="yes"
-    desktop="yes"
-    applications="no"
     startMenu="no"
     startup="no">
 
@@ -34,13 +33,11 @@
    <shortcut
      name="Jalmus Uninstaller"
      programGroup="yes"
-     desktop="yes"
      applications="no"
      startMenu="no"
      startup="no"
      target="java"
-     commandLine="-jar $INSTALL_PATH/Uninstaller/uninstaller.jar"
-     
+     commandLine="-jar $INSTALL_PATH/Uninstaller/uninstaller.jar"   
      initialState="noShow"
      iconFile="trashcan_full"
      iconIndex="0" 
