@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : All notes on treble clef.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: to learn all notes on treble clef
+-->
+
+<levels>
+<notereading id = '0'>
+<message>First we are working all notes on a octave in treble clef</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>10</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Now same notes without help - G correspond to the key with a green point</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>15</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>All the notes in line, you should find the first note of the line</message>
+<game>inline</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>Same notes at the octave</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>10</speed>
+<startingnote>7</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>Now same notes without help - G correspond to the key with a green point</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>15</speed>
+<startingnote>7</startingnote>
+</notereading>
+
+<notereading id = '5'>
+<message>All the notes in line, you should find the first note of the line</message>
+<game>inline</game>
+<clef>treble</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>7</startingnote>
+</notereading>
+
+</levels>
