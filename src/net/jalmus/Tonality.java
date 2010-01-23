@@ -14,7 +14,9 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Graphics2D;
 import java.util.ResourceBundle;
+import java.awt.GraphicsEnvironment;
 
 public class Tonality {
   int Nbalt;
@@ -205,9 +207,12 @@ public class Tonality {
         nom = DO + "b Maj |" + LA + "b min";
 
     g.setColor(Color.gray);
-    g.setFont(new Font("Arial", Font.ITALIC, 11));
-
-    g.drawString(nom, marge, 90);
+   // g.setFont(new Font("Arial", Font.ITALIC, 11));
+    Graphics2D graphics2D = (Graphics2D) g;
+    GraphicsEnvironment.getLocalGraphicsEnvironment();
+    graphics2D.setFont(new Font("LucidaSans", Font.PLAIN, 11));
+    graphics2D.drawString(nom, marge, 90);
+  
 
   }
 

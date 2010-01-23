@@ -300,6 +300,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JRadioButtonMenuItem rblanguetr=new JRadioButtonMenuItem();
     private JRadioButtonMenuItem rblanguefi=new JRadioButtonMenuItem();
     private JRadioButtonMenuItem rblangueko=new JRadioButtonMenuItem();
+    private JRadioButtonMenuItem rblangueeo=new JRadioButtonMenuItem();
 
     private JMenu aide=new JMenu();
     private JMenuItem aidesommaire=new JMenuItem(new ImageIcon(getClass().getResource("/images/aide.png")));
@@ -569,7 +570,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         langues.add(rblangueit);
 
         rblangueda=new JRadioButtonMenuItem("Dansk");
-        rblangueda.setMnemonic(KeyEvent.VK_D);
+        rblangueda.setMnemonic(KeyEvent.VK_A);
         rblangueda.addActionListener(this);
         group.add(rblangueda);
         langues.add(rblangueda);
@@ -591,6 +592,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         rblangueko.addActionListener(this);
         group.add(rblangueko);
         langues.add(rblangueko);
+        
+        rblangueeo=new JRadioButtonMenuItem("Esperanto");
+        rblangueeo.setMnemonic(KeyEvent.VK_O);
+        rblangueeo.addActionListener(this);
+        group.add(rblangueeo);
+        langues.add(rblangueeo);
 
         if ("es".equals(paramlangue)) {
             rblanguees.setSelected(true);
@@ -616,6 +623,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else if ("ko".equals(paramlangue)) {
             rblangueko.setSelected(true);
             langue="ko";
+        } else if ("eo".equals(paramlangue)) {
+            rblangueeo.setSelected(true);
+            langue="eo";
         } else {
             // must be "en"
             rblangueen.setSelected(true);
@@ -1774,7 +1784,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             langue="ko";
             updateLang();
             listeRepertoire();
-    } 
+        }        
+        if (e.getSource()==rblangueeo) {
+        	langue="eo";
+        	updateLang();
+        	listeRepertoire();
+        } 
+        
         else if (e.getSource()==menuPrefs) {
             stopGames();
             backupPreferences();
