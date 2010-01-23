@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : All notes on piano staff.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: to learn all notes in piano staff
+-->
+
+<levels>
+<notereading id = '0'>
+<message>First we are working all notes on an octave in piano staff</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>both</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Now same notes without help - C correspond to the key with a green point</message>
+<game>normal</game>
+<clef>both</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>Same notes in line, you should find the first note of the line</message>
+<game>inline</game>
+<clef>both</clef>
+<notes>notes</notes>
+<nbnotes>9</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>Same exercice with more notes</message>
+<game>inline</game>
+<clef>both</clef>
+<notes>notes</notes>
+<nbnotes>15</nbnotes>
+<speed>25</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>Faster. Good luck !!!</message>
+<game>inline</game>
+<clef>both</clef>
+<notes>notes</notes>
+<nbnotes>15</nbnotes>
+<speed>15</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+
+</levels>
