@@ -3773,6 +3773,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             // touche C3 pour lancer le jeu au clavier
 
                             if (!parti&(((ShortMessage)event).getData2()!=0)&((ShortMessage)event).getData1()==60) {
+                            	System.out.println("C3");
                                 if (levelMessage.isVisible()) {
                                     System.out.println("levelmessage");
 
@@ -3781,8 +3782,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                                     okscoreMessage.doClick();
 
-                                } else if (!renderingThread.isAlive()) {
-                                    renderingThread.start();
+                                } else {
+                                	requestFocus();
+                                    startNoteGame();
+                                	if (!renderingThread.isAlive()) {
+                                	renderingThread.start();
+                                	}
+                                         
                                 }
 
 
