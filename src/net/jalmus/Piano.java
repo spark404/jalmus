@@ -67,16 +67,16 @@ public class Piano {
 
     for (int i = 0, x = 3; i < octavanumber; i++, x += kw) {
       int keyNum = i * 12 + transpose;
-      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
+      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2 + 11,
                             keyNum + 1));
-      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
+      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2 + 11,
                             keyNum + 3));
       x += kw;
-      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
+      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2 + 11,
                             keyNum + 6));
-      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
+      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2 + 11,
                             keyNum + 8));
-      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2,
+      blackKeys.add(new net.jalmus.Key( (x += kw) - 4 + marge, haut, kw / 2, kh / 2 + 11,
                             keyNum + 10));
     }
     keys.addAll(blackKeys);
@@ -125,7 +125,7 @@ public class Piano {
   public net.jalmus.Key getKey(Point point) {
     Point p = new Point();
 
-    p.setLocation(point.getX(), point.getY() - 100);
+    p.setLocation(point.getX() - 4, point.getY() - 100);
 
     for (int i = 0; i < keys.size(); i++) {
       if ( ( (net.jalmus.Key) keys.get(i)).contains(p)) {
