@@ -106,6 +106,8 @@ import java.awt.event.WindowAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -114,6 +116,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Properties;
 import javax.sound.midi.Instrument;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaEventListener;
@@ -411,11 +414,26 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     //----
 
     private JPanel principal=new JPanel(); // panel principal
+    
+    Properties settings = new Properties();
 
     //################################################################
     // Initialization methods
 
     private void init(String paramlangue) {
+
+    	
+    	 try{
+    	     
+    	      settings.load(new FileInputStream("settings.properties"));
+    	      //System.out.println("language = " + p.getProperty("language"));
+    	      settings.list(System.out);
+    	      //if no language in command line then search in settings file
+    	      if ("".equals(paramlangue)) paramlangue = settings.getProperty("language");
+    	      }
+    	    catch (Exception e) {
+    	      System.out.println(e);
+    	      }
 
         if (!initializeMidi()) {
             return;
@@ -631,6 +649,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             rblangueen.setSelected(true);
             langue="en";
         }
+       
+       
 
         langues.setIcon(new ImageIcon(getClass().getResource("/images/language.png")));
 
@@ -860,6 +880,14 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         addWindowListener(new WindowAdapter() {
 
             public void windowClosed(java.awt.event.WindowEvent evt) {
+           	 settings.setProperty("language",langue);
+             if (soundOnCheckBox.isSelected())   settings.setProperty("sound","on");
+     	      else settings.setProperty("sound","off"); 
+             try { 
+             	settings.store(new FileOutputStream("settings.properties"), null); 
+             	  settings.list(System.out);
+             	} 
+             catch (IOException e) { } 
                 dispose();
                 System.exit(0);
             }
@@ -966,9 +994,19 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     //----------------------------------------------------------------
     private JDialog buildMidiOptionsDialog() {
-
+    	
+	    
         soundOnCheckBox=new JCheckBox("", true);
-
+    	try{
+   	     
+  	      settings.load(new FileInputStream("settings.properties"));
+  	      if ("on".equals(settings.getProperty("sound"))) soundOnCheckBox.setSelected(true) ;
+  	      else if ("off".equals(settings.getProperty("sound"))) soundOnCheckBox.setSelected(false) ;
+  	      }
+  	    catch (Exception e) {
+  	      System.out.println(e);
+  	      }
+  	    
         instrumentsComboBox=new JComboBox();
         if (instruments!=null) {
             for (int i=0; i<20; i++) {
@@ -2445,6 +2483,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void updateLang() {
 
+    	
+         
         bundle=ResourceBundle.getBundle("language", new Locale(langue));
 
         changeLanguage();
@@ -3874,7 +3914,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         Jalmus jalmus=new Jalmus();
         // Initialisation
         if (arg.length==0) {
-            jalmus.init("en");
+            jalmus.init("");
         } else {
             jalmus.init(arg[0]);
         }
