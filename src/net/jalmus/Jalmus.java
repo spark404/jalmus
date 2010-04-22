@@ -876,23 +876,19 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
 
         });
+        
+  
 
         addWindowListener(new WindowAdapter() {
 
             public void windowClosed(java.awt.event.WindowEvent evt) {
-           	 settings.setProperty("language",langue);
-             if (soundOnCheckBox.isSelected())   settings.setProperty("sound","on");
-     	      else settings.setProperty("sound","off"); 
-             try { 
-             	settings.store(new FileOutputStream("settings.properties"), null); 
-             	  settings.list(System.out);
-             	} 
-             catch (IOException e) { } 
+            	savesettings();
                 dispose();
                 System.exit(0);
             }
 
             public void windowClosing(java.awt.event.WindowEvent evt) {
+            	savesettings();
                 dispose();
                 System.exit(0);
             }
@@ -902,6 +898,36 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         setIconImage(icone);
 
         updateLang();
+        
+        // load user preferences from settings file
+     	try{
+      	     
+    	      settings.load(new FileInputStream("settings.properties"));
+    	      if ("on".equals(settings.getProperty("sound"))) soundOnCheckBox.setSelected(true) ;
+    	      else if ("off".equals(settings.getProperty("sound"))) soundOnCheckBox.setSelected(false) ;
+    	      int ins = Integer.parseInt(settings.getProperty("instrument"));
+    	      if (ins >=0 & ins < 20) {
+    	    	 instrumentsComboBox.setSelectedIndex(ins);
+    	      }
+    	      int k = Integer.parseInt(settings.getProperty("keyboard"));
+    	      if (k> 0 & k < midiInComboBox.getItemCount()) {
+    	    	  midiInComboBox.setSelectedIndex(k);
+    	    	  midiInComboBoxModel.setSelectedItem(midiInComboBoxModel.getElementAt(k));
+    	    	  System.out.println(midiInComboBox.getSelectedItem());
+    	      }
+    	      int kl = Integer.parseInt(settings.getProperty("keyboardlength"));
+    	      if (kl == 61) keyboardLengthComboBox.setSelectedIndex(1);
+    	      else if (kl == 73) keyboardLengthComboBox.setSelectedIndex(0);
+    	      
+    	      int kt = Integer.parseInt(settings.getProperty("transposition"));
+    	      if (kt>= 0 & kt < transpositionComboBox.getItemCount()) {
+    	    	  transpositionComboBox.setSelectedIndex(kt);
+    	      }
+    	      
+      	}
+    	    catch (Exception e) {
+    	      System.out.println(e);
+    	      }
 
     }
 
@@ -997,15 +1023,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	
 	    
         soundOnCheckBox=new JCheckBox("", true);
-    	try{
-   	     
-  	      settings.load(new FileInputStream("settings.properties"));
-  	      if ("on".equals(settings.getProperty("sound"))) soundOnCheckBox.setSelected(true) ;
-  	      else if ("off".equals(settings.getProperty("sound"))) soundOnCheckBox.setSelected(false) ;
-  	      }
-  	    catch (Exception e) {
-  	      System.out.println(e);
-  	      }
+   
   	    
         instrumentsComboBox=new JComboBox();
         if (instruments!=null) {
@@ -1018,6 +1036,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
         instrumentsComboBox.addItemListener(this);
 
+        
         JPanel soundPanel=new JPanel(); // panel midi keynoard
         localizables.add(new Localizable.NamedGroup(soundPanel, "_sound"));
         soundPanel.add(soundOnCheckBox);
@@ -1040,6 +1059,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             catch (MidiUnavailableException e) {
             }
         }
+        
+      
         midiInComboBox=new JComboBox();
         midiInComboBox.setModel(midiInComboBoxModel);
         midiInComboBox.addItemListener(this);
@@ -1049,6 +1070,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         transpositionComboBox=new JComboBox();
         transpositionComboBox.addItemListener(this);
+        
+
+   
 
         JPanel keyboardPanel=new JPanel();
         keyboardPanel.add(keyboardLengthComboBox);
@@ -2194,6 +2218,26 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
 
     }
+    
+    private void savesettings(){
+    		settings.setProperty("transposition",String.valueOf(transpositionComboBox.getSelectedIndex())); 
+	    	if (keyboardLengthComboBox.getSelectedIndex()==1) 
+	    		settings.setProperty("keyboardlength","61");
+	    	else settings.setProperty("keyboardlength","73");
+	    	settings.setProperty("keyboard",String.valueOf(midiInComboBox.getSelectedIndex())); 
+	    	 settings.setProperty("instrument",String.valueOf(instrumentsComboBox.getSelectedIndex())); 
+	    	 if (soundOnCheckBox.isSelected())   settings.setProperty("sound","on");
+		      else settings.setProperty("sound","off"); 
+	   	 	settings.setProperty("language",langue);
+       
+        
+        try { 
+        	settings.store(new FileOutputStream("settings.properties"), null); 
+        	  settings.list(System.out);
+        	} 
+        catch (IOException e) { } 
+   	
+   }
 
     private void backupMidiOptions() {
         if (soundOnCheckBox.isSelected()) {
@@ -2562,7 +2606,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         transpositionComboBox.addItem(bundle.getString("_notransposition"));
         transpositionComboBox.addItem("1 "+bundle.getString("_octave"));
         transpositionComboBox.addItem("2 "+bundle.getString("_octave"));
-        transpositionComboBox.setSelectedIndex(2);
+      //  transpositionComboBox.setSelectedIndex(2);
 
         seconde=bundle.getString("_second");
         tierce=bundle.getString("_third");
@@ -2596,9 +2640,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         metronomeCheckBox.setText(bundle.getString("_menuMetronom"));
 
         selectmidi_forlang=true;
+        int indextmp = midiInComboBox.getSelectedIndex();
         midiInComboBoxModel.removeElementAt(0);
         midiInComboBoxModel.insertElementAt(bundle.getString("_nomidiin"), 0);
-        midiInComboBoxModel.setSelectedItem(midiInComboBoxModel.getElementAt(0));
+        midiInComboBox.setSelectedIndex(indextmp);
         selectmidi_forlang=false;
 
         wholeCheckBox.setText(bundle.getString("_wholenote"));
@@ -3933,8 +3978,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         jalmus.setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
 
-        jalmus.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //On dit à l'application de se fermer
-        //lors du clic sur la croix
+        jalmus.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //exit when frame closed
 
     }
 
