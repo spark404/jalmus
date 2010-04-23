@@ -349,7 +349,7 @@ public void basenotetoLeft(Piano piano){  //base note is move when user pres key
         | (this.nbnotesupper == 2 & this.basetreble < 75) // 5 notes
         | (this.nbnotesupper == 1 & this.basetreble < 80)) { // 3notes
       this.basetreble = this.basetreble + 5;
-      piano.Setpositionbase1(piano.Getpositionbase1() - 1);
+    //  piano.Setpositionbase1(piano.Getpositionbase1() - 1);
     }
 
   }

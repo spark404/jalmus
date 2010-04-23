@@ -13,7 +13,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Vector;
+import java.awt.Polygon;
 
 public class Piano {
 
@@ -25,8 +27,6 @@ public class Piano {
   Color pink = new Color(255, 175, 175);
 
   net.jalmus.Key prevKey;
-  int positionbase1 = 0; // 0 si pas de note de base � afficher sinon position sur le clavier
-  int positionbase2 = 0; // 0 pour deuxième clé
   final int kw = 16, kh = 80;
   final int haut = 315;
   int marge = 40;
@@ -92,14 +92,7 @@ public class Piano {
     return this.length == 61;
   }
 
-  public void Setpositionbase1(int posnotebase) {
 
-    this.positionbase1 = posnotebase;
-  }
-
-  public void Setpositionbase2(int posnotebase) {
-    this.positionbase2 = posnotebase;
-  }
 
   public void Setprevkey(net.jalmus.Key k) {
     this.prevKey = k;
@@ -109,13 +102,7 @@ public class Piano {
     return this.prevKey;
   }
 
-  public int Getpositionbase1() {
-    return this.positionbase1;
-  }
 
-  public int Getpositionbase2() {
-    return this.positionbase2;
-  }
 
   /**
      * To return Key of the Piano where the mouse aim
@@ -134,33 +121,19 @@ public class Piano {
     }
     return null;
   }
-
-  /**
-   * To update base note position for notes game according to clef
-   *
-   * @param Level for note reading game
-   */
-  public void updatepositionbase(net.jalmus.NoteLevel nrlevel) {
-    if ( (nrlevel.isNotesgame() | nrlevel.isAccidentalsgame()) &
-        !nrlevel.isAllnotesgame()) {
-      if (nrlevel.isCurrentclefTreble()) {
-        this.Setpositionbase2(0);
-        this.Setpositionbase1(30 - nrlevel.getBasetreble() / 5);
-      }
-      else if (nrlevel.isCurrentclefBass()) {
-        this.Setpositionbase1(0);
-        this.Setpositionbase2(18 - nrlevel.getBasebass() / 5);
-      }
-      else if (nrlevel.isCurrentclefBoth()) {
-        this.Setpositionbase1(30 - nrlevel.getBasetreble() / 5);
-        this.Setpositionbase2(18 - nrlevel.getBasebass() / 5);
-      }
-    }
-    else {
-      this.Setpositionbase1(0);
-      this.Setpositionbase2(0);
-    }
+  
+  public boolean rightbuttonpressed(Point point){
+	  
+	  Rectangle rec = new Rectangle(740, 440, 30 ,30); 
+  	return (rec.contains(point));  
   }
+  
+  public boolean leftbuttonpressed(Point point){
+	  
+	  Rectangle rec = new Rectangle(5, 440, 30 ,30); 
+  	return (rec.contains(point));  
+  }
+
 
   /**
      * To play or stop the midi sound of a note when key of piano is pressed
@@ -189,34 +162,51 @@ public class Piano {
     }
   }
 
-  public void affichenotebase(Graphics g) {
-    Color c = new Color(50, 255, 50);
-    g.setColor(c);
 
-    int decalage = 0;
 
-    if (this.length == 61)
-      decalage = -7; //one octava
-    else if (this.length == 73)
-      decalage = 0;
+  /**
+   * Paint keyboard on screen with  keys in blue when played, in green for notes to train
+   *
+   * @param  g Graphics to paint 
+   * @param  basenotepitch1 pitch of the first note to train
+   * @param  basenotepitch2 pitch of the last note to train
+   * @return      void
+   * @see         Image
+   */
 
-    if (this.positionbase1 != 0)
-      g.fillOval( (this.positionbase1 + decalage) * kw + 8 + marge,
-                 haut + kh - 8, 6, 6);
-
-    if (this.positionbase2 != 0)
-      g.fillOval( (this.positionbase2 + decalage) * kw + 8 + marge,
-                 haut + kh - 8, 6, 6);
-
-  }
-
-  public void paint(Graphics g, int pitchcourant0, int pitchcourant1,
+  public void paint(Graphics g, boolean parti, int basenotepitch1,  int basenotepitch2,  int basenotepitchb1,  int basenotepitchb2,
+		  int pitchcourant0, int pitchcourant1,
                     int pitchcourant2) {
     Graphics2D g2 = (Graphics2D) g;
     //  Dimension d = getSize();
     float f1, f2, f3 = 1;
     Color c = new Color(255, 235, 235);
+    Color cg = new Color(152, 251, 152);
 
+    //paint bouton to move notes to train
+    g2.setColor(cg);
+    g2.fill3DRect(740, 340, 30,30, true) ;
+    g2.fill3DRect(5, 340, 30,30, true) ;
+    g2.setColor(Color.black);
+    g2.fillRect(745, 351, 12, 8);
+    g2.fillRect(15, 351, 12, 8);
+
+    int[]x = new int[3];
+    int[]y = new int[3]; 
+//     Make a triangle
+    x[0]=756; x[1]=766; x[2]=756;
+    y[0]=345; y[1]=355; y[2]=365;
+    Polygon myTri = new Polygon(x, y, 3); 
+    g2.fillPolygon(myTri);
+    x[0]=18; x[1]=8; x[2]=18;
+    y[0]=345; y[1]=355; y[2]=365;
+    myTri = new Polygon(x, y, 3); 
+    g2.fillPolygon(myTri);
+ 
+
+
+    //System.out.println (basenotepitch1);
+    //System.out.println (basenotepitch2);
     g2.setColor(Color.black);
     // g2.drawRect(marge+3,haut,42*kw,kh);
     for (int i = 0; i < whiteKeys.size(); i++) {
@@ -224,6 +214,10 @@ public class Piano {
       if (key.isNoteOn()) {
         g2.setColor(jfcBlue);
         g2.fill(key);
+      }
+      else if (!parti & ((key.kNum <= basenotepitch1  & key.kNum >= basenotepitch2) | (key.kNum <= basenotepitchb1  & key.kNum >= basenotepitchb2))){
+    	  g2.setColor(cg);
+      g2.fill(key);
       }
       else if (key.kNum == pitchcourant0 | key.kNum == pitchcourant1 |
                key.kNum == pitchcourant2) {
@@ -260,8 +254,7 @@ public class Piano {
         g2.fill(key);
       }
     }
-    //   if ((type2 == "NOTES" | type2 == "ALTERATIONS") & !toutesnotes)
-    affichenotebase(g);
+
   }
 } // End class Piano
 

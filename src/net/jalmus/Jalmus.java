@@ -103,6 +103,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -832,6 +833,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             public void mousePressed(MouseEvent e) {
                 requestFocus();
                 if (selectedGame==1) {
+                	
+                	if (piano.rightbuttonpressed(e.getPoint()))  noteLevel.basenotetoRight(piano);
+                	if (piano.leftbuttonpressed(e.getPoint()))  noteLevel.basenotetoLeft(piano);
+                	  
+                	repaint();
+                	
+                	// System.out.println (e.getPoint());
                     Key key=piano.getKey(e.getPoint());
                     piano.Setprevkey(key);
                     if (key!=null) {
@@ -1393,7 +1401,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         bdiese.setBackground(def);
         bbemol2.setBackground(def);
 
-        piano.updatepositionbase(noteLevel);
+    
 
         if (noteLevel.isNormalgame() || noteLevel.isLearninggame()) {
             margen=220;
@@ -1594,7 +1602,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             noteLevel.copy(currentlesson.getLevel());
             noteLevel.updatenbnotes(piano);
-            piano.updatepositionbase(noteLevel);
+   
 
             initNoteGame();
             changeScreen();
@@ -1775,12 +1783,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             if (key==KeyEvent.VK_LEFT) {
 
                 noteLevel.basenotetoLeft(piano);
-                piano.updatepositionbase(noteLevel);
+               
 
             } else if (key==KeyEvent.VK_RIGHT) {
 
                 noteLevel.basenotetoRight(piano);
-                piano.updatepositionbase(noteLevel);
+  
 
 
             }
@@ -1934,7 +1942,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                 noteLevel.copy(currentlesson.getLevel());
                 noteLevel.updatenbnotes(piano);
-                piano.updatepositionbase(noteLevel);
+      
 
                 initNoteGame();
                 selectedGame=1;
@@ -3780,15 +3788,48 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 if (!noteLevel.isLearninggame()) {
                     currentScore.paint(g);
                 }
-
+                
+                Note basenotet1 =new Note("","",0,0,0);
+                Note basenotet2 =new Note("","",0,0,0);
+                
+                Note basenoteb1 =new Note("","",0,0,0);
+                Note basenoteb2 =new Note("","",0,0,0);
+                
+                if (noteLevel.isCurrentclefTreble() ) {
+                	basenotet1.setHauteur(dportee+noteLevel.getBasetreble()-(noteLevel.getNbnotesunder()*5));
+                basenotet1.majnote(noteLevel, dportee, bundle);
+                	basenotet2.setHauteur(dportee+noteLevel.getBasetreble()+(noteLevel.getNbnotesupper()*5));
+                    
+                 basenotet2.majnote(noteLevel, dportee, bundle);
+                }
+                else if (noteLevel.isCurrentclefBass()) {
+                	basenoteb1.setHauteur(dportee+noteLevel.getBasebass()-(noteLevel.getNbnotesunder()*5));
+                    basenoteb1.majnote(noteLevel, dportee, bundle);
+                	basenoteb2.setHauteur(dportee+noteLevel.getBasebass()+(noteLevel.getNbnotesupper()*5));
+                     basenoteb2.majnote(noteLevel, dportee, bundle);
+                	
+                }
+                else if (noteLevel.isCurrentclefBoth()){
+                	basenotet1.setHauteur(dportee+noteLevel.getBasetreble()-(noteLevel.getNbnotesunder()*5));
+                    basenotet1.majnote(noteLevel, dportee, bundle);
+                    	basenotet2.setHauteur(dportee+noteLevel.getBasetreble()+(noteLevel.getNbnotesupper()*5));
+                        
+                     basenotet2.majnote(noteLevel, dportee, bundle);
+                     basenoteb1.setHauteur(dportee+noteLevel.getBasebass()+90-(noteLevel.getNbnotesunder()*5));
+                     basenoteb1.majnote(noteLevel, dportee, bundle);
+                 	basenoteb2.setHauteur(dportee+noteLevel.getBasebass()+90+(noteLevel.getNbnotesupper()*5));
+                      basenoteb2.majnote(noteLevel, dportee, bundle);
+                	
+                }
+                
                 if (noteLevel.isLearninggame() && parti) {
                     if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
-                        piano.paint(g, ncourante.getPitch(), 0, 0);
+                        piano.paint(g, parti, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), ncourante.getPitch(), 0, 0);
                     } else if (noteLevel.isIntervalsgame()) {
-                        piano.paint(g, icourant.getNote(0).getPitch(),
+                        piano.paint(g, parti, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), icourant.getNote(0).getPitch(),
                             icourant.getNote(1).getPitch(), 0);
                     } else if (noteLevel.isChordsgame()) {
-                        piano.paint(g, acourant.getNote(0).getPitch(),
+                        piano.paint(g, parti, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), acourant.getNote(0).getPitch(),
                             acourant.getNote(1).getPitch(),
                             acourant.getNote(2).getPitch());
                     }
@@ -3796,7 +3837,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 } else
 
                 {
-                    piano.paint(g, 0, 0, 0);
+                    piano.paint(g, parti, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(),  0, 0, 0);
                 }
 
 
