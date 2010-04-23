@@ -5,7 +5,7 @@ Copyright (c) 1999 - 2001 by Matthias Pfisterer <Matthias.Pfisterer@web.de>
 Copyright (c) 2003 by Florian Bomers
 
 
-Copyright (C) 2003-2004  RICHARD Christophe
+Copyright (C) 2003-2010  RICHARD Christophe
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -58,7 +58,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 /********************/
 
 /*Jalmus est un logiciel pour apprendre ou perfectionner sa lecture musicale.
-Copyright (C) 2003-2004 RICHARD Christophe
+Copyright (C) 2003-2010 RICHARD Christophe
 Ce programme est libre, vous pouvez le redistribuer et/ou
 le modifier selon les termes de la Licence Publique G�n�rale GNU
 publi�e par la Free Software Foundation (version 2
@@ -3851,7 +3851,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 g.setFont(new Font("Arial", Font.BOLD, 30));
                 g.drawString("Java Lecture Musicale", 240, 300);
                 g.setFont(new Font("Arial", Font.BOLD, 15));
-                g.drawString("Copyright (C) 2003-2009 RICHARD Christophe", 10, 500);
+                g.drawString("Copyright (C) 2003-2010 RICHARD Christophe", 10, 500);
             } else if (selectedGame==2) {
 
                 g.setColor(Color.white);
