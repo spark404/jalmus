@@ -174,7 +174,7 @@ public class Piano {
    * @see         Image
    */
 
-  public void paint(Graphics g, boolean parti, int basenotepitch1,  int basenotepitch2,  int basenotepitchb1,  int basenotepitchb2,
+  public void paint(Graphics g, boolean paintbutton, int basenotepitch1,  int basenotepitch2,  int basenotepitchb1,  int basenotepitchb2,
 		  int pitchcourant0, int pitchcourant1,
                     int pitchcourant2) {
     Graphics2D g2 = (Graphics2D) g;
@@ -183,6 +183,7 @@ public class Piano {
     Color c = new Color(255, 235, 235);
     Color cg = new Color(152, 251, 152);
 
+    if (paintbutton){
     //paint bouton to move notes to train
     g2.setColor(cg);
     g2.fill3DRect(740, 340, 30,30, true) ;
@@ -202,6 +203,7 @@ public class Piano {
     y[0]=345; y[1]=355; y[2]=365;
     myTri = new Polygon(x, y, 3); 
     g2.fillPolygon(myTri);
+    }
  
 
 
@@ -215,7 +217,7 @@ public class Piano {
         g2.setColor(jfcBlue);
         g2.fill(key);
       }
-      else if (!parti & ((key.kNum <= basenotepitch1  & key.kNum >= basenotepitch2) | (key.kNum <= basenotepitchb1  & key.kNum >= basenotepitchb2))){
+      else if (paintbutton & ((key.kNum <= basenotepitch1  & key.kNum >= basenotepitch2) | (key.kNum <= basenotepitchb1  & key.kNum >= basenotepitchb2))){
     	  g2.setColor(cg);
       g2.fill(key);
       }

@@ -1426,9 +1426,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     /** Stops all games. */
     private void stopGames() {
         parti=false;
-
+        stopson();
         if (sm_sequencer!=null) {
-
             sm_sequencer.stop();
         }
 
@@ -1511,6 +1510,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void startNoteGame() {
+    	
         initNoteGame();     // to stop last game
         updateTonality(); //when selected random tonality
 
@@ -2062,6 +2062,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void handleStartButtonClicked() {
+    	stopson();
         if (selectedGame==1) {
             if (parti) {
                 initNoteGame(); //stop the game before restart
@@ -2931,7 +2932,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void newinterval() {
-
+    	stopson();
         icourant.copy(intervalchoice());
         if (noteLevel.isNormalgame() || noteLevel.isLearninggame()) {
             posnote=0;
@@ -3083,10 +3084,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                 if (currentScore.isLost()) {
                     parti=false;
+                    stopson();
                     afficheresultat();
                 }
 
-                newChord();
+                if (parti) newChord();
             } else if (noteLevel.isLearninggame()) {
                 newChord();
                 effacecouleurbouton();
@@ -3097,6 +3099,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     currentScore.setPoints(0);
                     currentScore.setLost();
                     parti=false;
+                    stopson();
                     afficheresultat();
                 }
             }
@@ -3111,7 +3114,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void newnote() {
 
-        if (noteLevel.isNormalgame() || noteLevel.isLearninggame()) {
+        if ((noteLevel.isNormalgame() || noteLevel.isLearninggame()) & parti) {
             notecounter++;
             if (precedente!=0) {
                 stopson();
@@ -3153,7 +3156,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         //for (int i=0;i<37;i=i+1){
         //sons[i].stop();
         currentChannel.stopnotes(soundOnCheckBox.isSelected() && !erreurmidi);
-
+     // System.out.println ("Stop sound");
         //}
 
     }
@@ -3582,10 +3585,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 currentScore.addPoints(-20);
                 if (currentScore.isLost()) {
                     parti=false;
+                    stopson();
                     afficheresultat();
                 }
 
-                newinterval();
+                if (parti) newinterval();
             } else if (noteLevel.isLearninggame()) {
                 newinterval();
                 effacecouleurbouton();
@@ -3594,6 +3598,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     currentScore.setPoints(0);
                     currentScore.setLost();
                     parti=false;
+                    stopson();
                     afficheresultat();
                 }
             }
@@ -3824,12 +3829,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 
                 if (noteLevel.isLearninggame() && parti) {
                     if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
-                        piano.paint(g, parti, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), ncourante.getPitch(), 0, 0);
+                        piano.paint(g, true, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), ncourante.getPitch(), 0, 0);
                     } else if (noteLevel.isIntervalsgame()) {
-                        piano.paint(g, parti, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), icourant.getNote(0).getPitch(),
+                        piano.paint(g, false, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), icourant.getNote(0).getPitch(),
                             icourant.getNote(1).getPitch(), 0);
                     } else if (noteLevel.isChordsgame()) {
-                        piano.paint(g, parti, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), acourant.getNote(0).getPitch(),
+                        piano.paint(g, false, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), acourant.getNote(0).getPitch(),
                             acourant.getNote(1).getPitch(),
                             acourant.getNote(2).getPitch());
                     }
@@ -3837,7 +3842,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 } else
 
                 {
-                    piano.paint(g, parti, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(),  0, 0, 0);
+                    piano.paint(g, !parti & (noteLevel.isNotesgame()|| noteLevel.isAccidentalsgame()), basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(),  0, 0, 0);
                 }
 
 
