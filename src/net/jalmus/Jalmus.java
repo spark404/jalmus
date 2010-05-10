@@ -1776,7 +1776,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         // a special key such as an arrow key.
         int key=evt.getKeyCode(); // keyboard code for the key that was pressed
 
-        if (selectedGame==1 && !parti && (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) &&
+        if (selectedGame==1 && !isLessonMode && !parti && (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) &&
             !noteLevel.isAllnotesgame())
         {
 
@@ -3829,7 +3829,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 
                 if (noteLevel.isLearninggame() && parti) {
                     if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
-                        piano.paint(g, true, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), ncourante.getPitch(), 0, 0);
+                        piano.paint(g, !isLessonMode, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), ncourante.getPitch(), 0, 0);
                     } else if (noteLevel.isIntervalsgame()) {
                         piano.paint(g, false, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), icourant.getNote(0).getPitch(),
                             icourant.getNote(1).getPitch(), 0);
@@ -3842,7 +3842,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 } else
 
                 {
-                    piano.paint(g, !parti & (noteLevel.isNotesgame()|| noteLevel.isAccidentalsgame()), basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(),  0, 0, 0);
+                    piano.paint(g, !isLessonMode & !parti & (noteLevel.isNotesgame()|| noteLevel.isAccidentalsgame()), basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(),  0, 0, 0);
                 }
 
 
