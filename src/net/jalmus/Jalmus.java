@@ -2413,7 +2413,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             } else if (noteGameSpeedComboBox.getSelectedIndex()==3) {
                 noteLevel.setSpeed(12);
             } else if (noteGameSpeedComboBox.getSelectedIndex()==4) {
-                noteLevel.setSpeed(4);
+                noteLevel.setSpeed(6);
             }
             // System.out.println("-"+vitesse);
         }
@@ -3698,14 +3698,20 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 try {
 
                     if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
-                        sleep(noteLevel.getSpeed());
+                    	if (noteLevel.isInlinegame()) sleep(noteLevel.getSpeed()+4);
+                    	else sleep(noteLevel.getSpeed());
 
                     } else if (noteLevel.isIntervalsgame()) {
-                        sleep(noteLevel.getSpeed()*3/2);
+                    	if (noteLevel.isInlinegame()) sleep(noteLevel.getSpeed()*3/2 + 4);
+                    	else  sleep(noteLevel.getSpeed()*3/2);
                     } else if (noteLevel.isChordsgame()) {
-                        sleep(noteLevel.getSpeed()*2);
-                    } else {
-                        sleep(noteLevel.getSpeed()+18);
+                    	if (noteLevel.isInlinegame()) sleep(noteLevel.getSpeed()*2 + 4);
+                    	else  sleep(noteLevel.getSpeed()*2);
+                     
+                    } else { //why ?
+                    	if (noteLevel.isInlinegame()) sleep(noteLevel.getSpeed()+18 + 6);
+                    	else  sleep(noteLevel.getSpeed()+18);
+                    
                     }
 
                     if (parti && !paused) {
