@@ -1420,6 +1420,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         rhythmPosition=-1;
         dportee=100;
         marger=50;
+        
+        if (sm_sequencer !=null) {
+      	sm_sequencer.close();
+     
+      }
+    	repaint();
 
     }
 
@@ -1441,12 +1447,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void startRhythmGame() {
       
-        if (sm_sequencer !=null) {
-        	  restartRhythmGame(); // arret du jeu pr�c�dent
-        	sm_sequencer.close();
-        	repaint();
         
-        }
+        	  restartRhythmGame(); // arret du jeu pr�c�dent
+      
         creationligner();
 
         try {
@@ -1510,9 +1513,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         Track[] tracks=sequence.getTracks();
 
         for (int i=0; i<tracks.length; i++) {
-            sm_sequencer.setTrackMute(i, !soundOnCheckBox.isSelected());
+          //  sm_sequencer.setTrackMute(i, !soundOnCheckBox.isSelected());
+        	sm_sequencer.setTrackMute(i, false); //play sound even sound Checkbox off
         }
-        parti=true; // d�part du jeu
+        parti=true; // start game
     }
 
     private void startNoteGame() {
@@ -1868,7 +1872,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } 
         
         else if (e.getSource()==menuPrefs) {
-            stopGames();
+        	 if (selectedGame==1)  stopGames();
+             else if (selectedGame==2) restartRhythmGame();
+           
             backupPreferences();
 
             preferencesDialog.setLocationRelativeTo(this);
@@ -2031,7 +2037,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void handleRhythmReadingMenuItem() {
-        stopGames();
+      //  stopGames();
         restartRhythmGame();
         selectedGame=2;
         if (isLessonMode) {
@@ -2083,17 +2089,20 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 }
             }
         } else if (selectedGame==2) {
-            startRhythmGame();
+        	if (parti) {
+        		
+        		restartRhythmGame();
+        		
+        	}
+        	else startRhythmGame();
         }
     }
 
     private void handlePreferencesClicked() {
         if (selectedGame==1) {
             preferencesTabbedPane.setSelectedIndex(NOTE_READING_TAB);
-            stopGames();
         } else if (selectedGame==2) {
-            preferencesTabbedPane.setSelectedIndex(RHYTM_READING_TAB);
-            restartRhythmGame();
+            preferencesTabbedPane.setSelectedIndex(RHYTM_READING_TAB);     
         }
         menuPrefs.doClick();
     }
