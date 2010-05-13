@@ -3938,10 +3938,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                             } else {
                                 if (((ShortMessage)event).getData2()!=0) {
-                                    piano.notejouee(currentChannel, soundOnCheckBox.isSelected()&!erreurmidi, notejouee,
+                                    piano.notejouee(currentChannel, !erreurmidi, notejouee,
                                         1);
                                 } else {
-                                    piano.notejouee(currentChannel, soundOnCheckBox.isSelected()&!erreurmidi, notejouee,
+                                    piano.notejouee(currentChannel, !erreurmidi, notejouee,
                                         0);
                                 }
 
