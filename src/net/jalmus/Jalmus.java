@@ -1425,7 +1425,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     /** Stops all games. */
     private void stopGames() {
+    	
         parti=false;
+        ncourante= new Note("", "", 0, 25, 0);
+        acourant = new Chord(ncourante, ncourante, ncourante, "", 0);
+        icourant= new Interval(ncourante, ncourante, "");
+        effacecouleurbouton();
+        
         stopson();
         if (sm_sequencer!=null) {
             sm_sequencer.stop();
@@ -2065,6 +2071,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	stopson();
         if (selectedGame==1) {
             if (parti) {
+            	stopGames();
                 initNoteGame(); //stop the game before restart
 
                 requestFocus();
@@ -3833,9 +3840,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 	
                 }
                 
-                if (noteLevel.isLearninggame() && parti) {
+                if (noteLevel.isLearninggame() ) {
                     if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
-                        piano.paint(g, !isLessonMode, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), ncourante.getPitch(), 0, 0);
+                        piano.paint(g, !isLessonMode & !parti, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), ncourante.getPitch(), 0, 0);
                     } else if (noteLevel.isIntervalsgame()) {
                         piano.paint(g, false, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(), icourant.getNote(0).getPitch(),
                             icourant.getNote(1).getPitch(), 0);
