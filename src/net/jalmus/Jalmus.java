@@ -1414,7 +1414,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     /** Initialise rhythm reading game if there is modification in
      * parameters and game restart. */
-    private void restartRhythmGame() {
+    private void stopRhythmGame() {
 
         parti=false;
         rhythmPosition=-1;
@@ -1430,7 +1430,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     /** Stops all games. */
-    private void stopGames() {
+    private void stopNoteGame() {
     	
         parti=false;
         ncourante= new Note("", "", 0, 25, 0);
@@ -1448,7 +1448,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void startRhythmGame() {
       
         
-        	  restartRhythmGame(); // arret du jeu pr�c�dent
+        	  stopRhythmGame(); // arret du jeu pr�c�dent
       
         creationligner();
 
@@ -1607,7 +1607,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void nextLevel() {
 
         if (!currentlesson.lastexercice()) {
-            stopGames();
+            stopNoteGame();
             currentlesson.nextLevel();
 
             noteLevel.copy(currentlesson.getLevel());
@@ -1872,8 +1872,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } 
         
         else if (e.getSource()==menuPrefs) {
-        	 if (selectedGame==1)  stopGames();
-             else if (selectedGame==2) restartRhythmGame();
+        	 if (selectedGame==1)  stopNoteGame();
+             else if (selectedGame==2) stopRhythmGame();
            
             backupPreferences();
 
@@ -1881,7 +1881,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             preferencesDialog.setVisible(true);
 
         } else if (e.getSource()==aidesommaire) {
-            stopGames();
+            stopNoteGame();
             Object[] options={bundle.getString("_yes"),
                 bundle.getString("_no")};
             int n=JOptionPane.showOptionDialog(this,
@@ -1900,7 +1900,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
 
         } else if (e.getSource()==siteinternet) {
-            stopGames();
+            stopNoteGame();
             String adress="http://jalmus.net?lang="+langue;
             BareBonesBrowserLaunch.openURL(adress);
         } else if (e.getSource()==okscoreMessage) {
@@ -1926,7 +1926,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else if (e.getSource()==bfermer) {
             aboutDialog.setVisible(false);
         } else if (e.getSource()==propos) {
-            stopGames();
+            stopNoteGame();
             aboutDialog.setContentPane(papropos);
             texteapropos.setText(tcredits);
             aboutDialog.setSize(400, 330);
@@ -2021,12 +2021,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void handleExitMenuItem() {
-        stopGames();
+        stopNoteGame();
         dispose();
     }
 
     private void handleLessonsMenuItem() {
-        stopGames();
+        stopNoteGame();
         isLessonMode=true;
 
         lessonsDialog.setContentPane(panelLessons);
@@ -2038,7 +2038,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void handleRhythmReadingMenuItem() {
       //  stopGames();
-        restartRhythmGame();
+        stopRhythmGame();
         selectedGame=2;
         if (isLessonMode) {
             noteLevel.init();
@@ -2048,7 +2048,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void handleNoteReadingMenuItem() {
-        stopGames();
+        stopNoteGame();
         initNoteGame();
         if (isLessonMode) {
             noteLevel.init();
@@ -2077,7 +2077,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	stopson();
         if (selectedGame==1) {
             if (parti) {
-            	stopGames();
+            	stopNoteGame();
                 initNoteGame(); //stop the game before restart
 
                 requestFocus();
@@ -2091,7 +2091,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else if (selectedGame==2) {
         	if (parti) {
         		
-        		restartRhythmGame();
+        		stopRhythmGame();
         		
         	}
         	else startRhythmGame();
@@ -3679,7 +3679,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             scoreMessage.setVisible(true);
 
-            stopGames();
+            stopNoteGame();
 
 
         } else if (currentScore.isLost()) {
@@ -3693,7 +3693,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             scoreMessage.setVisible(true);
             scoreMessage.setVisible(true);
 
-            stopGames();
+            stopNoteGame();
 
         }
         ;
