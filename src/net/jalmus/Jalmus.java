@@ -271,7 +271,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private Rhythm[] rhythms=new Rhythm[80]; // ligne de notes  TYPE EN LIGNE
     private int rhythmPosition=-1; // position de la note courante dans la liste
-
+    private float rhythmCursor=82; //position on the line to print when player tape rhythm
+    private RhythmAnswer[] answers=new RhythmAnswer[100];
+    private int rhythmAnswerPosition=0; //position of answer current
+    private int rhythmAnswerDportee=100; //distance to paint answer
+    private int precision = 8; //precision on control between note and answer
+    
+    
+    private int rhythmgame = 0;
+    
     private int tempo=40; // tempo du sequencer - bouton rhythmGameSpeedComboBox
     private double nbtemps=4; // nombre de temps par mesure
     private int nbmesures=9;
@@ -441,6 +449,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
 
         startButton=new JButton();
+        startButton.setFocusable(false);
         localizables.add(new Localizable.Button(startButton, "_start"));
         startButton.setPreferredSize(new Dimension(150, 20));
         startButton.addActionListener(new ActionListener() {
@@ -450,6 +459,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         });
 
         preferencesButton=new JButton();
+       preferencesButton.setFocusable(false);
         localizables.add(new Localizable.Button(preferencesButton, "_menuPreferences"));
         preferencesButton.setPreferredSize(new Dimension(150, 20));
         preferencesButton.addActionListener(new ActionListener() {
@@ -1190,6 +1200,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         /* 1er panel - type de jeu */
 
         rhythmGameTypeComboBox=new JComboBox();
+        rhythmGameTypeComboBox.addItem("Learning");
         rhythmGameTypeComboBox.addItem("Normal");
         rhythmGameTypeComboBox.addItemListener(this);
 
@@ -1419,6 +1430,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         parti=false;
         rhythmPosition=-1;
         dportee=100;
+        rhythmAnswerDportee=100;
         marger=50;
         
         if (sm_sequencer !=null) {
@@ -1517,6 +1529,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         	sm_sequencer.setTrackMute(i, false); //play sound even sound Checkbox off
         }
         parti=true; // start game
+        
+        
+        rhythmCursor = -136;
+        
+        //init line answers
+        for (int i=0; i<answers.length; i++) {
+        	answers[i] = new RhythmAnswer(-1,-1,false);
+        }
+        rhythmAnswerPosition = 0;
     }
 
     private void startNoteGame() {
@@ -1785,7 +1806,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         // Called when the user has pressed a key, which can be
         // a special key such as an arrow key.
         int key=evt.getKeyCode(); // keyboard code for the key that was pressed
-
+       
         if (selectedGame==1 && !isLessonMode && !parti && (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) &&
             !noteLevel.isAllnotesgame())
         {
@@ -1802,6 +1823,23 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
 
             }
+        }
+        
+        else if (selectedGame == 2 & parti) {
+    	  if (key==KeyEvent.VK_SPACE) {
+    		  System.out.println ("rhytm" + rhythms[rhythmPosition].getPosition());
+    		  System.out.println ("cursor" + rhythmCursor);
+    		  boolean good = false;
+    		  
+    		  if (((int)rhythmCursor < rhythms[rhythmPosition].getPosition() + precision) 
+    				  & ((int)rhythmCursor > rhythms[rhythmPosition].getPosition() - precision) & !rhythms[rhythmPosition].getSilence())
+    				  good = true;
+    				  else good = false;
+    				  
+    		  answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursor, rhythmAnswerDportee -15 , good );
+    		  rhythmAnswerPosition=rhythmAnswerPosition+1;
+    		  
+    	  }
         }
         repaint();
     } // end keyPressed()
@@ -2080,7 +2118,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             	stopNoteGame();
                 initNoteGame(); //stop the game before restart
 
-                requestFocus();
+               
             } else {
                 requestFocus();
                 startNoteGame();
@@ -2094,7 +2132,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         		stopRhythmGame();
         		
         	}
-        	else startRhythmGame();
+        	else {startRhythmGame();
+        	   if (!renderingThread.isAlive()) {
+                   renderingThread.start();
+               }
+
+        	}
         }
     }
 
@@ -2121,10 +2164,14 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void handlePreferencesOkClicked() {
 
+    	if (selectedGame==1) {
         // update current level for note reading
         noteLevel.inibasenote();
         initNoteGame();
         noteLevel.updatenbnotes(piano);
+    	}
+    	
+    	else if (selectedGame==2) {
 
         // update parameters for rythm reading
         if (!wholeCheckBox.isSelected() && !halfCheckBox.isSelected() && !quarterCheckBox.isSelected() && !eighthCheckBox.isSelected()) {
@@ -2138,6 +2185,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             rhythmLevel.majniveau(wholeCheckBox.isSelected(), halfCheckBox.isSelected(), quarterCheckBox.isSelected(),
                 eighthCheckBox.isSelected(), restCheckBox.isSelected());
         }
+    	}
 
         // update screen
         changeScreen();
@@ -2415,6 +2463,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteLevel.setGametype("inline");
             } else if (noteGameTypeComboBox.getSelectedIndex()==2) {
                 noteLevel.setGametype("learning");
+            }
+        }
+        
+        else if (evt.getItemSelectable()==rhythmGameTypeComboBox) {
+            if (rhythmGameTypeComboBox.getSelectedIndex()==0) {
+                rhythmgame = 0; // fix this with creating class level rhythm
+            } else if (rhythmGameTypeComboBox.getSelectedIndex()==1) {
+                rhythmgame = 1;
+            
             }
         }
 
@@ -2753,6 +2810,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void afficheportee2(Graphics g) {
         Dimension size=getSize();
         g.setColor(Color.black);
+      //  System.out.println("dportee" + dportee);
 
         for (int nbportee=0; nbportee<3; nbportee++) {
             for (int yd=dportee; yd<=dportee+40; yd+=10) { //  1ere ligne � 144;   derni�re � 176
@@ -3223,6 +3281,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 repaint();
                 /* if (soundOnCheckBox.getState() & !ligne[position].silence) Synthnote(71,80,dureerythme);*/
             }
+           
         }
     }
 
@@ -3380,6 +3439,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         int nbmes=1; //numero de la mesure
         double tpsmes=0; // nombre de temps
         int poscourante=82;
+
         while (i<rhythms.length) {
             if (nbmes<=nbmesures) {
                 while (tpsmes!=nbtemps) {
@@ -3534,6 +3594,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         int precedant=0;
         int suivant=0;
 
+        // paint answers red false green good
+        for (int i=0; i<answers.length; i++) {
+        	if (!answers[i].isnull()) answers[i].paint(g);
+        }
+      
+        
         for (int i=0; i<rhythms.length; i++) {
             // System.out.println(i);
             if (rhythms[i].getValeur()!=0) {
@@ -3547,7 +3613,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 } else {
                     suivant=0;
                 }
-                if (i!=rhythmPosition) {
+                if ((i!=rhythmPosition) ||  (rhythmgame == 1)) {
                     rhythms[i].paint(g, 9, false, dportee, ti, this);
                 } else {
                     rhythms[i].paint(g, 9, true, dportee, ti, this);
@@ -3712,7 +3778,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             while (true) {
                 try {
-
+              
                     if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
                     	if (noteLevel.isInlinegame()) sleep(noteLevel.getSpeed()+4);
                     	else sleep(noteLevel.getSpeed());
@@ -3760,10 +3826,20 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                             }
                         }
-
+                       
+                        }
                         panelanim.repaint();
+             
+                        
+                       if (selectedGame == 2 && parti)
+                            if (rhythmCursor < 718) 
+                                rhythmCursor = rhythmCursor + (float) 0.719;
+                                else {
+                                	rhythmAnswerDportee = rhythmAnswerDportee + 100;
+                                	rhythmCursor = (float) (79 + 0.719);
+                                }
                     }
-                }
+                    
                 catch (Exception e) {
                 }
             }
@@ -3879,6 +3955,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 g.drawString("Java Lecture Musicale", 240, 300);
                 g.setFont(new Font("Arial", Font.BOLD, 15));
                 g.drawString("Copyright (C) 2003-2010 RICHARD Christophe", 10, 500);
+                
+                
             } else if (selectedGame==2) {
 
                 g.setColor(Color.white);
