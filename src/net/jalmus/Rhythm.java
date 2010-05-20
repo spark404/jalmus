@@ -36,7 +36,7 @@ import java.awt.Graphics;
               }
 
               public void init() {
-                this.valeur = 1;
+                this.valeur = 0;
                 this.position = 0;
                 this.nportee = 0;
                 this.pointee = false;
@@ -69,6 +69,10 @@ import java.awt.Graphics;
               public int getGroupee() {
                 return this.groupee;
               }
+              
+              public int getPosition() {
+                  return this.position;
+                }
 
               public void setSilence(boolean b) {
                 this.silence = b;
