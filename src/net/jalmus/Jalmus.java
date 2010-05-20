@@ -1200,8 +1200,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         /* 1er panel - type de jeu */
 
         rhythmGameTypeComboBox=new JComboBox();
-        rhythmGameTypeComboBox.addItem("Learning");
-        rhythmGameTypeComboBox.addItem("Normal");
+       // rhythmGameTypeComboBox.addItem("Learning");
+      //  rhythmGameTypeComboBox.addItem("Normal");
         rhythmGameTypeComboBox.addItemListener(this);
 
         rhythmGameSpeedComboBox=new JComboBox();
@@ -2652,6 +2652,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         noteGameTypeComboBox.addItem(bundle.getString("_normalgame"));
         noteGameTypeComboBox.addItem(bundle.getString("_linegame"));
         noteGameTypeComboBox.addItem(bundle.getString("_learninggame"));
+        
+        rhythmGameTypeComboBox.removeAllItems();
+        rhythmGameTypeComboBox.addItem(bundle.getString("_learninggame"));
+        rhythmGameTypeComboBox.addItem(bundle.getString("_normalgame"));
+
+
+
 
         noteCountComboBox.removeAllItems();
         noteCountComboBox.addItem("3 "+bundle.getString("_menuNotes"));
