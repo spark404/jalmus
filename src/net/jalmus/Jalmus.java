@@ -1514,6 +1514,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     rhythmPosition=0;
                     repaint();
                 } else {
+                	 System.out.println(rhythmPosition);
                     rythmesuivant();
                     repaint();
                 }
@@ -1521,6 +1522,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
         });
         sm_sequencer.setTempoInBPM(tempo);
+        System.out.println("tempo" + tempo);
         sm_sequencer.start();
         Track[] tracks=sequence.getTracks();
 
@@ -1531,7 +1533,14 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         parti=true; // start game
         
         
-        rhythmCursor = -136;
+        //rhythmCursor = -136;
+        
+    
+        if (tempo == 40 ) rhythmCursor = -136;
+        else if (tempo == 60) rhythmCursor = -139;
+        else if (tempo == 100) rhythmCursor = -157;
+        else if (tempo == 120) rhythmCursor = -164;
+        else if (tempo == 160) rhythmCursor = -182;
         
         //init line answers
         for (int i=0; i<answers.length; i++) {
@@ -1827,8 +1836,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         else if (selectedGame == 2 & parti) {
     	  if (key==KeyEvent.VK_SPACE) {
-    		  System.out.println ("rhytm" + rhythms[rhythmPosition].getPosition());
-    		  System.out.println ("cursor" + rhythmCursor);
+    		  System.out.println ("rhytm " + rhythms[rhythmPosition].getPosition() + " position " + rhythmPosition);
+    		  System.out.println ("cursor " + rhythmCursor);
     		  boolean good = false;
     		  
     		  if (((int)rhythmCursor < rhythms[rhythmPosition].getPosition() + precision) 
@@ -2497,11 +2506,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 tempo=40;
             } else if (rhythmGameSpeedComboBox.getSelectedIndex()==1) {
                 tempo=60;
-            } else if (noteGameSpeedComboBox.getSelectedIndex()==2) {
-                tempo=110;
-            } else if (noteGameSpeedComboBox.getSelectedIndex()==3) {
+            } else if (rhythmGameSpeedComboBox.getSelectedIndex()==2) {
+                tempo=100;
+            } else if (rhythmGameSpeedComboBox.getSelectedIndex()==3) {
                 tempo=120;
-            } else if (noteGameSpeedComboBox.getSelectedIndex()==4) {
+            } else if (rhythmGameSpeedComboBox.getSelectedIndex()==4) {
                 tempo=160;
             }
         }
@@ -3305,7 +3314,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             addEvent(metronome, TEXT, textd.getBytes(), (int)nbtemps*ppq);
 
             if (metronomeCheckBox.isSelected()) {
-                for (int i=0; i<=60; i++) {
+            	//40 beats for 9 measures + first measure empty
+                for (int i=0; i<=40; i++) {
                     ShortMessage mess=new ShortMessage();
                     ShortMessage mess2=new ShortMessage();
                     mess.setMessage(ShortMessage.NOTE_ON, 1, 60, 40);
@@ -3837,14 +3847,19 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                         }
                         panelanim.repaint();
              
-                        
-                       if (selectedGame == 2 && parti)
+                        //thread for rhythm game move the rhythm cursor according to tempo
+                       if (selectedGame == 2 && rhythmgame == 1 && parti) {
+                    	   float cursorspeed = (float) 1;
+                       
+                    	   cursorspeed = (float) tempo/ (float) 55.632;
+                    	    
                             if (rhythmCursor < 718) 
-                                rhythmCursor = rhythmCursor + (float) 0.719;
+                                rhythmCursor = rhythmCursor + cursorspeed;
                                 else {
                                 	rhythmAnswerDportee = rhythmAnswerDportee + 100;
-                                	rhythmCursor = (float) (79 + 0.719);
+                                	rhythmCursor = (float) (79.0 + cursorspeed);
                                 }
+                       }
                     }
                     
                 catch (Exception e) {
