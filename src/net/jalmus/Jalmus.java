@@ -2115,7 +2115,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void handleNoteReadingMenuItem() {
-        stopNoteGame();
+       // stopNoteGame(); //crash when change rhythm game to notes game
         initNoteGame();
         if (isLessonMode) {
             noteLevel.init();
