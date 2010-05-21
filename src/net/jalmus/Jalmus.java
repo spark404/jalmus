@@ -275,7 +275,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private RhythmAnswer[] answers=new RhythmAnswer[100];
     private int rhythmAnswerPosition=0; //position of answer current
     private int rhythmAnswerDportee=100; //distance to paint answer
-    private int precision = 8; //precision on control between note and answer
+    private int precision = 10; //precision on control between note and answer
     
     
     private int rhythmgame = 0;
@@ -1392,6 +1392,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void initNoteGame() {
 
         parti=false;
+        
         currentScore.initScore();
 
         precedente=0;
@@ -1428,6 +1429,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void stopRhythmGame() {
 
         parti=false;
+        bundle=ResourceBundle.getBundle("language", new Locale(langue));
+        startButton.setText(bundle.getString("_start"));
+        
         rhythmPosition=-1;
         dportee=100;
         rhythmAnswerDportee=100;
@@ -1445,6 +1449,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void stopNoteGame() {
     	
         parti=false;
+        bundle=ResourceBundle.getBundle("language", new Locale(langue));
+        startButton.setText(bundle.getString("_start"));
+        
         ncourante= new Note("", "", 0, 25, 0);
         acourant = new Chord(ncourante, ncourante, ncourante, "", 0);
         icourant= new Interval(ncourante, ncourante, "");
@@ -1514,7 +1521,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     rhythmPosition=0;
                     repaint();
                 } else {
-                	 System.out.println(rhythmPosition);
+                	
                     rythmesuivant();
                     repaint();
                 }
@@ -1531,6 +1538,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         	sm_sequencer.setTrackMute(i, false); //play sound even sound Checkbox off
         }
         parti=true; // start game
+
+        bundle=ResourceBundle.getBundle("language", new Locale(langue));
+        startButton.setText(bundle.getString("_stop"));
         
         
         //rhythmCursor = -136;
@@ -1567,6 +1577,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
 
         parti=true;        // d�part du jeu
+        bundle=ResourceBundle.getBundle("language", new Locale(langue));
+        startButton.setText(bundle.getString("_stop"));
     }
 
     private void reponsejuste() {
@@ -1583,6 +1595,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             } else if (isLessonMode && notecounter==noteLevel.getLearningduration()) {
                 parti=false;
+                bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                startButton.setText(bundle.getString("_start"));
                 nextLevel();
             } else {
                 newnote();
@@ -1600,6 +1614,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             if (currentScore.isWin()) {
                 parti=false;
+                bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                startButton.setText(bundle.getString("_start"));
                 afficheresultat();
 
             }
@@ -1607,6 +1623,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             if (noteLevel.isInlinegame() && position==ligne.length-1) { // dernière note trouvée
                 currentScore.setWin();
                 parti=false;
+                bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                startButton.setText(bundle.getString("_start"));
                 afficheresultat();
 
             }
@@ -1684,6 +1702,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             if (currentScore.isLost()) {
                 parti=false;
+                bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                startButton.setText(bundle.getString("_start"));
                 afficheresultat();
             }
         }
@@ -3174,6 +3194,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                 if (currentScore.isLost()) {
                     parti=false;
+                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                    startButton.setText(bundle.getString("_start"));
                     stopson();
                     afficheresultat();
                 }
@@ -3189,6 +3211,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     currentScore.setPoints(0);
                     currentScore.setLost();
                     parti=false;
+                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                    startButton.setText(bundle.getString("_start"));
                     stopson();
                     afficheresultat();
                 }
@@ -3266,6 +3290,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 currentScore.addPoints(-20);
                 if (currentScore.isLost()) {
                     parti=false;
+                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                    startButton.setText(bundle.getString("_start"));
                     afficheresultat();
 
                 }
@@ -3279,6 +3305,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     currentScore.setPoints(0);
                     currentScore.setLost();
                     parti=false;
+                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                    startButton.setText(bundle.getString("_start"));
                     afficheresultat();
 
                 }
@@ -3684,6 +3712,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 currentScore.addPoints(-20);
                 if (currentScore.isLost()) {
                     parti=false;
+                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                    startButton.setText(bundle.getString("_start"));
                     stopson();
                     afficheresultat();
                 }
@@ -3697,6 +3727,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     currentScore.setPoints(0);
                     currentScore.setLost();
                     parti=false;
+                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                    startButton.setText(bundle.getString("_start"));
                     stopson();
                     afficheresultat();
                 }
@@ -3719,6 +3751,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             } else {
                 if (isLessonMode && notecounter==noteLevel.getLearningduration()) {
                     parti=false;
+                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                    startButton.setText(bundle.getString("_start"));
                     nextLevel();
                 } else {
                     newChord();
@@ -3738,6 +3772,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             } else {
                 if (isLessonMode && notecounter==noteLevel.getLearningduration()) {
                     parti=false;
+                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
+                    startButton.setText(bundle.getString("_start"));
                     nextLevel();
                 } else {
                     newinterval();
