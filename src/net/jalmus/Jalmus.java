@@ -1857,11 +1857,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         else if (selectedGame == 2 & parti) {
     	  if (key==KeyEvent.VK_SPACE) {
     		  System.out.println ("rhytm " + rhythms[rhythmPosition].getPosition() + " position " + rhythmPosition);
-    		  System.out.println ("cursor " + rhythmCursor);
+    		  System.out.println ("rhytm-1 " + rhythms[rhythmPosition-1].getPosition() + " position " + (rhythmPosition-1));
+    		   System.out.println ("cursor " + rhythmCursor);
     		  boolean good = false;
     		  
-    		  if (((int)rhythmCursor < rhythms[rhythmPosition].getPosition() + precision) 
-    				  & ((int)rhythmCursor > rhythms[rhythmPosition].getPosition() - precision) & !rhythms[rhythmPosition].getSilence())
+    		  if ((((int)rhythmCursor < rhythms[rhythmPosition].getPosition() + precision) 
+    				  & ((int)rhythmCursor > rhythms[rhythmPosition].getPosition() - precision) & !rhythms[rhythmPosition].getSilence()) 
+    				  || //to resolve problem with eight on fast tempo 
+    				  ((rhythmPosition-1 >= 0) & ((int)rhythmCursor < rhythms[rhythmPosition-1].getPosition() + precision) 
+    	    				  & ((int)rhythmCursor > rhythms[rhythmPosition-1].getPosition() - precision) & !rhythms[rhythmPosition-1].getSilence()))
     				  good = true;
     				  else good = false;
     				  
@@ -3658,7 +3662,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 } else {
                     suivant=0;
                 }
-                if ((i!=rhythmPosition) ||  (rhythmgame == 1)) {
+                if ((i!=rhythmPosition) ) {
                     rhythms[i].paint(g, 9, false, dportee, ti, this);
                 } else {
                     rhythms[i].paint(g, 9, true, dportee, ti, this);
@@ -3786,6 +3790,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     // SCORE
 
     private void afficheresultat() {
+    	if (selectedGame == 1 ){
 
         if (currentScore.isWin()) {
             scoreMessage.setTitle(bundle.getString("_congratulations"));
@@ -3815,7 +3820,26 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             stopNoteGame();
 
         }
-        ;
+    	}
+    	else if (selectedGame == 2 ) {
+    		  scoreMessage.setTitle(bundle.getString("_congratulations"));
+    		  int nbgood = 0;
+    		  int nbfalse = 0;
+    		  
+    		   for (int i=0; i<answers.length; i++) {
+    	        	if (answers[i].isgood() & !answers[i].isnull()) nbgood= nbgood +1;
+    	        	else if (!answers[i].isnull() & !answers[i].isgood()) nbfalse = nbfalse +1;
+    	        }
+    	 
+    		  
+              textscoreMessage.setText("  "+nbgood+" "+bundle.getString("_correct")+
+                  " / "+nbfalse+" "+
+                  bundle.getString("_wrong")+"  ");
+              scoreMessage.pack();
+              scoreMessage.setLocationRelativeTo(this);
+
+              scoreMessage.setVisible(true);
+    	}
 
     }
 
@@ -3892,8 +3916,14 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             if (rhythmCursor < 718) 
                                 rhythmCursor = rhythmCursor + cursorspeed;
                                 else {
+                                	if (rhythmAnswerDportee < dportee +200) {
                                 	rhythmAnswerDportee = rhythmAnswerDportee + 100;
-                                	rhythmCursor = (float) (79.0 + cursorspeed);
+                                	rhythmCursor = (float) (75.0 + cursorspeed);
+                                	}
+                                	else { //end of game
+                                		afficheresultat();
+                                	//	stopRhythmGame();
+                                	}
                                 }
                        }
                     }

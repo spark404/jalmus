@@ -53,6 +53,9 @@ public class RhythmAnswer {
           return this.posy;
         }
 	
+        public boolean isgood() {
+            return this.good;
+          }
 	
         public void paint(Graphics g){
         	  Color cr = new Color(238, 0, 0);
