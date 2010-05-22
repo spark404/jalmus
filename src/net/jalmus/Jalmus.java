@@ -1429,7 +1429,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void stopRhythmGame() {
 
         parti=false;
-        bundle=ResourceBundle.getBundle("language", new Locale(langue));
         startButton.setText(bundle.getString("_start"));
         
         rhythmPosition=-1;
@@ -1449,7 +1448,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void stopNoteGame() {
     	
         parti=false;
-        bundle=ResourceBundle.getBundle("language", new Locale(langue));
         startButton.setText(bundle.getString("_start"));
         
         ncourante= new Note("", "", 0, 25, 0);
@@ -1542,8 +1540,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         
         parti=true; // start game
-
-        bundle=ResourceBundle.getBundle("language", new Locale(langue));
         startButton.setText(bundle.getString("_stop"));
         
         
@@ -1581,7 +1577,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
 
         parti=true;        // d�part du jeu
-        bundle=ResourceBundle.getBundle("language", new Locale(langue));
         startButton.setText(bundle.getString("_stop"));
     }
 
@@ -1599,7 +1594,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             } else if (isLessonMode && notecounter==noteLevel.getLearningduration()) {
                 parti=false;
-                bundle=ResourceBundle.getBundle("language", new Locale(langue));
                 startButton.setText(bundle.getString("_start"));
                 nextLevel();
             } else {
@@ -1618,7 +1612,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             if (currentScore.isWin()) {
                 parti=false;
-                bundle=ResourceBundle.getBundle("language", new Locale(langue));
                 startButton.setText(bundle.getString("_start"));
                 afficheresultat();
 
@@ -1627,7 +1620,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             if (noteLevel.isInlinegame() && position==ligne.length-1) { // dernière note trouvée
                 currentScore.setWin();
                 parti=false;
-                bundle=ResourceBundle.getBundle("language", new Locale(langue));
                 startButton.setText(bundle.getString("_start"));
                 afficheresultat();
 
@@ -1706,7 +1698,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             if (currentScore.isLost()) {
                 parti=false;
-                bundle=ResourceBundle.getBundle("language", new Locale(langue));
                 startButton.setText(bundle.getString("_start"));
                 afficheresultat();
             }
@@ -3200,7 +3191,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                 if (currentScore.isLost()) {
                     parti=false;
-                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
                     startButton.setText(bundle.getString("_start"));
                     stopson();
                     afficheresultat();
@@ -3217,7 +3207,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     currentScore.setPoints(0);
                     currentScore.setLost();
                     parti=false;
-                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
                     startButton.setText(bundle.getString("_start"));
                     stopson();
                     afficheresultat();
@@ -3296,7 +3285,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 currentScore.addPoints(-20);
                 if (currentScore.isLost()) {
                     parti=false;
-                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
                     startButton.setText(bundle.getString("_start"));
                     afficheresultat();
 
@@ -3311,7 +3299,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     currentScore.setPoints(0);
                     currentScore.setLost();
                     parti=false;
-                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
                     startButton.setText(bundle.getString("_start"));
                     afficheresultat();
 
@@ -3724,7 +3711,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 currentScore.addPoints(-20);
                 if (currentScore.isLost()) {
                     parti=false;
-                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
                     startButton.setText(bundle.getString("_start"));
                     stopson();
                     afficheresultat();
@@ -3739,7 +3725,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     currentScore.setPoints(0);
                     currentScore.setLost();
                     parti=false;
-                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
                     startButton.setText(bundle.getString("_start"));
                     stopson();
                     afficheresultat();
@@ -3763,7 +3748,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             } else {
                 if (isLessonMode && notecounter==noteLevel.getLearningduration()) {
                     parti=false;
-                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
                     startButton.setText(bundle.getString("_start"));
                     nextLevel();
                 } else {
@@ -3784,7 +3768,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             } else {
                 if (isLessonMode && notecounter==noteLevel.getLearningduration()) {
                     parti=false;
-                    bundle=ResourceBundle.getBundle("language", new Locale(langue));
                     startButton.setText(bundle.getString("_start"));
                     nextLevel();
                 } else {
