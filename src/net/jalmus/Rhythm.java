@@ -78,10 +78,13 @@ import java.awt.Graphics;
                 this.silence = b;
               }
 
-              public boolean getSilence() {
+              public boolean isSilence() {
                 return this.silence;
         }
 
+              public boolean isnull() {
+                  return this.valeur == 0;
+          }
 
 
               public void paint(Graphics g, int position, boolean courant, int dportee, Tabimage t, Component l) {
