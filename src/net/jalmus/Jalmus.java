@@ -372,6 +372,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JCheckBox eighthCheckBox;
     private JCheckBox restCheckBox;
     private JCheckBox metronomeCheckBox;
+    private JCheckBox playsoundCheckBox;
 
     private int[] sauvprefs=new int[16]; // pour bouton cancel
 
@@ -1266,6 +1267,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         JPanel metronomePanel=new JPanel();
         metronomePanel.add(metronomeCheckBox);
         localizables.add(new Localizable.NamedGroup(metronomePanel, "_menuMetronom"));
+        
+        playsoundCheckBox=new JCheckBox("", false);
+        metronomePanel.add(playsoundCheckBox);
+        playsoundCheckBox.setText("Play sound (latency problem)");
 
         JPanel panel=new JPanel();
         panel.setLayout(new GridLayout(3, 1));
@@ -1593,6 +1598,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
          	 sm_sequencer.setTrackMute(0, true); 
           }
          
+          
          parti=true; // start game
          startButton.setText(bundle.getString("_stop"));
          
@@ -1900,9 +1906,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     		  boolean good = false;
     		  
     		 
-    		  
+    		  if (playsoundCheckBox.isSelected()){
     		  currentChannel.stopnotes();
     		  currentChannel.jouenote(true,71, 2000);
+    		  }
   	
     	// Adding noteon when space pressed don't work
   		// mutetrack.add(createNoteOnEvent(71, 64, (int) (74+(rhythmCursor-82)/54*24)));
@@ -3419,6 +3426,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void createMetronome() {
 
         final int TEXT=0x01;
+        int nbpulse;
 
         try {
             ShortMessage sm=new ShortMessage();
@@ -3428,9 +3436,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             String textd="depart";
             addEvent(metronome, TEXT, textd.getBytes(), (int)nbtemps*ppq);
 
-            if (metronomeCheckBox.isSelected()) {
+            if (metronomeCheckBox.isSelected()) nbpulse = 40;
+            else nbpulse = 3; //only first 4 pour indicate pulse
+            
+           
             	//40 beats for 9 measures + first measure empty
-                for (int i=0; i<=40; i++) {
+                for (int i=0; i<=nbpulse; i++) {
                     ShortMessage mess=new ShortMessage();
                     ShortMessage mess2=new ShortMessage();
                     mess.setMessage(ShortMessage.NOTE_ON, 1, 60, 40);
@@ -3438,7 +3449,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     metronome.add(new MidiEvent(mess, i*ppq));
                     mess2.setMessage(ShortMessage.NOTE_OFF, 1, 60, 0);
                     metronome.add(new MidiEvent(mess2, i*ppq+1));
-                }
+                
             }
 
         }
