@@ -32,13 +32,18 @@ public class ChannelData {
           if (midiok)
                    this.channel.noteOn(kNum, 25);
                }
+        
+        public void jouenote(boolean midiok, int kNum, int i){
+            if (midiok)
+                     this.channel.noteOn(kNum, i);
+                 }
 
         public void stopnote(boolean midiok, int kNum){
                if (midiok)
                         this.channel.noteOff(kNum, 25);
                     }
 
-        public void stopnotes(boolean midiok){
+        public void stopnotes(){
           this.channel.allNotesOff();
         }
 
