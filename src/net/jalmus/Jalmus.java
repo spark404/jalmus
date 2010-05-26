@@ -157,6 +157,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.ColorUIResource;
 import javax.xml.parsers.ParserConfigurationException;
@@ -279,6 +281,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private boolean samerhythms = true;
     private boolean muterhythms = false;
     private boolean paintrhythms = false;
+    private boolean cursorstart = false;
     
     
     private int rhythmgame = 0;
@@ -408,6 +411,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JComboBox instrumentsComboBox;
     private JComboBox keyboardLengthComboBox; // for length-number of touchs of keyboard
     private JComboBox transpositionComboBox; // for transposition MIDI keyboard
+    private SpinnerNumberModel spinnermodel = new SpinnerNumberModel(0, -15, 15, 1);
+    private JSpinner  rhythmcalibrateSpinner = new JSpinner(spinnermodel);;
+  
+
+
 
     private JComboBox midiInComboBox;
     private DefaultComboBoxModel midiInComboBoxModel=new DefaultComboBoxModel();
@@ -1259,12 +1267,16 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         rhytmsPanel.add(eighthCheckBox);
         rhytmsPanel.add(restCheckBox);
         localizables.add(new Localizable.NamedGroup(rhytmsPanel, "_menuRythms"));
+        
+     
+     
 
         /* 3ème panel - metronome */
 
         metronomeCheckBox=new JCheckBox("", true);
-
+        
         JPanel metronomePanel=new JPanel();
+        metronomePanel.add( rhythmcalibrateSpinner);
         metronomePanel.add(metronomeCheckBox);
         localizables.add(new Localizable.NamedGroup(metronomePanel, "_menuMetronom"));
         
@@ -1277,6 +1289,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         panel.add(gamePanel);
         panel.add(rhytmsPanel);
         panel.add(metronomePanel);
+    
         return panel;
     }
 
@@ -1466,9 +1479,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         dportee=100;
         rhythmAnswerDportee=100;
         marger=50;
+        cursorstart = false;
         
         if (sm_sequencer !=null) {
       	sm_sequencer.close();
+      	
+      	
      
       }
     	//repaint();
@@ -1547,7 +1563,14 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
            
                 byte[] abData=meta.getData();
                 String strText=new String(abData);
-                if ("depart".equals(strText)) {
+                if ("departthread".equals(strText)) { //start thread with cursor 1 beat before rhythm
+                if (!renderingThread.isAlive()) {
+                    renderingThread.start();
+                }  
+                cursorstart = true;
+                }
+                else if ("depart".equals(strText)) {
+                	System.out.println("depart");
                     rhythmPosition=0;
                     repaint();
                 } else {
@@ -1563,13 +1586,18 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
        
         
         //rhythmCursor = -136;
-        
+     //   rhythmCursor = -148 + (float) (60-tempo)* (float)0.325 +  spinnermodel.getNumber().floatValue();
     
-        if (tempo == 40 ) rhythmCursor = -136;
-        else if (tempo == 60) rhythmCursor = -139;
-        else if (tempo == 100) rhythmCursor = -157;
-        else if (tempo == 120) rhythmCursor = -164;
-        else if (tempo == 160) rhythmCursor = -182;
+       
+    	   
+    	  rhythmCursor = 20 +  spinnermodel.getNumber().floatValue();
+
+    	 /* if (tempo == 40 ) 
+        else if (tempo == 60) rhythmCursor = 21 + spinnermodel.getNumber().floatValue();
+        else if (tempo == 100) rhythmCursor = -10 + spinnermodel.getNumber().floatValue();
+        else if (tempo == 120) rhythmCursor = -12 +  spinnermodel.getNumber().floatValue();
+        else if (tempo == 160) rhythmCursor = -18 +  spinnermodel.getNumber().floatValue();
+        */
         
         //init line answers
         for (int i=0; i<answers.length; i++) {
@@ -1581,6 +1609,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     
     private void startRhythmGame() {
     	 sm_sequencer.start();
+    	
          Track[] tracks=sequence.getTracks();
 
         //Trackmute don't work in this case
@@ -1602,9 +1631,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
          parti=true; // start game
          startButton.setText(bundle.getString("_stop"));
          
-         if (!renderingThread.isAlive()) {
-             renderingThread.start();
-         }
+      
          
     }
     
@@ -3435,6 +3462,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             String textd="depart";
             addEvent(metronome, TEXT, textd.getBytes(), (int)nbtemps*ppq);
+            
+            String textdt="departthread"; //one beat before rhythms
+            addEvent(metronome, TEXT, textdt.getBytes(), (int) (nbtemps -1 )*ppq);
 
             if (metronomeCheckBox.isSelected()) nbpulse = 40;
             else nbpulse = 3; //only first 4 pour indicate pulse
@@ -4019,10 +4049,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                         panelanim.repaint();
              
                         //thread for rhythm game move the rhythm cursor according to tempo
-                       if (selectedGame == 2 && rhythmgame == 0 && muterhythms && parti) {
+                       if (selectedGame == 2 && rhythmgame == 0 && muterhythms && cursorstart) {
                     	   float cursorspeed = (float) 1;
                        
-                    	   cursorspeed = (float) tempo/ (float) 55.632;
+                    	   cursorspeed = (float) tempo/ (float) 55.600;
                     	    
                             if (rhythmCursor < 714) 
                                 rhythmCursor = rhythmCursor + cursorspeed;
@@ -4034,7 +4064,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                                 	else { //end of game
                                 		afficheresultat();
                                 		stopRhythmGame();
+                                		
                                 		parti = false;
+                                		
                                 		repaint();
                                 	}
                                 }
