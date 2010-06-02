@@ -285,6 +285,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private long timestart;
     private long timecursor;
     private long latency;
+    private double constantspeed = 27.580;
     
     
     private int rhythmgame = 0;
@@ -414,7 +415,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JComboBox instrumentsComboBox;
     private JComboBox keyboardLengthComboBox; // for length-number of touchs of keyboard
     private JComboBox transpositionComboBox; // for transposition MIDI keyboard
-    private SpinnerNumberModel spinnermodel = new SpinnerNumberModel(0, -100, 100, 1);
+    private SpinnerNumberModel spinnermodel = new SpinnerNumberModel(0, -200, 200, 1);
     private JSpinner  rhythmcalibrateSpinner = new JSpinner(spinnermodel);;
   
 
@@ -1560,11 +1561,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 Receiver synthReceiver=sm_synthesizer.getReceiver();
                 Transmitter seqTransmitter=sm_sequencer.getTransmitter();
                 seqTransmitter.setReceiver(synthReceiver);
+                System.out.println("lat " + sm_synthesizer.getLatency());
             }
             catch (MidiUnavailableException e) {
                 e.printStackTrace();
             }
         }
+        
 
         sm_sequencer.addMetaEventListener(new MetaEventListener() {
             public void meta(MetaMessage meta) {
@@ -1576,7 +1579,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 	System.out.println("departthread");
                     cursorstart = true;
                     timestart = System.currentTimeMillis();
-                
+                    System.out.println("time departhred" + timestart);
                    
                 } 
                 
@@ -1928,7 +1931,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         else if (selectedGame == 2 && rhythmgame == 0 && muterhythms && parti) {
     	  if (key==KeyEvent.VK_SPACE) {
-    		   System.out.println ("cursor " + rhythmCursor);
+    		  
     		  boolean good = false;
     		  
     		 
@@ -1936,23 +1939,23 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     		  currentChannel.stopnotes();
     		  currentChannel.jouenote(true,71, 2000);
     		  }
-    		  
+    		  System.out.println("time sound" + System.currentTimeMillis());
     		  float rhythmCursorcorrected;
     	// Adding noteon when space pressed don't work
   		// mutetrack.add(createNoteOnEvent(71, 64, (int) (74+(rhythmCursor-82)/54*24)));
   	//	 System.out.println ("tick " + (int) (74+(rhythmCursor-82)/54*24));
-    		  rhythmCursorcorrected = rhythmCursor + (System.currentTimeMillis()-timecursor) / 20 * (float) tempo/ (float) 27.820; 
+    		  rhythmCursorcorrected = rhythmCursor + (System.currentTimeMillis()-timecursor) / 20 * (float) tempo/ (float) constantspeed; 
     		  System.out.println ("rhythmcursorcorrected" + rhythmCursorcorrected);
     		  
-    		  if (((rhythmPosition >= 0) && ((int)rhythmCursor < rhythms[rhythmPosition].getPosition() + precision) 
-    				  && ((int)rhythmCursor > rhythms[rhythmPosition].getPosition() - precision) && !rhythms[rhythmPosition].isSilence()) 
+    		  if (((rhythmPosition >= 0) && ((int)rhythmCursorcorrected < rhythms[rhythmPosition].getPosition() + precision) 
+    				  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition].getPosition() - precision) && !rhythms[rhythmPosition].isSilence()) 
     				  || //to resolve problem with eight on fast tempo 
-    				  ((rhythmPosition-1 >= 0) && ((int)rhythmCursor < rhythms[rhythmPosition-1].getPosition() + precision) 
-    	    				  && ((int)rhythmCursor > rhythms[rhythmPosition-1].getPosition() - precision) && !rhythms[rhythmPosition-1].isSilence()))
+    				  ((rhythmPosition-1 >= 0) && ((int)rhythmCursorcorrected < rhythms[rhythmPosition-1].getPosition() + precision) 
+    	    				  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition-1].getPosition() - precision) && !rhythms[rhythmPosition-1].isSilence()))
     				  good = true;
     				  else good = false;
     				  
-    		  answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursor, rhythmAnswerDportee -15 , good );
+    		  answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursorcorrected, rhythmAnswerDportee -15 , good );
     		  rhythmAnswerPosition=rhythmAnswerPosition+1;
     		  
     	  }
@@ -4055,12 +4058,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                        
                     	   if (timestart != 0) {
                     		   
-                    		   rhythmCursor = 28 + (System.currentTimeMillis()-timestart-latency) / 20 * (float) tempo/ (float) 27.590; 
+                    		   rhythmCursor = 28 + (System.currentTimeMillis()-timestart-latency) / 20 * (float) tempo/ (float) constantspeed; 
                     		   System.out.println(rhythmCursor);
                     		   timestart = 0;
                     	   }
                     	   sleep(20); //cursor move every 20 milliseconds
-                    	   cursorspeed = (float) tempo/ (float) 27.590;
+                    	   cursorspeed = (float) tempo/ (float) constantspeed;
                     	  
                             if (rhythmCursor < 714) {
                                 rhythmCursor = rhythmCursor + cursorspeed;
