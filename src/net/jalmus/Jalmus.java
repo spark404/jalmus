@@ -282,6 +282,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private boolean muterhythms = false;
     private boolean paintrhythms = false;
     private boolean cursorstart = false;
+    private long timestart;
+    private long timecursor;
+    private long latency;
     
     
     private int rhythmgame = 0;
@@ -411,7 +414,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JComboBox instrumentsComboBox;
     private JComboBox keyboardLengthComboBox; // for length-number of touchs of keyboard
     private JComboBox transpositionComboBox; // for transposition MIDI keyboard
-    private SpinnerNumberModel spinnermodel = new SpinnerNumberModel(0, -15, 15, 1);
+    private SpinnerNumberModel spinnermodel = new SpinnerNumberModel(0, -100, 100, 1);
     private JSpinner  rhythmcalibrateSpinner = new JSpinner(spinnermodel);;
   
 
@@ -1510,8 +1513,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void initRhythmGame() {
-      
+    	latency = 203 +  spinnermodel.getNumber().intValue();
+    	System.out.println("latency" + latency);
+    	
     			initializeMidi(); 
+    			 if (!renderingThread.isAlive()) {
+                     renderingThread.start();
+                 }  
         	  stopRhythmGame(); // arret du jeu pr�c�dent
       
         if (!samerhythms) creationligner();
@@ -1563,18 +1571,27 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
            
                 byte[] abData=meta.getData();
                 String strText=new String(abData);
-                if ("departthread".equals(strText)) { //start thread with cursor 1 beat before rhythm
-                if (!renderingThread.isAlive()) {
-                    renderingThread.start();
-                }  
-                cursorstart = true;
-                }
-                else if ("depart".equals(strText)) {
+               
+                if ("departthread".equals(strText)) {
+                	System.out.println("departthread");
+                    cursorstart = true;
+                    timestart = System.currentTimeMillis();
+                
+                   
+                } 
+                
+               if ("depart".equals(strText)) {
                 	System.out.println("depart");
+           //   	rhythmCursor = 72 +  spinnermodel.getNumber().floatValue();
                     rhythmPosition=0;
                     repaint();
+                   
                 } else {
-                	
+          		  
+                // to test speed cursor	
+          		 // answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursor, rhythmAnswerDportee -15 ,true );
+          		  //rhythmAnswerPosition=rhythmAnswerPosition+1;
+          		  
                     rythmesuivant();
                     repaint();
                 }
@@ -1584,21 +1601,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         sm_sequencer.setTempoInBPM(tempo);
         System.out.println("tempo" + tempo);
        
-        
-        //rhythmCursor = -136;
-     //   rhythmCursor = -148 + (float) (60-tempo)* (float)0.325 +  spinnermodel.getNumber().floatValue();
-    
+        rhythmCursor = 28; 
        
-    	   
-    	  rhythmCursor = 20 +  spinnermodel.getNumber().floatValue();
-
-    	 /* if (tempo == 40 ) 
-        else if (tempo == 60) rhythmCursor = 21 + spinnermodel.getNumber().floatValue();
-        else if (tempo == 100) rhythmCursor = -10 + spinnermodel.getNumber().floatValue();
-        else if (tempo == 120) rhythmCursor = -12 +  spinnermodel.getNumber().floatValue();
-        else if (tempo == 160) rhythmCursor = -18 +  spinnermodel.getNumber().floatValue();
-        */
-        
+            
         //init line answers
         for (int i=0; i<answers.length; i++) {
         	answers[i] = new RhythmAnswer(-1,-1,false);
@@ -1610,14 +1615,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void startRhythmGame() {
     	 sm_sequencer.start();
     	
-         Track[] tracks=sequence.getTracks();
-
-        //Trackmute don't work in this case
-         	//for (int i=0; i<tracks.length; i++) { 
-           //  sm_sequencer.setTrackMute(i, !soundOnCheckBox.isSelected());
-         	//	sm_sequencer.setTrackMute(i, true); 
-         	//}
-        // System.out.println( tracks[0]);
+      //   Track[] tracks=sequence.getTracks();
+         
           if (muterhythms) {
          	 sm_sequencer.setTrackMute(1, true); 
          	 sm_sequencer.setTrackMute(0, false); 
@@ -1631,7 +1630,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
          parti=true; // start game
          startButton.setText(bundle.getString("_stop"));
          
-      
+         cursorstart = false;
          
     }
     
@@ -1937,11 +1936,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     		  currentChannel.stopnotes();
     		  currentChannel.jouenote(true,71, 2000);
     		  }
-  	
+    		  
+    		  float rhythmCursorcorrected;
     	// Adding noteon when space pressed don't work
   		// mutetrack.add(createNoteOnEvent(71, 64, (int) (74+(rhythmCursor-82)/54*24)));
   	//	 System.out.println ("tick " + (int) (74+(rhythmCursor-82)/54*24));
-  		 
+    		  rhythmCursorcorrected = rhythmCursor + (System.currentTimeMillis()-timecursor) / 20 * (float) tempo/ (float) 27.820; 
+    		  System.out.println ("rhythmcursorcorrected" + rhythmCursorcorrected);
     		  
     		  if (((rhythmPosition >= 0) && ((int)rhythmCursor < rhythms[rhythmPosition].getPosition() + precision) 
     				  && ((int)rhythmCursor > rhythms[rhythmPosition].getPosition() - precision) && !rhythms[rhythmPosition].isSilence()) 
@@ -3464,7 +3465,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             addEvent(metronome, TEXT, textd.getBytes(), (int)nbtemps*ppq);
             
             String textdt="departthread"; //one beat before rhythms
-            addEvent(metronome, TEXT, textdt.getBytes(), (int) (nbtemps -1 )*ppq);
+            addEvent(metronome, TEXT, textdt.getBytes(), (int)(nbtemps-1)*ppq);
 
             if (metronomeCheckBox.isSelected()) nbpulse = 40;
             else nbpulse = 3; //only first 4 pour indicate pulse
@@ -4052,14 +4053,24 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                        if (selectedGame == 2 && rhythmgame == 0 && muterhythms && cursorstart) {
                     	   float cursorspeed = (float) 1;
                        
-                    	   cursorspeed = (float) tempo/ (float) 55.600;
-                    	    
-                            if (rhythmCursor < 714) 
+                    	   if (timestart != 0) {
+                    		   
+                    		   rhythmCursor = 28 + (System.currentTimeMillis()-timestart-latency) / 20 * (float) tempo/ (float) 27.590; 
+                    		   System.out.println(rhythmCursor);
+                    		   timestart = 0;
+                    	   }
+                    	   sleep(20); //cursor move every 20 milliseconds
+                    	   cursorspeed = (float) tempo/ (float) 27.590;
+                    	  
+                            if (rhythmCursor < 714) {
                                 rhythmCursor = rhythmCursor + cursorspeed;
-                                else {
+                                timecursor = System.currentTimeMillis();
+                            	}
+                            else {
                                 	if (rhythmAnswerDportee < dportee +200) {
                                 	rhythmAnswerDportee = rhythmAnswerDportee + 100;
                                 	rhythmCursor = (float) (72.0 + cursorspeed);
+                                	 timecursor = System.currentTimeMillis();
                                 	}
                                 	else { //end of game
                                 		afficheresultat();
@@ -4070,6 +4081,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                                 		repaint();
                                 	}
                                 }
+                            
                        }
                     }
                     
