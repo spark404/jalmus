@@ -158,6 +158,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.JSpinner;
+import javax.swing.JSlider;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.ColorUIResource;
@@ -415,8 +416,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JComboBox instrumentsComboBox;
     private JComboBox keyboardLengthComboBox; // for length-number of touchs of keyboard
     private JComboBox transpositionComboBox; // for transposition MIDI keyboard
-    private SpinnerNumberModel spinnermodel = new SpinnerNumberModel(0, -200, 200, 1);
-    private JSpinner  rhythmcalibrateSpinner = new JSpinner(spinnermodel);;
+    private JSlider latencySlider = new JSlider(JSlider.HORIZONTAL,
+            0, 200, 0);
+
   
 
 
@@ -1228,7 +1230,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setResizable(false);
         dialog.setContentPane(contentPanel);
-        dialog.setSize(480, 345);
+        dialog.setSize(480, 480);
 
         return dialog;
     }
@@ -1275,24 +1277,42 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
      
      
 
-        /* 3ème panel - metronome */
+        /* 3ème panel - sound */
 
         metronomeCheckBox=new JCheckBox("", true);
         
         JPanel metronomePanel=new JPanel();
-        metronomePanel.add( rhythmcalibrateSpinner);
         metronomePanel.add(metronomeCheckBox);
-        localizables.add(new Localizable.NamedGroup(metronomePanel, "_menuMetronom"));
+        localizables.add(new Localizable.NamedGroup(metronomePanel, "_sound"));
         
         playsoundCheckBox=new JCheckBox("", false);
         metronomePanel.add(playsoundCheckBox);
         playsoundCheckBox.setText("Play sound (latency problem)");
+        
+        /* 4ème panel - latency */
+        
+        JPanel latencyPanel=new JPanel();
+        latencyPanel.add(latencySlider);
+        latencySlider.setMajorTickSpacing(50);
+        latencySlider.setMinorTickSpacing(10);
+        latencySlider.setPaintTicks(true);
+        latencySlider.setPaintLabels(true);
+        
+    	try{
+            latencySlider.setValue(Integer.parseInt(settings.getProperty("latency")));	     
+    	}
+  	    catch (Exception e) {
+  	      System.out.println(e);
+  	      }
+     localizables.add(new Localizable.NamedGroup(latencyPanel, "_latency"));
+        
 
         JPanel panel=new JPanel();
-        panel.setLayout(new GridLayout(3, 1));
+        panel.setLayout(new GridLayout(4, 1));
         panel.add(gamePanel);
         panel.add(rhytmsPanel);
         panel.add(metronomePanel);
+        panel.add(latencyPanel);
     
         return panel;
     }
@@ -1514,7 +1534,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void initRhythmGame() {
-    	latency = 203 +  spinnermodel.getNumber().intValue();
+    	
     	System.out.println("latency" + latency);
     	
     			initializeMidi(); 
@@ -1561,7 +1581,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 Receiver synthReceiver=sm_synthesizer.getReceiver();
                 Transmitter seqTransmitter=sm_sequencer.getTransmitter();
                 seqTransmitter.setReceiver(synthReceiver);
-                System.out.println("lat " + sm_synthesizer.getLatency());
+                latency = sm_synthesizer.getLatency()/1000 +  latencySlider.getValue();
+                System.out.println("synthesizer latency " + sm_synthesizer.getLatency()/1000);
             }
             catch (MidiUnavailableException e) {
                 e.printStackTrace();
@@ -1576,16 +1597,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 String strText=new String(abData);
                
                 if ("departthread".equals(strText)) {
-                	System.out.println("departthread");
+                //	System.out.println("departthread");
                     cursorstart = true;
                     timestart = System.currentTimeMillis();
-                    System.out.println("time departhred" + timestart);
                    
                 } 
                 
                if ("depart".equals(strText)) {
                 	System.out.println("depart");
-           //   	rhythmCursor = 72 +  spinnermodel.getNumber().floatValue();
+                	 
                     rhythmPosition=0;
                     repaint();
                    
@@ -1603,8 +1623,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         });
         sm_sequencer.setTempoInBPM(tempo);
         System.out.println("tempo" + tempo);
-       
-        rhythmCursor = 28; 
+      
+    
        
             
         //init line answers
@@ -1632,6 +1652,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
           
          parti=true; // start game
          startButton.setText(bundle.getString("_stop"));
+         rhythmCursor = 28;
+        
          
          cursorstart = false;
          
@@ -1939,13 +1961,14 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     		  currentChannel.stopnotes();
     		  currentChannel.jouenote(true,71, 2000);
     		  }
-    		  System.out.println("time sound" + System.currentTimeMillis());
+    		//  System.out.println("time sound" + System.currentTimeMillis());
     		  float rhythmCursorcorrected;
-    	// Adding noteon when space pressed don't work
-  		// mutetrack.add(createNoteOnEvent(71, 64, (int) (74+(rhythmCursor-82)/54*24)));
-  	//	 System.out.println ("tick " + (int) (74+(rhythmCursor-82)/54*24));
-    		  rhythmCursorcorrected = rhythmCursor + (System.currentTimeMillis()-timecursor) / 20 * (float) tempo/ (float) constantspeed; 
-    		  System.out.println ("rhythmcursorcorrected" + rhythmCursorcorrected);
+    
+    		  if (cursorstart) rhythmCursorcorrected = rhythmCursor + (System.currentTimeMillis()-timecursor) / 20 * (float) tempo/ (float) constantspeed; 
+    		  else rhythmCursorcorrected = rhythmCursor;
+    		  
+    		  System.out.println ("rhythmcursor" + rhythmCursorcorrected);
+    		 
     		  
     		  if (((rhythmPosition >= 0) && ((int)rhythmCursorcorrected < rhythms[rhythmPosition].getPosition() + precision) 
     				  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition].getPosition() - precision) && !rhythms[rhythmPosition].isSilence()) 
@@ -2458,6 +2481,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 	    	 settings.setProperty("instrument",String.valueOf(instrumentsComboBox.getSelectedIndex())); 
 	    	 if (soundOnCheckBox.isSelected())   settings.setProperty("sound","on");
 		      else settings.setProperty("sound","off"); 
+	    	 settings.setProperty("latency",String.valueOf(latencySlider.getValue())); 
+	    	 
 	   	 	settings.setProperty("language",langue);
        
         
@@ -4065,7 +4090,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     	   sleep(20); //cursor move every 20 milliseconds
                     	   cursorspeed = (float) tempo/ (float) constantspeed;
                     	  
-                            if (rhythmCursor < 714) {
+                            if (rhythmCursor < 715) {
                                 rhythmCursor = rhythmCursor + cursorspeed;
                                 timecursor = System.currentTimeMillis();
                             	}
