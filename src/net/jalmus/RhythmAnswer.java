@@ -15,21 +15,21 @@ import java.awt.Graphics2D;
 public class RhythmAnswer {
 	  int posx; // position of the point
       int posy;
-      boolean good; // 
+      int result; // 0 good rhythm, 1 false key pressed, 2 false key relesad
 	/**
 	 * 
 	 */
-	public RhythmAnswer(int x, int y, boolean good) {
+	public RhythmAnswer(int x, int y, int result) {
 		this.posx = x;
 		this.posy = y;
-		this.good = good;
+		this.result = result;
 
 	}
 	
 	public void init() {
 		this.posx = -1;
 		this.posy = -1;
-		this.good = true;
+		this.result = 0;
 
 	}
 	
@@ -54,14 +54,16 @@ public class RhythmAnswer {
         }
 	
         public boolean isgood() {
-            return this.good;
+            return this.result == 0;
           }
 	
         public void paint(Graphics g){
         	  Color cr = new Color(238, 0, 0);
+        	  Color co = new Color(238, 153, 0);
               Color cg = new Color(152, 251, 152);
-              if (good) g.setColor(cg);
-              else g.setColor(cr);
+              if (result == 0) g.setColor(cg);
+              else if (result == 1) g.setColor(cr);
+              else g.setColor(co);
               g.fillOval(this.posx, this.posy, 10,10);
         }
 }
