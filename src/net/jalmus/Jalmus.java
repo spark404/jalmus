@@ -3069,7 +3069,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     
     
     private void rhythmkeyreleased(){
-    	  boolean good = false;
+    	
     	
     	  if (playsoundCheckBox.isSelected()){
     		  currentChannel.stopnotes();
@@ -3080,15 +3080,30 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 		  else rhythmCursorcorrected = rhythmCursor;
 		  
 		  System.out.println ("rhythmcursor" + rhythmCursorcorrected);
-		  if (cursorstart)
-		  if ((rhythmPosition >= 0) && (rhythmPosition < rhythms.length) 
+		  if (cursorstart) {
+		// key should be released at tne end of the rhythm
+			  if ((rhythmPosition >= 0) && (rhythmPosition < rhythms.length) 
 				  && (!rhythms[rhythmPosition].isSilence()) && (rhythms[rhythmPosition].valeur != 0)
 				  && ((int)rhythmCursorcorrected < rhythms[rhythmPosition].getPosition() + 8/rhythms[rhythmPosition].valeur * 27 - precision) 
 				  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition].getPosition() + precision) 
 				 ) {
-				  good = false;
+				 
 				  answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursorcorrected, rhythmAnswerDportee -15 , 2 );
 				  rhythmAnswerPosition=rhythmAnswerPosition+1;
+		  }
+		//key should be released just before a silent  
+			  if ((rhythms[rhythmPosition].isSilence()) 
+					  && (rhythmPosition-1 >=0)
+					  && (!rhythms[rhythmPosition-1].isSilence())	
+					  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition].getPosition() + precision) 
+				//	 && ((int)rhythmCursorcorrected < rhythms[rhythmPosition].getPosition() + 8/rhythms[rhythmPosition].valeur * 27 - precision) 
+					 	 
+					  ) {
+				  
+				  answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursorcorrected, rhythmAnswerDportee -15 , 2 );
+				  rhythmAnswerPosition=rhythmAnswerPosition+1;
+			  }
+			  
 		  }
     	  
     }
