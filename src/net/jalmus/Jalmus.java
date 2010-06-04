@@ -1629,7 +1629,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             
         //init line answers
         for (int i=0; i<answers.length; i++) {
-        	answers[i] = new RhythmAnswer(-1,-1,false);
+        	answers[i] = new RhythmAnswer(-1,-1,1);
         }
         rhythmAnswerPosition = 0;
     }
@@ -1953,33 +1953,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         else if (selectedGame == 2 && rhythmgame == 0 && muterhythms && parti) {
     	  if (key==KeyEvent.VK_SPACE) {
-    		  
-    		  boolean good = false;
-    		  
-    		 
-    		  if (playsoundCheckBox.isSelected()){
-    		  currentChannel.stopnotes();
-    		  currentChannel.jouenote(true,71, 2000);
-    		  }
-    		//  System.out.println("time sound" + System.currentTimeMillis());
-    		  float rhythmCursorcorrected;
-    
-    		  if (cursorstart) rhythmCursorcorrected = rhythmCursor + (System.currentTimeMillis()-timecursor) / 20 * (float) tempo/ (float) constantspeed; 
-    		  else rhythmCursorcorrected = rhythmCursor;
-    		  
-    		  System.out.println ("rhythmcursor" + rhythmCursorcorrected);
-    		 
-    		  
-    		  if (((rhythmPosition >= 0) && ((int)rhythmCursorcorrected < rhythms[rhythmPosition].getPosition() + precision) 
-    				  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition].getPosition() - precision) && !rhythms[rhythmPosition].isSilence()) 
-    				  || //to resolve problem with eight on fast tempo 
-    				  ((rhythmPosition-1 >= 0) && ((int)rhythmCursorcorrected < rhythms[rhythmPosition-1].getPosition() + precision) 
-    	    				  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition-1].getPosition() - precision) && !rhythms[rhythmPosition-1].isSilence()))
-    				  good = true;
-    				  else good = false;
-    				  
-    		  answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursorcorrected, rhythmAnswerDportee -15 , good );
-    		  rhythmAnswerPosition=rhythmAnswerPosition+1;
+    		  rhythmkeypressed();
+    		
     		  
     	  }
         }
@@ -3090,6 +3065,62 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
         }
         return h;
+    }
+    
+    
+    private void rhythmkeyreleased(){
+    	  boolean good = false;
+    	
+    	  if (playsoundCheckBox.isSelected()){
+    		  currentChannel.stopnotes();
+    		  }
+    	  
+    	  float rhythmCursorcorrected;
+    	  if (cursorstart) rhythmCursorcorrected = rhythmCursor + (System.currentTimeMillis()-timecursor) / 20 * (float) tempo/ (float) constantspeed; 
+		  else rhythmCursorcorrected = rhythmCursor;
+		  
+		  System.out.println ("rhythmcursor" + rhythmCursorcorrected);
+		  if (cursorstart)
+		  if ((rhythmPosition >= 0) && (rhythmPosition < rhythms.length) 
+				  && (!rhythms[rhythmPosition].isSilence()) && (rhythms[rhythmPosition].valeur != 0)
+				  && ((int)rhythmCursorcorrected < rhythms[rhythmPosition].getPosition() + 8/rhythms[rhythmPosition].valeur * 27 - precision) 
+				  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition].getPosition() + precision) 
+				 ) {
+				  good = false;
+				  answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursorcorrected, rhythmAnswerDportee -15 , 2 );
+				  rhythmAnswerPosition=rhythmAnswerPosition+1;
+		  }
+    	  
+    }
+    
+    
+    private void rhythmkeypressed(){
+    	  int result =0;
+		  
+ 		 
+		  if (playsoundCheckBox.isSelected()){
+		  currentChannel.stopnotes();
+		  currentChannel.jouenote(true,71, 2000);
+		  }
+		//  System.out.println("time sound" + System.currentTimeMillis());
+		  float rhythmCursorcorrected;
+
+		  if (cursorstart) rhythmCursorcorrected = rhythmCursor + (System.currentTimeMillis()-timecursor) / 20 * (float) tempo/ (float) constantspeed; 
+		  else rhythmCursorcorrected = rhythmCursor;
+		  
+		  System.out.println ("rhythmcursor" + rhythmCursorcorrected);
+		 
+		  
+		  if (((rhythmPosition >= 0) && ((int)rhythmCursorcorrected < rhythms[rhythmPosition].getPosition() + precision) 
+				  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition].getPosition() - precision) && !rhythms[rhythmPosition].isSilence()) 
+				  || //to resolve problem with eight on fast tempo 
+				  ((rhythmPosition-1 >= 0) && ((int)rhythmCursorcorrected < rhythms[rhythmPosition-1].getPosition() + precision) 
+	    				  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition-1].getPosition() - precision) && !rhythms[rhythmPosition-1].isSilence()))
+				 result = 0;
+				  else result = 1;
+				  
+		  answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursorcorrected, rhythmAnswerDportee -15 , result );
+		  rhythmAnswerPosition=rhythmAnswerPosition+1;
     }
 
     private Interval intervalchoice() {
@@ -4258,7 +4289,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             Integer i=new Integer(0);
             String output="";
 
-            if (selectedGame==1) {
+            if (selectedGame==1 || selectedGame==2) {
 
                 if (event instanceof ShortMessage) {
                     if (!open) {
@@ -4275,6 +4306,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             //System.out.println(((ShortMessage)event).getData2());
 
                             // touche C3 pour lancer le jeu au clavier
+                            
+                            if (selectedGame == 1) {
 
                             if (!parti&(((ShortMessage)event).getData2()!=0)&((ShortMessage)event).getData1()==60) {
                             	System.out.println("C3");
@@ -4323,6 +4356,18 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                                     repaint();
                                 }
                             }
+                            }
+                            
+                            if (selectedGame == 2 && parti) {
+                            	if (((ShortMessage)event).getData2()!=0)
+                            	rhythmkeypressed();
+                            	else  {
+                            		 rhythmkeyreleased();
+                            		  System.out.println ("released");
+                            	}
+                            	
+                            }
+                           
                             break;
                         case 0x80:
                             output=("   Note Off  Key: "+((ShortMessage)event).getData1()+
