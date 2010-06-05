@@ -869,7 +869,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                         piano.Getprevkey().off(currentChannel, soundOnCheckBox.isSelected() && !erreurmidi);
                     }
                     if (key!=null && piano.Getprevkey()!=key) {
-                        key.on(currentChannel, soundOnCheckBox.isSelected() && !erreurmidi);
+                       key.on(currentChannel, false);
                     }
                     piano.Setprevkey(key);
                     repaint();
@@ -887,12 +887,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 	
                 	if (piano.rightbuttonpressed(e.getPoint()))  noteLevel.basenotetoRight(piano);
                 	if (piano.leftbuttonpressed(e.getPoint()))  noteLevel.basenotetoLeft(piano);
-                	  
+                    
                 	repaint();
                 	
                 	// System.out.println (e.getPoint());
                     Key key=piano.getKey(e.getPoint());
                     piano.Setprevkey(key);
+                    key.on(currentChannel, soundOnCheckBox.isSelected() && !erreurmidi);
                     if (key!=null) {
                         if (key.Getknum()==60 && !parti) {
 
