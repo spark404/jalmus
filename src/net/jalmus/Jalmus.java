@@ -286,7 +286,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private long timestart;
     private long timecursor;
     private long latency;
-    private double constantspeed = 27.580;
+    private double constantspeed = 27.590;
     
     
     private int rhythmgame = 0;
@@ -1527,9 +1527,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         effacecouleurbouton();
         
         stopson();
-        if (sm_sequencer!=null) {
-            sm_sequencer.stop();
-        }
+   //     if (sm_sequencer!=null) {
+  //          sm_sequencer.stop();
+    //    }
 
     }
 
@@ -1612,8 +1612,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 } else {
           		  
                 // to test speed cursor	
-          		 // answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursor, rhythmAnswerDportee -15 ,true );
-          		  //rhythmAnswerPosition=rhythmAnswerPosition+1;
+          		//  answers[rhythmAnswerPosition] = new RhythmAnswer((int)rhythmCursor, rhythmAnswerDportee -15 ,0 );
+          		//  rhythmAnswerPosition=rhythmAnswerPosition+1;
           		  
                     rythmesuivant();
                     repaint();
@@ -2193,7 +2193,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void handleRhythmReadingMenuItem() {
       //  stopGames();
-        stopRhythmGame();
+    	if (selectedGame == 1) stopNoteGame();
+    	else stopRhythmGame();
      //   pboutonjeu.removeAll();
     
          pboutonjeu.add(newButton);
@@ -2213,6 +2214,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void handleNoteReadingMenuItem() {
        // stopNoteGame(); //crash when change rhythm game to notes game
+    	if (selectedGame == 2) stopRhythmGame();
     	 pboutonjeu.removeAll();
  
         pboutonjeu.add(startButton);
@@ -2265,7 +2267,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         		parti = false;
         		
         	}
-        	else {
+        	else if (paintrhythms){
         		samerhythms = true;
         		muterhythms = true;
         		initRhythmGame();
@@ -3092,11 +3094,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 				  rhythmAnswerPosition=rhythmAnswerPosition+1;
 		  }
 		//key should be released just before a silent  
-			  if ((rhythms[rhythmPosition].isSilence()) 
+			  if ((rhythmPosition >= 0) && (rhythms[rhythmPosition].isSilence()) 
 					  && (rhythmPosition-1 >=0)
 					  && (!rhythms[rhythmPosition-1].isSilence())	
 					  && ((int)rhythmCursorcorrected > rhythms[rhythmPosition].getPosition() + precision) 
-				//	 && ((int)rhythmCursorcorrected < rhythms[rhythmPosition].getPosition() + 8/rhythms[rhythmPosition].valeur * 27 - precision) 
+					 && ((int)rhythmCursorcorrected < rhythms[rhythmPosition].getPosition() + 8/rhythms[rhythmPosition].valeur * 27 - precision) 
 					 	 
 					  ) {
 				  
@@ -3419,7 +3421,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void synthNote(int nNoteNumber, int nVelocity, int nDuration) {
 
-//        currentChannel.jouenote(!erreurmidi, nNoteNumber);
+        currentChannel.jouenote(!erreurmidi, nNoteNumber);
 
     }
 
@@ -3624,7 +3626,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
 
             track.add(createNoteOnEvent(71, velocity, tick));
-            mutetrack.add(createNoteOnEvent(71, 1, tick));
+            mutetrack.add(createNoteOnEvent(71, 0, tick));
             tick+=(int)(4.0/duree*ppq);
             addEvent(track, TEXT, text.getBytes(), tick);
             addEvent(mutetrack, TEXT, text.getBytes(), tick);
@@ -4136,7 +4138,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     	   sleep(20); //cursor move every 20 milliseconds
                     	   cursorspeed = (float) tempo/ (float) constantspeed;
                     	  
-                            if (rhythmCursor < 715) {
+                            if (rhythmCursor < 718) {
                                 rhythmCursor = rhythmCursor + cursorspeed;
                                 timecursor = System.currentTimeMillis();
                             	}
