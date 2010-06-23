@@ -384,7 +384,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JCheckBox eighthCheckBox;
     private JCheckBox restCheckBox;
     private JCheckBox metronomeCheckBox;
-    private JCheckBox playsoundCheckBox;
+    private JCheckBox keyboardsoundCheckBox;
 
     private int[] sauvprefs=new int[16]; // pour bouton cancel
 
@@ -971,6 +971,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	      settings.load(new FileInputStream("settings.properties"));
     	      if ("on".equals(settings.getProperty("sound"))) soundOnCheckBox.setSelected(true) ;
     	      else if ("off".equals(settings.getProperty("sound"))) soundOnCheckBox.setSelected(false) ;
+    	      if ("on".equals(settings.getProperty("keyboardsound"))) keyboardsoundCheckBox.setSelected(true) ;
+    	      else if ("off".equals(settings.getProperty("keyboardsound"))) keyboardsoundCheckBox.setSelected(false) ;
     	      int ins = Integer.parseInt(settings.getProperty("instrument"));
     	      if (ins >=0 & ins < 20) {
     	    	 instrumentsComboBox.setSelectedIndex(ins);
@@ -1114,8 +1116,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         JPanel soundPanel=new JPanel(); // panel midi keynoard
         localizables.add(new Localizable.NamedGroup(soundPanel, "_sound"));
-        soundPanel.add(soundOnCheckBox);
-        soundPanel.add(instrumentsComboBox);
+        
+        keyboardsoundCheckBox=new JCheckBox("", false);
+       
+        
+        soundPanel.setLayout(new BorderLayout());
+        
+        soundPanel.add(soundOnCheckBox,BorderLayout.NORTH);
+        soundPanel.add(keyboardsoundCheckBox,BorderLayout.CENTER);
+        soundPanel.add(instrumentsComboBox,BorderLayout.SOUTH);
 
         // ----
 
@@ -1194,7 +1203,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         JDialog dialog=new JDialog(this, true);
         localizables.add(new Localizable.Dialog(dialog, "_menuMidi"));
         dialog.setContentPane(contentPanel);
-        dialog.setSize(310, 300);
+        dialog.setSize(310, 340);
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setResizable(false);
 
@@ -1237,7 +1246,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         buttonPanel.add(cancelButton);
 
         JPanel contentPanel=new JPanel();
-        contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
+     //   contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
         contentPanel.add(preferencesTabbedPane);
         contentPanel.add(buttonPanel);
 
@@ -1246,7 +1255,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setResizable(false);
         dialog.setContentPane(contentPanel);
-        dialog.setSize(480, 480);
+        dialog.setSize(480, 500);
 
         return dialog;
     }
@@ -1301,9 +1310,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         metronomePanel.add(metronomeCheckBox);
         localizables.add(new Localizable.NamedGroup(metronomePanel, "_sound"));
         
-        playsoundCheckBox=new JCheckBox("", false);
-        metronomePanel.add(playsoundCheckBox);
-        playsoundCheckBox.setText("Play sound (latency problem)");
+     
         
         /* 4ème panel - latency */
         
@@ -2501,6 +2508,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 	    	 settings.setProperty("instrument",String.valueOf(instrumentsComboBox.getSelectedIndex())); 
 	    	 if (soundOnCheckBox.isSelected())   settings.setProperty("sound","on");
 		      else settings.setProperty("sound","off"); 
+	    	 if (keyboardsoundCheckBox.isSelected())   settings.setProperty("keyboardsound","on");
+		      else settings.setProperty("keyboardsound","off"); 
 	    	 settings.setProperty("latency",String.valueOf(latencySlider.getValue())); 
 	    	 settings.setProperty("speedcursor",String.valueOf(speedcursorSlider.getValue()));
 	    	 
@@ -2524,7 +2533,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         sauvmidi[1]=instrumentsComboBox.getSelectedIndex();
         sauvmidi[2]=midiInComboBox.getSelectedIndex();
         sauvmidi[3]=transpositionComboBox.getSelectedIndex();
-
+        if (keyboardsoundCheckBox.isSelected()) {
+            sauvmidi[4]=1;
+        } else {
+            sauvmidi[4]=0;
+        }
 
     }
 
@@ -2537,6 +2550,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         instrumentsComboBox.setSelectedIndex(sauvmidi[1]);
         midiInComboBox.setSelectedIndex(sauvmidi[2]);
         transpositionComboBox.setSelectedIndex(sauvmidi[3]);
+        if (sauvmidi[4]==1) {
+            keyboardsoundCheckBox.setSelected(true);
+        } else {
+            keyboardsoundCheckBox.setSelected(false);
+        }
 
     }
 
@@ -2928,7 +2946,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         chordTypeComboBox.addItem(bundle.getString("_rootposition"));
         chordTypeComboBox.addItem(bundle.getString("_inversion"));
 
-        soundOnCheckBox.setText(bundle.getString("_sound"));
+        soundOnCheckBox.setText(bundle.getString("_notessound"));
+        keyboardsoundCheckBox.setText(bundle.getString("_keyboardsound"));
         metronomeCheckBox.setText(bundle.getString("_menuMetronom"));
 
         selectmidi_forlang=true;
@@ -3117,7 +3136,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void rhythmkeyreleased(){
     	
     	
-    	  if (playsoundCheckBox.isSelected()){
+    	  if (keyboardsoundCheckBox.isSelected()){
     		  currentChannel.stopnotes();
     		  }
     	  
@@ -3159,7 +3178,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	  int result =0;
 		  
  		 
-		  if (playsoundCheckBox.isSelected()){
+		  if (keyboardsoundCheckBox.isSelected()){
 		  currentChannel.stopnotes();
 		  currentChannel.jouenote(true,71, 2000);
 		  }
@@ -3473,7 +3492,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         if ((noteLevel.isNormalgame() || noteLevel.isLearninggame()) & parti) {
             notecounter++;
-            if (precedente!=0) {
+            if (precedente!=0 & soundOnCheckBox.isSelected()) {
                 stopson();
             }
             ncourante.init();
