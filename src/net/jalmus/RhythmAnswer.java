@@ -5,6 +5,7 @@ package net.jalmus;
 
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -15,13 +16,15 @@ import java.awt.Graphics2D;
 public class RhythmAnswer {
 	  int posx; // position of the point
       int posy;
+      boolean goodnote;
       int result; // 0 good rhythm, 1 false key pressed, 2 false key relesad
 	/**
 	 * 
 	 */
-	public RhythmAnswer(int x, int y, int result) {
+	public RhythmAnswer(int x, int y, boolean b, int result) {
 		this.posx = x;
 		this.posy = y;
+		this.goodnote = b;
 		this.result = result;
 
 	}
@@ -35,6 +38,10 @@ public class RhythmAnswer {
 	
 	public boolean isnull(){
 		return this.posx == -1;
+	}
+	
+	public boolean goodnote(){
+		return this.goodnote;
 	}
 	
     public void setPosx(int x) {
@@ -63,7 +70,13 @@ public class RhythmAnswer {
               Color cg = new Color(152, 251, 152);
               if (result == 0) g.setColor(cg);
               else if (result == 1) g.setColor(cr);
-              else g.setColor(co);
-              g.fillOval(this.posx, this.posy, 10,10);
+              else if (result == 2) g.setColor(co);
+              if (this.goodnote) g.fillOval(this.posx, this.posy, 10,10);
+              else {
+            	 // g.drawRect(this.posx-5, this.posy-5, 8, 4);
+            	  Font f = new Font ("Sanserif", Font.BOLD, 16);
+            	  g.setFont (f);
+            	  g.drawString("X", this.posx, this.posy+10);
+              }
         }
 }
