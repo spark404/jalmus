@@ -234,7 +234,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private boolean open;
 
     private Piano piano;
-    private int transpose;  //number octave for MIDI keyboard transposition -2 -1 0 1 2
+    private int transpose = 0;  //number octave for MIDI keyboard transposition -2 -1 0 1 2
 
     // Animation Resources
 
@@ -385,7 +385,19 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JCheckBox eighthCheckBox;
     private JCheckBox restCheckBox;
     private JCheckBox metronomeCheckBox;
-    private JCheckBox keyboardsoundCheckBox;
+   
+    
+     private JComboBox scoreGameTypeComboBox; //type de jeux
+    private JComboBox scoreGameSpeedComboBox; // bouton pour choisir la vitesse
+    private JComboBox scoreclefComboBox; //  bouton pour choisir la cl�
+    private JComboBox scorekeySignatureCheckBox; // bouton pour choisir la tonalite
+   
+    private JCheckBox scorewholeCheckBox;
+    private JCheckBox scorehalfCheckBox;
+    private JCheckBox scorequarterCheckBox;
+    private JCheckBox scoreeighthCheckBox;
+    private JCheckBox scorerestCheckBox;
+    private JCheckBox scoremetronomeCheckBox;
 
     private int[] sauvprefs=new int[16]; // pour bouton cancel
 
@@ -425,7 +437,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             0, 200, 0);
     private JSlider speedcursorSlider = new JSlider(JSlider.HORIZONTAL,
             0, 200, 0);
-
+    private JCheckBox keyboardsoundCheckBox;
   
 
 
@@ -966,6 +978,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         updateLang();
         
+        transpositionComboBox.setSelectedIndex(2);
+        
         // load user preferences from settings file
      	try{
       	     
@@ -1120,12 +1134,35 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         keyboardsoundCheckBox=new JCheckBox("", false);
        
+  /* 4ème panel - latency */
         
-        soundPanel.setLayout(new BorderLayout());
+        JPanel latencyPanel=new JPanel();
+        latencyPanel.add(latencySlider);
+        latencySlider.setMajorTickSpacing(50);
+        latencySlider.setMinorTickSpacing(10);
+        latencySlider.setPaintTicks(true);
+        latencySlider.setPaintLabels(true);
+        latencyPanel.add(speedcursorSlider);
+        speedcursorSlider.setMajorTickSpacing(50);
+        speedcursorSlider.setMinorTickSpacing(10);
+        speedcursorSlider.setPaintTicks(true);
+        speedcursorSlider.setPaintLabels(true);
         
-        soundPanel.add(soundOnCheckBox,BorderLayout.NORTH);
-        soundPanel.add(keyboardsoundCheckBox,BorderLayout.CENTER);
-        soundPanel.add(instrumentsComboBox,BorderLayout.SOUTH);
+    	try{
+            latencySlider.setValue(Integer.parseInt(settings.getProperty("latency")));	 
+            speedcursorSlider.setValue(Integer.parseInt(settings.getProperty("speedcursor")));	  
+    	}
+  	    catch (Exception e) {
+  	      System.out.println(e);
+  	      }
+     localizables.add(new Localizable.NamedGroup(latencyPanel, "_latency"));
+        
+      //  soundPanel.setLayout(new BorderLayout());
+        
+        soundPanel.add(soundOnCheckBox);
+        soundPanel.add(keyboardsoundCheckBox);
+        soundPanel.add(instrumentsComboBox);
+
 
         // ----
 
@@ -1169,6 +1206,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         midiInPanel.add(midiInComboBox, BorderLayout.NORTH);
         midiInPanel.add(keyboardPanel, BorderLayout.CENTER);
 
+
         // ----
 
         JButton okButton=new JButton();
@@ -1199,12 +1237,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         contentPanel.add(soundPanel);
         contentPanel.add(midiInPanel);
+        contentPanel.add(latencyPanel);
         contentPanel.add(buttonPanel);
 
         JDialog dialog=new JDialog(this, true);
         localizables.add(new Localizable.Dialog(dialog, "_menuMidi"));
         dialog.setContentPane(contentPanel);
-        dialog.setSize(310, 340);
+        dialog.setSize(520, 420);
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setResizable(false);
 
@@ -1254,7 +1293,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
       // contentPanel.setLayout(new GridLayout(2, 2));
       
         contentPanel.add(preferencesTabbedPane,BorderLayout.CENTER);
-        preferencesTabbedPane.setPreferredSize(new Dimension(500, 400));
+        preferencesTabbedPane.setPreferredSize(new Dimension(560, 400));
 
         contentPanel.add(buttonPanel,BorderLayout.LINE_END);
      
@@ -1264,7 +1303,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setResizable(false);
         dialog.setContentPane(contentPanel);
-        dialog.setSize(560, 540);
+        dialog.setSize(580, 540);
 
         return dialog;
     }
@@ -1321,36 +1360,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
      
         
-        /* 4ème panel - latency */
-        
-        JPanel latencyPanel=new JPanel();
-        latencyPanel.add(latencySlider);
-        latencySlider.setMajorTickSpacing(50);
-        latencySlider.setMinorTickSpacing(10);
-        latencySlider.setPaintTicks(true);
-        latencySlider.setPaintLabels(true);
-        latencyPanel.add(speedcursorSlider);
-        speedcursorSlider.setMajorTickSpacing(50);
-        speedcursorSlider.setMinorTickSpacing(10);
-        speedcursorSlider.setPaintTicks(true);
-        speedcursorSlider.setPaintLabels(true);
-        
-    	try{
-            latencySlider.setValue(Integer.parseInt(settings.getProperty("latency")));	 
-            speedcursorSlider.setValue(Integer.parseInt(settings.getProperty("speedcursor")));	  
-    	}
-  	    catch (Exception e) {
-  	      System.out.println(e);
-  	      }
-     localizables.add(new Localizable.NamedGroup(latencyPanel, "_latency"));
+      
 
 
         JPanel panel=new JPanel();
-        panel.setLayout(new GridLayout(4, 1));
+        panel.setLayout(new GridLayout(3, 1));
         panel.add(gamePanel);
         panel.add(rhytmsPanel);
         panel.add(metronomePanel);
-        panel.add(latencyPanel);
+      
     
         return panel;
     }
@@ -1358,13 +1376,70 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     
     private JPanel buildScoreReadingPreferencesPanel() {
 
-   
+    	  scoreGameTypeComboBox=new JComboBox();
+          scoreGameTypeComboBox.addItemListener(this);
 
+          scoreGameSpeedComboBox=new JComboBox();
+          scoreGameSpeedComboBox.addItem("Largo");
+          scoreGameSpeedComboBox.addItem("Adagio");
+          scoreGameSpeedComboBox.addItem("Moderato");
+          scoreGameSpeedComboBox.addItem("Allegro");
+          scoreGameSpeedComboBox.addItem("Presto");
+          scoreGameSpeedComboBox.addItemListener(this);
+
+          JPanel scoregamePanel=new JPanel();
+          scoregamePanel.add(scoreGameTypeComboBox);
+          scoregamePanel.add(scoreGameSpeedComboBox);
+          localizables.add(new Localizable.NamedGroup(scoregamePanel, "_menuGame"));
+
+          /* 2ème panel - clef */
+
+          scoreclefComboBox=new JComboBox();
+          scoreclefComboBox.addItemListener(this);
+
+          scorekeySignatureCheckBox=new JComboBox();
+          scorekeySignatureCheckBox.addItemListener(this);
+
+          JPanel scoreclefPanel=new JPanel(); // panel pour la clef du premier jeu
+          scoreclefPanel.add(scoreclefComboBox);
+          scoreclefPanel.add(scorekeySignatureCheckBox);
+          localizables.add(new Localizable.NamedGroup(scoreclefPanel, "_menuClef"));
+
+          
+          /* 2ème panel - RYTHME */
+
+          scorewholeCheckBox=new JCheckBox("", true);
+          scorehalfCheckBox=new JCheckBox("", true);
+          scorequarterCheckBox=new JCheckBox("", false);
+          scoreeighthCheckBox=new JCheckBox("", false);
+          scorerestCheckBox=new JCheckBox("", true);
+
+          JPanel scorerhytmsPanel=new JPanel();
+          scorerhytmsPanel.add(scorewholeCheckBox);
+          scorerhytmsPanel.add(scorehalfCheckBox);
+          scorerhytmsPanel.add(scorequarterCheckBox);
+          scorerhytmsPanel.add(scoreeighthCheckBox);
+          scorerhytmsPanel.add(scorerestCheckBox);
+          localizables.add(new Localizable.NamedGroup(scorerhytmsPanel, "_menuRythms"));
+          
+       
+       
+
+          /* 3ème panel - sound */
+
+          scoremetronomeCheckBox=new JCheckBox("", true);
+          
+          JPanel scoremetronomePanel=new JPanel();
+          scoremetronomePanel.add(scoremetronomeCheckBox);
+          localizables.add(new Localizable.NamedGroup(scoremetronomePanel, "_sound"));
+          
+       
         JPanel panel=new JPanel();
         panel.setLayout(new GridLayout(4, 1));
-     //   panel.add(game2Panel);
-    //    panel.add(rhytmsPanel);
-    //    panel.add(metronomePanel);
+       panel.add(scoregamePanel);
+        panel.add(scoreclefPanel);
+        panel.add(scorerhytmsPanel);
+        panel.add(scoremetronomePanel);
     //    panel.add(latencyPanel);
     
         return panel;
@@ -3015,6 +3090,37 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         bsi.setText(SI);
         bdo2.setText(DO);
 
+        scoreclefComboBox.removeAllItems();
+        scoreclefComboBox.addItem(bundle.getString("_trebleclef"));
+        scoreclefComboBox.addItem(bundle.getString("_bassclef"));
+        
+        scoreGameTypeComboBox.removeAllItems();
+        scoreGameTypeComboBox.addItem(bundle.getString("_normalgame"));
+        
+        scorekeySignatureCheckBox.removeAllItems();
+        scorekeySignatureCheckBox.addItem(bundle.getString("_nosharpflat"));
+        scorekeySignatureCheckBox.addItem("1 "+bundle.getString("_sharp"));
+        scorekeySignatureCheckBox.addItem("2 "+bundle.getString("_sharp"));
+        scorekeySignatureCheckBox.addItem("3 "+bundle.getString("_sharp"));
+        scorekeySignatureCheckBox.addItem("4 "+bundle.getString("_sharp"));
+        scorekeySignatureCheckBox.addItem("5 "+bundle.getString("_sharp"));
+        scorekeySignatureCheckBox.addItem("6 "+bundle.getString("_sharp"));
+        scorekeySignatureCheckBox.addItem("7 "+bundle.getString("_sharp"));
+        scorekeySignatureCheckBox.addItem("1 "+bundle.getString("_flat"));
+        scorekeySignatureCheckBox.addItem("2 "+bundle.getString("_flat"));
+        scorekeySignatureCheckBox.addItem("3 "+bundle.getString("_flat"));
+        scorekeySignatureCheckBox.addItem("4 "+bundle.getString("_flat"));
+        scorekeySignatureCheckBox.addItem("5 "+bundle.getString("_flat"));
+        scorekeySignatureCheckBox.addItem("6 "+bundle.getString("_flat"));
+        scorekeySignatureCheckBox.addItem("7 "+bundle.getString("_flat"));
+        scorekeySignatureCheckBox.addItem(bundle.getString("_random"));
+        
+        scorewholeCheckBox.setText(bundle.getString("_wholenote"));
+        scorehalfCheckBox.setText(bundle.getString("_halfnote"));
+        scorequarterCheckBox.setText(bundle.getString("_quarternote"));
+        scoreeighthCheckBox.setText(bundle.getString("_eighthnote"));
+        scorerestCheckBox.setText(bundle.getString("_rest"));
+        scoremetronomeCheckBox.setText(bundle.getString("_menuMetronom"));
 
     }
 
