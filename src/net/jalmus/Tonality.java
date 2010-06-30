@@ -68,53 +68,67 @@ public class Tonality {
 
 
 
-  public void paint(NoteLevel nrlevel, Graphics g, int marge, int dportee, net.jalmus.Tabimage tab, Component j, ResourceBundle bundle) {
+  public void paint(int gametype, String cle, Graphics g, int marge, int dportee, net.jalmus.Tabimage tab, Component j, ResourceBundle bundle) {
 
     int decalagecle = 0;
+    int nbline = 1;
 
     Image diese = tab.Getimage(17);
     Image bemol = tab.Getimage(18);
 
-    if (nrlevel.isCurrentclefTreble() | nrlevel.isCurrentclefBass())
-      if (nrlevel.isCurrentclefBass())
+    if (gametype == 1) { // notereading
+    	decalagecle = 0;
+    	nbline = 1;
+    	 affichenom(g, marge, 90,  bundle);
+    }
+    else if (gametype == 3) { // scorereading
+    	decalagecle = 0;
+    	nbline = 4;
+    	 affichenom(g, marge, 80,  bundle);
+    }
+    
+    if (cle.equals("treble") | cle.equals("bass"))
+      if ( cle.equals("bass"))
         decalagecle = 10;
-    affichenom(g, marge, bundle);
+   
+    
+	for (int i=0; i<nbline; i++) {
 
     if (this.Alteration.equalsIgnoreCase("#")) {
       if (this.Nbalt >= 1) // FA#
-        affichealt(g, marge + 25, dportee - 15 + decalagecle, diese, j); //-9
+        affichealt(g, marge + 25, dportee - 15 + decalagecle + i*100, diese, j); //-9
       if (this.Nbalt >= 2) // DO#
-        affichealt(g, marge + 25 + 10, dportee - 1 + decalagecle, diese, j);
+        affichealt(g, marge + 25 + 10, dportee - 1 + decalagecle + i*100, diese, j);
       if (this.Nbalt >= 3) // SOL#
-        affichealt(g, marge + 25 + 20, dportee - 19 + decalagecle, diese, j);
+        affichealt(g, marge + 25 + 20, dportee - 19 + decalagecle + i*100, diese, j);
       if (this.Nbalt >= 4) // RE#
-        affichealt(g, marge + 25 + 30, dportee - 5 + decalagecle, diese, j);
+        affichealt(g, marge + 25 + 30, dportee - 5 + decalagecle + i*100, diese, j);
       if (this.Nbalt >= 5) // LA#
-        affichealt(g, marge + 25 + 40, dportee + 8 + decalagecle, diese, j);
+        affichealt(g, marge + 25 + 40, dportee + 8 + decalagecle + i*100, diese, j);
       if (this.Nbalt >= 6) // MI#
-        affichealt(g, marge + 25 + 50, dportee - 9 + decalagecle, diese, j);
+        affichealt(g, marge + 25 + 50, dportee - 9 + decalagecle + i*100, diese, j);
       if (this.Nbalt >= 7) // SI#
-        affichealt(g, marge + 25 + 60, dportee + 5 + decalagecle, diese, j);
+        affichealt(g, marge + 25 + 60, dportee + 5 + decalagecle + i*100, diese, j);
     }
 
     if (this.Alteration.equalsIgnoreCase("b")) {
       if (this.Nbalt >= 1) // SIb
-        affichealt(g, marge + 26, dportee + 4 + decalagecle, bemol, j);
+        affichealt(g, marge + 26, dportee + 4 + decalagecle + i*100, bemol, j);
       if (this.Nbalt >= 2) // MIb
-        affichealt(g, marge + 26 + 9, dportee - 12 + decalagecle, bemol, j);
+        affichealt(g, marge + 26 + 9, dportee - 12 + decalagecle + i*100, bemol, j);
       if (this.Nbalt >= 3) // LAb
-        affichealt(g, marge + 26 + 18, dportee + 8 + decalagecle, bemol, j);
+        affichealt(g, marge + 26 + 18, dportee + 8 + decalagecle + i*100, bemol, j);
       if (this.Nbalt >= 4) // REb
-        affichealt(g, marge + 26 + 27, dportee - 6 + decalagecle, bemol, j);
+        affichealt(g, marge + 26 + 27, dportee - 6 + decalagecle + i*100, bemol, j);
       if (this.Nbalt >= 5) // SOLb
-        affichealt(g, marge + 26 + 36, dportee + 14 + decalagecle, bemol, j);
+        affichealt(g, marge + 26 + 36, dportee + 14 + decalagecle + i*100, bemol, j);
       if (this.Nbalt >= 6) // DOb
-        affichealt(g, marge + 26 + 45, dportee - 2 + decalagecle, bemol, j);
+        affichealt(g, marge + 26 + 45, dportee - 2 + decalagecle + i*100, bemol, j);
       if (this.Nbalt >= 7) // FAb
-        affichealt(g, marge + 26 + 54, dportee + 18 + decalagecle, bemol, j);
+        affichealt(g, marge + 26 + 54, dportee + 18 + decalagecle + i*100, bemol, j);
     }
 
-    if (nrlevel.isCurrentclefBoth()) {
+    if (cle.equals("both")) {
       decalagecle = 100;
 
       if (this.Alteration.equalsIgnoreCase("#")) {
@@ -151,10 +165,11 @@ public class Tonality {
           affichealt(g, marge + 26 + 54, dportee + 18 + decalagecle, bemol, j);
       }
     }
+	}
 
   }
 
-  public void affichenom(Graphics g, int marge, ResourceBundle bundle) {
+  public void affichenom(Graphics g, int marge, int h, ResourceBundle bundle) {
     String nom = "";
 
     String DO = bundle.getString("_do");
@@ -211,7 +226,7 @@ public class Tonality {
     Graphics2D graphics2D = (Graphics2D) g;
     GraphicsEnvironment.getLocalGraphicsEnvironment();
     graphics2D.setFont(new Font("LucidaSans", Font.PLAIN, 11));
-    graphics2D.drawString(nom, marge, 90);
+    graphics2D.drawString(nom, marge, h);
   
 
   }
