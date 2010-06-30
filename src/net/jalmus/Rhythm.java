@@ -118,8 +118,26 @@ import java.awt.Graphics;
                 else if  (this.pitch == 70) {hight = 18; alteration = 1;} //LA# SIb
                 else if  (this.pitch == 71) {hight = 13; alteration = 0;} //SI
                 else if  (this.pitch == 72) {hight = 8; alteration = 0;} //do
-                else if  (this.pitch == 74) {hight = 5; alteration = 0;} //re
-                else if  (this.pitch == 76) {hight = 0; alteration = 0;} //mi
+                else if  (this.pitch == 74) {hight = 3; alteration = 0;} //re
+                else if  (this.pitch == 76) {hight = -2; alteration = 0;} //mi
+                else if  (this.pitch == 77) {hight = -7; alteration = 0;} //mi
+                
+                if (this.pitch == 27) {hight = 43; alteration = 0;} //DO
+                else if  (this.pitch == 28) {hight = 43; alteration = 1;} //DO# REb
+                else if  (this.pitch == 29) {hight = 38; alteration = 0;} //RE
+                else if  (this.pitch == 30) {hight = 38; alteration = 1;} //RE# MIb
+                else if  (this.pitch == 31) {hight = 33; alteration = 0;} //MI
+                else if  (this.pitch == 32) {hight = 28; alteration = 0;} //FA
+                else if  (this.pitch == 33) {hight = 28; alteration = 1;} //FA# SOLb
+                else if  (this.pitch == 34) {hight = 23; alteration = 0;} //SOL
+                else if  (this.pitch == 35) {hight = 23; alteration = 1;} //SOL# LAb
+                else if  (this.pitch == 36) {hight = 18; alteration = 0;} //LA
+                else if  (this.pitch == 37) {hight = 18; alteration = 1;} //LA# SIb
+                else if  (this.pitch == 38) {hight = 13; alteration = 0;} //SI
+                else if  (this.pitch == 40) {hight = 8; alteration = 0;} //do
+                else if  (this.pitch == 41) {hight = 3; alteration = 0;} //re
+                else if  (this.pitch == 43) {hight = -2; alteration = 0;} //mi
+              
                 
                
                 //  g.setColor(couleur);
