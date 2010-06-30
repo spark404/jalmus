@@ -30,6 +30,10 @@ public void setCurrentclef(String s) {
     this.currentclef = s;
   }
 
+public String getClef() {
+	    return this.currentclef;
+	  }
+
   public boolean isCurrentclefTreble() {
     return this.currentclef.equals("treble");
   }
@@ -38,6 +42,24 @@ public void setCurrentclef(String s) {
     return this.currentclef .equals("bass");
   }
 
+  /*****************************************/
+  public boolean getRandomtonality(){
+    return this.randomtonality;
+  }
+
+  public void setRandomtonality(boolean b){
+   this.randomtonality = b;
+ }
+
+
+   public void setCurrentTonality(Tonality t) {
+  this.currenttonality = t;
+ }
+
+   public Tonality getCurrentTonality(){
+     return this.currenttonality;
+   }
+ /*****************************************/
   
 public void initpitchtab(){
 
