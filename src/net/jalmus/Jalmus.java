@@ -276,7 +276,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     //----------------------------------------------------------------
     // Rhythm reading variables
 
-    private Rhythm[] rhythms=new Rhythm[80]; // 
+    private Rhythm[] rhythms=new Rhythm[100]; // 
     private int rhythmPosition=-1; // position de la note courante dans la liste
     private float rhythmCursor=82; //position on the line to print when player tape rhythm
     private RhythmAnswer[] answers=new RhythmAnswer[100];
@@ -297,7 +297,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     
     private int tempo=40; // tempo du sequencer - bouton rhythmGameSpeedComboBox
     private double nbtemps=4; // nombre de temps par mesure
-    private int nbmesures=9;
+    private int nbmesures=12;
 
     private Track track;
     private Track mutetrack;
@@ -2332,10 +2332,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         pboutonjeu.add(listenButton);
         pboutonjeu.add(startButton);
         pboutonjeu.add(preferencesButton);
+        dportee=100;
         repaint();
         
         
         selectedGame = RHYTHMREADING;
+       
         if (isLessonMode) {
             noteLevel.init();
         }
@@ -2353,6 +2355,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
           pboutonjeu.add(listenButton);
           pboutonjeu.add(startButton);
           pboutonjeu.add(preferencesButton);
+          dportee=100;
           repaint();
           
           
@@ -3022,6 +3025,45 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteLevel.setIntervaltype("all");
             }
         }
+        
+        else if (scorekeySignatureCheckBox.getSelectedIndex()==15) {
+            // choix de la tonalite au hasard au lancement du jeu
+           // scoreLevel.setRandomtonality(true);
+          //  scoreLevel.getCurrentTonality().init(0, "r");
+        } else {
+           // scoreLevel.setRandomtonality(false);
+            if (scorekeySignatureCheckBox.getSelectedIndex()==1) {
+                scoreLevel.getCurrentTonality().init(1, "#");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==2) {
+                scoreLevel.getCurrentTonality().init(2, "#");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==3) {
+                scoreLevel.getCurrentTonality().init(3, "#");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==4) {
+                scoreLevel.getCurrentTonality().init(4, "#");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==5) {
+                scoreLevel.getCurrentTonality().init(5, "#");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==6) {
+                scoreLevel.getCurrentTonality().init(6, "#");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==7) {
+            	scoreLevel.getCurrentTonality().init(7, "#");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==8) {
+            	scoreLevel.getCurrentTonality().init(1, "b");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==9) {
+            	scoreLevel.getCurrentTonality().init(2, "b");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==10) {
+            	scoreLevel.getCurrentTonality().init(3, "b");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==11) {
+            	scoreLevel.getCurrentTonality().init(4, "b");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==12) {
+            	scoreLevel.getCurrentTonality().init(5, "b");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==13) {
+            	scoreLevel.getCurrentTonality().init(6, "b");
+            } else if (scorekeySignatureCheckBox.getSelectedIndex()==14) {
+            	scoreLevel.getCurrentTonality().init(7, "b");
+            }
+
+
+        }
 
 
     }
@@ -3236,16 +3278,16 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 g.drawImage(ti.Getimage(1), margen, dportee+90, this);
             }
         } else if (selectedGame==RHYTHMREADING ) {
-            for (int nbportee=0; nbportee<3; nbportee++) {
+            for (int nbportee=0; nbportee<4; nbportee++) {
                 g.drawImage(ti.Getimage(0), marger, dportee-16+nbportee*100, this);
             }
         } else if (selectedGame==SCOREREADING ) {
         	if (scoreLevel.isCurrentclefTreble())
-            for (int nbportee=0; nbportee<3; nbportee++) {
+            for (int nbportee=0; nbportee<4; nbportee++) {
                 g.drawImage(ti.Getimage(0), marger, dportee-16+nbportee*100, this);
             }
         	else if (scoreLevel.isCurrentclefBass())
-                for (int nbportee=0; nbportee<3; nbportee++) {
+                for (int nbportee=0; nbportee<4; nbportee++) {
                     g.drawImage(ti.Getimage(1), marger, dportee-1+nbportee*100, this);
                 }
         }
@@ -3287,9 +3329,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     yd+nbportee*100);
             }
 
-            g.drawLine(marger+240, dportee+nbportee*100, marger+240,
-                dportee+nbportee*100+40);
-            g.drawLine(marger+458, dportee+nbportee*100, marger+458,
+            g.drawLine(marger+100, dportee+nbportee*100, marger+100,
+               dportee+nbportee*100+40);
+            g.drawLine(marger+388, dportee+nbportee*100, marger+388,
                 dportee+nbportee*100+40);
             g.drawLine(size.width-marger, dportee+nbportee*100, size.width-marger,
                 dportee+nbportee*100+40);
@@ -3953,6 +3995,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             } else if (nbmes<=9) {
                 rhythms[i]=new Rhythm(duree, poscourante, pitch,  2, false, false, 0);
             }
+            else if (nbmes<=12) {
+                rhythms[i]=new Rhythm(duree, poscourante, pitch,  3, false, false, 0);
+            }
 
             track.add(createNoteOnEvent(pitch, velocity, tick));
             mutetrack.add(createNoteOnEvent(pitch, 0, tick));
@@ -3969,6 +4014,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 rhythms[i]=new Rhythm(duree, poscourante, pitch, 1, false, true, 0);
             } else if (nbmes<=9) {
                 rhythms[i]=new Rhythm(duree, poscourante, pitch, 2, false, true, 0);
+            }
+            else if (nbmes<=12) {
+                rhythms[i]=new Rhythm(duree, poscourante, pitch, 3, false, true, 0);
             }
 
             track.add(createNoteOffEvent(pitch, tick));
@@ -4082,7 +4130,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                 tpsmes=0;
                 nbmes+=1;
-                if (nbmes==4 || nbmes==7) {
+                if (nbmes==4 || nbmes==7 || nbmes==10) {
                     poscourante=82;
                 }
 
@@ -4092,7 +4140,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
         }
 
-        regroupenotes();
+    //    regroupenotes();
 
     }
 
@@ -4553,7 +4601,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                 afficheportee(g);
                 affichecle(g);
-                noteLevel.getCurrentTonality().paint(noteLevel, g, margen, dportee, ti, this, bundle);
+                noteLevel.getCurrentTonality().paint(1,noteLevel.getClef(), g, margen, dportee, ti, this, bundle);
 
                 if (!noteLevel.isLearninggame()) {
                     currentScore.paint(g);
@@ -4631,7 +4679,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 pboutonjeu.setBackground(Color.white);
 
                 afficheportee2(g);
+                
                 affichecle(g);
+                if (selectedGame==SCOREREADING)
+                scoreLevel.getCurrentTonality().paint(3, scoreLevel.getClef(), g, marger, dportee, ti, this, bundle);
+
                 if (paintrhythms) {
                     afficheligner(g);
                     afficheportee2(g);
