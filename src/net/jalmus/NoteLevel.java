@@ -130,6 +130,10 @@ public class NoteLevel {
   public void setCurrentclef(String s) {
     this.currentclef = s;
   }
+  
+  public String getClef() {
+	    return this.currentclef;
+	  }
 
   public boolean isCurrentclefTreble() {
     return this.currentclef.equals("treble");
