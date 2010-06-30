@@ -914,7 +914,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 	// System.out.println (e.getPoint());
                     Key key=piano.getKey(e.getPoint());
                     piano.Setprevkey(key);
-                    key.on(currentChannel, soundOnCheckBox.isSelected() && !erreurmidi);
+                    key.on(currentChannel,  !erreurmidi);
                     if (key!=null) {
                         if (key.Getknum()==60 && !parti) {
 
@@ -3281,7 +3281,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         g.setColor(Color.black);
       //  System.out.println("dportee" + dportee);
 
-        for (int nbportee=0; nbportee<3; nbportee++) {
+        for (int nbportee=0; nbportee<4; nbportee++) {
             for (int yd=dportee; yd<=dportee+40; yd+=10) { //  1ere ligne � 144;   derni�re � 176
                 g.drawLine(marger, yd+nbportee*100, size.width-marger,
                     yd+nbportee*100);
@@ -3294,8 +3294,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             g.drawLine(size.width-marger, dportee+nbportee*100, size.width-marger,
                 dportee+nbportee*100+40);
         }
-        g.drawLine(size.width-marger-3, dportee+2*100, size.width-marger-3,
-            dportee+2*100+40);
+        g.drawLine(size.width-marger-3, dportee+3*100, size.width-marger-3,
+            dportee+3*100+40);
 
     }
 
