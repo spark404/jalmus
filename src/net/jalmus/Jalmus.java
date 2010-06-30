@@ -309,6 +309,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private RhythmLevel rhythmLevel=new RhythmLevel(true, true, false, false, false);
 
+    private ScoreLevel scoreLevel=new ScoreLevel();
+
     //----------------------------------------------------------------
     // Menu
 
@@ -399,7 +401,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JCheckBox scorerestCheckBox;
     private JCheckBox scoremetronomeCheckBox;
 
-    private int[] sauvprefs=new int[16]; // pour bouton cancel
+    private int[] sauvprefs=new int[30]; // pour bouton cancel
 
     //----
 
@@ -2481,7 +2483,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         noteLevel.updatenbnotes(piano);
     	}
     	
-    	else if (selectedGame==RHYTHMREADING || selectedGame==SCOREREADING) {
+    	else if (selectedGame==RHYTHMREADING) {
 
         // update parameters for rythm reading
         if (!wholeCheckBox.isSelected() && !halfCheckBox.isSelected() && !quarterCheckBox.isSelected() && !eighthCheckBox.isSelected()) {
@@ -2496,6 +2498,22 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 eighthCheckBox.isSelected(), restCheckBox.isSelected());
         }
     	}
+    	
+    	else if ( selectedGame==SCOREREADING) {
+
+            // update parameters for rythm reading
+            if (!scorewholeCheckBox.isSelected() && !scorehalfCheckBox.isSelected() && !scorequarterCheckBox.isSelected() && !scoreeighthCheckBox.isSelected()) {
+
+                JOptionPane.showMessageDialog(this,
+                    bundle.getString("_leastrythm"),
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+
+            } else {
+                scoreLevel.updaterhythm(scorewholeCheckBox.isSelected(), scorehalfCheckBox.isSelected(), scorequarterCheckBox.isSelected(),
+                		scoreeighthCheckBox.isSelected(), scorerestCheckBox.isSelected());
+            }
+        	}
 
         // update screen
         changeScreen();
@@ -2549,6 +2567,40 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else {
             sauvprefs[15]=0;
         }
+        sauvprefs[16]=scoreGameTypeComboBox.getSelectedIndex();
+        sauvprefs[17]=scoreGameSpeedComboBox.getSelectedIndex();
+        if (scorewholeCheckBox.isSelected()) {
+            sauvprefs[18]=1;
+        } else {
+            sauvprefs[18]=0;
+        }
+        if (scorehalfCheckBox.isSelected()) {
+            sauvprefs[19]=1;
+        } else {
+            sauvprefs[19]=0;
+        }
+        if (scorequarterCheckBox.isSelected()) {
+            sauvprefs[20]=1;
+        } else {
+            sauvprefs[20]=0;
+        }
+        if (scoreeighthCheckBox.isSelected()) {
+            sauvprefs[21]=1;
+        } else {
+            sauvprefs[21]=0;
+        }
+        if (scorerestCheckBox.isSelected()) {
+            sauvprefs[22]=1;
+        } else {
+            sauvprefs[22]=0;
+        }
+        if (scoremetronomeCheckBox.isSelected()) {
+            sauvprefs[23]=1;
+        } else {
+            sauvprefs[23]=0;
+        }
+        sauvprefs[24]=scoreclefComboBox.getSelectedIndex();
+        sauvprefs[25]=scorekeySignatureCheckBox.getSelectedIndex();
 
     }
 
@@ -2594,11 +2646,47 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else {
             restCheckBox.setSelected(false);
         }
-        if (sauvprefs[10]==1) {
+        if (sauvprefs[15]==1) {
             metronomeCheckBox.setSelected(true);
         } else {
             metronomeCheckBox.setSelected(false);
         }
+        
+        scoreGameTypeComboBox.setSelectedIndex(sauvprefs[16]);
+        scoreGameSpeedComboBox.setSelectedIndex(sauvprefs[17]);
+        if (sauvprefs[18]==1) {
+            scorewholeCheckBox.setSelected(true);
+        } else {
+            scorewholeCheckBox.setSelected(false);
+        }
+        if (sauvprefs[19]==1) {
+            scorehalfCheckBox.setSelected(true);
+        } else {
+            scorehalfCheckBox.setSelected(false);
+        }
+        if (sauvprefs[20]==1) {
+            scorequarterCheckBox.setSelected(true);
+        } else {
+            scorequarterCheckBox.setSelected(false);
+        }
+        if (sauvprefs[21]==1) {
+            scoreeighthCheckBox.setSelected(true);
+        } else {
+            scoreeighthCheckBox.setSelected(false);
+        }
+        if (sauvprefs[22]==1) {
+            scorerestCheckBox.setSelected(true);
+        } else {
+            scorerestCheckBox.setSelected(false);
+        }
+        if (sauvprefs[23]==1) {
+            scoremetronomeCheckBox.setSelected(true);
+        } else {
+            scoremetronomeCheckBox.setSelected(false);
+        }
+        scoreclefComboBox.setSelectedIndex(sauvprefs[24]);
+        scorekeySignatureCheckBox.setSelectedIndex(sauvprefs[25]);
+
 
     }
     
@@ -2718,6 +2806,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteLevel.setCurrentclef("bass");
             } else if (clefComboBox.getSelectedIndex()==2) {
                 noteLevel.setCurrentclef("both");
+            }
+
+        }
+        
+        else if (evt.getItemSelectable()==scoreclefComboBox) {
+            if (scoreclefComboBox.getSelectedIndex()==0) {
+                scoreLevel.setCurrentclef("treble");
+            } else if (scoreclefComboBox.getSelectedIndex()==1) {
+                scoreLevel.setCurrentclef("bass");
             }
 
         }
@@ -3138,10 +3235,19 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 g.drawImage(ti.Getimage(0), margen, dportee-15, this);
                 g.drawImage(ti.Getimage(1), margen, dportee+90, this);
             }
-        } else if (selectedGame==RHYTHMREADING || selectedGame==SCOREREADING) {
+        } else if (selectedGame==RHYTHMREADING ) {
             for (int nbportee=0; nbportee<3; nbportee++) {
                 g.drawImage(ti.Getimage(0), marger, dportee-16+nbportee*100, this);
             }
+        } else if (selectedGame==SCOREREADING ) {
+        	if (scoreLevel.isCurrentclefTreble())
+            for (int nbportee=0; nbportee<3; nbportee++) {
+                g.drawImage(ti.Getimage(0), marger, dportee-16+nbportee*100, this);
+            }
+        	else if (scoreLevel.isCurrentclefBass())
+                for (int nbportee=0; nbportee<3; nbportee++) {
+                    g.drawImage(ti.Getimage(1), marger, dportee-1+nbportee*100, this);
+                }
         }
     }
 
@@ -3267,11 +3373,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
     
     
-    private void rhythmkeyreleased(){
+    private void rhythmkeyreleased(int pitch){
     	
     	
     	  if (keyboardsoundCheckBox.isSelected()){
-    		  currentChannel.stopnotes();
+    		  currentChannel.stopnote(true,pitch);
     		  }
     	  
     	  float rhythmCursorcorrected;
@@ -3314,7 +3420,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 		  
  		 
 		  if (keyboardsoundCheckBox.isSelected()){
-		  currentChannel.stopnotes();
+		  //currentChannel.stopnotes();
 		  currentChannel.jouenote(true, pitch, 2000);
 		  }
 		//  System.out.println("time sound" + System.currentTimeMillis());
@@ -3891,32 +3997,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         return reponse;
     }
     
-    private int rhythmpitch(){
-    	int pitch = 71;
-    	
-    	double rand=Math.random();
-    	int[] pitchtab = new int [20];
-    	
-    	
-    	
-    	pitchtab[0]=60;
-    	pitchtab[1]=62;
-    	pitchtab[2]=64;
-    	pitchtab[3]=65;
-    	pitchtab[4]=67;
-    	pitchtab[5]=69;
-    	pitchtab[6]=71;
-    	pitchtab[7]=72;
-    	pitchtab[8]=74;
-    	pitchtab[9]=76;
-
-    	
-    	
-  	  pitch =  pitchtab[(int) (9 * rand)];
-  	  System.out.println(pitch + " pitch = " + pitch);
-  	  
-    	return pitch;
-    }
+  
 
     private void creationligner() {
     	 repaint();
@@ -3954,7 +4035,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         int poscourante=82;
         int pitch;
         
-       
+        if (selectedGame == SCOREREADING) scoreLevel.initpitchtab();
 
         while (i<rhythms.length) {
             if (nbmes<=nbmesures) {
@@ -3962,27 +4043,35 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     double tmp=Math.random();
                     if (selectedGame == RHYTHMREADING) pitch = 71;
                     else {
-                    	  pitch = rhythmpitch();
+                    	  pitch = scoreLevel.randompitch();
                     }
-                    if (rhythmLevel.getRonde() && tpsmes+4<=nbtemps && tmp<0.2) { // ronde, whole
+                    if ((selectedGame == RHYTHMREADING && rhythmLevel.getRonde() && tpsmes+4<=nbtemps && tmp<0.2) 
+                    || (selectedGame == SCOREREADING && scoreLevel.getRonde() && tpsmes+4<=nbtemps && tmp<0.2)) 
+                        { // ronde, whole
                         tpsmes+=4;
                         tickcourant=ajouterythme(1, i, pitch, tickcourant, nbmes, poscourante);
                         poscourante+=216;
                         i++;
                     } else
-                    if (rhythmLevel.getBlanche() && tpsmes+2<=nbtemps && tmp<0.4) { // blanche, half
+                    if ((selectedGame == RHYTHMREADING && rhythmLevel.getBlanche() && tpsmes+2<=nbtemps && tmp<0.4)
+                    || (selectedGame == SCOREREADING && scoreLevel.getBlanche() && tpsmes+2<=nbtemps && tmp<0.4))
+                		{ // blanche, half
                         tpsmes+=2;
                         tickcourant=ajouterythme(2, i, pitch,  tickcourant, nbmes, poscourante);
                         poscourante+=108;
                         i++;
                     } else
-                    if (rhythmLevel.getNoire() && tpsmes+1<=nbtemps && tmp<0.7) { // noire, quarter
+                    if ((selectedGame == RHYTHMREADING && rhythmLevel.getNoire() && tpsmes+1<=nbtemps && tmp<0.7) 
+                    || (selectedGame == SCOREREADING && scoreLevel.getNoire() && tpsmes+1<=nbtemps && tmp<0.7)) 
+                    { // noire, quarter
                         tpsmes+=1;
                         tickcourant=ajouterythme(4, i, pitch, tickcourant, nbmes, poscourante);
                         poscourante+=54;
                         i++;
                     } else
-                    if (rhythmLevel.getCroche() && tpsmes+0.5<=nbtemps) { // croche, eighth
+                    if ((selectedGame == RHYTHMREADING && rhythmLevel.getCroche() && tpsmes+0.5<=nbtemps) 
+                    ||	(selectedGame == SCOREREADING && scoreLevel.getCroche() && tpsmes+0.5<=nbtemps))
+                    { // croche, eighth
                         tpsmes+=0.5;
                         tickcourant=ajouterythme(8, i, pitch, tickcourant, nbmes, poscourante);
                         poscourante+=27;
@@ -4636,7 +4725,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             	if (((ShortMessage)event).getData2()!=0)
                             	rhythmkeypressed(71);
                             	else  {
-                            		 rhythmkeyreleased();
+                            		 rhythmkeyreleased(71);
                             		  System.out.println ("released");
                             	}
                             	
@@ -4646,7 +4735,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             	if (((ShortMessage)event).getData2()!=0)
                             	rhythmkeypressed(((ShortMessage)event).getData1());
                             	else  {
-                            		 rhythmkeyreleased();
+                            		 rhythmkeyreleased(((ShortMessage)event).getData1());
                             		  System.out.println ("released");
                             	}
                             	
