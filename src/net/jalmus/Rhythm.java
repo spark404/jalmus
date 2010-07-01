@@ -99,45 +99,77 @@ import java.awt.Graphics;
           }
 
 
-              public void paint(Graphics g, int position, boolean courant, int dportee, Tabimage t, Component l) {
+              public void paint(Graphics g, Tonality ton, int position, boolean courant, int dportee, Tabimage t, Component l) {
 
                 int i; // compteur
                 int hight = 14;
                 int alteration = 0; //0 no alteration 1 sharp 2 flat
+                
+             
 
                 if (this.pitch == 60) {hight = 43; alteration = 0;} //DO
                 else if  (this.pitch == 61) {hight = 43; alteration = 1;} //DO# REb
                 else if  (this.pitch == 62) {hight = 38; alteration = 0;} //RE
-                else if  (this.pitch == 63) {hight = 38; alteration = 1;} //RE# MIb
-                else if  (this.pitch == 64) {hight = 33; alteration = 0;} //MI
-                else if  (this.pitch == 65) {hight = 28; alteration = 0;} //FA
-                else if  (this.pitch == 66) {hight = 28; alteration = 1;} //FA# SOLb
-                else if  (this.pitch == 67) {hight = 23; alteration = 0;} //SOL
-                else if  (this.pitch == 68) {hight = 23; alteration = 1;} //SOL# LAb
-                else if  (this.pitch == 69) {hight = 18; alteration = 0;} //LA
-                else if  (this.pitch == 70) {hight = 18; alteration = 1;} //LA# SIb
-                else if  (this.pitch == 71) {hight = 13; alteration = 0;} //SI
-                else if  (this.pitch == 72) {hight = 8; alteration = 0;} //do
-                else if  (this.pitch == 74) {hight = 3; alteration = 0;} //re
-                else if  (this.pitch == 76) {hight = -2; alteration = 0;} //mi
-                else if  (this.pitch == 77) {hight = -7; alteration = 0;} //mi
                 
-                if (this.pitch == 27) {hight = 43; alteration = 0;} //DO
-                else if  (this.pitch == 28) {hight = 43; alteration = 1;} //DO# REb
-                else if  (this.pitch == 29) {hight = 38; alteration = 0;} //RE
-                else if  (this.pitch == 30) {hight = 38; alteration = 1;} //RE# MIb
-                else if  (this.pitch == 31) {hight = 33; alteration = 0;} //MI
-                else if  (this.pitch == 32) {hight = 28; alteration = 0;} //FA
-                else if  (this.pitch == 33) {hight = 28; alteration = 1;} //FA# SOLb
-                else if  (this.pitch == 34) {hight = 23; alteration = 0;} //SOL
-                else if  (this.pitch == 35) {hight = 23; alteration = 1;} //SOL# LAb
-                else if  (this.pitch == 36) {hight = 18; alteration = 0;} //LA
-                else if  (this.pitch == 37) {hight = 18; alteration = 1;} //LA# SIb
-                else if  (this.pitch == 38) {hight = 13; alteration = 0;} //SI
-                else if  (this.pitch == 40) {hight = 8; alteration = 0;} //do
-                else if  (this.pitch == 41) {hight = 3; alteration = 0;} //re
-                else if  (this.pitch == 43) {hight = -2; alteration = 0;} //mi
+                
+                else if  (this.pitch == 63  && ton.isflat() && ton.getNbalt() >=  2) {hight = 33; alteration = 2;} // MIb
+                else if  (this.pitch == 63) {hight = 38; alteration = 1;} //RE# 
+                else if  (this.pitch == 64 && ton.isflat() && ton.getNbalt() >=  7) {hight = 28; alteration = 2;} // fab
+                else if  (this.pitch == 64) {hight = 33; alteration = 0;} //MI
+                else if  (this.pitch == 65 && ton.issharp() && ton.getNbalt() >=  6) {hight = 33; alteration = 1;} //MI#
+                else if  (this.pitch == 65) {hight = 28; alteration = 0;} //FA
+                else if  (this.pitch == 66 && ton.issharp() && ton.getNbalt() >=  1) {hight = 28; alteration = 1;} //FA# 
+                else if  (this.pitch == 66 && ton.isflat() && ton.getNbalt() >=  5) {hight = 23; alteration = 2;} // SOLb
+                else if  (this.pitch == 67) {hight = 23; alteration = 0;} //SOL
+                else if  (this.pitch == 68 && ton.issharp() && ton.getNbalt() >=  3) {hight = 23; alteration = 1;} //SOL# 
+                else if  (this.pitch == 68 && ton.isflat() && ton.getNbalt() >=  3) {hight = 18; alteration = 2;} // LAb
+                else if  (this.pitch == 69) {hight = 18; alteration = 0;} //LA
+                else if  (this.pitch == 70 && ton.issharp() && ton.getNbalt() >=  5) {hight = 18; alteration = 1;} //LA# 
+                else if  (this.pitch == 70 && ton.isflat() && ton.getNbalt() >=  1) {hight = 13; alteration = 2;} // SIb
+                
+                else if  (this.pitch == 71 && ton.isflat() && ton.getNbalt() >=  6) {hight = 8; alteration = 0;} //dob
+                else if  (this.pitch == 71) {hight = 13; alteration = 0;} //SI
+                else if  (this.pitch == 72 && ton.issharp() && ton.getNbalt() >=  7) {hight = 13; alteration = 1;} //si#
+                else if  (this.pitch == 72) {hight = 8; alteration = 0;} //do
+                else if  (this.pitch == 73 && ton.issharp() && ton.getNbalt() >=  2) {hight = 8; alteration = 1;} //do#
+                else if  (this.pitch == 73 && ton.isflat() && ton.getNbalt() >=  4) {hight = 3; alteration = 2;} //reb
+                else if  (this.pitch == 74) {hight = 3; alteration = 0;} //re
+                else if  (this.pitch == 75 && ton.issharp() && ton.getNbalt() >=  4) {hight = 3; alteration = 1;} //re#
+                else if  (this.pitch == 75  && ton.isflat() && ton.getNbalt() >=  2) {hight = -2; alteration = 2;} // MIb
+                else if  (this.pitch == 76) {hight = -2; alteration = 0;} //mi
+                else if  (this.pitch == 77  && ton.issharp() && ton.getNbalt() >=  6) {hight = -2; alteration = 1;} //mi#
+                else if  (this.pitch == 77) {hight = -7; alteration = 0;} //fa
+             
               
+                if (this.pitch == 27) {hight = 43; alteration = 0;} //
+                else if  (this.pitch == 28) {hight = 43; alteration = 1;} //
+              
+                
+                else if  (this.pitch == 30 && ton.isflat() && ton.getNbalt() >=  5) {hight = 33; alteration = 2;} // SOLb
+                else if  (this.pitch == 30) {hight = 38; alteration = 0;} // fa
+                else if  (this.pitch == 31) {hight = 33; alteration = 1;} //SOL
+                else if  (this.pitch == 32 && ton.issharp() && ton.getNbalt() >=  3) {hight = 33; alteration = 1;} //SOL# 
+                else if  (this.pitch == 32 && ton.isflat() && ton.getNbalt() >=  3) {hight = 28; alteration = 2;} // LAb     
+                else if  (this.pitch == 33) {hight = 28; alteration = 0;} //LA
+                else if  (this.pitch == 34 && ton.issharp() && ton.getNbalt() >=  5) {hight = 28; alteration = 1;} //LA# 
+                else if  (this.pitch == 34 && ton.isflat() && ton.getNbalt() >=  1) {hight = 23; alteration = 2;} // SIb               
+                else if  (this.pitch == 35 && ton.isflat() && ton.getNbalt() >=  6) {hight = 18; alteration = 2;} //dob 
+                else if  (this.pitch == 35) {hight = 23; alteration = 0;} //SI
+                else if  (this.pitch == 36 && ton.issharp() && ton.getNbalt() >=  7) {hight = 23; alteration = 1;} //si#        
+                else if  (this.pitch == 36) {hight = 18; alteration = 1;} //do
+                else if  (this.pitch == 37 && ton.issharp() && ton.getNbalt() >=  2) {hight = 18; alteration = 1;} //do#
+                else if  (this.pitch == 37 && ton.isflat() && ton.getNbalt() >=  4) {hight = 13; alteration = 2;} //reb 
+                else if  (this.pitch == 38) {hight = 13; alteration = 0;} //re
+                else if  (this.pitch == 39 && ton.issharp() && ton.getNbalt() >=  4) {hight = 13; alteration = 1;} //re#
+                else if  (this.pitch == 39  && ton.isflat() && ton.getNbalt() >=  2) {hight = 8; alteration = 2;} // MIb
+                else if  (this.pitch == 40 && ton.isflat() && ton.getNbalt() >=  7) {hight = 3; alteration = 2;} //fab
+                else if  (this.pitch == 40) {hight = 8; alteration = 0;} //mi
+                else if  (this.pitch == 41  && ton.issharp() && ton.getNbalt() >=  6) {hight = 8; alteration = 1;} //mi#  
+                else if  (this.pitch == 41) {hight = 3; alteration = 0;} //fa
+                else if  (this.pitch == 42 && ton.issharp() && ton.getNbalt() >=  1) {hight = 3; alteration = 1;} //FA# 
+                else if  (this.pitch == 42 && ton.isflat() && ton.getNbalt() >=  5) {hight = -2; alteration = 2;} // SOLb 
+                else if  (this.pitch == 43) {hight = -2; alteration = 0;} //sol
+                else if  (this.pitch == 44 && ton.issharp() && ton.getNbalt() >=  3) {hight = -2; alteration = 1;} // SOL#         
                 
                
                 //  g.setColor(couleur);
