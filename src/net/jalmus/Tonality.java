@@ -53,6 +53,14 @@ public class Tonality {
     return this.Alteration;
   }
 
+  public boolean issharp() {
+	    return this.Alteration.equalsIgnoreCase("#");
+	  }
+  
+  public boolean isflat() {
+	    return this.Alteration.equalsIgnoreCase("b");
+	  }
+  
   public void setAlteration(String s) {
     this.Alteration = s;
   }
