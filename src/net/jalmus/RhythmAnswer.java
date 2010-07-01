@@ -71,7 +71,7 @@ public class RhythmAnswer {
               if (result == 0) g.setColor(cg);
               else if (result == 1) g.setColor(cr);
               else if (result == 2) g.setColor(co);
-              if (this.goodnote) g.fillOval(this.posx, this.posy, 10,10);
+              if (this.goodnote) g.fillOval(this.posx, this.posy-5, 10,10);
               else {
             	 // g.drawRect(this.posx-5, this.posy-5, 8, 4);
             	  Font f = new Font ("Sanserif", Font.BOLD, 16);
