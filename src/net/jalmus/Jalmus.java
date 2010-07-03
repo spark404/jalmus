@@ -1111,7 +1111,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         }
     } else {
-        System.err.println(repertoire+" : Erreur de lecture.");
+        System.err.println(repertoire+" : Reading lessons files error.");
     }
     return lessonsMenu;
     }
@@ -3165,7 +3165,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         transpositionComboBox.addItem(bundle.getString("_notransposition"));
         transpositionComboBox.addItem("1 "+bundle.getString("_octave"));
         transpositionComboBox.addItem("2 "+bundle.getString("_octave"));
-      //  transpositionComboBox.setSelectedIndex(2);
+        if (transpose == 0) transpositionComboBox.setSelectedIndex(2);
+        else if (transpose == -2) transpositionComboBox.setSelectedIndex(0);
+        else if (transpose == -1) transpositionComboBox.setSelectedIndex(1);
+        else if (transpose == 1) transpositionComboBox.setSelectedIndex(3);
+        else if (transpose == 2) transpositionComboBox.setSelectedIndex(4);
 
         seconde=bundle.getString("_second");
         tierce=bundle.getString("_third");
