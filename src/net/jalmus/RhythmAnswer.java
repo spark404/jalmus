@@ -40,9 +40,17 @@ public class RhythmAnswer {
 		return this.posx == -1;
 	}
 	
-	public boolean goodnote(){
-		return this.goodnote;
+	public boolean allgood(){
+		return (this.goodnote  && this.result == 0);
 	}
+	
+	public boolean badnote(){
+		return (!this.goodnote );
+	}
+	
+	public boolean badrhythm(){
+		return ( this.result == 1);
+		}
 	
     public void setPosx(int x) {
         this.posx = x;
@@ -60,7 +68,7 @@ public class RhythmAnswer {
           return this.posy;
         }
 	
-        public boolean isgood() {
+        public boolean isgoodnote() {
             return this.result == 0;
           }
 	
