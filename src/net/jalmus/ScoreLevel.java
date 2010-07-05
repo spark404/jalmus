@@ -17,7 +17,7 @@ public ScoreLevel() {
     this.blanche = true;
     this.noire = false;
     this.croche = false;
-    this.silence = false;
+    this.silence = true;
     this.currentclef = "treble";
     this.randomtonality = false;
     this.currenttonality = new Tonality(0, "");
