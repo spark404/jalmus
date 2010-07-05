@@ -1351,7 +1351,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setResizable(false);
         dialog.setContentPane(contentPanel);
-        dialog.setSize(580, 540);
+        dialog.setSize(580, 550);
 
         return dialog;
     }
