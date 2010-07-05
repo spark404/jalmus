@@ -77,6 +77,10 @@ import java.awt.Graphics;
               public void setGroupee(int i) {
                 this.groupee = i;
               }
+              
+              public boolean isGroupee() {
+                 return this.groupee != 0;
+                }
 
               public int getGroupee() {
                 return this.groupee;
@@ -242,7 +246,7 @@ import java.awt.Graphics;
                      g.drawImage(t.Getimage(7), this.position,
                                  dportee + this.nportee * 100 + hight, l);
                      g.setColor(Color.BLACK);
-                   g.fillRect(this.position, dportee+ this.nportee*100+59, 28, 3);
+                   g.fillRect(this.position, dportee+ this.nportee*100+hight, 38, 3);
                    }
                    else if (this.groupee == 2){
                      g.drawImage(t.Getimage(7), this.position,
@@ -258,7 +262,7 @@ import java.awt.Graphics;
                  if (this.groupee == 1) {
                    g.drawImage(t.Getimage(6), this.position, dportee + this.nportee * 100 + hight, l);
                    g.setColor(Color.BLACK);
-                   g.fillRect(this.position, dportee+this.nportee*100+59, 28, 3);
+                   g.fillRect(this.position, dportee+this.nportee*100+47+hight, 38, 3);
 
                  }
                  else if (this.groupee == 2){
