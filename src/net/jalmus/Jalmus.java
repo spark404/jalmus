@@ -2319,6 +2319,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void handleRhythmReadingMenuItem() {
     	stopGames();
+    	
+    	if (latencySlider.getValue() == 0 && speedcursorSlider.getValue() == 0)
+    	  JOptionPane.showMessageDialog(this, bundle.getString("_setlatency"),
+                  "",
+                  JOptionPane.INFORMATION_MESSAGE);
      //   pboutonjeu.removeAll();
     
          pboutonjeu.add(newButton);
@@ -2341,6 +2346,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private void handleScoreReadingMenuItem() {
     	stopGames();
        //   pboutonjeu.removeAll();
+    	
+    	
+    	if (latencySlider.getValue() == 0 && speedcursorSlider.getValue() == 0)
+    	  JOptionPane.showMessageDialog(this, bundle.getString("_setlatency"),
+                  "",
+                  JOptionPane.INFORMATION_MESSAGE);
       
            pboutonjeu.add(newButton);
           pboutonjeu.add(listenButton);
@@ -4003,7 +4014,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
       
 
         double tmpsilence=Math.random();
-        if (!rhythmLevel.getSilence() || (rhythmLevel.getSilence() && tmpsilence<0.85)) {
+        if ((selectedGame == RHYTHMREADING && (!rhythmLevel.getSilence() || (rhythmLevel.getSilence() && tmpsilence<0.85)))
+        	|| (selectedGame == SCOREREADING && (!scoreLevel.getSilence() || (scoreLevel.getSilence() && tmpsilence<0.85)))) {
             if (nbmes<=2) {
                 rhythms[i]=new Rhythm(duree, poscourante, pitch,  0, false, false, 0);
             } else if (nbmes<=4) {
@@ -4161,7 +4173,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
         }
 
-    //    regroupenotes();
+        if (selectedGame == RHYTHMREADING) regroupenotes(); //not workin with Scorereading yet
 
     }
 
@@ -4169,7 +4181,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         for (int i=0; i<rhythms.length-1; i++) {
             if (rhythms[i].getValeur()==8 && rhythms[i+1].getValeur()==8 &&
                 !rhythms[i+1].isSilence() && !rhythms[i].isSilence() &&
-                !debutdemesure(i+1))
+                !debutdemesure(i+1)  && !rhythms[i].isGroupee())
             {
                 rhythms[i].setGroupee(1);
                 rhythms[i+1].setGroupee(2);
