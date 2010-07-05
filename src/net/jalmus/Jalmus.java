@@ -1564,6 +1564,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         if (isLessonMode) {
             startButton.setVisible(false);
             preferencesButton.setVisible(false);
+            newButton.setVisible(false);
+            listenButton.setVisible(false);
 
             menuPrefs.setEnabled(false);
 
@@ -1598,6 +1600,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else if (selectedGame==RHYTHMREADING || selectedGame==SCOREREADING) {
             pboutonjeu.setVisible(true);
             pnotes.setVisible(false);
+            newButton.setVisible(true);
+            listenButton.setVisible(true);
 
             principal.setVisible(true);
 
