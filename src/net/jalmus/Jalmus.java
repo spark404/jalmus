@@ -103,7 +103,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
-import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -156,10 +155,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.Timer;
-import javax.swing.JSpinner;
 import javax.swing.JSlider;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.ColorUIResource;
 import javax.xml.parsers.ParserConfigurationException;
@@ -171,13 +167,16 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     //----------------------------------------------------------------
     // Translation variables
 
-    private String tlicence;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private String tlicence;
 
     private String tcredits;
 
     private String pasclavier="Pas de clavier MIDI             ";
-    private String toutes="Toutes      ";
-    private String tous="Tous";
     private String seconde;
     private String tierce;
     private String quarte;
@@ -187,9 +186,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private String octave;
     private String mineur;
     private String majeur;
-    private String diminuee;
-    private String augmentee;
-    private String juste;
+
 
     private String DO;
     private String RE;
@@ -202,7 +199,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private String langue="en";
 
     private ResourceBundle bundle;
-    private final Collection localizables=new ArrayList();
+    private final Collection<Localizable> localizables=new ArrayList<Localizable>();
 
     //----------------------------------------------------------------
     // Main variables
@@ -304,7 +301,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private static final int ppq=12;
     private Sequence sequence;
     private Sequencer sm_sequencer;
-    private static final int VELOCITY=64;
+
 
     private RhythmLevel rhythmLevel=new RhythmLevel(true, true, false, false, false);
 
@@ -3103,7 +3100,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void changeLanguage() {
-        for (Iterator itr=localizables.iterator(); itr.hasNext();) {
+        for (Iterator<Localizable> itr=localizables.iterator(); itr.hasNext();) {
             Localizable localizable=(Localizable)itr.next();
             localizable.update(bundle);
         }
@@ -3195,9 +3192,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         octave=bundle.getString("_octave");
         mineur=bundle.getString("_minor");
         majeur=bundle.getString("_major");
-        diminuee=bundle.getString("_diminished");
-        augmentee=bundle.getString("_augmented");
-        juste=bundle.getString("_perfect");
+      
 
         intervalComboBox.removeAllItems();
         intervalComboBox.addItem(seconde);
@@ -3779,7 +3774,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void afficheaccord(Chord a, Graphics g, boolean accordcourant) {
         Dimension d=getSize();
-        int i; // compteur
 
         if (a.getNote(posnote).getX()<d.width-margen &&
             a.getNote(posnote).getX()>=margen+98 && parti) {
@@ -4285,28 +4279,17 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void afficheligner(Graphics g) {
-        int precedant=0;
-        int suivant=0;
+      
 
         // paint answers red false green good
         for (int i=0; i<answers.length; i++) {
         	if (!answers[i].isnull()) answers[i].paint(g);
         }
       
-        
         for (int i=0; i<rhythms.length; i++) {
             // System.out.println(i);
             if (rhythms[i].getValeur()!=0) {
-                if (i!=0) {
-                    precedant=rhythms[i-1].getValeur();
-                } else {
-                    precedant=0;
-                }
-                if (i!=rhythms.length-1) {
-                    suivant=rhythms[i+1].getValeur();
-                } else {
-                    suivant=0;
-                }
+               
                 if ((rhythmgame == 0) && (i!=rhythmPosition) || (muterhythms)) { //only paint note in learning mode
                     rhythms[i].paint(g, scoreLevel.currenttonality, 9, false, dportee, ti, this);
                 } else {
@@ -4604,18 +4587,20 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private class Anim extends JPanel {
 
-        int dep=0;
-        Timer timer;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
         int largeur=680, hauteur=480;
 
-        public void anim() {
+        public Anim() {
             setPreferredSize(new Dimension(largeur, hauteur));
             setDoubleBuffered(true);
 
         }
 
         public void paintComponent(Graphics g) {
-            int i, j;
             Dimension d=getSize();
 
             if (selectedGame==NOTEREADING) {
@@ -4741,7 +4726,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         public void send(MidiMessage event, long time) {
 
-            Integer i=new Integer(0);
+        
             String output="";
 
             if (selectedGame==NOTEREADING || selectedGame==RHYTHMREADING || selectedGame==SCOREREADING) {
@@ -4796,8 +4781,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                                 repaint();
 
                                 if (((ShortMessage)event).getData2()!=0&parti&!paused) {
-                                    System.out.print(((ShortMessage)event).getData1());
-                                    System.out.println("-"+ncourante.getPitch());
+                                  //  System.out.print(((ShortMessage)event).getData1());
+                                  //  System.out.println("-"+ncourante.getPitch());
 
                                     if (samenote(((ShortMessage)event).getData1(),
                                         ncourante.getPitch()))
@@ -4818,7 +4803,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             	rhythmkeypressed(71);
                             	else  {
                             		 rhythmkeyreleased(71);
-                            		  System.out.println ("released");
+                            		 // System.out.println ("released");
                             	}
                             	
                             }
@@ -4828,7 +4813,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             	rhythmkeypressed(((ShortMessage)event).getData1());
                             	else  {
                             		 rhythmkeyreleased(((ShortMessage)event).getData1());
-                            		  System.out.println ("released");
+                            		//  System.out.println ("released");
                             	}
                             	
                             }
@@ -4868,12 +4853,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     output=("   SysexMessage: "+(event.getStatus()-256));
                     byte[] data=((SysexMessage)event).getData();
                     for (int x=0; x<data.length; x++) {
-                        output=(" "+i.toHexString(data[x]));
+                        output=(" "+Integer.toHexString(data[x]));
                     }
                 } else {
                     output=("   MetaEvent");
                 }
-                //  if (output != "") System.out.println(output);
+                  if (output != "") System.out.println(output);
             }
         }
 

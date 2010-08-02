@@ -122,15 +122,14 @@ public boolean isUnknown() {
 
 
   public void paint(Graphics g) {
-    Color c;
 
     g.setColor(Color.black);
     g.draw3DRect(260, 420, 251, 20, true);
     for (int tmp = 0; tmp < this.points; tmp = tmp + 10) {
       if (tmp < 100)
-        g.setColor(c = new Color(60 + (tmp + 10) / 2, 26, 26));
+        g.setColor(new Color(60 + (tmp + 10) / 2, 26, 26));
       else
-        g.setColor(c = new Color(110, 26 + (tmp - 90) / 2, 26));
+        g.setColor(new Color(110, 26 + (tmp - 90) / 2, 26));
       g.fillRect(261 + tmp / 2, 421, 5, 19);
     }
 

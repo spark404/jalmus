@@ -62,7 +62,7 @@ public class Chord {
             // to modify position of the note in the chord according to alteration
             int nbalt = 0;
             int resultat = 10;
-            int pr = 0;
+
 
             //pr = this.posreelle(pos);
             if (this.tabnotes[pos].getAlteration() == "") resultat = 0;
@@ -183,7 +183,7 @@ public class Chord {
 
             public void convert(NoteLevel nrlevel){
               // convertit a chord to his inversion
-              int differencecle = 0;
+
               double tmp;
 
               if (nrlevel.isChordtypeInversion()) {

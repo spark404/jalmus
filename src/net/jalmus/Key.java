@@ -12,7 +12,11 @@ package net.jalmus;
 import java.awt.Rectangle;
 
 public class Key extends Rectangle {
-  final int ON = 0, OFF = 1;
+  /**
+	 * 
+	 */
+				private static final long serialVersionUID = 1L;
+				final int ON = 0, OFF = 1;
                 int noteState = OFF;
                 int kNum;
 

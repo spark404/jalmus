@@ -105,9 +105,10 @@ import java.awt.Graphics;
 
               public void paint(Graphics g, Tonality ton, int position, boolean courant, int dportee, Tabimage t, Component l) {
 
-                int i; // compteur
+              
                 int hight = 14;
-                int alteration = 0; //0 no alteration 1 sharp 2 flat
+                @SuppressWarnings("unused")
+				int alteration = 0; //0 no alteration 1 sharp 2 flat
                 
              
 

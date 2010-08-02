@@ -19,7 +19,7 @@ import java.util.LinkedList;
  * @version 1.0
  */
 public class Lessons extends DefaultHandler{
-   LinkedList levelslist;
+   LinkedList<NoteLevel> levelslist;
    int currentlevel;
    NoteLevel level;
               //flags nous indiquant la position du parseur
@@ -31,7 +31,7 @@ public class Lessons extends DefaultHandler{
 
    public Lessons() {
 
-     this.levelslist = new LinkedList();
+     this.levelslist = new LinkedList<NoteLevel>();
      this.currentlevel = 0;
    }
 
@@ -49,7 +49,7 @@ public NoteLevel getLevel(){
                             String qName, Attributes attributes) throws
        SAXException {
      if (qName.equals("levels")) {
-       this.levelslist = new LinkedList();
+       this.levelslist = new LinkedList<NoteLevel>();
        inExercices = true;
      }
      else if (qName.equals("notereading")) {

@@ -19,9 +19,9 @@ import java.awt.Polygon;
 
 public class Piano {
 
-  Vector blackKeys = new Vector();
-  Vector keys = new Vector();
-  Vector whiteKeys = new Vector();
+  Vector<Key> blackKeys = new Vector<Key>();
+  Vector<Key> keys = new Vector<Key>();
+  Vector<Key> whiteKeys = new Vector<Key>();
   Color jfcBlue = new Color(204, 204, 255);
   Color red = new Color(242, 179, 112);
   Color pink = new Color(255, 175, 175);
@@ -179,7 +179,7 @@ public class Piano {
                     int pitchcourant2) {
     Graphics2D g2 = (Graphics2D) g;
     //  Dimension d = getSize();
-    float f1, f2, f3 = 1;
+    
     Color c = new Color(255, 235, 235);
     Color cg = new Color(152, 251, 152);
 
