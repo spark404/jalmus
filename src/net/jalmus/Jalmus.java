@@ -377,6 +377,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JComboBox intervalComboBox; // bouton de section pour le groupe
     private JComboBox chordTypeComboBox; // bouton de section pour le groupe
 
+
     private JComboBox rhythmGameTypeComboBox;
     private JComboBox rhythmGameSpeedComboBox;
     private JCheckBox wholeCheckBox;
@@ -385,6 +386,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JCheckBox eighthCheckBox;
     private JCheckBox restCheckBox;
     private JCheckBox metronomeCheckBox;
+
    
     
      private JComboBox scoreGameTypeComboBox; //type de jeux
@@ -1550,9 +1552,16 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         chordTypeComboBox.addItemListener(this);
 
         noteReadingNotesPanel.add(noteGroupComboBox);
-        noteReadingNotesPanel.add(noteCountComboBox);
+       noteReadingNotesPanel.add(noteCountComboBox);
+
+
         localizables.add(new Localizable.NamedGroup(noteReadingNotesPanel, "_menuNotes"));
 
+        
+
+      
+
+        
         JPanel panel=new JPanel();
         panel.setLayout(new GridLayout(3, 1));
         panel.add(gamePanel);
@@ -2960,6 +2969,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteReadingNotesPanel.add(noteGroupComboBox);
                 noteReadingNotesPanel.add(noteCountComboBox);
                 noteReadingNotesPanel.repaint();
+                preferencesDialog.repaint();
             }
 
             if (noteGroupComboBox.getSelectedIndex()==1) {
@@ -2969,13 +2979,18 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteReadingNotesPanel.add(noteGroupComboBox);
                 noteReadingNotesPanel.add(noteCountComboBox);
                 noteReadingNotesPanel.repaint();
+                preferencesDialog.repaint();
+                
             } else if (noteGroupComboBox.getSelectedIndex()==2) {
                 noteLevel.setNotetype("intervals");
 
                 noteReadingNotesPanel.removeAll();
                 noteReadingNotesPanel.add(noteGroupComboBox);
                 noteReadingNotesPanel.add(intervalComboBox);
+
                 noteReadingNotesPanel.repaint();
+                preferencesDialog.repaint();
+                
             } else if (noteGroupComboBox.getSelectedIndex()==3) {
 
                 noteLevel.setNotetype("chords");
@@ -2983,7 +2998,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteReadingNotesPanel.removeAll();
                 noteReadingNotesPanel.add(noteGroupComboBox);
                 noteReadingNotesPanel.add(chordTypeComboBox);
+
                 noteReadingNotesPanel.repaint();
+                preferencesDialog.repaint();
 
             }
         } else if (evt.getItemSelectable()==keyboardLengthComboBox) {
@@ -3100,7 +3117,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         }
 
-
+   
     }
 
     // METHODES DE TRADUCTION
@@ -3228,6 +3245,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         soundOnCheckBox.setText(bundle.getString("_notessound"));
         keyboardsoundCheckBox.setText(bundle.getString("_keyboardsound"));
         metronomeCheckBox.setText(bundle.getString("_menuMetronom"));
+
 
         selectmidi_forlang=true;
         int indextmp = midiInComboBox.getSelectedIndex();

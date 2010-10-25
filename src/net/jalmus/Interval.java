@@ -81,8 +81,9 @@ public class Interval {
           else
             interv[1].paint(nrlevel, g, -19, 28, dportee, tab, j, Color.black, bundle);
 
-          if ( (nrlevel.isNormalgame() | nrlevel.isLearninggame()) |
-              (nrlevel.isInlinegame() & intervcourant))
+        //  if ( (nrlevel.isNormalgame() | nrlevel.isLearninggame()) |
+         //     (nrlevel.isInlinegame() & intervcourant))
+          if ( nrlevel.isLearninggame()) // name only for learning exercise
             this.printname(g);
         }
 

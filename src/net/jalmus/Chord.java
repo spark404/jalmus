@@ -141,7 +141,7 @@ public class Chord {
             }
             if (accordcourant) tabnotes[this.realposition(position)].paint(nrlevel,g,this.getNoteposition(this.realposition(position),nrlevel.getCurrentTonality(), bundle),0, dportee, tab, j, c, bundle);
             // we paint tne current note at the end to keep the color red
-            if ((nrlevel.isNormalgame() | nrlevel.isLearninggame()) | (nrlevel.isInlinegame() & accordcourant))this.printname(g);
+            if (nrlevel.isLearninggame()) this.printname(g);
 
             /*else if (type == "LIGNE") // seul l'accord est demand� -> notes en noir
               for (int i=0;i<3;i=i+1)
