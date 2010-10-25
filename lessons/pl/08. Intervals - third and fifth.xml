@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Intervals - third and fifth.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: interval level : third and fifth
+-->
+
+<levels>
+
+<notereading id = '0'>
+<message>Third intervals on treble clef</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>intervals</notes>
+<intervals>third</intervals>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '1'>
+<message>Fifth intervals on treble clef</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>intervals</notes>
+<intervals>fifth</intervals>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '2'>
+<message>Third intervals on bass clef</message>
+<game>normal</game>
+<clef>bass</clef>
+<notes>intervals</notes>
+<intervals>third</intervals>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '3'>
+<message>Fifth intervals on bass clef</message>
+<game>normal</game>
+<clef>bass</clef>
+<notes>intervals</notes>
+<intervals>fifth</intervals>
+<speed>15</speed>
+</notereading>
+
+<notereading id = '4'>
+<message>Third intervals in line on both clefs</message>
+<game>inline</game>
+<clef>both</clef>
+<notes>intervals</notes>
+<intervals>third</intervals>
+<speed>25</speed>
+</notereading>
+
+<notereading id = '5'>
+<message>Fifth intervals in line on both clefs</message>
+<game>inline</game>
+<clef>both</clef>
+<notes>intervals</notes>
+<intervals>fifth</intervals>
+<speed>25</speed>
+</notereading>
+
+</levels>
+
+
+
+
