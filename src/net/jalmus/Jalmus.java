@@ -327,6 +327,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JRadioButtonMenuItem rblanguefi=new JRadioButtonMenuItem();
     private JRadioButtonMenuItem rblangueko=new JRadioButtonMenuItem();
     private JRadioButtonMenuItem rblangueeo=new JRadioButtonMenuItem();
+    private JRadioButtonMenuItem rblanguepl=new JRadioButtonMenuItem();
+
 
     private JMenu aide=new JMenu();
     private JMenuItem aidesommaire=new JMenuItem(new ImageIcon(getClass().getResource("/images/aide.png")));
@@ -666,6 +668,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         group.add(rblanguefi);
         langues.add(rblanguefi);
         
+        rblanguepl=new JRadioButtonMenuItem("Polish");
+        rblanguepl.setMnemonic(KeyEvent.VK_O);
+        rblanguepl.addActionListener(this);
+        group.add(rblanguepl);
+        langues.add(rblanguepl);
+        
         rblangueko=new JRadioButtonMenuItem("Korean");
         rblangueko.setMnemonic(KeyEvent.VK_K);
         rblangueko.addActionListener(this);
@@ -705,7 +713,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else if ("eo".equals(paramlangue)) {
             rblangueeo.setSelected(true);
             langue="eo";
-        } else {
+        } else if ("pl".equals(paramlangue)) {
+        rblanguepl.setSelected(true);
+        langue="pl";
+    	} else {
             // must be "en"
             rblangueen.setSelected(true);
             langue="en";
@@ -2145,7 +2156,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             langue="ko";
             updateLang();
             
-        }        
+        }   
+        if (e.getSource()==rblanguepl) {
+            langue="pl";
+            updateLang();
+            
+        }   
         if (e.getSource()==rblangueeo) {
         	langue="eo";
         	updateLang();
