@@ -5,7 +5,7 @@ Copyright (c) 1999 - 2001 by Matthias Pfisterer <Matthias.Pfisterer@web.de>
 Copyright (c) 2003 by Florian Bomers
 
 
-Copyright (C) 2003-2010  RICHARD Christophe
+Copyright (C) 2003-2011  RICHARD Christophe
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
