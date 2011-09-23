@@ -2,6 +2,7 @@ package net.jalmus;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 
 /**
@@ -17,7 +18,7 @@ import java.awt.Graphics;
  */
 
             public class Rhythm {
-              int valeur; // 1 ronde, 2 blanche, 4 noire, 8 croche, 16 double croche
+              int valeur; // 1 round, 2 white, 4 black, 8 cross, 16 double cross
               int position;
               int pitch;
               int nportee; // 0 pour la premi�re ligne de port�e ...
@@ -103,180 +104,183 @@ import java.awt.Graphics;
           }
 
 
-              public void paint(Graphics g, Tonality ton, int position, boolean courant, int dportee, Tabimage t, Component l) {
+              public void paint(Graphics g, Font f, Tonality ton, int position, boolean courant, int dportee, /*Tabimage t,*/ Component l) {
 
-              
-                int hight = 14;
+                int height = 14;
                 @SuppressWarnings("unused")
 				int alteration = 0; //0 no alteration 1 sharp 2 flat
-                
-             
 
-                if (this.pitch == 60) {hight = 43; alteration = 0;} //DO
-                else if  (this.pitch == 61) {hight = 43; alteration = 1;} //DO# REb
-                else if  (this.pitch == 62) {hight = 38; alteration = 0;} //RE
+                if (this.pitch == 60) {height = 43; alteration = 0;} //DO
+                else if  (this.pitch == 61) {height = 43; alteration = 1;} //DO# REb
+                else if  (this.pitch == 62) {height = 38; alteration = 0;} //RE
                 
+                else if  (this.pitch == 63  && ton.isflat() && ton.getAlterationsNumber() >=  2) {height = 33; alteration = 2;} // MIb
+                else if  (this.pitch == 63) {height = 38; alteration = 1;} //RE# 
+                else if  (this.pitch == 64 && ton.isflat() && ton.getAlterationsNumber() >=  7) {height = 28; alteration = 2;} // fab
+                else if  (this.pitch == 64) {height = 33; alteration = 0;} //MI
+                else if  (this.pitch == 65 && ton.issharp() && ton.getAlterationsNumber() >=  6) {height = 33; alteration = 1;} //MI#
+                else if  (this.pitch == 65) {height = 28; alteration = 0;} //FA
+                else if  (this.pitch == 66 && ton.issharp() && ton.getAlterationsNumber() >=  1) {height = 28; alteration = 1;} //FA# 
+                else if  (this.pitch == 66 && ton.isflat() && ton.getAlterationsNumber() >=  5) {height = 23; alteration = 2;} // SOLb
+                else if  (this.pitch == 67) {height = 23; alteration = 0;} //SOL
+                else if  (this.pitch == 68 && ton.issharp() && ton.getAlterationsNumber() >=  3) {height = 23; alteration = 1;} //SOL# 
+                else if  (this.pitch == 68 && ton.isflat() && ton.getAlterationsNumber() >=  3) {height = 18; alteration = 2;} // LAb
+                else if  (this.pitch == 69) {height = 18; alteration = 0;} //LA
+                else if  (this.pitch == 70 && ton.issharp() && ton.getAlterationsNumber() >=  5) {height = 18; alteration = 1;} //LA# 
+                else if  (this.pitch == 70 && ton.isflat() && ton.getAlterationsNumber() >=  1) {height = 13; alteration = 2;} // SIb
                 
-                else if  (this.pitch == 63  && ton.isflat() && ton.getNbalt() >=  2) {hight = 33; alteration = 2;} // MIb
-                else if  (this.pitch == 63) {hight = 38; alteration = 1;} //RE# 
-                else if  (this.pitch == 64 && ton.isflat() && ton.getNbalt() >=  7) {hight = 28; alteration = 2;} // fab
-                else if  (this.pitch == 64) {hight = 33; alteration = 0;} //MI
-                else if  (this.pitch == 65 && ton.issharp() && ton.getNbalt() >=  6) {hight = 33; alteration = 1;} //MI#
-                else if  (this.pitch == 65) {hight = 28; alteration = 0;} //FA
-                else if  (this.pitch == 66 && ton.issharp() && ton.getNbalt() >=  1) {hight = 28; alteration = 1;} //FA# 
-                else if  (this.pitch == 66 && ton.isflat() && ton.getNbalt() >=  5) {hight = 23; alteration = 2;} // SOLb
-                else if  (this.pitch == 67) {hight = 23; alteration = 0;} //SOL
-                else if  (this.pitch == 68 && ton.issharp() && ton.getNbalt() >=  3) {hight = 23; alteration = 1;} //SOL# 
-                else if  (this.pitch == 68 && ton.isflat() && ton.getNbalt() >=  3) {hight = 18; alteration = 2;} // LAb
-                else if  (this.pitch == 69) {hight = 18; alteration = 0;} //LA
-                else if  (this.pitch == 70 && ton.issharp() && ton.getNbalt() >=  5) {hight = 18; alteration = 1;} //LA# 
-                else if  (this.pitch == 70 && ton.isflat() && ton.getNbalt() >=  1) {hight = 13; alteration = 2;} // SIb
-                
-                else if  (this.pitch == 71 && ton.isflat() && ton.getNbalt() >=  6) {hight = 8; alteration = 0;} //dob
-                else if  (this.pitch == 71) {hight = 13; alteration = 0;} //SI
-                else if  (this.pitch == 72 && ton.issharp() && ton.getNbalt() >=  7) {hight = 13; alteration = 1;} //si#
-                else if  (this.pitch == 72) {hight = 8; alteration = 0;} //do
-                else if  (this.pitch == 73 && ton.issharp() && ton.getNbalt() >=  2) {hight = 8; alteration = 1;} //do#
-                else if  (this.pitch == 73 && ton.isflat() && ton.getNbalt() >=  4) {hight = 3; alteration = 2;} //reb
-                else if  (this.pitch == 74) {hight = 3; alteration = 0;} //re
-                else if  (this.pitch == 75 && ton.issharp() && ton.getNbalt() >=  4) {hight = 3; alteration = 1;} //re#
-                else if  (this.pitch == 75  && ton.isflat() && ton.getNbalt() >=  2) {hight = -2; alteration = 2;} // MIb
-                else if  (this.pitch == 76) {hight = -2; alteration = 0;} //mi
-                else if  (this.pitch == 77  && ton.issharp() && ton.getNbalt() >=  6) {hight = -2; alteration = 1;} //mi#
-                else if  (this.pitch == 77) {hight = -7; alteration = 0;} //fa
-             
+                else if  (this.pitch == 71 && ton.isflat() && ton.getAlterationsNumber() >=  6) {height = 8; alteration = 0;} //dob
+                else if  (this.pitch == 71) {height = 13; alteration = 0;} //SI
+                else if  (this.pitch == 72 && ton.issharp() && ton.getAlterationsNumber() >=  7) {height = 13; alteration = 1;} //si#
+                else if  (this.pitch == 72) {height = 8; alteration = 0;} //do
+                else if  (this.pitch == 73 && ton.issharp() && ton.getAlterationsNumber() >=  2) {height = 8; alteration = 1;} //do#
+                else if  (this.pitch == 73 && ton.isflat() && ton.getAlterationsNumber() >=  4) {height = 3; alteration = 2;} //reb
+                else if  (this.pitch == 74) {height = 3; alteration = 0;} //re
+                else if  (this.pitch == 75 && ton.issharp() && ton.getAlterationsNumber() >=  4) {height = 3; alteration = 1;} //re#
+                else if  (this.pitch == 75  && ton.isflat() && ton.getAlterationsNumber() >=  2) {height = -2; alteration = 2;} // MIb
+                else if  (this.pitch == 76) {height = -2; alteration = 0;} //mi
+                else if  (this.pitch == 77  && ton.issharp() && ton.getAlterationsNumber() >=  6) {height = -2; alteration = 1;} //mi#
+                else if  (this.pitch == 77) {height = -7; alteration = 0;} //fa
               
-                if (this.pitch == 27) {hight = 43; alteration = 0;} //
-                else if  (this.pitch == 28) {hight = 43; alteration = 1;} //
-              
+                if (this.pitch == 27) {height = 43; alteration = 0;} //
+                else if  (this.pitch == 28) {height = 43; alteration = 1;} //
                 
-                else if  (this.pitch == 30 && ton.isflat() && ton.getNbalt() >=  5) {hight = 33; alteration = 2;} // SOLb
-                else if  (this.pitch == 30) {hight = 38; alteration = 0;} // fa
-                else if  (this.pitch == 31) {hight = 33; alteration = 1;} //SOL
-                else if  (this.pitch == 32 && ton.issharp() && ton.getNbalt() >=  3) {hight = 33; alteration = 1;} //SOL# 
-                else if  (this.pitch == 32 && ton.isflat() && ton.getNbalt() >=  3) {hight = 28; alteration = 2;} // LAb     
-                else if  (this.pitch == 33) {hight = 28; alteration = 0;} //LA
-                else if  (this.pitch == 34 && ton.issharp() && ton.getNbalt() >=  5) {hight = 28; alteration = 1;} //LA# 
-                else if  (this.pitch == 34 && ton.isflat() && ton.getNbalt() >=  1) {hight = 23; alteration = 2;} // SIb               
-                else if  (this.pitch == 35 && ton.isflat() && ton.getNbalt() >=  6) {hight = 18; alteration = 2;} //dob 
-                else if  (this.pitch == 35) {hight = 23; alteration = 0;} //SI
-                else if  (this.pitch == 36 && ton.issharp() && ton.getNbalt() >=  7) {hight = 23; alteration = 1;} //si#        
-                else if  (this.pitch == 36) {hight = 18; alteration = 1;} //do
-                else if  (this.pitch == 37 && ton.issharp() && ton.getNbalt() >=  2) {hight = 18; alteration = 1;} //do#
-                else if  (this.pitch == 37 && ton.isflat() && ton.getNbalt() >=  4) {hight = 13; alteration = 2;} //reb 
-                else if  (this.pitch == 38) {hight = 13; alteration = 0;} //re
-                else if  (this.pitch == 39 && ton.issharp() && ton.getNbalt() >=  4) {hight = 13; alteration = 1;} //re#
-                else if  (this.pitch == 39  && ton.isflat() && ton.getNbalt() >=  2) {hight = 8; alteration = 2;} // MIb
-                else if  (this.pitch == 40 && ton.isflat() && ton.getNbalt() >=  7) {hight = 3; alteration = 2;} //fab
-                else if  (this.pitch == 40) {hight = 8; alteration = 0;} //mi
-                else if  (this.pitch == 41  && ton.issharp() && ton.getNbalt() >=  6) {hight = 8; alteration = 1;} //mi#  
-                else if  (this.pitch == 41) {hight = 3; alteration = 0;} //fa
-                else if  (this.pitch == 42 && ton.issharp() && ton.getNbalt() >=  1) {hight = 3; alteration = 1;} //FA# 
-                else if  (this.pitch == 42 && ton.isflat() && ton.getNbalt() >=  5) {hight = -2; alteration = 2;} // SOLb 
-                else if  (this.pitch == 43) {hight = -2; alteration = 0;} //sol
-                else if  (this.pitch == 44 && ton.issharp() && ton.getNbalt() >=  3) {hight = -2; alteration = 1;} // SOL#         
-                
+                else if  (this.pitch == 30 && ton.isflat() && ton.getAlterationsNumber() >=  5) {height = 33; alteration = 2;} // SOLb
+                else if  (this.pitch == 30) {height = 38; alteration = 0;} // fa
+                else if  (this.pitch == 31) {height = 33; alteration = 1;} //SOL
+                else if  (this.pitch == 32 && ton.issharp() && ton.getAlterationsNumber() >=  3) {height = 33; alteration = 1;} //SOL# 
+                else if  (this.pitch == 32 && ton.isflat() && ton.getAlterationsNumber() >=  3) {height = 28; alteration = 2;} // LAb     
+                else if  (this.pitch == 33) {height = 28; alteration = 0;} //LA
+                else if  (this.pitch == 34 && ton.issharp() && ton.getAlterationsNumber() >=  5) {height = 28; alteration = 1;} //LA# 
+                else if  (this.pitch == 34 && ton.isflat() && ton.getAlterationsNumber() >=  1) {height = 23; alteration = 2;} // SIb               
+                else if  (this.pitch == 35 && ton.isflat() && ton.getAlterationsNumber() >=  6) {height = 18; alteration = 2;} //dob 
+                else if  (this.pitch == 35) {height = 23; alteration = 0;} //SI
+                else if  (this.pitch == 36 && ton.issharp() && ton.getAlterationsNumber() >=  7) {height = 23; alteration = 1;} //si#        
+                else if  (this.pitch == 36) {height = 18; alteration = 1;} //do
+                else if  (this.pitch == 37 && ton.issharp() && ton.getAlterationsNumber() >=  2) {height = 18; alteration = 1;} //do#
+                else if  (this.pitch == 37 && ton.isflat() && ton.getAlterationsNumber() >=  4) {height = 13; alteration = 2;} //reb 
+                else if  (this.pitch == 38) {height = 13; alteration = 0;} //re
+                else if  (this.pitch == 39 && ton.issharp() && ton.getAlterationsNumber() >=  4) {height = 13; alteration = 1;} //re#
+                else if  (this.pitch == 39  && ton.isflat() && ton.getAlterationsNumber() >=  2) {height = 8; alteration = 2;} // MIb
+                else if  (this.pitch == 40 && ton.isflat() && ton.getAlterationsNumber() >=  7) {height = 3; alteration = 2;} //fab
+                else if  (this.pitch == 40) {height = 8; alteration = 0;} //mi
+                else if  (this.pitch == 41  && ton.issharp() && ton.getAlterationsNumber() >=  6) {height = 8; alteration = 1;} //mi#  
+                else if  (this.pitch == 41) {height = 3; alteration = 0;} //fa
+                else if  (this.pitch == 42 && ton.issharp() && ton.getAlterationsNumber() >=  1) {height = 3; alteration = 1;} //FA# 
+                else if  (this.pitch == 42 && ton.isflat() && ton.getAlterationsNumber() >=  5) {height = -2; alteration = 2;} // SOLb 
+                else if  (this.pitch == 43) {height = -2; alteration = 0;} //sol
+                else if  (this.pitch == 44 && ton.issharp() && ton.getAlterationsNumber() >=  3) {height = -2; alteration = 1;} // SOL#         
                
                 //  g.setColor(couleur);
+                g.setFont(f.deriveFont(57f));
+                if (courant)
+                	g.setColor(Color.red);
+                else
+                	g.setColor(Color.black);
 
                 if (this.valeur == 1) {
                   if (this.silence) {
-                    if (courant)
+                	g.fillRect(this.position, dportee+ this.nportee*100+14, 12, 7);
+                    /*if (courant)
                       g.drawImage(t.Getimage(15), this.position, dportee + this.nportee*100 + 14 , l);
                     else
-                      g.drawImage(t.Getimage(14), this.position, dportee + this.nportee*100 + 14 , l);
+                      g.drawImage(t.Getimage(14), this.position, dportee + this.nportee*100 + 14 , l);*/
                   }
 
-                  else {
-                    if (courant)
-                      g.drawImage(t.Getimage(3), this.position, dportee + this.nportee*100 + hight +2, l);
+                  else { // semibreve
+                	  g.setFont(f.deriveFont(50f));
+                	g.drawString("w", this.position, dportee + this.nportee*100 + height +13);
+                    /*if (courant)
+                      g.drawImage(t.Getimage(3), this.position, dportee + this.nportee*100 + height +2, l);
                     else
-                      g.drawImage(t.Getimage(2), this.position, dportee + this.nportee*100 + hight +2, l);
+                      g.drawImage(t.Getimage(2), this.position, dportee + this.nportee*100 + height +2, l);*/
                   }
 
                 }
                 else if (this.valeur == 2) {
                   if (this.silence) {
-                    if (courant)
+                  	g.fillRect(this.position, dportee+ this.nportee*100+14, 12, 7);
+                    /*if (courant)
                       g.drawImage(t.Getimage(15), this.position, dportee + this.nportee*100 + 10, l);
                     else
-                      g.drawImage(t.Getimage(14), this.position, dportee + this.nportee*100 + 10, l);
+                      g.drawImage(t.Getimage(14), this.position, dportee + this.nportee*100 + 10, l);*/
                   }
 
-                  else {
-
-                    if (courant)
-                      g.drawImage(t.Getimage(5), this.position, dportee + this.nportee*100 + hight +2, l);
+                  else { // minima
+                	g.drawString("h", this.position, dportee + this.nportee*100 + height +13);
+                    /*if (courant)
+                      g.drawImage(t.Getimage(5), this.position, dportee + this.nportee*100 + height +2, l);
                     else
-                      g.drawImage(t.Getimage(4), this.position, dportee + this.nportee*100 + hight +2, l);
+                      g.drawImage(t.Getimage(4), this.position, dportee + this.nportee*100 + height +2, l);*/
                   }
 
                 }
 
                 else if (this.valeur == 4) {
-                  if (this.silence) {
-
-                    if (courant)
+                  if (this.silence) { // pause
+                	  g.drawString("Q", this.position, dportee + this.nportee*100 +43);
+                    /*if (courant)
                       g.drawImage(t.Getimage(9), this.position, dportee + this.nportee*100, l);
                     else
-                      g.drawImage(t.Getimage(8), this.position, dportee + this.nportee*100, l);
+                      g.drawImage(t.Getimage(8), this.position, dportee + this.nportee*100, l);*/
                   }
 
-                  else {
-
-                    if (courant)
-                      g.drawImage(t.Getimage(7), this.position, dportee + this.nportee*100 + hight +1, l);
+                  else { // semiminima
+                	String sm = "" + (char)0xF6;
+                	int voffset = 53;
+                	if (height > 18) {
+                		sm = "" + (char)0xF4;
+                		voffset = 23;
+                	}
+                	g.drawString(sm, this.position, dportee + this.nportee*100 + height + voffset);
+                    /*if (courant)
+                      g.drawImage(t.Getimage(7), this.position, dportee + this.nportee*100 + height +1, l);
                     else
-                      g.drawImage(t.Getimage(6), this.position, dportee + this.nportee*100 + hight +1, l);
+                      g.drawImage(t.Getimage(6), this.position, dportee + this.nportee*100 + height +1, l);*/
                   }
                 }
 
-              else if (this.valeur == 8) {
-               if (this.silence) {
-
-                 if (courant)
-                   g.drawImage(t.Getimage(11), this.position, dportee + this.nportee*100 + 10, l);
-                 else
-                   g.drawImage(t.Getimage(10), this.position, dportee + this.nportee*100 + 10, l);
-               }
-
-               else {
-
-                 if (courant)
-                   if (this.groupee == 1) {
-                     g.drawImage(t.Getimage(7), this.position,
-                                 dportee + this.nportee * 100 + hight, l);
-                     g.setColor(Color.BLACK);
-                   g.fillRect(this.position, dportee+ this.nportee*100+hight, 38, 3);
-                   }
-                   else if (this.groupee == 2){
-                     g.drawImage(t.Getimage(7), this.position,
-                              dportee + this.nportee * 100 + hight, l);
-
-                   }
-                   else {
-                     g.drawImage(t.Getimage(13), this.position,
-                                 dportee + this.nportee * 100 + hight, l);
-                   }
-
-                 else
-                 if (this.groupee == 1) {
-                   g.drawImage(t.Getimage(6), this.position, dportee + this.nportee * 100 + hight, l);
-                   g.setColor(Color.BLACK);
-                   g.fillRect(this.position, dportee+this.nportee*100+47+hight, 38, 3);
-
-                 }
-                 else if (this.groupee == 2){
-                    g.drawImage(t.Getimage(6), this.position, dportee + this.nportee * 100 + hight, l);
-
+                else if (this.valeur == 8) {
+                  if (this.silence) { // pause
+                	  g.setFont(f.deriveFont(48f));
+            	      g.drawString("E", this.position, dportee + this.nportee*100 + 40);
+                      /*if (courant)
+                         g.drawImage(t.Getimage(11), this.position, dportee + this.nportee*100 + 10, l);
+                        else
+                         g.drawImage(t.Getimage(10), this.position, dportee + this.nportee*100 + 10, l);*/
                   }
+                  else {
 
-                 else
+                 if (this.groupee == 1 || this.groupee == 2) {
+                	 String sm = "" + (char)0xF6;
+                   	 int voffset = 53;
+                   	 if (height > 18) {
+                   		sm = "" + (char)0xF4;
+                   		voffset = 23;
+                   	 }
+                   	 g.drawString(sm, this.position, dportee + this.nportee*100 + height + voffset);
+                     //g.drawImage(t.Getimage(7), this.position, dportee + this.nportee * 100 + height, l);
+                   	 if (this.groupee == 1) {
+                       g.setColor(Color.BLACK);
+                       g.fillRect(this.position, dportee+ this.nportee*100+height, 38, 3);
+                   	 }
+                   }
 
-                   g.drawImage(t.Getimage(12), this.position, dportee + this.nportee * 100 + hight, l);
-               }                  }
+                   else {
+                  	 String sm = "" + (char)0xCA;
+                   	 int voffset = 43;
+                   	 if (height > 18) {
+                   		sm = "" + (char)0xC8;
+                   		voffset = 13;
+                   	 }
+                   	 g.drawString(sm, this.position, dportee + this.nportee*100 + height + voffset);
+                     //g.drawImage(t.Getimage(12), this.position, dportee + this.nportee * 100 + height, l);
+                   }
 
+                  }                  
+                }
 
+                g.setColor(Color.black);
               }
 
-                  }
+           }

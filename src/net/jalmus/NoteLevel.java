@@ -17,7 +17,7 @@ package net.jalmus;
 public class NoteLevel {
   int Id;
   String message;
-  String currentclef;
+  String currentKey;
   String gametype;
   String notetype;
   Tonality currenttonality;
@@ -29,8 +29,8 @@ public class NoteLevel {
 
   /* For notes game only */
   int nbnotes; // number of notes : 0 for all notes, 3, 5, 7, 9 or 15
-  int basetreble; // height of the base note choose by user for trebleclef
-  int basebass; // height of the base note choose by user for bassclef
+  int basetreble; // height of the base note choose by user for trebleKey
+  int basebass; // height of the base note choose by user for bassKey
   int nbnotesunder; // number of notes under basenote
   int nbnotesupper;// number of notes upper basenote
 
@@ -45,7 +45,7 @@ public class NoteLevel {
   public NoteLevel() {
     this.Id = 0;
     this.message = "";
-    this.currentclef = "treble";
+    this.currentKey = "treble";
     this.notetype = "notes";
     this.gametype = "normal";
     this.randomtonality = false;
@@ -69,7 +69,7 @@ public class NoteLevel {
   public void init(){
     this.Id = 0;
     this.message = "";
-    this.currentclef = "treble";
+    this.currentKey = "treble";
     this.notetype = "notes";
     this.gametype = "normal";
     this.randomtonality = false;
@@ -127,24 +127,24 @@ public class NoteLevel {
 
 /*******************************************/
 
-  public void setCurrentclef(String s) {
-    this.currentclef = s;
+  public void setCurrentKey(String s) {
+    this.currentKey = s;
   }
   
-  public String getClef() {
-	    return this.currentclef;
+  public String getKey() {
+	    return this.currentKey;
 	  }
 
-  public boolean isCurrentclefTreble() {
-    return this.currentclef.equals("treble");
+  public boolean isCurrentKeyTreble() {
+    return this.currentKey.equals("treble");
   }
 
-  public boolean isCurrentclefBass() {
-    return this.currentclef .equals("bass");
+  public boolean isCurrentKeyBass() {
+    return this.currentKey .equals("bass");
   }
 
-  public boolean isCurrentclefBoth() {
-    return this.currentclef.equals("both");
+  public boolean isCurrentKeyBoth() {
+    return this.currentKey.equals("both");
   }
 /*****************************************/
 
@@ -310,7 +310,7 @@ public int getNbnotesunder(){
 
 public void copy(NoteLevel nl){
   this.message = nl.message;
-  this.currentclef = nl.currentclef;
+  this.currentKey = nl.currentKey;
  this.notetype = nl.notetype;
  this.gametype = nl.gametype;
  this.currenttonality.copy(nl.currenttonality);
@@ -332,7 +332,7 @@ public void copy(NoteLevel nl){
 
 public void printtest(){
    System.out.println("Level n°"+this.Id);
-    System.out.println(this.currentclef);
+    System.out.println(this.currentKey);
   System.out.println(this.gametype);
   System.out.println(this.notetype);
     System.out.println(this.currenttonality);
@@ -346,7 +346,7 @@ public void printtest(){
 
 public void basenotetoLeft(Piano piano){  //base note is move when user pres key left
 
-  if (this.isCurrentclefTreble()) {
+  if (this.isCurrentKeyTreble()) {
     if ( (this.nbnotesupper == 7 & this.basetreble < 50) //15notes
         | (this.nbnotesupper == 4 & this.basetreble < 65) // 9 notes
         | (this.nbnotesupper == 3 & this.basetreble < 70) // 9 notes
@@ -358,7 +358,7 @@ public void basenotetoLeft(Piano piano){  //base note is move when user pres key
 
   }
   //jusqu'� do
-  else if (this.isCurrentclefBass()) {
+  else if (this.isCurrentKeyBass()) {
     if (piano.is73keys() &
         ( (this.nbnotesupper == 7 & basebass < 50)
          | (this.nbnotesupper == 4 & basebass < 65)
@@ -383,7 +383,7 @@ public void basenotetoLeft(Piano piano){  //base note is move when user pres key
 
   }
 
-  else if (this.isCurrentclefBoth()) {
+  else if (this.isCurrentKeyBoth()) {
     if (piano.is73keys() & ( (this.nbnotesupper == 7 & this.basetreble < 15)
                             | (this.nbnotesupper == 4 & this.basetreble < 30)
                         | (this.nbnotesupper == 3 & this.basetreble < 35)
@@ -417,7 +417,7 @@ public void basenotetoLeft(Piano piano){  //base note is move when user pres key
 public void basenotetoRight(Piano piano){
 
 
-  if (this.isCurrentclefTreble()) {
+  if (this.isCurrentKeyTreble()) {
     if ( (this.nbnotesupper == 7 & this.basetreble > -20) //15notes
         | (this.nbnotesupper == 4 & this.basetreble > -35) // 9 notes
         | (this.nbnotesupper == 3 & this.basetreble > -40) // 5 notes
@@ -432,7 +432,7 @@ public void basenotetoRight(Piano piano){
 
 
   }
-  else if (this.isCurrentclefBass()) {
+  else if (this.isCurrentKeyBass()) {
     if ( (this.nbnotesupper == 7 & this.basebass > -20)
         | (this.nbnotesupper == 4 & this.basebass > -35)
         | (this.nbnotesupper == 3 & this.basebass > -40) // 5 notes
@@ -446,7 +446,7 @@ public void basenotetoRight(Piano piano){
 
 
   }
-  else if (this.isCurrentclefBoth()) {
+  else if (this.isCurrentKeyBoth()) {
     if ( (this.nbnotesupper == 7 & this.basebass > 15) //15notes
         | (this.nbnotesupper == 4 & this.basebass > 0) // 9 notes
         | (this.nbnotesupper == 3 & this.basebass > -5) // 5 notes
@@ -472,7 +472,7 @@ public boolean moveBasenote(int range){
   if (range != 0){
 
 
-    if (this.isCurrentclefTreble()) {
+    if (this.isCurrentKeyTreble()) {
       if ( (this.nbnotes == 15 & ( (range > 0 & range <= 9) | (range < 0 & Math.abs(range) <= 5))) //15notes
           | (this.nbnotes == 9 & ( (range > 0 & range <= 12) | (range < 0 & Math.abs(range) <= 8))) // 9 notes
           | (this.nbnotes == 7 & ( (range > 0 & range <= 13) | (range < 0 & Math.abs(range) <= 9))) // 7 notes
@@ -486,7 +486,7 @@ public boolean moveBasenote(int range){
         return false;
 
     }
-    else if (this.isCurrentclefBass()) {
+    else if (this.isCurrentKeyBass()) {
       if ( (this.nbnotes == 15 & ( (range > 0 & range <= 5) | (range < 0 & Math.abs(range) <= 9))) //15notes
           | (this.nbnotes == 9 & ( (range > 0 & range <= 8) | (range < 0 & Math.abs(range) <= 12))) // 9 notes
           | (this.nbnotes == 7 & ( (range > 0 & range <= 9) | (range < 0 & Math.abs(range) <= 13))) // 9 notes
@@ -501,7 +501,7 @@ public boolean moveBasenote(int range){
 
     }
 
-    else if (this.isCurrentclefBoth()) {
+    else if (this.isCurrentKeyBoth()) {
       if ( (this.nbnotes == 15 & ( (range > 0 & range <= 1) | (range < 0 & Math.abs(range) <= 1)))
           | (this.nbnotes == 9 & ( (range > 0 & range <= 4) | (range < 0 & Math.abs(range) <= 4)))
           | (this.nbnotes == 7 & ( (range > 0 & range <= 5) | (range < 0 & Math.abs(range) <= 5)))
@@ -522,7 +522,7 @@ public boolean moveBasenote(int range){
 }
 
 public void inibasenote(){
-  if (this.isCurrentclefTreble() | this.isCurrentclefBass()) {
+  if (this.isCurrentKeyTreble() | this.isCurrentKeyBass()) {
     this.basetreble = 25;
     this.basebass = 5;
   }
@@ -534,7 +534,7 @@ public void inibasenote(){
 }
   public void updatenbnotes(Piano p) {
     if (this.isNotesgame() | this.isAccidentalsgame()) {
-      if (this.isCurrentclefTreble()) {
+      if (this.isCurrentKeyTreble()) {
 
         if (this.nbnotes == 3) {
           this.nbnotesupper = 1;
@@ -564,7 +564,7 @@ public void inibasenote(){
         }
       }
 
-      else if (this.isCurrentclefBass()) {
+      else if (this.isCurrentKeyBass()) {
 
         if (this.nbnotes == 3) {
           this.nbnotesupper = 1;
@@ -599,7 +599,7 @@ public void inibasenote(){
         }
       }
 
-      else if (this.isCurrentclefBoth()) {
+      else if (this.isCurrentKeyBoth()) {
 
         if (this.nbnotes == 3) {
           this.nbnotesupper = 1;

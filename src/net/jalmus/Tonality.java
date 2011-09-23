@@ -13,40 +13,40 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
+//import java.awt.Image;
 import java.awt.Graphics2D;
 import java.util.ResourceBundle;
 import java.awt.GraphicsEnvironment;
 
 public class Tonality {
-  int Nbalt;
+  int alterationsNumber;
   String Alteration;
 
   public Tonality(int nb, String alt) {
     this.Alteration = alt;
-    this.Nbalt = nb;
+    this.alterationsNumber = nb;
   }
 
   public void init(int i, String s) {
     this.Alteration = s;
-    this.Nbalt = i;
+    this.alterationsNumber = i;
   }
 
   public void printtest(){
-    System.out.println("Alteration : "+this.Alteration+" Nb alt : "+this.Nbalt);
+    System.out.println("Alteration : "+this.Alteration+" Nb alt : "+this.alterationsNumber);
   }
 
   public void copy(Tonality t) {
     this.Alteration = t.Alteration;
-    this.Nbalt = t.Nbalt;
+    this.alterationsNumber = t.alterationsNumber;
   }
 
-  public void setNbalt(int nb) {
-    this.Nbalt = nb;
+  public void setalterationsNumber(int nb) {
+    this.alterationsNumber = nb;
   }
 
-  public int getNbalt() {
-    return this.Nbalt;
+  public int getAlterationsNumber() {
+    return this.alterationsNumber;
   }
 
   public String getAlteration() {
@@ -67,32 +67,32 @@ public class Tonality {
 
   //*****ALTERATION
 
-   public void affichealt(Graphics g, int x, int y, Image ialt, Component j) {
-     g.drawImage(ialt, x+2 , y, j); //diese y-8 bemol y-14
-   }
+  public void drawAlteration(Graphics g, Font f, int x, int y, String type, Component j) {
+	g.setColor(Color.black);
+	g.setFont(f.deriveFont(54f));
+	if (type == "B")
+	  g.drawString(type, x+2, y + 21);
+	else
+	  g.drawString(type, x+2, y + 22);
+  }
 
-  //  else if (s == "n")  g.drawImage(becarre, x+1, y-8, 16, 24,j);
-
-
-
-
-  public void paint(int gametype, String cle, Graphics g, int marge, int dportee, net.jalmus.Tabimage tab, Component j, ResourceBundle bundle) {
+  public void paint(int gametype, String cle, Graphics g, Font f, int marge, int dportee, Component j, ResourceBundle bundle) {
 
     int decalagecle = 0;
     int nbline = 1;
 
-    Image diese = tab.Getimage(17);
-    Image bemol = tab.Getimage(18);
+    String sharp = "B"; // # alteration
+    String flat = "b"; // b alteration
 
     if (gametype == 1) { // notereading
     	decalagecle = 0;
     	nbline = 1;
-    	 affichenom(g, marge, 90,  bundle);
+    	 drawName(g, marge, 90,  bundle);
     }
     else if (gametype == 3) { // scorereading
     	decalagecle = 0;
     	nbline = 4;
-    	 affichenom(g, marge, 80,  bundle);
+    	 drawName(g, marge, 80,  bundle);
     }
     
     if (cle.equals("treble") | cle.equals("bass"))
@@ -103,81 +103,82 @@ public class Tonality {
 	for (int i=0; i<nbline; i++) {
 
     if (this.Alteration.equalsIgnoreCase("#")) {
-      if (this.Nbalt >= 1) // FA#
-        affichealt(g, marge + 25, dportee - 15 + decalagecle + i*100, diese, j); //-9
-      if (this.Nbalt >= 2) // DO#
-        affichealt(g, marge + 25 + 10, dportee - 1 + decalagecle + i*100, diese, j);
-      if (this.Nbalt >= 3) // SOL#
-        affichealt(g, marge + 25 + 20, dportee - 19 + decalagecle + i*100, diese, j);
-      if (this.Nbalt >= 4) // RE#
-        affichealt(g, marge + 25 + 30, dportee - 5 + decalagecle + i*100, diese, j);
-      if (this.Nbalt >= 5) // LA#
-        affichealt(g, marge + 25 + 40, dportee + 8 + decalagecle + i*100, diese, j);
-      if (this.Nbalt >= 6) // MI#
-        affichealt(g, marge + 25 + 50, dportee - 9 + decalagecle + i*100, diese, j);
-      if (this.Nbalt >= 7) // SI#
-        affichealt(g, marge + 25 + 60, dportee + 5 + decalagecle + i*100, diese, j);
+      if (this.alterationsNumber >= 1) // FA#
+        drawAlteration(g, f, marge, dportee - 15 + decalagecle + i*100, sharp, j); //-9
+      if (this.alterationsNumber >= 2) // DO#
+        drawAlteration(g, f, marge + 10, dportee - 5 + decalagecle + i*100, sharp, j);
+      if (this.alterationsNumber >= 3) // SOL#
+        drawAlteration(g, f, marge + 20, dportee - 20 + decalagecle + i*100, sharp, j);
+      if (this.alterationsNumber >= 4) // RE#
+        drawAlteration(g, f, marge + 30, dportee - 5 + decalagecle + i*100, sharp, j);
+      if (this.alterationsNumber >= 5) // LA#
+        drawAlteration(g, f, marge + 40, dportee + 10 + decalagecle + i*100, sharp, j);
+      if (this.alterationsNumber >= 6) // MI#
+        drawAlteration(g, f, marge + 50, dportee - 10 + decalagecle + i*100, sharp, j);
+      if (this.alterationsNumber >= 7) // SI#
+        drawAlteration(g, f, marge + 60, dportee + 5 + decalagecle + i*100, sharp, j);
     }
 
     if (this.Alteration.equalsIgnoreCase("b")) {
-      if (this.Nbalt >= 1) // SIb
-        affichealt(g, marge + 26, dportee + 4 + decalagecle + i*100, bemol, j);
-      if (this.Nbalt >= 2) // MIb
-        affichealt(g, marge + 26 + 9, dportee - 12 + decalagecle + i*100, bemol, j);
-      if (this.Nbalt >= 3) // LAb
-        affichealt(g, marge + 26 + 18, dportee + 8 + decalagecle + i*100, bemol, j);
-      if (this.Nbalt >= 4) // REb
-        affichealt(g, marge + 26 + 27, dportee - 6 + decalagecle + i*100, bemol, j);
-      if (this.Nbalt >= 5) // SOLb
-        affichealt(g, marge + 26 + 36, dportee + 14 + decalagecle + i*100, bemol, j);
-      if (this.Nbalt >= 6) // DOb
-        affichealt(g, marge + 26 + 45, dportee - 2 + decalagecle + i*100, bemol, j);
-      if (this.Nbalt >= 7) // FAb
-        affichealt(g, marge + 26 + 54, dportee + 18 + decalagecle + i*100, bemol, j);
+      if (this.alterationsNumber >= 1) // SIb
+        drawAlteration(g, f, marge, dportee + 5 + decalagecle + i*100, flat, j);
+      if (this.alterationsNumber >= 2) // MIb
+        drawAlteration(g, f, marge + 9, dportee - 15 + decalagecle + i*100, flat, j);
+      if (this.alterationsNumber >= 3) // LAb
+        drawAlteration(g, f, marge + 18, dportee + 10 + decalagecle + i*100, flat, j);
+      if (this.alterationsNumber >= 4) // REb
+        drawAlteration(g, f, marge + 27, dportee - 5 + decalagecle + i*100, flat, j);
+      if (this.alterationsNumber >= 5) // SOLb
+        drawAlteration(g, f, marge + 36, dportee + 15 + decalagecle + i*100, flat, j);
+      if (this.alterationsNumber >= 6) // DOb
+        drawAlteration(g, f, marge + 45, dportee + decalagecle + i*100, flat, j);
+      if (this.alterationsNumber >= 7) // FAb
+        drawAlteration(g, f, marge + 54, dportee + 20 + decalagecle + i*100, flat, j);
     }
 
     if (cle.equals("both")) {
       decalagecle = 100;
 
       if (this.Alteration.equalsIgnoreCase("#")) {
-        if (this.Nbalt >= 1) // FA#
-          affichealt(g, marge + 25, dportee - 15 + decalagecle, diese, j);
-        if (this.Nbalt >= 2) // DO#
-          affichealt(g, marge + 25 + 10, dportee - 1 + decalagecle, diese, j);
-        if (this.Nbalt >= 3) // SOL#
-          affichealt(g, marge + 25 + 20, dportee - 19 + decalagecle, diese, j);
-        if (this.Nbalt >= 4) // RE#
-          affichealt(g, marge + 25 + 30, dportee - 5 + decalagecle, diese, j);
-        if (this.Nbalt >= 5) // LA#
-          affichealt(g, marge + 25 + 40, dportee + 8 + decalagecle, diese, j);
-        if (this.Nbalt >= 6) // MI#
-          affichealt(g, marge + 25 + 50, dportee - 9 + decalagecle, diese, j);
-        if (this.Nbalt >= 7) // SI#
-          affichealt(g, marge + 25 + 60, dportee + 5 + decalagecle, diese, j);
+        if (this.alterationsNumber >= 1) // FA#
+          drawAlteration(g, f, marge, dportee - 15 + decalagecle, sharp, j);
+        if (this.alterationsNumber >= 2) // DO#
+          drawAlteration(g, f, marge + 10, dportee + decalagecle, sharp, j);
+        if (this.alterationsNumber >= 3) // SOL#
+          drawAlteration(g, f, marge + 20, dportee - 20 + decalagecle, sharp, j);
+        if (this.alterationsNumber >= 4) // RE#
+          drawAlteration(g, f, marge + 30, dportee - 5 + decalagecle, sharp, j);
+        if (this.alterationsNumber >= 5) // LA#
+          drawAlteration(g, f, marge + 40, dportee + 10 + decalagecle, sharp, j);
+        if (this.alterationsNumber >= 6) // MI#
+          drawAlteration(g, f, marge + 50, dportee - 10 + decalagecle, sharp, j);
+        if (this.alterationsNumber >= 7) // SI#
+          drawAlteration(g, f, marge + 60, dportee + 5 + decalagecle, sharp, j);
       }
 
       if (this.Alteration.equalsIgnoreCase("b")) {
-        if (this.Nbalt >= 1) // SIb
-          affichealt(g, marge + 26, dportee + 4 + decalagecle, bemol, j);
-        if (this.Nbalt >= 2) // MIb
-          affichealt(g, marge + 26 + 9, dportee - 12 + decalagecle, bemol, j);
-        if (this.Nbalt >= 3) // LAb
-          affichealt(g, marge + 26 + 18, dportee + 8 + decalagecle, bemol, j);
-        if (this.Nbalt >= 4) // REb
-          affichealt(g, marge + 26 + 27, dportee - 6 + decalagecle, bemol, j);
-        if (this.Nbalt >= 5) // SOLb
-          affichealt(g, marge + 26 + 36, dportee + 14 + decalagecle, bemol, j);
-        if (this.Nbalt >= 6) // DOb
-          affichealt(g, marge + 26 + 45, dportee - 2 + decalagecle, bemol, j);
-        if (this.Nbalt >= 7) // FAb
-          affichealt(g, marge + 26 + 54, dportee + 18 + decalagecle, bemol, j);
+    	  
+        if (this.alterationsNumber >= 1) // SIb
+          drawAlteration(g, f, marge, dportee + 5 + decalagecle, flat, j);
+        if (this.alterationsNumber >= 2) // MIb
+          drawAlteration(g, f, marge + 9, dportee - 15 + decalagecle, flat, j);
+        if (this.alterationsNumber >= 3) // LAb
+          drawAlteration(g, f, marge + 18, dportee + 10 + decalagecle, flat, j);
+        if (this.alterationsNumber >= 4) // REb
+          drawAlteration(g, f, marge + 27, dportee - 5 + decalagecle, flat, j);
+        if (this.alterationsNumber >= 5) // SOLb
+          drawAlteration(g, f, marge + 36, dportee + 15 + decalagecle, flat, j);
+        if (this.alterationsNumber >= 6) // DOb
+          drawAlteration(g, f, marge + 45, dportee + decalagecle, flat, j);
+        if (this.alterationsNumber >= 7) // FAb
+          drawAlteration(g, f, marge + 54, dportee + 20 + decalagecle, flat, j);
       }
     }
 	}
 
   }
 
-  public void affichenom(Graphics g, int marge, int h, ResourceBundle bundle) {
+  public void drawName(Graphics g, int marge, int h, ResourceBundle bundle) {
     String nom = "";
 
     String DO = bundle.getString("_do");
@@ -191,39 +192,39 @@ public class Tonality {
     g.setColor(Color.green);
     g.setFont(new Font("Arial", Font.BOLD, 17));
 
-    if (this.Nbalt == 0)
+    if (this.alterationsNumber == 0)
       nom = DO + " Maj | " + LA + " min";
-    else if (this.Nbalt == 1)
+    else if (this.alterationsNumber == 1)
       if (this.Alteration.equals("#"))
         nom = SOL + " Maj | " + MI + " min";
       else
         nom = FA + " Maj | " + RE + " min";
-    if (this.Nbalt == 2)
+    if (this.alterationsNumber == 2)
       if (this.Alteration.equals("#"))
         nom = RE + " Maj | " + SI + " min";
       else
         nom = SI + "b Maj | " + SOL + " min";
-    if (this.Nbalt == 3)
+    if (this.alterationsNumber == 3)
       if (this.Alteration.equals("#"))
         nom = LA + " Maj | " + FA + "# min";
       else
         nom = MI + "b Maj | " + DO + " min";
-    if (this.Nbalt == 4)
+    if (this.alterationsNumber == 4)
       if (this.Alteration.equals("#"))
         nom = MI + " Maj | " + DO + "# min";
       else
         nom = LA + "b Maj | " + FA + " min";
-    if (this.Nbalt == 5)
+    if (this.alterationsNumber == 5)
       if (this.Alteration.equals("#"))
         nom = SI + " Maj | " + SOL + "# min";
       else
         nom = RE + "b Maj | " + SI + "b min";
-    if (this.Nbalt == 6)
+    if (this.alterationsNumber == 6)
       if (this.Alteration.equals("#"))
         nom = FA + "# Maj | " + RE + "# min";
       else
         nom = SOL + "b Maj | " + MI + "b min";
-    if (this.Nbalt == 7)
+    if (this.alterationsNumber == 7)
       if (this.Alteration.equals("#"))
         nom = DO + "# Maj |" + LA + "# min";
       else

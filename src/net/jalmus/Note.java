@@ -11,21 +11,22 @@ package net.jalmus;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ResourceBundle;
 
  public class Note{
         String Alteration;
         String Nom;
-        int Hauteur;
-        int X; //coordonn�ee pour l'animation
-        int Pitch; //hauteur midi
+        int Height;
+        int X; // x position for animation
+        int Pitch; // midi pitch
 
 
         public Note(String alt, String nom, int h, int x, int p){
           this.Alteration = alt;
           this.Nom = nom;
-          this.Hauteur = h; // pos. de la note dportee+20 = sol cle de sol, dportee+24 = fa (+4)
+          this.Height = h; // pos. de la note dportee+20 = sol cle de sol, dportee+24 = fa (+4)
           this.X = x;
           this.Pitch = p;
         }
@@ -33,7 +34,7 @@ import java.util.ResourceBundle;
         public void init(){
          this.Alteration = "";
          this.Nom = "";
-         this.Hauteur = 0; // pos. de la note dportee+20 = sol cle de sol, dportee+24 = fa (+4)
+         this.Height = 0; // pos. de la note dportee+20 = sol cle de sol, dportee+24 = fa (+4)
          this.X = 0;
          this.Pitch = 0;
         }
@@ -41,7 +42,7 @@ import java.util.ResourceBundle;
         public void copy(Note n){
           this.Alteration = n.Alteration;
           this.Nom = n.Nom;
-          this.Hauteur = n.Hauteur; // pos. de la note dportee+20 = sol cle de sol, dportee+24 = fa (+4)
+          this.Height = n.Height; // pos. de la note dportee+20 = sol cle de sol, dportee+24 = fa (+4)
           this.X = n.X;
           this.Pitch = n.Pitch;
         }
@@ -70,64 +71,72 @@ import java.util.ResourceBundle;
           this.X = i;
         }
 
-        public int getHauteur(){
-                  return this.Hauteur;
+        public int getHeight(){
+                  return this.Height;
                 }
 
-        public void setHauteur(int h){
-          this.Hauteur = h;
+        public void setHeight(int h){
+          this.Height = h;
         }
 
 
 
 
 
-        public void paint(NoteLevel nrlevel, Graphics g, int decalagea, int decalagen, int dportee,  Tabimage tab, Component j, Color couleur, ResourceBundle b){
+        public void paint(NoteLevel nrlevel, Graphics g, Font f, int decalagea, int decalagen, int dportee, Component j, Color couleur, ResourceBundle b){
 
           // decalagea est utilis� pour le d�calage des alt�rations dans l'accord
           // decalagen est utilis� pour le d�calage des notes dans l'intervalle
            int i;   // compteur
 
+           g.setFont(f.deriveFont(50f));
            g.setColor(couleur);
-            //g.fillOval(this.X+decalagen,this.Hauteur+5,11,12);    // DESSINE LA NOTE
-             if (couleur==Color.black) {
 
-               g.drawImage(tab.Getimage(22), this.X + decalagen, this.Hauteur, j);
+           //g.fillOval(this.X+decalagen,this.Height+5,11,12);    // DESSINE LA NOTE
+           g.drawString("w", this.X+decalagen, this.Height + 11);
+           if ((!this.Alteration.equals("") & !this.alteree(nrlevel.getCurrentTonality(),b)) | (this.Alteration.equals("n")))
+           if (this.Alteration.equals("#")) g.drawString("B", this.X-decalagea, this.Height+10);
+           else if (this.Alteration.equals("b")) g.drawString("b", this.X-decalagea, this.Height+10);
+           else if (this.Alteration.equals("n")) {
+        	   String bq = "" + (char)0xBD;
+        	   g.drawString(bq, this.X-decalagea, this.Height + 10);
+           }
+/*
+            if (couleur==Color.black) {
+               
+               g.drawImage(tab.Getimage(22), this.X + decalagen, this.Height, j);
                if ((!this.Alteration.equals("") & !this.alteree(nrlevel.getCurrentTonality(),b)) | (this.Alteration.equals("n")))
-             if (this.Alteration.equals("#")) g.drawImage(tab.Getimage(17), this.X-(decalagea+1),  this.Hauteur-10,j); //diese y-8 bemol y-14
-           else if (this.Alteration.equals("b"))  g.drawImage(tab.Getimage(18), this.X-(decalagea+1),  this.Hauteur-11, j);
-          else if (this.Alteration.equals("n"))  g.drawImage(tab.Getimage(16), this.X-(decalagea-1),  this.Hauteur-7, j);
-
+               if (this.Alteration.equals("#")) g.drawImage(tab.Getimage(17), this.X-(decalagea+1),  this.Height-10,j); //diese y-8 bemol y-14
+               else if (this.Alteration.equals("b"))  g.drawImage(tab.Getimage(18), this.X-(decalagea+1),  this.Height-11, j);
+               else if (this.Alteration.equals("n"))  g.drawImage(tab.Getimage(16), this.X-(decalagea-1),  this.Height-7, j);
              }
              else {
-
-               g.drawImage(tab.Getimage(23), this.X + decalagen, this.Hauteur, j);
+               g.drawImage(tab.Getimage(23), this.X + decalagen, this.Height, j);
                if ((!this.Alteration.equals("") & !this.alteree(nrlevel.getCurrentTonality(),b)) | (this.Alteration.equals("n")))
-            if (this.Alteration.equals("#")) g.drawImage(tab.Getimage(20), this.X-(decalagea+1),  this.Hauteur-10,j); //diese y-8 bemol y-14
-          else if (this.Alteration.equals("b"))  g.drawImage(tab.Getimage(21), this.X-(decalagea+1),  this.Hauteur-11, j);
-         else if (this.Alteration.equals("n"))  g.drawImage(tab.Getimage(19), this.X-(decalagea-1),  this.Hauteur-7, j);
-
+               if (this.Alteration.equals("#")) g.drawImage(tab.Getimage(20), this.X-(decalagea+1),  this.Height-10,j); //diese y-8 bemol y-14
+               else if (this.Alteration.equals("b"))  g.drawImage(tab.Getimage(21), this.X-(decalagea+1),  this.Height-11, j);
+               else if (this.Alteration.equals("n"))  g.drawImage(tab.Getimage(19), this.X-(decalagea-1),  this.Height-7, j);
              }
+*/
 
-
-            //     affichealt(g,this.Alteration,, this.Hauteur+1);
+            //     affichealt(g,this.Alteration,, this.Height+1);
              // DEUX CAS  Simple clé ou double clés
 
 
-             if (nrlevel.isCurrentclefTreble() | nrlevel.isCurrentclefBass()) {
-               if (this.Hauteur>=dportee+45) { // <DO en dessous de la port�e en cl� de sol
-                 for(i=dportee+50; i<=this.Hauteur+5; i=i+10){
-                   if (i != this.Hauteur+5) g.setColor(Color.black); //!= this.Hauteur+4
+             if (nrlevel.isCurrentKeyTreble() | nrlevel.isCurrentKeyBass()) {
+               if (this.Height>=dportee+45) { // <DO en dessous de la port�e en cl� de sol
+                 for(i=dportee+50; i<=this.Height+5; i=i+10){
+                   if (i != this.Height+5) g.setColor(Color.black); //!= this.Height+4
                    else g.setColor(couleur);
                  g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i); // dessine la port�e en dessous de la port�e normale
 
                  }
                }
 
-               else  if (this.Hauteur<=dportee-15) {  // <LA au dessus de la port�e en cl� de sol
-                 for(i=dportee-10; i>=this.Hauteur+5; i=i-10){
+               else  if (this.Height<=dportee-15) {  // <LA au dessus de la port�e en cl� de sol
+                 for(i=dportee-10; i>=this.Height+5; i=i-10){
 
-                   if (i != this.Hauteur+5) g.setColor(Color.black);
+                   if (i != this.Height+5) g.setColor(Color.black);
                    else g.setColor(couleur);
                    g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i);  // dessine la portee en dessus de la port�e normale
                  }
@@ -136,26 +145,26 @@ import java.util.ResourceBundle;
 
              // CAS DE LA DOUBLE CLE SOL ET FA
 
-             else if( nrlevel.isCurrentclefBoth()) {
+             else if( nrlevel.isCurrentKeyBoth()) {
 
                // cas de la cl� de sol
-               if (this.Hauteur>=dportee+45 & this.Hauteur <= dportee+55) { // du DO jusqu'au LA en dessous de la port�e
-                 for(i=dportee+50; i<=this.Hauteur+5; i=i+10){
+               if (this.Height>=dportee+45 & this.Height <= dportee+55) { // du DO jusqu'au LA en dessous de la port�e
+                 for(i=dportee+50; i<=this.Height+5; i=i+10){
                  g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i); }       // dessine la port�e en dessous de la port�e normale
                }
-               else if (this.Hauteur<=dportee-15) {  // <LA au dessus de la port�e en cl� de sol
-                 for(i=dportee-10; i>=this.Hauteur+5; i=i-10){
+               else if (this.Height<=dportee-15) {  // <LA au dessus de la port�e en cl� de sol
+                 for(i=dportee-10; i>=this.Height+5; i=i-10){
                  g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i); }       // dessine la portee en dessus de la port�e normale
                }
 
 
                // cas de la cl� de fa
-               else if (this.Hauteur>=dportee+135) {  // � partie du MI en dessous de la port�e
-                 for(i=dportee+140; i<=this.Hauteur+5; i=i+10){
+               else if (this.Height>=dportee+135) {  // � partie du MI en dessous de la port�e
+                 for(i=dportee+140; i<=this.Height+5; i=i+10){
                  g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i); }       // dessine la port�e en dessous de la port�e normale
                }
-               else if (this.Hauteur<=dportee+75 & this.Hauteur >=dportee+60) {
-                 for(i=dportee+80; i>=this.Hauteur+5; i=i-10){
+               else if (this.Height<=dportee+75 & this.Height >=dportee+60) {
+                 for(i=dportee+80; i>=this.Height+5; i=i-10){
                  g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i); }      // dessine la portee en dessus de la port�e normale
                };
              }
@@ -170,7 +179,7 @@ import java.util.ResourceBundle;
 
 
             for (x=0;x<=3;x++){ //28 = 8 notes entre 2 notes identiques * 4 entre chaque note
-              if ((this.Hauteur+x*35==base) | (this.Hauteur-x*35==base))  b = true;                                                   }
+              if ((this.Height+x*35==base) | (this.Height-x*35==base))  b = true;                                                   }
                 return b;
                 }
 
@@ -185,23 +194,23 @@ import java.util.ResourceBundle;
             String SI = bundle.getString("_si");
 
             if (t.Alteration.equalsIgnoreCase("#"))
-              if (this.Nom == FA & t.Nbalt >=1) return true;
-                else if (this.Nom == DO & t.Nbalt >=2) return true;
-                else if (this.Nom == SOL & t.Nbalt >=3) return true;
-                else if (this.Nom == RE & t.Nbalt >=4) return true;
-                else if (this.Nom == LA & t.Nbalt >=5) return true;
-                else if (this.Nom == MI & t.Nbalt >=6) return true;
-                else if (this.Nom == SI & t.Nbalt >=7) return true;
-                else return false;
+              if (this.Nom == FA & t.getAlterationsNumber() >=1) return true;
+              else if (this.Nom == DO & t.getAlterationsNumber() >=2) return true;
+              else if (this.Nom == SOL & t.getAlterationsNumber() >=3) return true;
+              else if (this.Nom == RE & t.getAlterationsNumber() >=4) return true;
+              else if (this.Nom == LA & t.getAlterationsNumber() >=5) return true;
+              else if (this.Nom == MI & t.getAlterationsNumber() >=6) return true;
+              else if (this.Nom == SI & t.getAlterationsNumber() >=7) return true;
+              else return false;
             else if (t.Alteration.equalsIgnoreCase("b"))
-              if (this.Nom == SI & t.Nbalt >=1) return true;
-            else if (this.Nom == MI & t.Nbalt >=2) return true;
-            else if (this.Nom == LA & t.Nbalt >=3) return true;
-            else if (this.Nom == RE & t.Nbalt >=4) return true;
-            else if (this.Nom == SOL & t.Nbalt >=5) return true;
-            else if (this.Nom == DO & t.Nbalt >=6) return true;
-            else if (this.Nom == FA & t.Nbalt >=7) return true;
-            else return false;
+              if (this.Nom == SI & t.getAlterationsNumber() >=1) return true;
+              else if (this.Nom == MI & t.getAlterationsNumber() >=2) return true;
+              else if (this.Nom == LA & t.getAlterationsNumber() >=3) return true;
+              else if (this.Nom == RE & t.getAlterationsNumber() >=4) return true;
+              else if (this.Nom == SOL & t.getAlterationsNumber() >=5) return true;
+              else if (this.Nom == DO & t.getAlterationsNumber() >=6) return true;
+              else if (this.Nom == FA & t.getAlterationsNumber() >=7) return true;
+              else return false;
 
             else return false;
           }
@@ -333,56 +342,54 @@ import java.util.ResourceBundle;
 
           public void majnote(NoteLevel nrlevel, int dportee, ResourceBundle bundle){
 
+            String DO = bundle.getString("_do");
+            String RE = bundle.getString("_re");
+            String MI = bundle.getString("_mi");
+            String FA = bundle.getString("_fa");
+            String SOL = bundle.getString("_sol");
+            String LA = bundle.getString("_la");
+            String SI = bundle.getString("_si");
 
-           String DO = bundle.getString("_do");
-        String RE = bundle.getString("_re");
-        String MI = bundle.getString("_mi");
-        String FA = bundle.getString("_fa");
-        String SOL = bundle.getString("_sol");
-        String LA = bundle.getString("_la");
-        String SI = bundle.getString("_si");
+            if (nrlevel.isCurrentKeyTreble()){//base cl� de sol : SOL = dportee+25
 
-
-            if (nrlevel.isCurrentclefTreble()){//base cl� de sol : SOL = dportee+25
-
-              if (this.identiques(dportee+10)) { this.Nom = DO; this.Pitch = 72-(this.Hauteur-(dportee+10))/28*12;}
-              else if (this.identiques(dportee+15)) { this.Nom = SI; this.Pitch = 71-(this.Hauteur-(dportee+15))/28*12;}
-              else if (this.identiques(dportee+20)) { this.Nom = LA; this.Pitch = 69-(this.Hauteur-(dportee+20))/28*12;}
-              else  if  (this.identiques(dportee+25)) { this.Nom = SOL;this.Pitch = 67-(this.Hauteur-(dportee+25))/28*12;}
-              else if (this.identiques(dportee+30)) { this.Nom = FA;this.Pitch = 65-(this.Hauteur-(dportee+30))/28*12;}
-              else if (this.identiques(dportee+35)) { this.Nom = MI;this.Pitch = 64-(this.Hauteur-(dportee+35))/28*12;}
-              else if (this.identiques(dportee+40)) { this.Nom = RE;this.Pitch = 62-(this.Hauteur-(dportee+40))/28*12;}
+              if (this.identiques(dportee+10)) { this.Nom = DO; this.Pitch = 72-(this.Height-(dportee+10))/28*12;}
+              else if (this.identiques(dportee+15)) { this.Nom = SI; this.Pitch = 71-(this.Height-(dportee+15))/28*12;}
+              else if (this.identiques(dportee+20)) { this.Nom = LA; this.Pitch = 69-(this.Height-(dportee+20))/28*12;}
+              else  if  (this.identiques(dportee+25)) { this.Nom = SOL;this.Pitch = 67-(this.Height-(dportee+25))/28*12;}
+              else if (this.identiques(dportee+30)) { this.Nom = FA;this.Pitch = 65-(this.Height-(dportee+30))/28*12;}
+              else if (this.identiques(dportee+35)) { this.Nom = MI;this.Pitch = 64-(this.Height-(dportee+35))/28*12;}
+              else if (this.identiques(dportee+40)) { this.Nom = RE;this.Pitch = 62-(this.Height-(dportee+40))/28*12;}
               }
 
-            else if (nrlevel.isCurrentclefBass()){ //base cl� de fa : FA = dportee+5
+            else if (nrlevel.isCurrentKeyBass()){ //base cl� de fa : FA = dportee+5
 
-              if (this.identiques(dportee+20)) { this.Nom = DO; this.Pitch = 48-(this.Hauteur-(dportee+20))/28*12;}
-              else if (this.identiques(dportee+25)) { this.Nom = SI;this.Pitch = 47-(this.Hauteur-(dportee+25))/28*12;}
-              else if (this.identiques(dportee+30)) { this.Nom = LA;this.Pitch = 45-(this.Hauteur-(dportee+30))/28*12;}
-              else  if  (this.identiques(dportee+35)) { this.Nom = SOL;this.Pitch = 43-(this.Hauteur-(dportee+35))/28*12;}
-              else if (this.identiques(dportee+5)) { this.Nom = FA;this.Pitch = 53-(this.Hauteur-(dportee+5))/28*12;}
-              else if (this.identiques(dportee+10)) { this.Nom = MI;this.Pitch = 52-(this.Hauteur-(dportee+10))/28*12;}
-              else if (this.identiques(dportee+15)) { this.Nom = RE;this.Pitch = 50-(this.Hauteur-(dportee+15))/28*12;};
+              if (this.identiques(dportee+20)) { this.Nom = DO; this.Pitch = 48-(this.Height-(dportee+20))/28*12;}
+              else if (this.identiques(dportee+25)) { this.Nom = SI;this.Pitch = 47-(this.Height-(dportee+25))/28*12;}
+              else if (this.identiques(dportee+30)) { this.Nom = LA;this.Pitch = 45-(this.Height-(dportee+30))/28*12;}
+              else  if  (this.identiques(dportee+35)) { this.Nom = SOL;this.Pitch = 43-(this.Height-(dportee+35))/28*12;}
+              else if (this.identiques(dportee+5)) { this.Nom = FA;this.Pitch = 53-(this.Height-(dportee+5))/28*12;}
+              else if (this.identiques(dportee+10)) { this.Nom = MI;this.Pitch = 52-(this.Height-(dportee+10))/28*12;}
+              else if (this.identiques(dportee+15)) { this.Nom = RE;this.Pitch = 50-(this.Height-(dportee+15))/28*12;};
               }
 
-            else if (nrlevel.isCurrentclefBoth()){
-              if (this.Hauteur<=dportee+55){   // CLE DE SOL
-                if (this.identiques(dportee+10)) { this.Nom = DO; this.Pitch = 72-(this.Hauteur-(dportee+10))/28*12;}
-              else if (this.identiques(dportee+15)) { this.Nom = SI; this.Pitch = 71-(this.Hauteur-(dportee+15))/28*12;}
-              else if (this.identiques(dportee+20)) { this.Nom = LA; this.Pitch = 69-(this.Hauteur-(dportee+20))/28*12;}
-              else  if  (this.identiques(dportee+25)) { this.Nom = SOL;this.Pitch = 67-(this.Hauteur-(dportee+25))/28*12;}
-              else if (this.identiques(dportee+30)) { this.Nom = FA;this.Pitch = 65-(this.Hauteur-(dportee+30))/28*12;}
-              else if (this.identiques(dportee+35)) { this.Nom = MI;this.Pitch = 64-(this.Hauteur-(dportee+35))/28*12;}
-              else if (this.identiques(dportee+40)) { this.Nom = RE;this.Pitch = 62-(this.Hauteur-(dportee+40))/28*12;}
+            else if (nrlevel.isCurrentKeyBoth()){
+              if (this.Height<=dportee+55){   // CLE DE SOL
+                if (this.identiques(dportee+10)) { this.Nom = DO; this.Pitch = 72-(this.Height-(dportee+10))/28*12;}
+              else if (this.identiques(dportee+15)) { this.Nom = SI; this.Pitch = 71-(this.Height-(dportee+15))/28*12;}
+              else if (this.identiques(dportee+20)) { this.Nom = LA; this.Pitch = 69-(this.Height-(dportee+20))/28*12;}
+              else  if  (this.identiques(dportee+25)) { this.Nom = SOL;this.Pitch = 67-(this.Height-(dportee+25))/28*12;}
+              else if (this.identiques(dportee+30)) { this.Nom = FA;this.Pitch = 65-(this.Height-(dportee+30))/28*12;}
+              else if (this.identiques(dportee+35)) { this.Nom = MI;this.Pitch = 64-(this.Height-(dportee+35))/28*12;}
+              else if (this.identiques(dportee+40)) { this.Nom = RE;this.Pitch = 62-(this.Height-(dportee+40))/28*12;}
                                                               }
               else {       // CLE DE FA  //base cl� de sol : FA = dportee+76
-                if (this.identiques(dportee+110)) { this.Nom = DO; this.Pitch = 48-(this.Hauteur-(dportee+110))/28*12;}
-                else if (this.identiques(dportee+115)) { this.Nom = SI;this.Pitch = 47-(this.Hauteur-(dportee+115))/28*12;}
-                else if (this.identiques(dportee+120)) { this.Nom = LA;this.Pitch = 45-(this.Hauteur-(dportee+120))/28*12;}
-                else  if  (this.identiques(dportee+125)) { this.Nom = SOL;this.Pitch = 43-(this.Hauteur-(dportee+125))/28*12;}
-                else if (this.identiques(dportee+95)) { this.Nom = FA;this.Pitch = 53-(this.Hauteur-(dportee+95))/28*12;}
-                else if (this.identiques(dportee+100)) { this.Nom = MI;this.Pitch = 52-(this.Hauteur-(dportee+100))/28*12;}
-                else if (this.identiques(dportee+105)) { this.Nom = RE;this.Pitch = 50-(this.Hauteur-(dportee+105))/28*12;};
+                if (this.identiques(dportee+110)) { this.Nom = DO; this.Pitch = 48-(this.Height-(dportee+110))/28*12;}
+                else if (this.identiques(dportee+115)) { this.Nom = SI;this.Pitch = 47-(this.Height-(dportee+115))/28*12;}
+                else if (this.identiques(dportee+120)) { this.Nom = LA;this.Pitch = 45-(this.Height-(dportee+120))/28*12;}
+                else  if  (this.identiques(dportee+125)) { this.Nom = SOL;this.Pitch = 43-(this.Height-(dportee+125))/28*12;}
+                else if (this.identiques(dportee+95)) { this.Nom = FA;this.Pitch = 53-(this.Height-(dportee+95))/28*12;}
+                else if (this.identiques(dportee+100)) { this.Nom = MI;this.Pitch = 52-(this.Height-(dportee+100))/28*12;}
+                else if (this.identiques(dportee+105)) { this.Nom = RE;this.Pitch = 50-(this.Height-(dportee+105))/28*12;};
                 }
               }
             }

@@ -50,9 +50,9 @@ public class Chord {
 
 
          public void copy (Chord a){
-            this.tabnotes[0] = new Note(a.tabnotes[0].getAlteration(),a.tabnotes[0].getNom(),a.tabnotes[0].getHauteur(),a.tabnotes[0].getX(),a.tabnotes[0].getPitch());
-            this.tabnotes[1] = new Note(a.tabnotes[1].getAlteration(),a.tabnotes[1].getNom(),a.tabnotes[1].getHauteur(),a.tabnotes[1].getX(),a.tabnotes[1].getPitch());
-            this.tabnotes[2] = new Note(a.tabnotes[2].getAlteration(),a.tabnotes[2].getNom(),a.tabnotes[2].getHauteur(),a.tabnotes[2].getX(),a.tabnotes[2].getPitch());
+            this.tabnotes[0] = new Note(a.tabnotes[0].getAlteration(),a.tabnotes[0].getNom(),a.tabnotes[0].getHeight(),a.tabnotes[0].getX(),a.tabnotes[0].getPitch());
+            this.tabnotes[1] = new Note(a.tabnotes[1].getAlteration(),a.tabnotes[1].getNom(),a.tabnotes[1].getHeight(),a.tabnotes[1].getX(),a.tabnotes[1].getPitch());
+            this.tabnotes[2] = new Note(a.tabnotes[2].getAlteration(),a.tabnotes[2].getNom(),a.tabnotes[2].getHeight(),a.tabnotes[2].getX(),a.tabnotes[2].getPitch());
             this.name = a.name;
             this.inversion = a.inversion;
 
@@ -128,7 +128,7 @@ public class Chord {
 
           }
 
-          public void paint( int position, NoteLevel nrlevel,Graphics g,boolean accordcourant, Tabimage tab,
+          public void paint( int position, NoteLevel nrlevel,Graphics g, Font f, boolean accordcourant,
                             Component j, int dportee,  ResourceBundle bundle){
               Color c = new Color(147,22,22);
 
@@ -137,9 +137,9 @@ public class Chord {
             for (int i=0;i<3;i=i+1){
 
              if (!(i== this.realposition(position)& accordcourant))
-               tabnotes[i].paint(nrlevel, g,this.getNoteposition(i,nrlevel.getCurrentTonality(), bundle),0, dportee, tab, j, Color.black,bundle);
+               tabnotes[i].paint(nrlevel, g, f, this.getNoteposition(i,nrlevel.getCurrentTonality(), bundle),0, dportee, j, Color.black,bundle);
             }
-            if (accordcourant) tabnotes[this.realposition(position)].paint(nrlevel,g,this.getNoteposition(this.realposition(position),nrlevel.getCurrentTonality(), bundle),0, dportee, tab, j, c, bundle);
+            if (accordcourant) tabnotes[this.realposition(position)].paint(nrlevel,g,f,this.getNoteposition(this.realposition(position),nrlevel.getCurrentTonality(), bundle),0, dportee, j, c, bundle);
             // we paint tne current note at the end to keep the color red
             if (nrlevel.isLearninggame()) this.printname(g);
 
@@ -191,14 +191,14 @@ public class Chord {
                 this.inversion = 0;
                 if (tmp < 0.33) { // first inversion
                   this.inversion = 1;
-                  this.tabnotes[0].setHauteur(this.tabnotes[0].getHauteur() - 35);
+                  this.tabnotes[0].setHeight(this.tabnotes[0].getHeight() - 35);
                   this.tabnotes[0].setPitch(this.tabnotes[0].getPitch() + 12);
                 }
                 else if (tmp > 0.33 & tmp < 0.66) { // second inversion
                   this.inversion = 2;
-                  this.tabnotes[0].setHauteur(this.tabnotes[0].getHauteur() - 35);
+                  this.tabnotes[0].setHeight(this.tabnotes[0].getHeight() - 35);
                   this.tabnotes[0].setPitch(this.tabnotes[0].getPitch() + 12);
-                  this.tabnotes[1].setHauteur(this.tabnotes[1].getHauteur() - 35);
+                  this.tabnotes[1].setHeight(this.tabnotes[1].getHeight() - 35);
                   this.tabnotes[1].setPitch(this.tabnotes[1].getPitch() + 12);
                 }
               }

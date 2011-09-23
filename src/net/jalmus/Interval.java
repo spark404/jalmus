@@ -42,10 +42,10 @@ public class Interval {
 
         public void copy(Interval a) {
           this.interv[0] = new Note(a.interv[0].getAlteration(), a.interv[0].getNom(),
-                                    a.interv[0].getHauteur(), a.interv[0].getX(),
+                                    a.interv[0].getHeight(), a.interv[0].getX(),
                                     a.interv[0].getPitch());
           this.interv[1] = new Note(a.interv[1].getAlteration(), a.interv[1].getNom(),
-                                    a.interv[1].getHauteur(), a.interv[1].getX(),
+                                    a.interv[1].getHeight(), a.interv[1].getX(),
                                     a.interv[1].getPitch());
           this.name = a.name;
         }
@@ -65,21 +65,21 @@ public class Interval {
 
 
         public void paint( int position, NoteLevel nrlevel,
-                          Graphics g, int dportee,
-                          Tabimage tab, ResourceBundle bundle, boolean intervcourant,
+                          Graphics g, Font f, int dportee,
+                          ResourceBundle bundle, boolean intervcourant,
                           Component j) {
 
           Color c = new Color(147, 22, 22);
 
           if (position == 0 & intervcourant)
-            interv[0].paint(nrlevel, g, 9, 0, dportee, tab, j, c, bundle);
+            interv[0].paint(nrlevel, g, f, 9, 0, dportee, j, c, bundle);
           else
-            interv[0].paint(nrlevel, g, 9, 0, dportee, tab, j, Color.black, bundle);
+            interv[0].paint(nrlevel, g, f, 9, 0, dportee, j, Color.black, bundle);
 
           if (position == 1 & intervcourant)
-            interv[1].paint(nrlevel, g, -19, 28, dportee, tab, j, c, bundle);
+            interv[1].paint(nrlevel, g, f, -19, 28, dportee, j, c, bundle);
           else
-            interv[1].paint(nrlevel, g, -19, 28, dportee, tab, j, Color.black, bundle);
+            interv[1].paint(nrlevel, g, f, -19, 28, dportee, j, Color.black, bundle);
 
         //  if ( (nrlevel.isNormalgame() | nrlevel.isLearninggame()) |
          //     (nrlevel.isInlinegame() & intervcourant))

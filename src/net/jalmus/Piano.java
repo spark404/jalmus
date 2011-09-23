@@ -58,7 +58,7 @@ public class Piano {
     for (int i = 0, x = 3; i < octavanumber; i++) {
       for (int j = 0; j < 7; j++, x += kw) {
         int keyNum = i * 12 + whiteIDs[j] + transpose;
-        whiteKeys.add(new net.jalmus.Key(x + marge, haut, kw, kh, keyNum));
+        whiteKeys.add(new net.jalmus.Key(x + marge, haut, kw-1, kh, keyNum));
       }
     }
 
@@ -174,9 +174,8 @@ public class Piano {
    * @see         Image
    */
 
-  public void paint(Graphics g, boolean paintbutton, int basenotepitch1,  int basenotepitch2,  int basenotepitchb1,  int basenotepitchb2,
-		  int pitchcourant0, int pitchcourant1,
-                    int pitchcourant2) {
+  public void paint(Graphics g, int width, boolean paintbutton, int basenotepitch1,  int basenotepitch2,  
+		  int basenotepitchb1,  int basenotepitchb2, int pitchcourant0, int pitchcourant1, int pitchcourant2) {
     Graphics2D g2 = (Graphics2D) g;
     //  Dimension d = getSize();
     

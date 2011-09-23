@@ -145,7 +145,7 @@ public NoteLevel getLevel(){
      else if (qName.equals("clef")) {
        String tmpclef = buffer.toString();
        if (tmpclef.equals("treble") | tmpclef.equals("bass") | tmpclef.equals("both")){
-         level.setCurrentclef(tmpclef);
+         level.setCurrentKey(tmpclef);
          level.inibasenote();
        }
        else
