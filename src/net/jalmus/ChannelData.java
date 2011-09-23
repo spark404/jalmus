@@ -28,12 +28,12 @@ public class ChannelData {
           return this.channel;
         }
 
-        public void jouenote(boolean midiok, int kNum){
+        public void playNote(boolean midiok, int kNum){
           if (midiok)
                    this.channel.noteOn(kNum, 25);
                }
         
-        public void jouenote(boolean midiok, int kNum, int i){
+        public void playNote(boolean midiok, int kNum, int i){
             if (midiok)
                      this.channel.noteOn(kNum, i);
                  }
