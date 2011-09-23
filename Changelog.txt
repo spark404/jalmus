@@ -1,0 +1,65 @@
+September, 2011: Version 2.0 ?
+
+* removed GIF pictures to display notes
+* notes are displayed through the MusiSync truetype font (credits to Robert Allgeyer)
+* MAJOR: added an option to choose the measure tempo. For now just 4/4, 3/4 and 2/4 are supported
+* MAJOR: possibility to resize Jalmus window. With this feature the user can choose how many measures to play
+* added tempo indication after alterations
+* when rythm game options are changed, the score is renewed (same as score reading game)
+* GIF background converted to PNG to be ligther
+* removed latency and speed cursor parameters
+* instrument used for metronome changed to 115 (steel drums)
+* added an option to show Metronome beats and cursor progress
+* most of the source code has been translated in english
+* added this Changelog to SVN repository
+
+Dicember, 20th 2010: Version 1.7
+
+* Fixing problem when selecting chords or intervals on preferences panel Show name of interval or chord only for learning exercise
+* Adding Polish translation (thanks to Wojtek)
+* Fixing Italian translation (thanks to Massimo)
+
+July, 7th 2010: Version 1.6
+
+* Score reading exercise
+* Improving main menu and preferences window
+* No more sound when mouse is moved on keyboard at screen (note reading exercise)
+
+June, 7th 2010: Version 1.5
+
+There are now two parameters to setup :
+* Latency : increase this value if the points are not superposed when you give rhythms on four first beats
+* Cursor speed : increase this value if the points move forward more and more
+* rhythms exercise with possibility to give answers with SPACE key or better a MIDI keyboard connected to your computer
+
+May, 10th 2010: Version 1.4
+
+* Save and load preferences (language, midi options) in settings file when Jalmus close and start
+* Adding buttons to select range of notes in note reading game.
+* The notes to train are now visible in green on keyboard at screen.
+* Slow down note reading game in line.
+* Fixing sound problem at the end of a game (I hope it’s OK now).
+* Fixing problem with green keys in learning game
+* The rhythm game have sound even the sound checkbox is off in midi options (the MIDI keyboard play sound too).
+
+April, 5th 2010: Version 1.3
+
+* Adding new languages : Korean (thanks to Sugarclean), Finnish (thanks to Tuomas) and Esperanto (thanks to Christophe Chazarein)
+* New version of Izpack installer
+* Cleaning the code : using Eclipse instead JBuilder (no more executables except jar file)
+* Fixing bug with sound when stop a rhythm game
+* Fixing C3 key to start Notereading game
+
+August, 15th 2007: Version 1.2
+
+* new system of lessons
+* possibility to transpose little keyboards in MIDI preferences
+* bug fixed when you modify parameters before selecting the game
+* game paused when MIDI preferences selected
+* bug fixed for random accidentals in C Major
+
+March, 4th 2007: Version 1.1
+
+* added "Pause option" by using key "P"
+* corrected turkish translation
+
