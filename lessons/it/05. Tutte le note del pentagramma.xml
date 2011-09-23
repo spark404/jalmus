@@ -9,7 +9,7 @@ Description: to learn all notes in piano staff
 
 <levels>
 <notereading id = '0'>
-<message>First we are working all notes on an octave in piano staff</message>
+<message>Per cominciare, lavoriamo su tutte le note in un'ottava di entrambe le chiavi (SOL e FA)</message>
 <game>learning</game>
 <learningduration>15</learningduration>
 <clef>both</clef>
@@ -20,7 +20,7 @@ Description: to learn all notes in piano staff
 </notereading>
 
 <notereading id = '1'>
-<message>Now same notes without help - C correspond to the key with a green point</message>
+<message>Ora le stesse note, senza aiuto - fino al riempimento della barra sottostante</message>
 <game>normal</game>
 <clef>both</clef>
 <notes>notes</notes>
@@ -30,7 +30,7 @@ Description: to learn all notes in piano staff
 </notereading>
 
 <notereading id = '2'>
-<message>Same notes in line, you should find the first note of the line</message>
+<message>Tutte le note in linea, è necessario suonare la prima nota della linea</message>
 <game>inline</game>
 <clef>both</clef>
 <notes>notes</notes>
@@ -40,7 +40,7 @@ Description: to learn all notes in piano staff
 </notereading>
 
 <notereading id = '3'>
-<message>Same exercice with more notes</message>
+<message>Stesso esercizio con più note</message>
 <game>inline</game>
 <clef>both</clef>
 <notes>notes</notes>
@@ -50,7 +50,7 @@ Description: to learn all notes in piano staff
 </notereading>
 
 <notereading id = '4'>
-<message>Faster. Good luck !!!</message>
+<message>Più veloce. Buona fortuna !!!</message>
 <game>inline</game>
 <clef>both</clef>
 <notes>notes</notes>

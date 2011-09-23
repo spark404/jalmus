@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-Document : All tonality with flats.xml
+Document : All tonality with sharps.xml
 Created on : 07 aout 2007, 15:11
 Author : RICHARD Christophe
-Description: in line game tonality with flats in piano staff
+Description: in line game tonality with sharps in piano staff
 -->
 
 <levels>
 
 <notereading id = '0'>
-<message>C Major : 15 notes inline in piano staff</message>
+<message>DO Maggiore : 15 note in linea sul pentagramma</message>
 <game>inline</game>
 <clef>both</clef>
-<tonality>0b</tonality>
+<tonality>0#</tonality>
 <notes>accidentals</notes>
 <nbnotes>15</nbnotes>
 <speed>20</speed>
@@ -21,78 +21,78 @@ Description: in line game tonality with flats in piano staff
 </notereading>
 
 <notereading id = '1'>
-<message>F Major : 15 notes inline in piano staff</message>
+<message>SOL Maggiore : 15 note in linea sul pentagramma</message>
 <game>inline</game>
 <clef>both</clef>
-<tonality>1b</tonality>
+<tonality>1#</tonality>
 <notes>accidentals</notes>
-<nbnotes>15</nbnotes>
+<nbnotes>9</nbnotes>
 <speed>20</speed>
 <startingnote>0</startingnote>
 </notereading>
 
 <notereading id = '2'>
-<message>B Flat Major : 15 notes inline in piano staff</message>
+<message>RE Maggiore : 15 note in linea sul pentagramma</message>
 <game>inline</game>
 <clef>both</clef>
-<tonality>2b</tonality>
+<tonality>2#</tonality>
 <notes>accidentals</notes>
-<nbnotes>15</nbnotes>
+<nbnotes>9</nbnotes>
 <speed>20</speed>
 <startingnote>0</startingnote>
 </notereading>
 
 <notereading id = '3'>
-<message>E Flat Major : 15 notes inline in piano staff</message>
+<message>LA Maggiore : 15 note in linea sul pentagramma</message>
 <game>inline</game>
 <clef>both</clef>
-<tonality>3b</tonality>
+<tonality>3#</tonality>
 <notes>accidentals</notes>
-<nbnotes>15</nbnotes>
+<nbnotes>9</nbnotes>
 <speed>20</speed>
 <startingnote>0</startingnote>
 </notereading>
 
 <notereading id = '4'>
-<message>A Flat Major : 15 notes inline in piano staff</message>
+<message> MI Maggiore : 15 note in linea sul pentagramma</message>
 <game>inline</game>
 <clef>both</clef>
-<tonality>4b</tonality>
+<tonality>4#</tonality>
 <notes>accidentals</notes>
-<nbnotes>15</nbnotes>
+<nbnotes>9</nbnotes>
 <speed>20</speed>
 <startingnote>0</startingnote>
 </notereading>
 
 <notereading id = '5'>
-<message>D Flat Major : 15 notes inline in piano staff</message>
+<message> SI Maggiore : 15 note in linea sul pentagramma</message>
 <game>inline</game>
 <clef>both</clef>
-<tonality>5b</tonality>
+<tonality>5#</tonality>
 <notes>accidentals</notes>
-<nbnotes>15</nbnotes>
+<nbnotes>9</nbnotes>
 <speed>20</speed>
 <startingnote>0</startingnote>
 </notereading>
 
 <notereading id = '6'>
-<message>G Flat Major : 15 notes inline in piano staff</message>
+<message> FA Diesis Maggiore : 15 note in linea sul pentagramma</message>
 <game>inline</game>
 <clef>both</clef>
-<tonality>6b</tonality>
+<tonality>6#</tonality>
 <notes>accidentals</notes>
-<nbnotes>15</nbnotes>
+<nbnotes>9</nbnotes>
 <speed>20</speed>
 <startingnote>0</startingnote>
 </notereading>
 
 <notereading id = '7'>
-<message>C Flat Major : 15 notes inline in piano staff</message>
+<message> DO Diesis Maggiore : 15 note in linea sul pentagramma</message>
 <game>inline</game>
 <clef>both</clef>
-<tonality>7b</tonality>
+<tonality>7#</tonality>
 <notes>accidentals</notes>
-<nbnotes>15</nbnotes>
+<nbnotes>9</nbnotes>
 <speed>20</speed>
 <startingnote>0</startingnote>
 </notereading>

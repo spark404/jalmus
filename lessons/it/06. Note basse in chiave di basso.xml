@@ -9,7 +9,7 @@ Description: to learn bass notes on bass clef (only for 73 keys and using transp
 
 <levels>
 <notereading id = '0'>
-<message>First we are working slowly on the five notes A B C D E</message>
+<message>Per cominciare lavoriamo lentamente sulle cinque note LA SI DO RE MI</message>
 <game>learning</game>
 <learningduration>15</learningduration>
 <clef>bass</clef>
@@ -20,7 +20,7 @@ Description: to learn bass notes on bass clef (only for 73 keys and using transp
 </notereading>
 
 <notereading id = '1'>
-<message>Now same notes without help - C correspond to the key with a green point</message>
+<message>Ora le stesse note senza aiuto, fino al riempimento della barra sottostante</message>
 <game>normal</game>
 <clef>bass</clef>
 <notes>notes</notes>
@@ -30,7 +30,7 @@ Description: to learn bass notes on bass clef (only for 73 keys and using transp
 </notereading>
 
 <notereading id = '2'>
-<message>Next five notes F G A B C</message>
+<message>Prossime cinque note: FA SOL LA SI DO</message>
 <game>learning</game>
 <learningduration>15</learningduration>
 <clef>bass</clef>
@@ -41,7 +41,7 @@ Description: to learn bass notes on bass clef (only for 73 keys and using transp
 </notereading>
 
 <notereading id = '3'>
-<message>Same notes without help - A correspond to the key with a green point</message>
+<message>Stesse note senza aiuto, fino al riempimento della barra sottostante</message>
 <game>normal</game>
 <clef>bass</clef>
 <notes>notes</notes>
@@ -51,7 +51,7 @@ Description: to learn bass notes on bass clef (only for 73 keys and using transp
 </notereading>
 
 <notereading id = '4'>
-<message>Next five notes D E F G A</message>
+<message>Prossime cinque note: RE MI FA SOL LA</message>
 <game>learning</game>
 <learningduration>15</learningduration>
 <clef>bass</clef>
@@ -62,7 +62,7 @@ Description: to learn bass notes on bass clef (only for 73 keys and using transp
 </notereading>
 
 <notereading id = '5'>
-<message>Same notes without help - F correspond to the key with a green point</message>
+<message>Stesse note senza aiuto, fino al riempimento della barra sottostante</message>
 <game>normal</game>
 <clef>bass</clef>
 <notes>notes</notes>
@@ -73,7 +73,7 @@ Description: to learn bass notes on bass clef (only for 73 keys and using transp
 
 
 <notereading id = '6'>
-<message>All the notes in line, you should find the first note of the line</message>
+<message>Ora tutte le note, è necessario suonare la prima nota della linea</message>
 <game>inline</game>
 <clef>bass</clef>
 <notes>notes</notes>

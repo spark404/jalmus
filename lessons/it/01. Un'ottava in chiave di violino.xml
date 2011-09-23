@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-Document : An octave on bass clef.xml
+Document : An octave on treble clef.xml
 Created on : 18 avril 2007, 15:11
 Author : RICHARD Christophe
-Description: first lesson to learn notes on bass clef
+Description: first lesson to learn notes on treble clef
 -->
 
 <levels>
 <notereading id = '0'>
-<message>First we are working slowly on the three notes E F G </message>
+<message>Per cominciare lavoriamo lentamente sulle tre note FA SOL LA</message>
 <game>learning</game>
 <learningduration>15</learningduration>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>3</nbnotes>
 <speed>20</speed>
@@ -20,9 +20,9 @@ Description: first lesson to learn notes on bass clef
 </notereading>
 
 <notereading id = '1'>
-<message>Now same notes E F G without help - F correspond to the key with a green point</message>
+<message>Ora le stesse note FA SOL LA, senza aiuto, fino al riempimento della barra sottostante</message>
 <game>normal</game>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>3</nbnotes>
 <speed>15</speed>
@@ -30,10 +30,10 @@ Description: first lesson to learn notes on bass clef
 </notereading>
 
 <notereading id = '2'>
-<message>Next three notes G A B</message>
+<message>Prossime tre note: LA SI DO</message>
 <game>learning</game>
 <learningduration>15</learningduration>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>3</nbnotes>
 <speed>20</speed>
@@ -41,9 +41,9 @@ Description: first lesson to learn notes on bass clef
 </notereading>
 
 <notereading id = '3'>
-<message>Same notes G A B without help - A correspond to the key with a green point</message>
+<message>Stesse note LA SI DO, senza aiuto, fino al riempimento della barra sottostante</message>
 <game>normal</game>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>3</nbnotes>
 <speed>15</speed>
@@ -51,10 +51,10 @@ Description: first lesson to learn notes on bass clef
 </notereading>
 
 <notereading id = '4'>
-<message>Next three notes C D E</message>
+<message>Prossime tre note: RE MI FA</message>
 <game>learning</game>
 <learningduration>15</learningduration>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>3</nbnotes>
 <speed>20</speed>
@@ -62,9 +62,9 @@ Description: first lesson to learn notes on bass clef
 </notereading>
 
 <notereading id = '5'>
-<message>Same notes C D E without help - D correspond to the key with a green point</message>
+<message>Stesse note RE MI FA, senza aiuto, fino al riempimento della barra sottostante</message>
 <game>normal</game>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>3</nbnotes>
 <speed>15</speed>
@@ -72,19 +72,19 @@ Description: first lesson to learn notes on bass clef
 </notereading>
 
 <notereading id = '6'>
-<message>All the notes C D E F G A B </message>
+<message>Tutte le note RE MI FA SOL LA SI DO</message>
 <game>learning</game>
 <learningduration>30</learningduration>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>7</nbnotes>
 <speed>20</speed>
 </notereading>
 
 <notereading id = '6'>
-<message>All the notes in line, you should find the first note of the line</message>
+<message>Tutte le note in linea, è necessario suonare la prima nota della linea</message>
 <game>inline</game>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>7</nbnotes>
 <speed>30</speed>

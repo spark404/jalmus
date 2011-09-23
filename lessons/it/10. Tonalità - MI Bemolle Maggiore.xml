@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-Document : Tonality - A Major.xml
+Document : Tonality - E Flat Major.xml
 Created on : 18 avril 2007, 15:11
 Author : RICHARD Christophe
-Description: tonality level : a major
+Description: tonality level : e flat major
 -->
 
 <levels>
 
 <notereading id = '0'>
-<message>In A Major, we have 3 sharps F C G </message>
+<message>In MI Bemolle Maggiore, abbiamo tre alterazioni: SI MI LA</message>
 <game>learning</game>
 <learningduration>15</learningduration>
 <clef>treble</clef>
-<tonality>3#</tonality>
+<tonality>3b</tonality>
 <notes>notes</notes>
 <nbnotes>9</nbnotes>
 <speed>15</speed>
 </notereading>
 
 <notereading id = '1'>
-<message>Same exercice in line game</message>
+<message>Stesso esercizio, in linea e più veloce</message>
 <game>inline</game>
 <clef>treble</clef>
-<tonality>3#</tonality>
+<tonality>3b</tonality>
 <notes>notes</notes>
 <nbnotes>9</nbnotes>
 <speed>10</speed>
 </notereading>
 
 <notereading id = '2'>
-<message>After the treble clef, we'll study on the bass clef</message>
+<message>Dopo la chiave di violino, studiamo ora in chiave di basso</message>
 <game>learning</game>
 <learningduration>15</learningduration>
 <clef>bass</clef>
-<tonality>3#</tonality>
+<tonality>3b</tonality>
 <notes>notes</notes>
 <nbnotes>9</nbnotes>
 <speed>15</speed>
 </notereading>
 
 <notereading id = '3'>
-<message>Same exercice in line game</message>
+<message>Stesso esercizio, in linea e più veloce</message>
 <game>inline</game>
 <learningduration>15</learningduration>
 <clef>bass</clef>
-<tonality>3#</tonality>
+<tonality>3b</tonality>
 <notes>notes</notes>
 <nbnotes>9</nbnotes>
 <speed>10</speed>
 </notereading>
 
 <notereading id = '4'>
-<message>All notes with accidentals in the piano staff</message>
+<message>Tutte le note, ma con alterazioni casuali</message>
 <game>inline</game>
 <clef>both</clef>
-<tonality>3#</tonality>
+<tonality>3b</tonality>
 <notes>accidentals</notes>
 <nbnotes>15</nbnotes>
 <speed>15</speed>
 </notereading>
 
 <notereading id = '5'>
-<message>Now intervals thirds</message>
+<message>Ora studiamo gli intervalli di terza</message>
 <game>inline</game>
 <clef>both</clef>
-<tonality>3#</tonality>
+<tonality>3b</tonality>
 <notes>intervals</notes>
 <intervals>third</intervals>
 <speed>10</speed>

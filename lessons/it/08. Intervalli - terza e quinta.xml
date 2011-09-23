@@ -10,7 +10,7 @@ Description: interval level : third and fifth
 <levels>
 
 <notereading id = '0'>
-<message>Third intervals on treble clef</message>
+<message>Intervallo di terza in chiave di violino (SOL)</message>
 <game>normal</game>
 <clef>treble</clef>
 <notes>intervals</notes>
@@ -19,7 +19,7 @@ Description: interval level : third and fifth
 </notereading>
 
 <notereading id = '1'>
-<message>Fifth intervals on treble clef</message>
+<message>Intervallo di quinta in chiave di violino (SOL)</message>
 <game>normal</game>
 <clef>treble</clef>
 <notes>intervals</notes>
@@ -28,7 +28,7 @@ Description: interval level : third and fifth
 </notereading>
 
 <notereading id = '2'>
-<message>Third intervals on bass clef</message>
+<message>Intervallo di terza in chiave di basso (FA)</message>
 <game>normal</game>
 <clef>bass</clef>
 <notes>intervals</notes>
@@ -37,7 +37,7 @@ Description: interval level : third and fifth
 </notereading>
 
 <notereading id = '3'>
-<message>Fifth intervals on bass clef</message>
+<message>Intervallo di quinta in chiave di basso (FA)</message>
 <game>normal</game>
 <clef>bass</clef>
 <notes>intervals</notes>
@@ -46,7 +46,7 @@ Description: interval level : third and fifth
 </notereading>
 
 <notereading id = '4'>
-<message>Third intervals in line on both clefs</message>
+<message>Intervallo di terza in entrambe le chiavi (SOL e FA)</message>
 <game>inline</game>
 <clef>both</clef>
 <notes>intervals</notes>
@@ -55,7 +55,7 @@ Description: interval level : third and fifth
 </notereading>
 
 <notereading id = '5'>
-<message>Fifth intervals in line on both clefs</message>
+<message>Intervallo di quinta in entrambe le chiavi (SOL e FA)</message>
 <game>inline</game>
 <clef>both</clef>
 <notes>intervals</notes>

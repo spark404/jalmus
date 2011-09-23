@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-Document : All notes on bass clef.xml
+Document : All notes on treble clef.xml
 Created on : 18 avril 2007, 15:11
 Author : RICHARD Christophe
-Description: to learn all notes on bass clef
+Description: to learn all notes on treble clef
 -->
 
 <levels>
 <notereading id = '0'>
-<message>First we are working all notes on a octave in bass clef</message>
+<message>Per cominciare, lavoriamo su tutte le note in chiave di violino (SOL)</message>
 <game>learning</game>
 <learningduration>15</learningduration>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>9</nbnotes>
 <speed>10</speed>
@@ -20,9 +20,9 @@ Description: to learn all notes on bass clef
 </notereading>
 
 <notereading id = '1'>
-<message>Now same notes without help - F correspond to the key with a green point</message>
+<message>Ora le stesse note, senza aiuto - fino al riempimento della barra sottostante</message>
 <game>normal</game>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>9</nbnotes>
 <speed>15</speed>
@@ -30,9 +30,9 @@ Description: to learn all notes on bass clef
 </notereading>
 
 <notereading id = '2'>
-<message>All the notes in line, you should find the first note of the line</message>
+<message>Tutte le note in linea, è necessario suonare la prima nota della linea</message>
 <game>inline</game>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>9</nbnotes>
 <speed>20</speed>
@@ -40,34 +40,34 @@ Description: to learn all notes on bass clef
 </notereading>
 
 <notereading id = '3'>
-<message>Same notes at the octave</message>
+<message>Le stesse note, un'ottava sopra</message>
 <game>learning</game>
 <learningduration>15</learningduration>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>9</nbnotes>
 <speed>10</speed>
-<startingnote>-7</startingnote>
+<startingnote>7</startingnote>
 </notereading>
 
 <notereading id = '4'>
-<message>Now same notes without help - F correspond to the key with a green point</message>
+<message>Ora le stesse note, senza aiuto - fino al riempimento della barra sottostante</message>
 <game>normal</game>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>9</nbnotes>
 <speed>15</speed>
-<startingnote>-7</startingnote>
+<startingnote>7</startingnote>
 </notereading>
 
 <notereading id = '5'>
-<message>All the notes in line, you should find the first note of the line</message>
+<message>Tutte le note in linea, è necessario suonare la prima nota della linea</message>
 <game>inline</game>
-<clef>bass</clef>
+<clef>treble</clef>
 <notes>notes</notes>
 <nbnotes>9</nbnotes>
 <speed>20</speed>
-<startingnote>-7</startingnote>
+<startingnote>7</startingnote>
 </notereading>
 
 </levels>
