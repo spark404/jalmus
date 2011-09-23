@@ -668,7 +668,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         ButtonGroup group=new ButtonGroup();
 
-        rblanguagefr=new JRadioButtonMenuItem("FranÃ§ais");
+        rblanguagefr=new JRadioButtonMenuItem("Français");
         rblanguagefr.setMnemonic(KeyEvent.VK_F);
         group.add(rblanguagefr);
         rblanguagefr.addActionListener(this);
