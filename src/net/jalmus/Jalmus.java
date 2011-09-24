@@ -470,7 +470,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JComboBox keyboardLengthComboBox; // for length-number of touchs of keyboard
     private JComboBox transpositionComboBox; // for transposition MIDI keyboard
 
-    private JSlider latencySlider = new JSlider(JSlider.HORIZONTAL, 0, 200, 0);
+    private JSlider latencySlider = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
     //private JSlider speedcursorSlider = new JSlider(JSlider.HORIZONTAL, 0, 200, 0);
 
     private JCheckBox keyboardsoundCheckBox;
