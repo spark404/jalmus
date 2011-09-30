@@ -4874,7 +4874,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteLevel.getCurrentTonality().paint(1,noteLevel.getKey(), g, MusiSync, notemargin, scoreYpos, this, bundle);
 
                 if (!noteLevel.isLearninggame()) {
-                    currentScore.paint(g);
+                    currentScore.paint(g, d.width);
                 }
                 
                 Note basenotet1 =new Note("","",0,0,0);
@@ -5018,9 +5018,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                             } else {
                                 if (((ShortMessage)event).getData2()!=0) {
-                                    piano.notejouee(currentChannel, !erreurmidi, notejouee, 1);
+                                    piano.playNote(currentChannel, !erreurmidi, notejouee, 1);
                                 } else {
-                                    piano.notejouee(currentChannel, !erreurmidi, notejouee, 0);
+                                    piano.playNote(currentChannel, !erreurmidi, notejouee, 0);
                                 }
 
                                 repaint();
