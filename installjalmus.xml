@@ -8,7 +8,7 @@
 
     <info>
         <appname>Jalmus</appname>
-        <appversion>1.5</appversion>
+        <appversion>1.7</appversion>
         <authors>
             <author name="RICHARD Christophe" email="crichard@jalmus.net"/>
         </authors>
@@ -31,6 +31,7 @@
 	<langpack iso3="tur"/>
 	<langpack iso3="fin"/>
 	<langpack iso3="kor"/>
+	<langpack iso3="pol"/>
     </locale>
 
        <panels>
@@ -67,7 +68,6 @@
      	<pack name="Jalmus Binaries" required="yes">
             <description>Jar files for Windows, Linux and Mac OS </description>
             <file src="jalmus.jar" targetdir="$INSTALL_PATH/bin"/>
-	    <file src="settings.properties" targetdir="$INSTALL_PATH/bin"/>
             <file src="BareBonesBrowserLaunch.jar" targetdir="$INSTALL_PATH/bin"/>
 	    <file src="icons" targetdir="$INSTALL_PATH"/>
 	  <file src="install_files/licence.txt" targetdir="$INSTALL_PATH"/>
