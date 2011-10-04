@@ -81,9 +81,6 @@ E-mail : cvrichard@infonie.fr */
 
 package net.jalmus;
 
-//import com.synthbot.jasiohost.*;
-
-
 import org.xml.sax.SAXException;
 
 import java.awt.BorderLayout;
@@ -337,8 +334,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private static final int ppq=12;
     private Sequence sequence;
     private Sequencer sm_sequencer;
-
-    //private AsioDriver driver;
 
     private RhythmLevel rhythmLevel=new RhythmLevel(true, true, false, false, false);
 
@@ -674,7 +669,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         ButtonGroup group=new ButtonGroup();
 
-        rblanguagefr=new JRadioButtonMenuItem("Français");
+        rblanguagefr=new JRadioButtonMenuItem("Franç¡©s");
         rblanguagefr.setMnemonic(KeyEvent.VK_F);
         group.add(rblanguagefr);
         rblanguagefr.addActionListener(this);
@@ -4956,16 +4951,16 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             } else if (selectedGame==FIRSTSCREEN) {
 
-                g.drawImage(jbackground, 0, 0, this);
+                g.drawImage(jbackground, 0, 0, d.width, d.height, this);
 
                 Color color=new Color(5, 5, 100);
                 g.setColor(color);
                 g.setFont(new Font("Arial", Font.BOLD, 60));
-                g.drawString("Jalmus", 300, 250);
+                g.drawString("Jalmus", (d.width/2) - 95, (d.height / 2) - 35);
                 g.setFont(new Font("Arial", Font.BOLD, 30));
-                g.drawString("Java Lecture Musicale", 240, 300);
+                g.drawString("Java Lecture Musicale", (d.width/2) - 155, (d.height / 2) + 15);
                 g.setFont(new Font("Arial", Font.BOLD, 15));
-                g.drawString("Copyright (C) 2003-2010 RICHARD Christophe", 10, 500);
+                g.drawString("Copyright (C) 2003-2011 RICHARD Christophe", 10, d.height - 40);
                 
                 
             } else if (selectedGame==RHYTHMREADING || selectedGame==SCOREREADING) {

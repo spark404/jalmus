@@ -189,7 +189,7 @@ public class Rhythm {
     }
     else if (this.valeur == 2) {
       if (this.silence) {
-      	g.fillRect(this.position, dportee+ this.nportee*100+14, 12, 7);
+      	g.fillRect(this.position, dportee+ this.nportee*100+10, 12, 7);
       }
 
       else { // minima
