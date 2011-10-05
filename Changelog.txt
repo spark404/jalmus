@@ -1,17 +1,18 @@
-September, 2011: Version 2.0 ?
+October, 2011: Version 1.8
 
+* removed BareBoneBrowser class. Jalmus now requires Java 6 to natively open a web browser
 * removed GIF pictures to display notes
 * notes are displayed through the MusiSync truetype font (credits to Robert Allgeyer)
 * MAJOR: added an option to choose the measure tempo. For now just 4/4, 3/4 and 2/4 are supported
 * MAJOR: possibility to resize Jalmus window. With this feature the user can choose how many measures to play
-* added tempo indication after alterations
-* when rythm game options are changed, the score is renewed (same as score reading game)
+* added time signature indication after alterations
+* when rhythm game options are changed, the score is renewed (same as score reading game)
 * GIF background converted to PNG to be ligther
-* removed latency and speed cursor parameters
-* instrument used for metronome changed to 115 (steel drums)
+* removed speed cursor parameter
+* metronome now uses MIDI channel 10, to take advantage of drums samples
 * added an option to show Metronome beats and cursor progress
 * most of the source code has been translated in english
-* added this Changelog to SVN repository
+* added this Changelog to Jalmus repository
 
 Dicember, 20th 2010: Version 1.7
 
@@ -38,7 +39,7 @@ May, 10th 2010: Version 1.4
 * Adding buttons to select range of notes in note reading game.
 * The notes to train are now visible in green on keyboard at screen.
 * Slow down note reading game in line.
-* Fixing sound problem at the end of a game (I hope it’s OK now).
+* Fixing sound problem at the end of a game (I hope itï¿½s OK now).
 * Fixing problem with green keys in learning game
 * The rhythm game have sound even the sound checkbox is off in midi options (the MIDI keyboard play sound too).
 
