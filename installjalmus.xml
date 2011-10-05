@@ -68,7 +68,6 @@
      	<pack name="Jalmus Binaries" required="yes">
             <description>Jar files for Windows, Linux and Mac OS </description>
             <file src="jalmus.jar" targetdir="$INSTALL_PATH/bin"/>
-            <file src="BareBonesBrowserLaunch.jar" targetdir="$INSTALL_PATH/bin"/>
 	    <file src="icons" targetdir="$INSTALL_PATH"/>
 	  <file src="install_files/licence.txt" targetdir="$INSTALL_PATH"/>
 
@@ -91,10 +90,9 @@
 
 
         <pack name="Sources" required="no">
-            <description>Sources and Javadoc</description>
+            <description>Sources</description>
 	
             <file src="src" targetdir="$INSTALL_PATH"/>
-	   <file src="doc" targetdir="$INSTALL_PATH"/>
         </pack>
     </packs>
 
