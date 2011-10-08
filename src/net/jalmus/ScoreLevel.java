@@ -1,23 +1,25 @@
 package net.jalmus;
 
 public class ScoreLevel {
-	 boolean ronde;
-	  boolean blanche;
-	  boolean noire; 
-	  boolean croche;
-	  boolean silence;
-	  String currentKey;
-	  Tonality currenttonality;
-	  boolean randomtonality;
-	  int[] pitchtab = new int [20];
+	boolean whole;
+	boolean half;
+	boolean quarter; 
+	boolean eighth;
+	boolean silence;
+	boolean triplet;
+	String currentKey;
+	Tonality currenttonality;
+	boolean randomtonality;
+	int[] pitchtab = new int [20];
 
 
 public ScoreLevel() {
-    this.ronde = true;
-    this.blanche = true;
-    this.noire = false;
-    this.croche = false;
+    this.whole = true;
+    this.half = true;
+    this.quarter = false;
+    this.eighth = false;
     this.silence = true;
+    this.triplet = false;
     this.currentKey = "treble";
     this.randomtonality = false;
     this.currenttonality = new Tonality(0, "");
@@ -71,7 +73,7 @@ public void initpitchtab(){
 
 	pitchtab[0]=64;
 	pitchtab[1]=65;
-	pitchtab[2]=67;
+	pitchtab[2]=67; 
 	pitchtab[3]=69;
 	pitchtab[4]=71;
 	pitchtab[5]=72;
@@ -145,33 +147,44 @@ public int randomPitch(){
 	return pitch;
 }
 
-public void updateRhythm(boolean r, boolean b, boolean n, boolean c, boolean s) {
-    this.ronde = r;
-    this.blanche = b;
-    this.noire = n;
-    this.croche = c;
+public int tripletRandomPitch(int basePitch) {
+	int delta = 4; // the new pitch can be plus or minus this delta
+	int pitch = basePitch + ((int)(Math.random() * delta * 2) - delta);
+	return pitch;
+}
+
+public void updateRhythm(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
+    this.whole = r;
+    this.half = b;
+    this.quarter = n;
+    this.eighth = c;
     this.silence = s;
+    this.triplet = t;
   }
 
 
-public boolean getRonde() {
-    return this.ronde;
+public boolean getWholeNote() {
+    return this.whole;
   }
 
-  public boolean getBlanche() {
-    return this.blanche;
+  public boolean getHalfNote() {
+    return this.half;
   }
 
-  public boolean getNoire() {
-    return this.noire;
+  public boolean getQuarterNote() {
+    return this.quarter;
   }
 
-  public boolean getCroche() {
-    return this.croche;
+  public boolean getEighthNote() {
+    return this.eighth;
   }
 
   public boolean getSilence() {
     return this.silence;
   }
+
+  public boolean getTriplet() {
+	    return this.triplet;
+} 
   
 }

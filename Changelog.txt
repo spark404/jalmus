@@ -1,4 +1,12 @@
-October, 2011: Version 1.8
+October, 2011: Version tdb
+
+* MAJOR: implementation of triplets. Playback is OK. Rendering is still not OK due to random notes generation
+* fixed tonality label alignment
+* added 6/8 time signature
+* ppq changed to 1000 to increase note playback precision
+* some more code translated in english
+
+October, 5th 2011: Version 1.8
 
 * removed BareBoneBrowser class. Jalmus now requires Java 6 to natively open a web browser
 * removed GIF pictures to display notes

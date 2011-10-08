@@ -16,72 +16,79 @@ import java.awt.Graphics;
  */
 
 public class RhythmLevel {
-  boolean ronde;
-  boolean blanche;
-  boolean noire; // 0 pour la premi�re ligne de port�e ...
-  boolean croche;
+  boolean whole;
+  boolean half;
+  boolean quarter;
+  boolean eighth;
   boolean silence;
+  boolean triplet;
 
-  public RhythmLevel(boolean r, boolean b, boolean n, boolean c, boolean s) {
-    this.ronde = r;
-    this.blanche = b;
-    this.noire = n;
-    this.croche = c;
+  public RhythmLevel(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
+    this.whole = r;
+    this.half = b;
+    this.quarter = n;
+    this.eighth = c;
     this.silence = s;
+    this.triplet = t;
   }
 
   public void init() {
-    this.ronde = true;
-    this.blanche = true;
-    this.noire = true;
-    this.croche = true;
+    this.whole = true;
+    this.half = true;
+    this.quarter = true;
+    this.eighth = true;
     this.silence = true;
-
+    this.triplet = false;
   }
 
   public void copy(RhythmLevel n) {
-    this.ronde = n.ronde;
-    this.blanche = n.blanche;
-    this.noire = n.noire;
-    this.croche = n.croche;
+    this.whole = n.whole;
+    this.half = n.half;
+    this.quarter = n.quarter;
+    this.eighth = n.eighth;
     this.silence = n.silence;
-
+    this.triplet = n.triplet;
   }
 
-  public boolean getRonde() {
-    return this.ronde;
+  public boolean getWholeNote() {
+    return this.whole;
   }
 
-  public boolean getBlanche() {
-    return this.blanche;
+  public boolean getHalfNote() {
+    return this.half;
   }
 
-  public boolean getNoire() {
-    return this.noire;
+  public boolean getQuarterNote() {
+    return this.quarter;
   }
 
-  public boolean getCroche() {
-    return this.croche;
+  public boolean getEighthNote() {
+    return this.eighth;
   }
 
   public boolean getSilence() {
     return this.silence;
   }
+  
+  public boolean getTriplet() {
+	    return this.triplet;
+  }  
 
-  public void majniveau(boolean r, boolean b, boolean n, boolean c, boolean s) {
-    this.ronde = r;
-    this.blanche = b;
-    this.noire = n;
-    this.croche = c;
+  public void adjustLevel(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
+    this.whole = r;
+    this.half = b;
+    this.quarter = n;
+    this.eighth = c;
     this.silence = s;
+    this.triplet = t;
   }
 
   public void paint(Graphics g) {
     /*  g.setColor(c);
       g.setFont(new Font("Arial", Font.BOLD, 12));
       String niv = "";
-      if (this.ronde) niv = niv + ronde;
-      if (this.blanche) niv = niv + blanche;
+      if (this.whole) niv = niv + whole;
+      if (this.half) niv = niv + half;
       g.drawString(niv, 125, 461);*/
 
   }
