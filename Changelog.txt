@@ -1,6 +1,6 @@
 October, 2011: Version tdb
 
-* MAJOR: implementation of triplets. Playback is OK. Rendering is still not OK due to random notes generation
+* MAJOR: implementation of triplets. Working with any time signature
 * fixed tonality label alignment
 * added 6/8 time signature
 * ppq changed to 1000 to increase note playback precision
