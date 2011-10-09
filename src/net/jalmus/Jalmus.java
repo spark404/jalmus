@@ -4427,7 +4427,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     currentTick=addRhythm(0.5, pitch, currentTick, rowCount, currentXPos);
                     currentXPos+=(noteDistance/2);
                 }
-                else if (triplet && tpsmes+1<=timeSignNumerator)
+                else if (triplet && tpsmes+1<=timeSignNumerator && tmp<0.9)
                 { // triplet
                   int[] tripletPitches = { pitch, 71, 71 };
                   int lowestPitch = tripletPitches[0];
@@ -4986,6 +4986,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 g.setColor(Color.white);
                 g.fillRect(0, 0, d.width, d.height);
                 pgamebutton.setBackground(Color.white);
+
+                if ((selectedGame==RHYTHMREADING && tripletCheckBox.isSelected()) ||
+                	(selectedGame==SCOREREADING && scoreTripletCheckBox.isSelected()))
+                	rowsDistance = 130;
+                else
+                	rowsDistance = 100;
 
                 drawScore(g);
                 drawKeys(g);

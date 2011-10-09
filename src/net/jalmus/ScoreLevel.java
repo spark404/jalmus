@@ -10,7 +10,7 @@ public class ScoreLevel {
 	String currentKey;
 	Tonality currenttonality;
 	boolean randomtonality;
-	int[] pitchtab = new int [20];
+	int[] pitchtab = new int [8];
 
 
 public ScoreLevel() {
@@ -65,11 +65,10 @@ public String getKey() {
   
 public void initpitchtab(){
 
-  if (this.isCurrentKeyTreble()){
+  for (int i=0; i<pitchtab.length; i++)
+	  pitchtab[i] = 0;
 	
-	for (int i=0; i<pitchtab.length-1; i++) {
-		   pitchtab[i] = 0;
-	}
+  if (this.isCurrentKeyTreble()){
 
 	pitchtab[0]=64;
 	pitchtab[1]=65;
@@ -99,57 +98,79 @@ public void initpitchtab(){
 	
   else if (this.isCurrentKeyBass()){
 		
-		for (int i=0; i<pitchtab.length-1; i++) {
-			   pitchtab[i] = 0;
-		}
+	pitchtab[0]=31;
+	pitchtab[1]=33;
+	pitchtab[2]=35;
+	pitchtab[3]=36;
+	pitchtab[4]=38;
+	pitchtab[5]=40;
+	pitchtab[6]=41;
+	pitchtab[7]=43;
 
-		pitchtab[0]=31;
-		pitchtab[1]=33;
-		pitchtab[2]=35;
-		pitchtab[3]=36;
-		pitchtab[4]=38;
-		pitchtab[5]=40;
-		pitchtab[6]=41;
-		pitchtab[7]=43;
-
-		if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  1) pitchtab[6]=42;
-		if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  2) pitchtab[3]=37;
-		if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  3) {pitchtab[0]=32;  pitchtab[7]=44; }
-		if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  4) pitchtab[4]=39;
-		if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  5) pitchtab[1]=34;
-		if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  6) pitchtab[5]=41; 
-		if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  7) pitchtab[2]=36;
-		
-		if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  1) pitchtab[2]=34;
-		if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  2) pitchtab[5]=39;
-		if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  3) pitchtab[1]=32;
-		if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  4) pitchtab[4]=37;
-		if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  5) {pitchtab[0]=30; pitchtab[7]=42;}
-		if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  6) pitchtab[3]=35;
-		if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  7) pitchtab[6]=40;
-
-		}
+	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  1) pitchtab[6]=42;
+	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  2) pitchtab[3]=37;
+	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  3) {pitchtab[0]=32;  pitchtab[7]=44; }
+	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  4) pitchtab[4]=39;
+	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  5) pitchtab[1]=34;
+	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  6) pitchtab[5]=41; 
+	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  7) pitchtab[2]=36;
+	
+	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  1) pitchtab[2]=34;
+	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  2) pitchtab[5]=39;
+	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  3) pitchtab[1]=32;
+	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  4) pitchtab[4]=37;
+	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  5) {pitchtab[0]=30; pitchtab[7]=42;}
+	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  6) pitchtab[3]=35;
+	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  7) pitchtab[6]=40;
+  }
 	
 }
 public int randomPitch(){
 	int pitch = 71;
-	int noteIndex = 0;
+	//int noteIndex = 0;
 	
-	double rand=Math.random();
-	
+/*
 	for (int i=0; i<pitchtab.length-1; i++) {
 		if (pitchtab[i] == 0) {noteIndex = i; break; }
 	}
-	
-	pitch =  pitchtab[(int) (noteIndex * rand)];
-	System.out.println("noteIndex = " + noteIndex + ", pitch = " + pitch);
+*/
+	pitch =  pitchtab[(int) (pitchtab.length * Math.random())];
+	System.out.println("noteIndex = " + pitchtab.length + ", pitch = " + pitch);
 	  
 	return pitch;
 }
 
 public int tripletRandomPitch(int basePitch) {
-	int delta = 4; // the new pitch can be plus or minus this delta
-	int pitch = basePitch + ((int)(Math.random() * delta * 2) - delta);
+	int baseIndex = 0;
+	int delta = 4; // within +2 and -2 tones from basePitch
+	int shift = -2;
+	int pitch = 0;
+	for (int i = 0; i < pitchtab.length; i++)
+		if (pitchtab[i] == basePitch) {
+			baseIndex = i;
+			break;
+		}
+	if (baseIndex == 0) {
+		delta = 2; // only +2
+		shift = 2;
+	}
+	else if (baseIndex == pitchtab.length - 1) {
+		delta = 2; // only -2
+		shift = -2;
+	}
+	else if (baseIndex == 1) {
+		delta = 3; // only -1/+2
+		shift = -1;
+	}
+	else if (baseIndex == pitchtab.length - 2) {
+		delta = 3; // only -2/+1
+		shift = -2;
+	}
+	
+	int randIndex = baseIndex + shift + (int)(Math.random() * delta);
+	System.out.println("Triplet: base: " + basePitch + ", baseIndex: " + baseIndex + ", randIdx: " + randIndex);
+	
+	pitch = pitchtab[randIndex];
 	return pitch;
 }
 
