@@ -183,6 +183,10 @@ public class NoteLevel {
    return this.notetype.equals("accidentals");
  }
 
+ public boolean isCustomNotesgame() {
+	return this.notetype.equals("custom");
+}
+ 
  public boolean isIntervalsgame() {
    return this.notetype.equals("intervals");
  }

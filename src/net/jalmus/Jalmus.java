@@ -489,7 +489,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JButton bfermer;
 
     //----
-
+    
+    //For table to choose notes on exercises
+    private JDialog notesDialog;
+    ChooseNotePanel ChooseNoteP;
+    //----
+    
     private JPanel principal=new JPanel(); // panel principal
     
     Properties settings = new Properties();
@@ -649,7 +654,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         //aboutDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         aboutDialog.setResizable(false);
 
-     
+          notesDialog=new JDialog(this, true);
+        //    notesDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        notesDialog.setResizable(false);   
 
         levelMessage=new JDialog(this, true);
         //levelMessage.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -2065,7 +2072,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         updateTonality(); //when selected random tonality
 
         if (noteLevel.isNormalgame() || noteLevel.isLearninggame()) {
-            if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
+            if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame()) {
                 newnote();
             } else if (noteLevel.isChordsgame()) {
                 newChord();
@@ -2104,7 +2111,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else {
             currentScore.addNbtrue(1);
 
-            if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
+            if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame()) {
                 currentScore.addPoints(10);
             } else if (noteLevel.isChordsgame() || noteLevel.isIntervalsgame()) {
                 currentScore.addPoints(5);
@@ -2192,7 +2199,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             currentScore.addNbfalse(1);
             // if (soundOnCheckBox.getState()) sonerreur.play();
 
-            if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
+            if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()  || noteLevel.isCustomNotesgame()) {
                 currentScore.addPoints(-20);
             } else if (noteLevel.isChordsgame() || noteLevel.isIntervalsgame()) {
                 currentScore.addPoints(-10);
@@ -2270,7 +2277,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         // a special key such as an arrow key.
         int key=evt.getKeyCode(); // keyboard code for the key that was pressed
        
-        if (selectedGame==NOTEREADING && !isLessonMode && !parti && (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) &&
+        if (selectedGame==NOTEREADING && !isLessonMode && !parti && (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame()) &&
             !noteLevel.isAllnotesgame())
         {
             if (key==KeyEvent.VK_LEFT) {
@@ -3189,7 +3196,28 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteReadingNotesPanel.repaint();
                 preferencesDialog.repaint();
                 
-            } else if (noteGroupComboBox.getSelectedIndex()==2) {
+            }  else if (noteGroupComboBox.getSelectedIndex()==2) {
+                noteLevel.setNotetype("custom");
+
+                noteReadingNotesPanel.removeAll();
+                noteReadingNotesPanel.add(noteGroupComboBox);
+                preferencesDialog.repaint();
+                
+              	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey());
+                ChooseNoteP.setOpaque(true); //content panes must be opaque
+                
+                notesDialog.setContentPane(ChooseNoteP);
+               notesDialog.setSize(600, 200);
+                notesDialog.setLocationRelativeTo(this);
+                notesDialog.setVisible(true);
+                
+                ChooseNoteP.setVisible(true);
+           
+                
+                this.add(notesDialog);
+                
+            }
+            else if (noteGroupComboBox.getSelectedIndex()==3) {
                 noteLevel.setNotetype("intervals");
 
                 noteReadingNotesPanel.removeAll();
@@ -3199,7 +3227,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteReadingNotesPanel.repaint();
                 preferencesDialog.repaint();
                 
-            } else if (noteGroupComboBox.getSelectedIndex()==3) {
+            } else if (noteGroupComboBox.getSelectedIndex()==4) {
 
                 noteLevel.setNotetype("chords");
 
@@ -3347,6 +3375,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         timeSignLabel.setText(bundle.getString("_timeSignature"));
         scoreTimeSignLabel.setText(bundle.getString("_timeSignature"));
         aboutDialog.setTitle(bundle.getString("_menuAbout"));
+		notesDialog.setTitle("Choose notes to study");
+
 
         tlicence=bundle.getString("_licence");
         tcredits=bundle.getString("_credits");
@@ -3359,6 +3389,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         noteGroupComboBox.removeAllItems();
         noteGroupComboBox.addItem(bundle.getString("_notes"));
         noteGroupComboBox.addItem(bundle.getString("_alterednotes"));
+        noteGroupComboBox.addItem(bundle.getString("_customnotes"));
         noteGroupComboBox.addItem(bundle.getString("_intervals"));
         noteGroupComboBox.addItem(bundle.getString("_chords"));
 
@@ -4092,6 +4123,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             ncourante.setX(notemargin+98);
             // System.out.println(ncourante.getNom());
             //System.out.println(ncourante.getHeight());
+			//System.out.println(ncourante.getPitch());
             //if (soundOnCheckBox.isSelected()) sons[indiceson(ncourante.getHeight())].play();
 
             if (soundOnCheckBox.isSelected()) {
@@ -4129,7 +4161,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         g.setColor(couleur);
         if (note.getX()<size.width-notemargin && note.getX()>=notemargin+98 && parti) { // NOTE DANS LIMITES
-            if (noteLevel.isAccidentalsgame()) {
+            if (noteLevel.isAccidentalsgame()|| noteLevel.isCustomNotesgame()) {
                 note.paint(noteLevel, g, f, 9, 0, scoreYpos, this, couleur, bundle);
             } else {
                 note.paint(noteLevel, g, f, 0, 0, scoreYpos, this, couleur, bundle);
@@ -4493,7 +4525,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         // System.out.println(type2);
 
-        if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
+        if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame()) {
             ligne[0]=new Note("", "", setNoteHeight(noteLevel.getNbnotesupper(), noteLevel.getNbnotesunder(), noteLevel.getNbnotesupper(), noteLevel.getNbnotesunder()), size.width-notemargin, 0);
             ligne[0].majnote(noteLevel, scoreYpos, bundle);
             ligne[0].majalteration(noteLevel, bundle);
@@ -4563,7 +4595,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         for (int i=position; i<ligne.length; i++) {
             // n'affiche que la ligne ï¿½ partir de la position
-            if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
+            if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame()) {
                 drawNote(ligne[i], g, f, Color.black);
             } else if (noteLevel.isChordsgame()) {
                 drawChord(ligneacc[i], g, i==position);
@@ -4786,7 +4818,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             while (true) {
                 try {
               
-                    if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
+                    if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()|| noteLevel.isCustomNotesgame()) {
                     	if (noteLevel.isInlinegame()) sleep(noteLevel.getSpeed()+4);
                     	else sleep(noteLevel.getSpeed());
 
@@ -4804,7 +4836,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                     if (parti && !paused) {
                         if ((noteLevel.isNormalgame() || noteLevel.isLearninggame()) &&
-                            (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame())) {
+                            (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame())) {
                             ncourante.setX(ncourante.getX()+1);
                         } else
                         if ((noteLevel.isNormalgame() || noteLevel.isLearninggame()) &&
@@ -4815,7 +4847,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             noteLevel.isIntervalsgame()) {
                             icourant.move(1);
                         } else if (noteLevel.isInlinegame() &&
-                            (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame())) {
+                            (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame())) {
                             for (int i=0; i<ligne.length; i++) {
 
                                 ligne[i].setX(ligne[i].getX()-1);
@@ -4897,7 +4929,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 g.fillRect(0, 0, d.width, d.height);
 
                 if (parti && !paused && (noteLevel.isNormalgame() || noteLevel.isLearninggame())) {
-                    if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
+                    if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame()) {
                         drawNote(ncourante, g, MusiSync, Color.black);
                     }
                     //on affiche la note que lorsque la partie a commencï¿½e
@@ -4948,7 +4980,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 }
                 
                 if (noteLevel.isLearninggame() ) {
-                    if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
+                    if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame()) {
                         piano.paint(g, d.width, !isLessonMode & !parti, basenotet1.getPitch(), basenotet2.getPitch(),
                         		    basenoteb1.getPitch(), basenoteb2.getPitch(), ncourante.getPitch(), 0, 0);
                     } else if (noteLevel.isIntervalsgame()) {
