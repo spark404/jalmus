@@ -128,7 +128,7 @@ import java.util.ResourceBundle;
                  for(i=dportee+50; i<=this.Height+5; i=i+10){
                    if (i != this.Height+5) g.setColor(Color.black); //!= this.Height+4
                    else g.setColor(couleur);
-                 g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i); // dessine la port�e en dessous de la port�e normale
+                 g.drawLine(this.X-2+decalagen,i,this.X+18+decalagen, i); // dessine la port�e en dessous de la port�e normale
 
                  }
                }
@@ -138,7 +138,7 @@ import java.util.ResourceBundle;
 
                    if (i != this.Height+5) g.setColor(Color.black);
                    else g.setColor(couleur);
-                   g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i);  // dessine la portee en dessus de la port�e normale
+                   g.drawLine(this.X-2+decalagen,i,this.X+18+decalagen, i);  // dessine la portee en dessus de la port�e normale
                  }
                };
              }
@@ -150,22 +150,22 @@ import java.util.ResourceBundle;
                // cas de la cl� de sol
                if (this.Height>=dportee+45 & this.Height <= dportee+55) { // du DO jusqu'au LA en dessous de la port�e
                  for(i=dportee+50; i<=this.Height+5; i=i+10){
-                 g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i); }       // dessine la port�e en dessous de la port�e normale
+                 g.drawLine(this.X-2+decalagen,i,this.X+18+decalagen, i); }       // dessine la port�e en dessous de la port�e normale
                }
                else if (this.Height<=dportee-15) {  // <LA au dessus de la port�e en cl� de sol
                  for(i=dportee-10; i>=this.Height+5; i=i-10){
-                 g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i); }       // dessine la portee en dessus de la port�e normale
+                 g.drawLine(this.X-2+decalagen,i,this.X+18+decalagen, i); }       // dessine la portee en dessus de la port�e normale
                }
 
 
                // cas de la cl� de fa
                else if (this.Height>=dportee+135) {  // � partie du MI en dessous de la port�e
                  for(i=dportee+140; i<=this.Height+5; i=i+10){
-                 g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i); }       // dessine la port�e en dessous de la port�e normale
+                 g.drawLine(this.X-2+decalagen,i,this.X+18+decalagen, i); }       // dessine la port�e en dessous de la port�e normale
                }
                else if (this.Height<=dportee+75 & this.Height >=dportee+60) {
                  for(i=dportee+80; i>=this.Height+5; i=i-10){
-                 g.drawLine(this.X-1+decalagen,i,this.X+16+decalagen, i); }      // dessine la portee en dessus de la port�e normale
+                 g.drawLine(this.X-2+decalagen,i,this.X+18+decalagen, i); }      // dessine la portee en dessus de la port�e normale
                };
              }
            }
