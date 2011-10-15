@@ -124,7 +124,7 @@ public class ScoreLevel {
 	  for (i = 0; i < pitchtab.size(); i++)
 		  System.out.println("pitchtab #" + i + ": " + pitchtab.get(i));
   }
-  
+
   public int getYpos(int pitch) {
 	int ypos = 43; // Y position of C3 on treble key
     int octave = 0;

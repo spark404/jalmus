@@ -214,7 +214,7 @@ public class Rhythm {
 
       }                
     }
-    
+
     if (!this.silence) {
     	if (noteY < -22)
     		g.drawLine(this.position - 5, scoreYpos + this.rowNumber*rowsDistance - 20, this.position + 15, scoreYpos + this.rowNumber*rowsDistance - 20);
