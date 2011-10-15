@@ -136,8 +136,9 @@ public class ScoreLevel {
     	octave = -2;
     	if (pitch > 47) { octave = -1; octaveOffset = 35; }
 	}
-	else if (this.isCurrentKeyTreble() && pitch > 71) { 
-		octave = 1; octaveOffset = 35;
+	else if (this.isCurrentKeyTreble()) {
+		if (pitch > 83) { octave = 2; octaveOffset = 70; }
+		else if (pitch > 71) { octave = 1; octaveOffset = 35; }
 	}
 
     for (int i = 0; i < 7; i++) {

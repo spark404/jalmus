@@ -25,6 +25,7 @@ public class Rhythm {
   int tripletValue;
   boolean pointee;
   boolean silence;
+  int ypos;
 
   int groupee; //0 non regroup�e 1 debut de regroupement 2 fin du regroupement
 
@@ -37,6 +38,7 @@ public class Rhythm {
     this.pointee = pt;
     this.silence = sl;
     this.groupee = bm;
+    this.ypos = 0;
   }
 
   public void init() {
@@ -47,6 +49,7 @@ public class Rhythm {
     this.pointee = false;
     this.silence = false;
     this.groupee = 0;
+    this.ypos = 0;
   }
 
   public void copy(Rhythm r) {
@@ -109,8 +112,9 @@ public class Rhythm {
 
   public void paint(Graphics g, Font f, ScoreLevel sl, int position, int rowsDistance, boolean courant, int scoreYpos, Component l) {
 
-    //int noteY = getYposFromPitch(ton, this.pitch);
-	int noteY = sl.getYpos(this.pitch);
+	if (this.ypos == 0) 
+		this.ypos = sl.getYpos(this.pitch);
+	int noteY = this.ypos;
     //@SuppressWarnings("unused")
 
     //  g.setColor(couleur);
@@ -127,7 +131,7 @@ public class Rhythm {
 
       else { // semibreve
     	  g.setFont(f.deriveFont(50f));
-    	g.drawString("w", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
+    	g.drawString("w", this.position - 3, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
       }
 
     }
@@ -209,6 +213,15 @@ public class Rhythm {
        }
 
       }                
+    }
+    
+    if (!this.silence) {
+    	if (noteY < -22)
+    		g.drawLine(this.position - 5, scoreYpos + this.rowNumber*rowsDistance - 20, this.position + 15, scoreYpos + this.rowNumber*rowsDistance - 20);
+    	if (noteY < -12)
+    		g.drawLine(this.position - 5, scoreYpos + this.rowNumber*rowsDistance - 10, this.position + 15, scoreYpos + this.rowNumber*rowsDistance - 10);
+    	if (noteY > 38)
+    		g.drawLine(this.position - 5, scoreYpos + this.rowNumber*rowsDistance + 50, this.position + 15, scoreYpos + this.rowNumber*rowsDistance + 50);
     }
 
     g.setColor(Color.black);
