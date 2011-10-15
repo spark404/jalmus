@@ -106,7 +106,7 @@ public class Tonality {
       if (this.alterationsNumber >= 1) // FA#
         drawAlteration(g, f, marge, dportee - 15 + decalagecle + i*100, sharp, j); //-9
       if (this.alterationsNumber >= 2) // DO#
-        drawAlteration(g, f, marge + 10, dportee - 5 + decalagecle + i*100, sharp, j);
+        drawAlteration(g, f, marge + 10, dportee + decalagecle + i*100, sharp, j);
       if (this.alterationsNumber >= 3) // SOL#
         drawAlteration(g, f, marge + 20, dportee - 20 + decalagecle + i*100, sharp, j);
       if (this.alterationsNumber >= 4) // RE#
@@ -123,7 +123,7 @@ public class Tonality {
       if (this.alterationsNumber >= 1) // SIb
         drawAlteration(g, f, marge, dportee + 5 + decalagecle + i*100, flat, j);
       if (this.alterationsNumber >= 2) // MIb
-        drawAlteration(g, f, marge + 9, dportee - 15 + decalagecle + i*100, flat, j);
+        drawAlteration(g, f, marge + 9, dportee - 10 + decalagecle + i*100, flat, j);
       if (this.alterationsNumber >= 3) // LAb
         drawAlteration(g, f, marge + 18, dportee + 10 + decalagecle + i*100, flat, j);
       if (this.alterationsNumber >= 4) // REb
@@ -161,7 +161,7 @@ public class Tonality {
         if (this.alterationsNumber >= 1) // SIb
           drawAlteration(g, f, marge, dportee + 5 + decalagecle, flat, j);
         if (this.alterationsNumber >= 2) // MIb
-          drawAlteration(g, f, marge + 9, dportee - 15 + decalagecle, flat, j);
+          drawAlteration(g, f, marge + 9, dportee - 10 + decalagecle, flat, j);
         if (this.alterationsNumber >= 3) // LAb
           drawAlteration(g, f, marge + 18, dportee + 10 + decalagecle, flat, j);
         if (this.alterationsNumber >= 4) // REb
