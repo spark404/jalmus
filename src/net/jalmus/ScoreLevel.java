@@ -1,5 +1,7 @@
 package net.jalmus;
 
+import java.util.ArrayList;
+
 public class ScoreLevel {
 	boolean whole;
 	boolean half;
@@ -10,10 +12,33 @@ public class ScoreLevel {
 	String currentKey;
 	Tonality currenttonality;
 	boolean randomtonality;
-	int[] pitchtab = new int [8];
+	//int[] pitchtab = new int [8];
+	ArrayList<Integer> pitchtab = new ArrayList<Integer>(); 
 
+  /*                          C3  D3  E3  F3  G3  A3  B3  */
+  /*                         ---------------------------- */
+  char[][] sharpsMatrix = { { 60, 62, 64, 65, 67, 69, 71 },
+						    {  0,  0,  0,  1,  0,  0,  0 }, // 1 alteration
+						    {  1,  0,  0,  1,  0,  0,  0 }, // 2 alterations
+						    {  1,  0,  0,  1,  1,  0,  0 }, // 3 alterations
+						    {  1,  1,  0,  1,  1,  0,  0 }, // 4 alterations
+						    {  1,  1,  0,  1,  1,  1,  0 }, // 5 alterations
+						    {  1,  1,  1,  1,  1,  1,  0 }, // 6 alterations
+						    {  1,  1,  1,  1,  1,  1,  1 }  // 7 alterations
+						  };
+  /*                         C3  D3  E3  F3  G3  A3  B3  */
+  /*                        ---------------------------- */
+  char[][] flatsMatrix = { { 60, 62, 64, 65, 67, 69, 71 },
+	     				   {  0,  0,  0,  0,  0,  0,  1 }, // 1 alteration
+		     			   {  0,  0,  1,  0,  0,  0,  1 }, // 2 alterations
+		     			   {  0,  0,  1,  0,  0,  1,  1 }, // 3 alterations
+		     			   {  0,  1,  1,  0,  0,  1,  1 }, // 4 alterations
+		     			   {  0,  1,  1,  0,  1,  1,  1 }, // 5 alterations
+		     			   {  1,  1,  1,  0,  1,  1,  1 }, // 6 alterations
+		     			   {  1,  1,  1,  1,  1,  1,  1 }  // 7 alterations
+		   				 };
 
-public ScoreLevel() {
+  public ScoreLevel() {
     this.whole = true;
     this.half = true;
     this.quarter = false;
@@ -23,18 +48,16 @@ public ScoreLevel() {
     this.currentKey = "treble";
     this.randomtonality = false;
     this.currenttonality = new Tonality(0, "");
-    for (int i=0; i<pitchtab.length-1; i++) {
-    	pitchtab[i] = 0;
-    }
+    pitchtab.clear();
   }
 
-public void setCurrentKey(String s) {
+  public void setCurrentKey(String s) {
     this.currentKey = s;
   }
 
-public String getKey() {
+  public String getKey() {
 	    return this.currentKey;
-	  }
+  }
 
   public boolean isCurrentKeyTreble() {
     return this.currentKey.equals("treble");
@@ -63,90 +86,92 @@ public String getKey() {
    }
  /*****************************************/
   
-public void initpitchtab(){
+  public void initpitchtab(int mode) {
 
-  for (int i=0; i<pitchtab.length; i++)
-	  pitchtab[i] = 0;
-	
-  if (this.isCurrentKeyTreble()){
+	  int i = 0, noteIdx = 0, notesNum = 15;
+	  int octaveOffset = 0;
+	  int altIndex = this.currenttonality.getAlterationsNumber();
+	  pitchtab.clear();
 
-	pitchtab[0]=64;
-	pitchtab[1]=65;
-	pitchtab[2]=67; 
-	pitchtab[3]=69;
-	pitchtab[4]=71;
-	pitchtab[5]=72;
-	pitchtab[6]=74;
-	pitchtab[7]=76;
-	
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  1) pitchtab[1]=66;
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  2) pitchtab[5]=73;
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  3) pitchtab[2]=68;
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  4) pitchtab[6]=75;
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  5) pitchtab[3]=70;
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  6) { pitchtab[0]=65; pitchtab[7]=77;}
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  7) pitchtab[4]=72;
-	
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  1) pitchtab[4]=70;
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  2) {pitchtab[0]=63; pitchtab[7]=75;}
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  3) pitchtab[3]=68;
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  4) pitchtab[6]=73;
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  5) pitchtab[2]=66;
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  6) pitchtab[5]=71;
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  7) pitchtab[1]=64;
-  }
-	
-  else if (this.isCurrentKeyBass()){
+	  if (mode == 0) notesNum = 9;
+
+	  if (this.isCurrentKeyBass()) {
+		  octaveOffset = -2;
+		  if (mode == 0) noteIdx = 4; // starts from G
+	  }
+	  else if (this.isCurrentKeyTreble()) {
+		  octaveOffset = 0;
+		  if (mode == 0) noteIdx = 2; // starts from E
+	  }
+
+	  for (i = 0; i < notesNum; i++) {
+		int alteration = 0;
+		if (this.currenttonality.issharp())
+			alteration = sharpsMatrix[altIndex][noteIdx];
+		else if (this.currenttonality.isflat())
+			alteration =  0 - flatsMatrix[altIndex][noteIdx];
+
+		pitchtab.add(sharpsMatrix[0][noteIdx] + (octaveOffset * 12) + alteration);
 		
-	pitchtab[0]=31;
-	pitchtab[1]=33;
-	pitchtab[2]=35;
-	pitchtab[3]=36;
-	pitchtab[4]=38;
-	pitchtab[5]=40;
-	pitchtab[6]=41;
-	pitchtab[7]=43;
+		if (noteIdx == 6) {
+			octaveOffset++;
+			noteIdx = 0;
+		}
+		else
+			noteIdx++;
+	  }
 
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  1) pitchtab[6]=42;
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  2) pitchtab[3]=37;
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  3) {pitchtab[0]=32;  pitchtab[7]=44; }
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  4) pitchtab[4]=39;
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  5) pitchtab[1]=34;
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  6) pitchtab[5]=41; 
-	if (this.currenttonality.issharp() && this.currenttonality.getAlterationsNumber() >=  7) pitchtab[2]=36;
-	
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  1) pitchtab[2]=34;
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  2) pitchtab[5]=39;
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  3) pitchtab[1]=32;
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  4) pitchtab[4]=37;
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  5) {pitchtab[0]=30; pitchtab[7]=42;}
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  6) pitchtab[3]=35;
-	if (this.currenttonality.isflat() && this.currenttonality.getAlterationsNumber() >=  7) pitchtab[6]=40;
+	  for (i = 0; i < pitchtab.size(); i++)
+		  System.out.println("pitchtab #" + i + ": " + pitchtab.get(i));
   }
+  
+  public int getYpos(int pitch) {
+	int ypos = 43; // Y position of C3 on treble key
+    int octave = 0;
+    int octaveOffset = 0;
+    int altIndex = this.currenttonality.getAlterationsNumber();
 	
-}
-public int randomPitch(){
-	int pitch = 71;
-	//int noteIndex = 0;
-	
-/*
-	for (int i=0; i<pitchtab.length-1; i++) {
-		if (pitchtab[i] == 0) {noteIndex = i; break; }
+    if (this.isCurrentKeyBass()) {
+    	ypos = 53; // Y position of C1 on bass key
+    	octave = -2;
+    	if (pitch > 47) { octave = -1; octaveOffset = 35; }
 	}
-*/
-	pitch =  pitchtab[(int) (pitchtab.length * Math.random())];
-	System.out.println("noteIndex = " + pitchtab.length + ", pitch = " + pitch);
+	else if (this.isCurrentKeyTreble() && pitch > 71) { 
+		octave = 1; octaveOffset = 35;
+	}
+
+    for (int i = 0; i < 7; i++) {
+    	int alteration = 0;
+    	if (this.currenttonality.issharp())
+    		alteration = sharpsMatrix[altIndex][i];
+    	else if (this.currenttonality.isflat())
+			alteration =  0 - flatsMatrix[altIndex][i];
+    	if (pitch == (sharpsMatrix[0][i] + (octave * 12) + alteration)) {
+    	    ypos = ypos - octaveOffset - (i * 5);
+    	    //System.out.println("Pitch: " + pitch + ", Octave = " + octave + ", i = " + i + ", ypos= " + ypos);
+    		return ypos;
+    	}
+    }
+
+	return ypos;
+  }
+  
+  public int randomPitch(){
+	int pitch = 71;
+
+	pitch =  pitchtab.get((int) (pitchtab.size() * Math.random()));
+	//System.out.println("New random pitch = " + pitch);
 	  
 	return pitch;
-}
+  }
 
-public int tripletRandomPitch(int basePitch) {
+  public int tripletRandomPitch(int basePitch) {
 	int baseIndex = 0;
 	int delta = 4; // within +2 and -2 tones from basePitch
 	int shift = -2;
 	int pitch = 0;
-	for (int i = 0; i < pitchtab.length; i++)
-		if (pitchtab[i] == basePitch) {
+	for (int i = 0; i < pitchtab.size(); i++)
+		if (pitchtab.get(i) == basePitch) {
 			baseIndex = i;
 			break;
 		}
@@ -154,7 +179,7 @@ public int tripletRandomPitch(int basePitch) {
 		delta = 2; // only +2
 		shift = 2;
 	}
-	else if (baseIndex == pitchtab.length - 1) {
+	else if (baseIndex == pitchtab.size() - 1) {
 		delta = 2; // only -2
 		shift = -2;
 	}
@@ -162,7 +187,7 @@ public int tripletRandomPitch(int basePitch) {
 		delta = 3; // only -1/+2
 		shift = -1;
 	}
-	else if (baseIndex == pitchtab.length - 2) {
+	else if (baseIndex == pitchtab.size() - 2) {
 		delta = 3; // only -2/+1
 		shift = -2;
 	}
@@ -170,11 +195,11 @@ public int tripletRandomPitch(int basePitch) {
 	int randIndex = baseIndex + shift + (int)(Math.random() * delta);
 	System.out.println("Triplet: base: " + basePitch + ", baseIndex: " + baseIndex + ", randIdx: " + randIndex);
 	
-	pitch = pitchtab[randIndex];
+	pitch = pitchtab.get(randIndex);
 	return pitch;
-}
+  }
 
-public void updateRhythm(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
+  public void updateRhythm(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
     this.whole = r;
     this.half = b;
     this.quarter = n;
@@ -183,8 +208,7 @@ public void updateRhythm(boolean r, boolean b, boolean n, boolean c, boolean s, 
     this.triplet = t;
   }
 
-
-public boolean getWholeNote() {
+  public boolean getWholeNote() {
     return this.whole;
   }
 
@@ -206,6 +230,5 @@ public boolean getWholeNote() {
 
   public boolean getTriplet() {
 	    return this.triplet;
-} 
-  
+  }
 }

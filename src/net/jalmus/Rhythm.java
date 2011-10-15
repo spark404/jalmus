@@ -28,6 +28,7 @@ public class Rhythm {
 
   int groupee; //0 non regroup�e 1 debut de regroupement 2 fin du regroupement
 
+
   public Rhythm(double val, int pos, int p, int np, boolean pt, boolean sl, int bm) {
     this.duration = val;
     this.position = pos;
@@ -106,77 +107,10 @@ public class Rhythm {
 	  this.tripletValue = val;
   }
 
-  private int getYposFromPitch(Tonality ton, int pitch) {
-	  int alteration = 0; //0 no alteration 1 sharp 2 flat
-	  int height = 14;
+  public void paint(Graphics g, Font f, ScoreLevel sl, int position, int rowsDistance, boolean courant, int scoreYpos, Component l) {
 
-	  if (pitch == 60) {height = 43; alteration = 0;} //DO
-	  else if  (pitch == 61) {height = 43; alteration = 1;} //DO# REb
-	  else if  (pitch == 62) {height = 38; alteration = 0;} //RE
-	    
-	  else if  (pitch == 63  && ton.isflat() && ton.getAlterationsNumber() >=  2) {height = 33; alteration = 2;} // MIb
-	  else if  (pitch == 63) {height = 38; alteration = 1;} //RE# 
-	  else if  (pitch == 64 && ton.isflat() && ton.getAlterationsNumber() >=  7) {height = 28; alteration = 2;} // fab
-	  else if  (pitch == 64) {height = 33; alteration = 0;} //MI
-	  else if  (pitch == 65 && ton.issharp() && ton.getAlterationsNumber() >=  6) {height = 33; alteration = 1;} //MI#
-	  else if  (pitch == 65) {height = 28; alteration = 0;} //FA
-	  else if  (pitch == 66 && ton.issharp() && ton.getAlterationsNumber() >=  1) {height = 28; alteration = 1;} //FA# 
-	  else if  (pitch == 66 && ton.isflat() && ton.getAlterationsNumber() >=  5) {height = 23; alteration = 2;} // SOLb
-	  else if  (pitch == 67) {height = 23; alteration = 0;} //SOL
-	  else if  (pitch == 68 && ton.issharp() && ton.getAlterationsNumber() >=  3) {height = 23; alteration = 1;} //SOL# 
-	  else if  (pitch == 68 && ton.isflat() && ton.getAlterationsNumber() >=  3) {height = 18; alteration = 2;} // LAb
-	  else if  (pitch == 69) {height = 18; alteration = 0;} //LA
-	  else if  (pitch == 70 && ton.issharp() && ton.getAlterationsNumber() >=  5) {height = 18; alteration = 1;} //LA# 
-	  else if  (pitch == 70 && ton.isflat() && ton.getAlterationsNumber() >=  1) {height = 13; alteration = 2;} // SIb
-	    
-	  else if  (pitch == 71 && ton.isflat() && ton.getAlterationsNumber() >=  6) {height = 8; alteration = 0;} //dob
-	  else if  (pitch == 71) {height = 13; alteration = 0;} //SI
-	  else if  (pitch == 72 && ton.issharp() && ton.getAlterationsNumber() >=  7) {height = 13; alteration = 1;} //si#
-	  else if  (pitch == 72) {height = 8; alteration = 0;} //do
-	  else if  (pitch == 73 && ton.issharp() && ton.getAlterationsNumber() >=  2) {height = 8; alteration = 1;} //do#
-	  else if  (pitch == 73 && ton.isflat() && ton.getAlterationsNumber() >=  4) {height = 3; alteration = 2;} //reb
-	  else if  (pitch == 74) {height = 3; alteration = 0;} //re
-	  else if  (pitch == 75 && ton.issharp() && ton.getAlterationsNumber() >=  4) {height = 3; alteration = 1;} //re#
-	  else if  (pitch == 75  && ton.isflat() && ton.getAlterationsNumber() >=  2) {height = -2; alteration = 2;} // MIb
-	  else if  (pitch == 76) {height = -2; alteration = 0;} //mi
-	  else if  (pitch == 77  && ton.issharp() && ton.getAlterationsNumber() >=  6) {height = -2; alteration = 1;} //mi#
-	  else if  (pitch == 77) {height = -7; alteration = 0;} //fa
-	  
-	  if (pitch == 27) {height = 43; alteration = 0;} //
-	  else if  (pitch == 28) {height = 43; alteration = 1;} //
-	    
-	  else if  (pitch == 30 && ton.isflat() && ton.getAlterationsNumber() >=  5) {height = 33; alteration = 2;} // SOLb
-	  else if  (pitch == 30) {height = 38; alteration = 0;} // fa
-	  else if  (pitch == 31) {height = 33; alteration = 1;} //SOL
-	  else if  (pitch == 32 && ton.issharp() && ton.getAlterationsNumber() >=  3) {height = 33; alteration = 1;} //SOL# 
-	  else if  (pitch == 32 && ton.isflat() && ton.getAlterationsNumber() >=  3) {height = 28; alteration = 2;} // LAb     
-	  else if  (pitch == 33) {height = 28; alteration = 0;} //LA
-	  else if  (pitch == 34 && ton.issharp() && ton.getAlterationsNumber() >=  5) {height = 28; alteration = 1;} //LA# 
-	  else if  (pitch == 34 && ton.isflat() && ton.getAlterationsNumber() >=  1) {height = 23; alteration = 2;} // SIb               
-	  else if  (pitch == 35 && ton.isflat() && ton.getAlterationsNumber() >=  6) {height = 18; alteration = 2;} //dob 
-	  else if  (pitch == 35) {height = 23; alteration = 0;} //SI
-	  else if  (pitch == 36 && ton.issharp() && ton.getAlterationsNumber() >=  7) {height = 23; alteration = 1;} //si#        
-	  else if  (pitch == 36) {height = 18; alteration = 1;} //do
-	  else if  (pitch == 37 && ton.issharp() && ton.getAlterationsNumber() >=  2) {height = 18; alteration = 1;} //do#
-	  else if  (pitch == 37 && ton.isflat() && ton.getAlterationsNumber() >=  4) {height = 13; alteration = 2;} //reb 
-	  else if  (pitch == 38) {height = 13; alteration = 0;} //re
-	  else if  (pitch == 39 && ton.issharp() && ton.getAlterationsNumber() >=  4) {height = 13; alteration = 1;} //re#
-	  else if  (pitch == 39  && ton.isflat() && ton.getAlterationsNumber() >=  2) {height = 8; alteration = 2;} // MIb
-	  else if  (pitch == 40 && ton.isflat() && ton.getAlterationsNumber() >=  7) {height = 3; alteration = 2;} //fab
-	  else if  (pitch == 40) {height = 8; alteration = 0;} //mi
-	  else if  (pitch == 41  && ton.issharp() && ton.getAlterationsNumber() >=  6) {height = 8; alteration = 1;} //mi#  
-	  else if  (pitch == 41) {height = 3; alteration = 0;} //fa
-	  else if  (pitch == 42 && ton.issharp() && ton.getAlterationsNumber() >=  1) {height = 3; alteration = 1;} //FA# 
-	  else if  (pitch == 42 && ton.isflat() && ton.getAlterationsNumber() >=  5) {height = -2; alteration = 2;} // SOLb 
-	  else if  (pitch == 43) {height = -2; alteration = 0;} //sol
-	  else if  (pitch == 44 && ton.issharp() && ton.getAlterationsNumber() >=  3) {height = -2; alteration = 1;} // SOL#
-	  
-	  return height;
-  }
-  
-  public void paint(Graphics g, Font f, Tonality ton, int position, int rowsDistance, boolean courant, int scoreYpos, Component l) {
-
-    int noteY = getYposFromPitch(ton, this.pitch);
+    //int noteY = getYposFromPitch(ton, this.pitch);
+	int noteY = sl.getYpos(this.pitch);
     //@SuppressWarnings("unused")
 
     //  g.setColor(couleur);
@@ -232,8 +166,8 @@ public class Rhythm {
     	g.drawString(sm, this.position, ypos + noteY + voffset);
     	if (this.tripletValue != 0) {
     		int lowestYpos = 0;
-    		if (this.tripletValue < 100) lowestYpos = getYposFromPitch(ton, this.tripletValue) + ypos;
-    		else lowestYpos = getYposFromPitch(ton, this.tripletValue - 100) + ypos;
+    		if (this.tripletValue < 100) lowestYpos = sl.getYpos(this.tripletValue) + ypos;
+    		else lowestYpos = sl.getYpos(this.tripletValue - 100) + ypos;
         	g.drawLine(this.position, ypos + noteY + 10, this.position, lowestYpos + 40);
     		if(this.tripletValue < 100) { // means this is the first note of the triplet. Draw horizontal bar
         		g.fillRect(this.position, lowestYpos + 37, 49, 5);

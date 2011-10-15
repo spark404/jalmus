@@ -1,6 +1,10 @@
 October, 2011: Version tdb
 
 * MAJOR: implementation of triplets. Working with any time signature
+* MAJOR: implementation of custom notes for inline game exercise
+* added parameter to choose 9 or 15 notes for score reading exercise
+* fixed alterations position on the score
+* fixed octave of bass key on score reading exercise
 * fixed tonality label alignment
 * added 6/8 time signature
 * ppq changed to 1000 to increase note playback precision
@@ -22,7 +26,7 @@ October, 5th 2011: Version 1.8
 * most of the source code has been translated in english
 * added this Changelog to Jalmus repository
 
-Dicember, 20th 2010: Version 1.7
+December, 20th 2010: Version 1.7
 
 * Fixing problem when selecting chords or intervals on preferences panel Show name of interval or chord only for learning exercise
 * Adding Polish translation (thanks to Wojtek)
