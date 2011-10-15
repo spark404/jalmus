@@ -94,7 +94,7 @@ import java.util.ResourceBundle;
 
            //g.fillOval(this.X+decalagen,this.Height+5,11,12);    // DESSINE LA NOTE
            g.drawString("w", this.X+decalagen, this.Height + 11);
-           if ((!this.Alteration.equals("") & !this.alteree(nrlevel.getCurrentTonality(),b)) | (this.Alteration.equals("n")))
+           if ((!this.Alteration.equals("") & !this.accidentalInTonality(nrlevel.getCurrentTonality(),b)) | (this.Alteration.equals("n")))
            if (this.Alteration.equals("#")) g.drawString("B", this.X-decalagea, this.Height+10);
            else if (this.Alteration.equals("b")) g.drawString("b", this.X-decalagea, this.Height+10);
            else if (this.Alteration.equals("n")) {
@@ -172,7 +172,7 @@ import java.util.ResourceBundle;
 
 
 
-           public boolean identiques(int base){
+           public boolean samenoteHeight(int base){
            int x;
             boolean b = false;
 
@@ -182,8 +182,20 @@ import java.util.ResourceBundle;
               if ((this.Height+x*35==base) | (this.Height-x*35==base))  b = true;                                                   }
                 return b;
                 }
+           
 
-          public boolean alteree(Tonality t, ResourceBundle bundle){
+           public boolean samenotePitch(int pitchbase){
+           int x;
+            boolean b = false;
+
+
+
+            for (x=0;x<=9;x++){ //28 = 8 notes entre 2 notes identiques * 4 entre chaque note
+              if ((this.Pitch+x*12==pitchbase) | (this.Pitch-x*12==pitchbase))  b = true;                                                   }
+                return b;
+                }
+
+          public boolean accidentalInTonality(Tonality t, ResourceBundle bundle){
 
             String DO = bundle.getString("_do");
             String RE = bundle.getString("_re");
@@ -216,14 +228,14 @@ import java.util.ResourceBundle;
           }
 
 
-          public void majalteration( NoteLevel nrlevel, ResourceBundle b){
+          public void updateAccidental( NoteLevel nrlevel, ResourceBundle b){
             int alt = 0;
             double tmp = 0;
 
             if (!nrlevel.isNotesgame()) {
               tmp = Math.random();
 
-              if (this.alteree(nrlevel.getCurrentTonality(), b)) {
+              if (this.accidentalInTonality(nrlevel.getCurrentTonality(), b)) {
                 if (tmp < 0.9)
                   this.Alteration = nrlevel.getCurrentTonality().Alteration;
                 else
@@ -238,14 +250,14 @@ import java.util.ResourceBundle;
 
               }
             }
-            else if (this.alteree(nrlevel.getCurrentTonality(),b))
+            else if (this.accidentalInTonality(nrlevel.getCurrentTonality(),b))
               this.Alteration = nrlevel.getCurrentTonality().Alteration;
 
             else this.Alteration = "";
 
 //System.out.println(this.Alteration);
 
-              // MODIFICATION DU PITCH MIDI EN FONCTION DE L'ALTERATION
+            // MODIFY PITCH ACCORDING TO ACCIDENTAL
         if (this.Alteration.equals("#")) alt = 1;
           else  if (this.Alteration.equals("b")) alt = -1;
           else alt = 0;
@@ -254,7 +266,7 @@ import java.util.ResourceBundle;
                 }
 
 
-         public void majalteration(Tonality t, int pitch0, int nnote, ResourceBundle b){ //pour les accords
+         public void updateAccidentalInChord(Tonality t, int pitch0, int nnote, ResourceBundle b){ //pour les accords
                   int alt = 0;
  
                   double tmp = 0;
@@ -271,7 +283,7 @@ import java.util.ResourceBundle;
 
                     else if (this.Pitch-pitch0 == 3){
                       if (tmp<0.4 | t.Alteration.equals("b")) {//laisser tierce mineure
-                        if (this.alteree(t,b)) this.Alteration = "n";
+                        if (this.accidentalInTonality(t,b)) this.Alteration = "n";
                       }
                     else //passer a tierce majeure
                       this.Alteration = "#";
@@ -281,7 +293,7 @@ import java.util.ResourceBundle;
 
                     else if (this.Pitch-pitch0 == 4){
                       if (tmp<0.4 | t.Alteration.equals("#")) { //laisser tierce majeure
-                        if (this.alteree(t,b)) this.Alteration = "n";
+                        if (this.accidentalInTonality(t,b)) this.Alteration = "n";
                       }
                       else //passer a tierce mineure
                         this.Alteration = "b";
@@ -298,7 +310,7 @@ import java.util.ResourceBundle;
 
                     if (this.Pitch-pitch0 == 6){
                       if (tmp<0.4 | t.Alteration.equals("b")) {//laisser quinte diminuee
-                        if (this.alteree(t,b)) this.Alteration = "n";
+                        if (this.accidentalInTonality(t,b)) this.Alteration = "n";
                       }
                       else this.Alteration = "#";
 
@@ -308,13 +320,13 @@ import java.util.ResourceBundle;
                       if (tmp<0.1 & t.Alteration.equals("b")) this.Alteration = "b"; // quinte diminuee
                       else  if (tmp<0.2 & t.Alteration.equals("#")) this.Alteration = "#"; // quinte augmentee
 
-                       else if (this.alteree(t,b)) this.Alteration = "n";
+                       else if (this.accidentalInTonality(t,b)) this.Alteration = "n";
                     }
 
 
                     else if (this.Pitch-pitch0 == 8){
                       if (tmp<0.4 | t.Alteration.equals("#")) {//laisser quinte augmentee
-                        if (this.alteree(t,b)) this.Alteration = "n";
+                        if (this.accidentalInTonality(t,b)) this.Alteration = "n";
                       }
                       else this.Alteration = "b";
 
@@ -324,7 +336,7 @@ import java.util.ResourceBundle;
 
 //System.out.println(this.Alteration);
 
-                  // MODIFICATION DU PITCH MIDI EN FONCTION DE L'ALTERATION
+                  // MODIFY PITCH ACCORDING TO ACCIDENTAL
                   if (this.Alteration.equals("#")) alt = 1;
                   else  if (this.Alteration.equals("b")) alt = -1;
                   else alt = 0;
@@ -340,7 +352,7 @@ import java.util.ResourceBundle;
 
 
 
-          public void majnote(NoteLevel nrlevel, int dportee, ResourceBundle bundle){
+          public void updateNote(NoteLevel nrlevel, int dportee, ResourceBundle bundle){
 
             String DO = bundle.getString("_do");
             String RE = bundle.getString("_re");
@@ -350,50 +362,196 @@ import java.util.ResourceBundle;
             String LA = bundle.getString("_la");
             String SI = bundle.getString("_si");
 
-            if (nrlevel.isCurrentKeyTreble()){//base cl� de sol : SOL = dportee+25
+            if (nrlevel.isCurrentKeyTreble()){//Trebble key
 
-              if (this.identiques(dportee+10)) { this.Nom = DO; this.Pitch = 72-(this.Height-(dportee+10))/28*12;}
-              else if (this.identiques(dportee+15)) { this.Nom = SI; this.Pitch = 71-(this.Height-(dportee+15))/28*12;}
-              else if (this.identiques(dportee+20)) { this.Nom = LA; this.Pitch = 69-(this.Height-(dportee+20))/28*12;}
-              else  if  (this.identiques(dportee+25)) { this.Nom = SOL;this.Pitch = 67-(this.Height-(dportee+25))/28*12;}
-              else if (this.identiques(dportee+30)) { this.Nom = FA;this.Pitch = 65-(this.Height-(dportee+30))/28*12;}
-              else if (this.identiques(dportee+35)) { this.Nom = MI;this.Pitch = 64-(this.Height-(dportee+35))/28*12;}
-              else if (this.identiques(dportee+40)) { this.Nom = RE;this.Pitch = 62-(this.Height-(dportee+40))/28*12;}
+              if (this.samenoteHeight(dportee+10)) { this.Nom = DO; this.Pitch = 72-(this.Height-(dportee+10))/28*12;}
+              else if (this.samenoteHeight(dportee+15)) { this.Nom = SI; this.Pitch = 71-(this.Height-(dportee+15))/28*12;}
+              else if (this.samenoteHeight(dportee+20)) { this.Nom = LA; this.Pitch = 69-(this.Height-(dportee+20))/28*12;}
+              else  if  (this.samenoteHeight(dportee+25)) { this.Nom = SOL;this.Pitch = 67-(this.Height-(dportee+25))/28*12;}
+              else if (this.samenoteHeight(dportee+30)) { this.Nom = FA;this.Pitch = 65-(this.Height-(dportee+30))/28*12;}
+              else if (this.samenoteHeight(dportee+35)) { this.Nom = MI;this.Pitch = 64-(this.Height-(dportee+35))/28*12;}
+              else if (this.samenoteHeight(dportee+40)) { this.Nom = RE;this.Pitch = 62-(this.Height-(dportee+40))/28*12;}
               }
 
-            else if (nrlevel.isCurrentKeyBass()){ //base cl� de fa : FA = dportee+5
+            else if (nrlevel.isCurrentKeyBass()){ // Bass key
 
-              if (this.identiques(dportee+20)) { this.Nom = DO; this.Pitch = 48-(this.Height-(dportee+20))/28*12;}
-              else if (this.identiques(dportee+25)) { this.Nom = SI;this.Pitch = 47-(this.Height-(dportee+25))/28*12;}
-              else if (this.identiques(dportee+30)) { this.Nom = LA;this.Pitch = 45-(this.Height-(dportee+30))/28*12;}
-              else  if  (this.identiques(dportee+35)) { this.Nom = SOL;this.Pitch = 43-(this.Height-(dportee+35))/28*12;}
-              else if (this.identiques(dportee+5)) { this.Nom = FA;this.Pitch = 53-(this.Height-(dportee+5))/28*12;}
-              else if (this.identiques(dportee+10)) { this.Nom = MI;this.Pitch = 52-(this.Height-(dportee+10))/28*12;}
-              else if (this.identiques(dportee+15)) { this.Nom = RE;this.Pitch = 50-(this.Height-(dportee+15))/28*12;};
+              if (this.samenoteHeight(dportee+20)) { this.Nom = DO; this.Pitch = 48-(this.Height-(dportee+20))/28*12;}
+              else if (this.samenoteHeight(dportee+25)) { this.Nom = SI;this.Pitch = 47-(this.Height-(dportee+25))/28*12;}
+              else if (this.samenoteHeight(dportee+30)) { this.Nom = LA;this.Pitch = 45-(this.Height-(dportee+30))/28*12;}
+              else  if  (this.samenoteHeight(dportee+35)) { this.Nom = SOL;this.Pitch = 43-(this.Height-(dportee+35))/28*12;}
+              else if (this.samenoteHeight(dportee+5)) { this.Nom = FA;this.Pitch = 53-(this.Height-(dportee+5))/28*12;}
+              else if (this.samenoteHeight(dportee+10)) { this.Nom = MI;this.Pitch = 52-(this.Height-(dportee+10))/28*12;}
+              else if (this.samenoteHeight(dportee+15)) { this.Nom = RE;this.Pitch = 50-(this.Height-(dportee+15))/28*12;};
               }
 
             else if (nrlevel.isCurrentKeyBoth()){
-              if (this.Height<=dportee+55){   // CLE DE SOL
-                if (this.identiques(dportee+10)) { this.Nom = DO; this.Pitch = 72-(this.Height-(dportee+10))/28*12;}
-              else if (this.identiques(dportee+15)) { this.Nom = SI; this.Pitch = 71-(this.Height-(dportee+15))/28*12;}
-              else if (this.identiques(dportee+20)) { this.Nom = LA; this.Pitch = 69-(this.Height-(dportee+20))/28*12;}
-              else  if  (this.identiques(dportee+25)) { this.Nom = SOL;this.Pitch = 67-(this.Height-(dportee+25))/28*12;}
-              else if (this.identiques(dportee+30)) { this.Nom = FA;this.Pitch = 65-(this.Height-(dportee+30))/28*12;}
-              else if (this.identiques(dportee+35)) { this.Nom = MI;this.Pitch = 64-(this.Height-(dportee+35))/28*12;}
-              else if (this.identiques(dportee+40)) { this.Nom = RE;this.Pitch = 62-(this.Height-(dportee+40))/28*12;}
+              if (this.Height<=dportee+55){   // Trebble key
+                if (this.samenoteHeight(dportee+10)) { this.Nom = DO; this.Pitch = 72-(this.Height-(dportee+10))/28*12;}
+              else if (this.samenoteHeight(dportee+15)) { this.Nom = SI; this.Pitch = 71-(this.Height-(dportee+15))/28*12;}
+              else if (this.samenoteHeight(dportee+20)) { this.Nom = LA; this.Pitch = 69-(this.Height-(dportee+20))/28*12;}
+              else  if  (this.samenoteHeight(dportee+25)) { this.Nom = SOL;this.Pitch = 67-(this.Height-(dportee+25))/28*12;}
+              else if (this.samenoteHeight(dportee+30)) { this.Nom = FA;this.Pitch = 65-(this.Height-(dportee+30))/28*12;}
+              else if (this.samenoteHeight(dportee+35)) { this.Nom = MI;this.Pitch = 64-(this.Height-(dportee+35))/28*12;}
+              else if (this.samenoteHeight(dportee+40)) { this.Nom = RE;this.Pitch = 62-(this.Height-(dportee+40))/28*12;}
                                                               }
-              else {       // CLE DE FA  //base cl� de sol : FA = dportee+76
-                if (this.identiques(dportee+110)) { this.Nom = DO; this.Pitch = 48-(this.Height-(dportee+110))/28*12;}
-                else if (this.identiques(dportee+115)) { this.Nom = SI;this.Pitch = 47-(this.Height-(dportee+115))/28*12;}
-                else if (this.identiques(dportee+120)) { this.Nom = LA;this.Pitch = 45-(this.Height-(dportee+120))/28*12;}
-                else  if  (this.identiques(dportee+125)) { this.Nom = SOL;this.Pitch = 43-(this.Height-(dportee+125))/28*12;}
-                else if (this.identiques(dportee+95)) { this.Nom = FA;this.Pitch = 53-(this.Height-(dportee+95))/28*12;}
-                else if (this.identiques(dportee+100)) { this.Nom = MI;this.Pitch = 52-(this.Height-(dportee+100))/28*12;}
-                else if (this.identiques(dportee+105)) { this.Nom = RE;this.Pitch = 50-(this.Height-(dportee+105))/28*12;};
+              else {       //  Bass key
+                if (this.samenoteHeight(dportee+110)) { this.Nom = DO; this.Pitch = 48-(this.Height-(dportee+110))/28*12;}
+                else if (this.samenoteHeight(dportee+115)) { this.Nom = SI;this.Pitch = 47-(this.Height-(dportee+115))/28*12;}
+                else if (this.samenoteHeight(dportee+120)) { this.Nom = LA;this.Pitch = 45-(this.Height-(dportee+120))/28*12;}
+                else  if  (this.samenoteHeight(dportee+125)) { this.Nom = SOL;this.Pitch = 43-(this.Height-(dportee+125))/28*12;}
+                else if (this.samenoteHeight(dportee+95)) { this.Nom = FA;this.Pitch = 53-(this.Height-(dportee+95))/28*12;}
+                else if (this.samenoteHeight(dportee+100)) { this.Nom = MI;this.Pitch = 52-(this.Height-(dportee+100))/28*12;}
+                else if (this.samenoteHeight(dportee+105)) { this.Nom = RE;this.Pitch = 50-(this.Height-(dportee+105))/28*12;};
                 }
               }
             }
 
+          
+
+          public void updateNotePitch(NoteLevel nrlevel, int dportee, ResourceBundle bundle){
+
+            String DO = bundle.getString("_do");
+            String RE = bundle.getString("_re");
+            String MI = bundle.getString("_mi");
+            String FA = bundle.getString("_fa");
+            String SOL = bundle.getString("_sol");
+            String LA = bundle.getString("_la");
+            String SI = bundle.getString("_si");
+            
+            Integer heigth2staff = 0;
+            if (nrlevel.isCurrentKeyBoth()) heigth2staff = 90; else heigth2staff = 0;
+
+            if (nrlevel.isCurrentKeyTreble()|| (nrlevel.isCurrentKeyBoth() & this.Pitch >= 57)){//base cl� de sol : SOL = dportee+25
+
+              if (this.samenotePitch(0)) { this.Nom = DO; this.Height = (60-this.Pitch)*35/12 + dportee+45;  
+              			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+              
+              else if (this.samenotePitch(1)) { 
+            	  if (nrlevel.getCurrentTonality().isflat()) {this.Nom = RE; this.Height = (61-this.Pitch)*35/12 + dportee+40;  
+            	  		if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "b"; }
+              		else {this.Nom = DO; this.Height = (61-this.Pitch)*35/12 + dportee+45; 
+              			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "#"; }          		
+              }	
+              
+              else   if (this.samenotePitch(2)) { this.Nom = RE; this.Height = (62-this.Pitch)*35/12 + dportee+40;  
+              			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+                         
+              
+              else if (this.samenotePitch(3)) { 
+            	  if (nrlevel.getCurrentTonality().issharp()) {this.Nom = RE; this.Height = (63-this.Pitch)*35/12 + dportee+40;  
+            	  		if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "#"; }
+              		else {this.Nom = MI; this.Height = (63-this.Pitch)*35/12 + dportee+35; 
+              			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "b"; }          		
+              }	
+              
+              else   if (this.samenotePitch(4)) { this.Nom = MI; this.Height = (64-this.Pitch)*35/12 + dportee+35;  
+    					if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+           
+              else   if (this.samenotePitch(5)) { this.Nom = FA; this.Height = (65-this.Pitch)*35/12 + dportee+30;  
+    					if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+           
+              else if (this.samenotePitch(6)) { 
+            	  if (nrlevel.getCurrentTonality().issharp()) {this.Nom = FA; this.Height = (66-this.Pitch)*35/12 + dportee+30;  
+            	  		if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "#"; }
+              		else {this.Nom = SOL; this.Height = (66-this.Pitch)*35/12 + dportee+25; 
+              			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "b"; }          		
+              }	
+              
+              else   if (this.samenotePitch(7)) { this.Nom = SOL; this.Height = (67-this.Pitch)*35/12 + dportee+25;  
+  						if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+         
+              else if (this.samenotePitch(8)) { 
+            	  if (nrlevel.getCurrentTonality().issharp()) {this.Nom = SOL; this.Height = (68-this.Pitch)*35/12 + dportee+25;  
+            	  		if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "#"; }
+              		else {this.Nom = LA; this.Height = (68-this.Pitch)*35/12 + dportee+20; 
+              			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "b"; }          		
+              }	
+             
+              else   if (this.samenotePitch(9)) { this.Nom = LA; this.Height = (69-this.Pitch)*35/12 + dportee+20;  
+				if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+              
+              else if (this.samenotePitch(10)) { 
+            	  if (nrlevel.getCurrentTonality().isflat()) {this.Nom = SI; this.Height = (70-this.Pitch)*35/12 + dportee+15;  
+            	  		if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "b"; }
+              		else {this.Nom = LA; this.Height = (70-this.Pitch)*35/12 + dportee+20; 
+              			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "#"; }          		
+              }	
+              
+              else   if (this.samenotePitch(11)) { this.Nom = SI; this.Height = (71-this.Pitch)*35/12 + dportee+15;  
+				if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+                        
+              
+  }
+
+            else if (nrlevel.isCurrentKeyBass() || (nrlevel.isCurrentKeyBoth() & this.Pitch < 57)){
+            
+
+
+                    if (this.samenotePitch(0)) { this.Nom = DO; this.Height = (60-this.Pitch)*35/12 + dportee-15+heigth2staff;  
+                    			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+                    
+                    else if (this.samenotePitch(1)) { 
+                  	  if (nrlevel.getCurrentTonality().isflat()) {this.Nom = RE; this.Height = (61-this.Pitch)*35/12 + dportee-20+heigth2staff;  
+                  	  		if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "b"; }
+                    		else {this.Nom = DO; this.Height = (61-this.Pitch)*35/12 + dportee-15+heigth2staff; 
+                    			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "#"; }          		
+                    }	
+                    
+                    else   if (this.samenotePitch(2)) { this.Nom = RE; this.Height = (62-this.Pitch)*35/12 + dportee-20+heigth2staff;  
+                    			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+                               
+                    
+                    else if (this.samenotePitch(3)) { 
+                  	  if (nrlevel.getCurrentTonality().issharp()) {this.Nom = RE; this.Height = (63-this.Pitch)*35/12 + dportee-20+heigth2staff;  
+                  	  		if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "#"; }
+                    		else {this.Nom = MI; this.Height = (63-this.Pitch)*35/12 + dportee-25+heigth2staff; 
+                    			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "b"; }          		
+                    }	
+                    
+                    else   if (this.samenotePitch(4)) { this.Nom = MI; this.Height = (64-this.Pitch)*35/12 + dportee-25+heigth2staff;  
+          					if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+                 
+                    else   if (this.samenotePitch(5)) { this.Nom = FA; this.Height = (65-this.Pitch)*35/12 + dportee-30+heigth2staff;  
+          					if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+                 
+                    else if (this.samenotePitch(6)) { 
+                  	  if (nrlevel.getCurrentTonality().issharp()) {this.Nom = FA; this.Height = (66-this.Pitch)*35/12 + dportee-30+heigth2staff;  
+                  	  		if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "#"; }
+                    		else {this.Nom = SOL; this.Height = (66-this.Pitch)*35/12 + dportee-35+heigth2staff; 
+                    			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "b"; }          		
+                    }	
+                    
+                    else   if (this.samenotePitch(7)) { this.Nom = SOL; this.Height = (67-this.Pitch)*35/12 + dportee-35+heigth2staff;  
+        						if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+               
+                    else if (this.samenotePitch(8)) { 
+                  	  if (nrlevel.getCurrentTonality().issharp()) {this.Nom = SOL; this.Height = (68-this.Pitch)*35/12 + dportee-35+heigth2staff;  
+                  	  		if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "#"; }
+                    		else {this.Nom = LA; this.Height = (68-this.Pitch)*35/12 + dportee-40+heigth2staff; 
+                    			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "b"; }          		
+                    }	
+                   
+                    else   if (this.samenotePitch(9)) { this.Nom = LA; this.Height = (69-this.Pitch)*35/12 + dportee-40+heigth2staff;  
+      							if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+                    
+                    else if (this.samenotePitch(10)) { 
+                  	  if (nrlevel.getCurrentTonality().isflat()) {this.Nom = SI; this.Height = (70-this.Pitch)*35/12 + dportee-45+heigth2staff;  
+                  	  		if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "b"; }
+                    		else {this.Nom = LA; this.Height = (70-this.Pitch)*35/12 + dportee-40+heigth2staff; 
+                    			if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = ""; else this.Alteration = "#"; }          		
+                    }	
+                    
+                    else   if (this.samenotePitch(11)) { this.Nom = SI; this.Height = (71-this.Pitch)*35/12 + dportee-45+heigth2staff;  
+      				if (accidentalInTonality(nrlevel.getCurrentTonality(), bundle)) this.Alteration = "n"; else this.Alteration = ""; }
+                              
+                    	
+            	
+           }
+
+
+            }
+
+          
       }
 
 

@@ -68,7 +68,7 @@ public class Chord {
             if (this.tabnotes[pos].getAlteration() == "") resultat = 0;
             else {
               for (int i=0;i<3;i=i+1){
-              if (((this.tabnotes[i].getAlteration() == "#" | this.tabnotes[i].getAlteration() == "b")& !this.tabnotes[i].alteree(tcourante,bundle))
+              if (((this.tabnotes[i].getAlteration() == "#" | this.tabnotes[i].getAlteration() == "b")& !this.tabnotes[i].accidentalInTonality(tcourante,bundle))
                 | this.tabnotes[i].getAlteration() == "n")
                 nbalt++;
               }

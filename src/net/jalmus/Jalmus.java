@@ -3203,11 +3203,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteReadingNotesPanel.add(noteGroupComboBox);
                 preferencesDialog.repaint();
                 
-              	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey());
+              	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
                 ChooseNoteP.setOpaque(true); //content panes must be opaque
                 
                 notesDialog.setContentPane(ChooseNoteP);
-               notesDialog.setSize(600, 200);
+               notesDialog.setSize(650, 220);
                 notesDialog.setLocationRelativeTo(this);
                 notesDialog.setVisible(true);
                 
@@ -3856,12 +3856,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
 
         Note n1=new Note("", "", h, notemargin+98, 0);
-        n1.majnote(noteLevel, scoreYpos, bundle);
-        n1.majalteration(noteLevel, bundle);
+        n1.updateNote(noteLevel, scoreYpos, bundle);
+        n1.updateAccidental(noteLevel, bundle);
 
         Note n2=new Note("", "", h-i*5, notemargin+98, 0);
-        n2.majnote(noteLevel, scoreYpos, bundle);
-        n2.majalteration(noteLevel, bundle);
+        n2.updateNote(noteLevel, scoreYpos, bundle);
+        n2.updateAccidental(noteLevel, bundle);
 
         String nom="";
         if (n2.getPitch()-n1.getPitch()==0 && i==1) {
@@ -3974,16 +3974,16 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         while (!ok) {
 
             n1=new Note("", "", h, notemargin+98, 0);
-            n1.majnote(noteLevel, scoreYpos, bundle);
-            n1.majalteration(noteLevel, bundle);
+            n1.updateNote(noteLevel, scoreYpos, bundle);
+            n1.updateAccidental(noteLevel, bundle);
 
             n2=new Note("", "", h-2*5, notemargin+98, 0);
-            n2.majnote(noteLevel, scoreYpos, bundle);
-            n2.majalteration(noteLevel.getCurrentTonality(), n1.getPitch(), 2, bundle); //deuxieme note
+            n2.updateNote(noteLevel, scoreYpos, bundle);
+            n2.updateAccidentalInChord(noteLevel.getCurrentTonality(), n1.getPitch(), 2, bundle); //deuxieme note
 
             n3=new Note("", "", h-4*5, notemargin+98, 0);
-            n3.majnote(noteLevel, scoreYpos, bundle);
-            n3.majalteration(noteLevel.getCurrentTonality(), n1.getPitch(), 3, bundle); //troisieme note
+            n3.updateNote(noteLevel, scoreYpos, bundle);
+            n3.updateAccidentalInChord(noteLevel.getCurrentTonality(), n1.getPitch(), 3, bundle); //troisieme note
 
             if (n2.getPitch()-n1.getPitch()==3 && n3.getPitch()-n1.getPitch()==7) {
                 minmaj=mineur;
@@ -4112,18 +4112,30 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 stopSound();
             }
             ncourante.init();
+            
+            if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
+            	//choosing note with height to do change to choose note with pitch
             ncourante.setHeight(setNoteHeight(noteLevel.getNbnotesupper(), noteLevel.getNbnotesunder(), noteLevel.getNbnotesupper(), noteLevel.getNbnotesunder()));
             while (ncourante.getHeight()==precedente) {
                 ncourante.setHeight(setNoteHeight(noteLevel.getNbnotesupper(), noteLevel.getNbnotesunder(), noteLevel.getNbnotesupper(), noteLevel.getNbnotesunder()));
             }
-            ncourante.majnote(noteLevel, scoreYpos, bundle);
+            ncourante.updateNote(noteLevel, scoreYpos, bundle);
 
-            ncourante.majalteration(noteLevel, bundle);
+            ncourante.updateAccidental(noteLevel, bundle);
             precedente=ncourante.getHeight();
+            }
+            
+            else if (noteLevel.isCustomNotesgame()){
+            	// choosing note with pitch
+            	ncourante.setPitch(ChooseNoteP.getRandomPitch());
+            	  ncourante.updateNotePitch(noteLevel, scoreYpos, bundle);
+            	  precedente=ncourante.getHeight();
+            }
+            		
             ncourante.setX(notemargin+98);
-            // System.out.println(ncourante.getNom());
-            //System.out.println(ncourante.getHeight());
-			//System.out.println(ncourante.getPitch());
+             System.out.println(ncourante.getNom());
+            System.out.println(ncourante.getHeight());
+			System.out.println(ncourante.getPitch());
             //if (soundOnCheckBox.isSelected()) sons[indiceson(ncourante.getHeight())].play();
 
             if (soundOnCheckBox.isSelected()) {
@@ -4525,10 +4537,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         // System.out.println(type2);
 
-        if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame()) {
+        if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame()) {
             ligne[0]=new Note("", "", setNoteHeight(noteLevel.getNbnotesupper(), noteLevel.getNbnotesunder(), noteLevel.getNbnotesupper(), noteLevel.getNbnotesunder()), size.width-notemargin, 0);
-            ligne[0].majnote(noteLevel, scoreYpos, bundle);
-            ligne[0].majalteration(noteLevel, bundle);
+            ligne[0].updateNote(noteLevel, scoreYpos, bundle);
+            ligne[0].updateAccidental(noteLevel, bundle);
 
             String tmpa="";
             for (int i=1; i<ligne.length; i++) {
@@ -4538,16 +4550,37 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 }
 
                 ligne[i]=new Note(tmpa, "", tmph, size.width-notemargin+i*35, 0);
-                ligne[i].majnote(noteLevel, scoreYpos, bundle);
-                ligne[i].majalteration(noteLevel, bundle);
+                ligne[i].updateNote(noteLevel, scoreYpos, bundle);
+                ligne[i].updateAccidental(noteLevel, bundle);
             }
+        }
 
+            else if (noteLevel.isCustomNotesgame()) {
+                ligne[0]=new Note("", "", 0, size.width-notemargin, ChooseNoteP.getRandomPitch() );
+                ligne[0].updateNotePitch(noteLevel, scoreYpos, bundle);
+        
+
+                String tmpa="";
+                for (int i=1; i<ligne.length; i++) {
+                    int tmpp=ChooseNoteP.getRandomPitch();
+                    while (tmpp==ligne[i-1].getPitch()) {
+                        tmpp=ChooseNoteP.getRandomPitch(); // to avoid same pitch
+                    }
+
+                    ligne[i]=new Note(tmpa, "", 0, size.width-notemargin+i*35, tmpp);
+                    ligne[i].updateNotePitch(noteLevel, scoreYpos, bundle);
+                   
+                }
+            }
+                
+         
+            
             position=0;
             ncourante=ligne[position]; // initialisa tion avec la premiï¿½re note
             //if (soundOnCheckBox.isSelected()) sons[indiceson(ncourante.getHeight())].play(); // dï¿½part du son de la premiï¿½re note
-            if (soundOnCheckBox.isSelected()) {
+           if (soundOnCheckBox.isSelected()) {
                 synthNote(ncourante.getPitch(), 80, noteDuration);
-            }
+            
         } else if (noteLevel.isChordsgame()) {
             // voir pour precedant
             for (int i=0; i<ligne.length; i++) {
@@ -4958,25 +4991,25 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 
                 if (noteLevel.isCurrentKeyTreble() ) {
                 	basenotet1.setHeight(scoreYpos+noteLevel.getBasetreble()-(noteLevel.getNbnotesunder()*5));
-                	basenotet1.majnote(noteLevel, scoreYpos, bundle);
+                	basenotet1.updateNote(noteLevel, scoreYpos, bundle);
                 	basenotet2.setHeight(scoreYpos+noteLevel.getBasetreble()+(noteLevel.getNbnotesupper()*5));
-                	basenotet2.majnote(noteLevel, scoreYpos, bundle);
+                	basenotet2.updateNote(noteLevel, scoreYpos, bundle);
                 }
                 else if (noteLevel.isCurrentKeyBass()) {
                 	basenoteb1.setHeight(scoreYpos+noteLevel.getBasebass()-(noteLevel.getNbnotesunder()*5));
-                    basenoteb1.majnote(noteLevel, scoreYpos, bundle);
+                    basenoteb1.updateNote(noteLevel, scoreYpos, bundle);
                 	basenoteb2.setHeight(scoreYpos+noteLevel.getBasebass()+(noteLevel.getNbnotesupper()*5));
-                    basenoteb2.majnote(noteLevel, scoreYpos, bundle);                	
+                    basenoteb2.updateNote(noteLevel, scoreYpos, bundle);                	
                 }
                 else if (noteLevel.isCurrentKeyBoth()){
                 	basenotet1.setHeight(scoreYpos+noteLevel.getBasetreble()-(noteLevel.getNbnotesunder()*5));
-                    basenotet1.majnote(noteLevel, scoreYpos, bundle);
+                    basenotet1.updateNote(noteLevel, scoreYpos, bundle);
                     basenotet2.setHeight(scoreYpos+noteLevel.getBasetreble()+(noteLevel.getNbnotesupper()*5));
-                    basenotet2.majnote(noteLevel, scoreYpos, bundle);
+                    basenotet2.updateNote(noteLevel, scoreYpos, bundle);
                     basenoteb1.setHeight(scoreYpos+noteLevel.getBasebass()+90-(noteLevel.getNbnotesunder()*5));
-                    basenoteb1.majnote(noteLevel, scoreYpos, bundle);
+                    basenoteb1.updateNote(noteLevel, scoreYpos, bundle);
                  	basenoteb2.setHeight(scoreYpos+noteLevel.getBasebass()+90+(noteLevel.getNbnotesupper()*5));
-                    basenoteb2.majnote(noteLevel, scoreYpos, bundle);
+                    basenoteb2.updateNote(noteLevel, scoreYpos, bundle);
                 }
                 
                 if (noteLevel.isLearninggame() ) {

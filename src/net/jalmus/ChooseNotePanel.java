@@ -12,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.ResourceBundle;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -33,17 +35,16 @@ public class ChooseNotePanel extends JPanel {
     private boolean DEBUG = false;
     private JTable table;
     
-    public ChooseNotePanel(String key) {
-     //   super(new GridLayout(2,0));
+    
+    public ChooseNotePanel(String key, ResourceBundle bundle) {
+
     	
     	if (key == "treble")     	 table = new JTable(new TableKeyTrebble());
     	else if (key == "bass")     	 table = new JTable(new TableKeyBass());
     	else    	 table = new JTable(new NotesTableModel());
     	 
-        table.setPreferredScrollableViewportSize(new Dimension(610, 125));
+        table.setPreferredScrollableViewportSize(new Dimension(610, 115));
         table.setFillsViewportHeight(false);
-
-   // table.setDefaultRenderer(boolean.class, new CheckBoxTableCellRenderer());
 
         
        for (int vColIndex = 1; vColIndex < 13; vColIndex++) {
@@ -52,52 +53,69 @@ public class ChooseNotePanel extends JPanel {
        }
        
        TableColumn column = table.getColumnModel().getColumn(0);
-       column.setPreferredWidth(115);
+       column.setPreferredWidth(110);
    	
         //Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(table);
  
         JButton okButton=new JButton();
-     //   localizables.add(new Localizable.Button(okButton, "_buttonok"));
-      //  okButton.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
-        okButton.setLabel("OK");
+        okButton.setText(bundle.getString("_buttonok"));
+        okButton.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
+
+        JButton clearButton=new JButton();
+        clearButton.setText(bundle.getString("_buttoncancel"));
+        clearButton.setIcon(new ImageIcon(getClass().getResource("/images/cancel.png")));
+        
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ArrayList<Integer> pitchselected = new ArrayList<Integer>(); 
-                
-                int numRows = table.getRowCount();
-                int numCols = table.getColumnCount();
-                for (int i = 0; i < numRows; i++){
-                	for (int j = 1; j < numCols; j++){
-                		//System.out.println(newContentPane.gettable().getValueAt(i, j));
-                		if ((Boolean) table.getValueAt(i, j)) pitchselected.add(24+12*i+(j-1)); // first note Octava -3 C pitch 24
-                	}
-                	
-                	
-       
-                }
-            
-                if (pitchselected == null)   System.out.println("Select 2 notes");
-                else {
-              System.out.println(pitchselected);
-           	Random generator = new Random();
-        	int index = generator.nextInt ( pitchselected.size() );
-        	if( index >-1 ) System.out.println(pitchselected.get( index ));
-        	
-            }
+            	System.out.println(getFocusCycleRootAncestor());
+            	getFocusCycleRootAncestor().setVisible(false);
             }
         });
         
-        this.
+        clearButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+             resettable();
+            }
+        });
+        
+  
         //Add the scroll pane to this panel  
-       setLayout(new BorderLayout());
-        add(scrollPane, BorderLayout.NORTH);
-        add(okButton,BorderLayout.CENTER);
+   //    setLayout(new BorderLayout());
+        add(scrollPane);
+        add(okButton);
+        add(clearButton);
     }
  
 
     public  JTable gettable(){
     	return this.table;
+    }
+    
+    public ArrayList<Integer> getPitches(){
+        ArrayList<Integer> pitchselected = new ArrayList<Integer>(); 
+        
+        int numRows = table.getRowCount();
+        int numCols = table.getColumnCount();
+        for (int i = 0; i < numRows; i++){
+        	for (int j = 1; j < numCols; j++){
+        		//System.out.println(newContentPane.gettable().getValueAt(i, j));
+        		if ((Boolean) table.getValueAt(i, j)) pitchselected.add(24+12*i+(j-1)); // first note Octava -3 C pitch 24
+        	}
+        }     
+        return pitchselected;
+    }
+    
+    
+    public  Integer getRandomPitch(){
+        ArrayList<Integer> pitchselected = new ArrayList<Integer>(); 
+        
+        pitchselected = getPitches();
+        
+     	Random generator = new Random();
+    	int index = generator.nextInt ( pitchselected.size() );
+    	if( index >-1 )  return (pitchselected.get( index ));  	
+    	else return 0;
     }
     
     
