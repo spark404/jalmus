@@ -4982,7 +4982,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                 drawInlineGame(g);
                 drawKeys(g);
-                noteLevel.getCurrentTonality().paint(1,noteLevel.getKey(), g, MusiSync, notemargin + keyWidth, scoreYpos, this, bundle);
+                noteLevel.getCurrentTonality().paint(1,noteLevel.getKey(), g, MusiSync, notemargin + keyWidth, scoreYpos, 1, this, bundle);
 
                 if (!noteLevel.isLearninggame()) {
                     currentScore.paint(g, d.width);
@@ -5067,9 +5067,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 drawKeys(g);
                 drawTimeSignature(g);
 
-                if (selectedGame==SCOREREADING)
-                	scoreLevel.getCurrentTonality().paint(3, scoreLevel.getKey(), g, MusiSync, windowMargin + keyWidth, scoreYpos, this, bundle);
-
+                if (selectedGame==SCOREREADING) {
+                	numberOfRows = ((getSize().height - scoreYpos - 50) / rowsDistance)+1;    
+                	scoreLevel.getCurrentTonality().paint(3, scoreLevel.getKey(), g, MusiSync, windowMargin + keyWidth, scoreYpos, numberOfRows, this, bundle);
+                }
                 /* Show cursor if enabled */
                 if ((selectedGame == RHYTHMREADING && metronomeShowCheckBox.isSelected()) ||
                    	(selectedGame==SCOREREADING && scoreMetronomeShowCheckBox.isSelected())) {

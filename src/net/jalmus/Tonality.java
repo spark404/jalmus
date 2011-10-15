@@ -76,22 +76,19 @@ public class Tonality {
 	  g.drawString(type, x+2, y + 22);
   }
 
-  public void paint(int gametype, String cle, Graphics g, Font f, int marge, int dportee, Component j, ResourceBundle bundle) {
+  public void paint(int gametype, String cle, Graphics g, Font f, int marge, int dportee, int nbline, Component j, ResourceBundle bundle) {
 
     int decalagecle = 0;
-    int nbline = 1;
 
     String sharp = "B"; // # alteration
     String flat = "b"; // b alteration
 
     if (gametype == 1) { // notereading
     	decalagecle = 0;
-    	nbline = 1;
     	 drawName(g, marge, 90,  bundle);
     }
     else if (gametype == 3) { // scorereading
     	decalagecle = 0;
-    	nbline = 4;
     	 drawName(g, marge, 80,  bundle);
     }
     
