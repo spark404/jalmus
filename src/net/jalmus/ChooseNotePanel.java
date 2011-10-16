@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -63,13 +64,14 @@ public class ChooseNotePanel extends JPanel {
         okButton.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
 
         JButton clearButton=new JButton();
-        clearButton.setText(bundle.getString("_buttoncancel"));
+        clearButton.setText(bundle.getString("_buttonclear"));
         clearButton.setIcon(new ImageIcon(getClass().getResource("/images/cancel.png")));
         
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	System.out.println(getFocusCycleRootAncestor());
-            	getFocusCycleRootAncestor().setVisible(false);
+            	 if (!atLeast3Pitches()) JOptionPane.showMessageDialog(null, "Choose at least three notes", "Warning", JOptionPane.ERROR_MESSAGE); 
+            	//System.out.println(getFocusCycleRootAncestor());
+            	 else getFocusCycleRootAncestor().setVisible(false);
             }
         });
         
@@ -106,6 +108,17 @@ public class ChooseNotePanel extends JPanel {
         return pitchselected;
     }
     
+    public boolean  atLeast3Pitches(){
+    	int nbpitches = 0;
+    	  int numRows = table.getRowCount();
+          int numCols = table.getColumnCount();
+          for (int i = 0; i < numRows; i++){
+          	for (int j = 1; j < numCols; j++){
+          		if ( (Boolean) table.getValueAt(i, j)) nbpitches++;
+          		 	}
+          }     
+    	 return (nbpitches >= 3);
+    }
     
     public  Integer getRandomPitch(){
         ArrayList<Integer> pitchselected = new ArrayList<Integer>(); 
