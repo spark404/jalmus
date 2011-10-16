@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : An octave on bass clef.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: first lesson to learn notes on bass clef
+-->
+
+<levels>
+<notereading id = '0'>
+<message>First we are working slowly on the three notes E F G </message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>20</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '1'>
+<message>Now same notes E F G without help - F correspond to the key with a green point</message>
+<game>normal</game>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>0</startingnote>
+</notereading>
+
+<notereading id = '2'>
+<message>Next three notes G A B</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>20</speed>
+<startingnote>2</startingnote>
+</notereading>
+
+<notereading id = '3'>
+<message>Same notes G A B without help - A correspond to the key with a green point</message>
+<game>normal</game>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>2</startingnote>
+</notereading>
+
+<notereading id = '4'>
+<message>Next three notes C D E</message>
+<game>learning</game>
+<learningduration>15</learningduration>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>20</speed>
+<startingnote>-2</startingnote>
+</notereading>
+
+<notereading id = '5'>
+<message>Same notes C D E without help - D correspond to the key with a green point</message>
+<game>normal</game>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>3</nbnotes>
+<speed>15</speed>
+<startingnote>-2</startingnote>
+</notereading>
+
+<notereading id = '6'>
+<message>All the notes C D E F G A B </message>
+<game>learning</game>
+<learningduration>30</learningduration>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>7</nbnotes>
+<speed>20</speed>
+</notereading>
+
+<notereading id = '6'>
+<message>All the notes in line, you should find the first note of the line</message>
+<game>inline</game>
+<clef>bass</clef>
+<notes>notes</notes>
+<nbnotes>7</nbnotes>
+<speed>30</speed>
+</notereading>
+
+</levels>
