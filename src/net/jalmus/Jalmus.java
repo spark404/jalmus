@@ -3639,6 +3639,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         alterationWidth = scoreLevel.getCurrentTonality().getAlterationsNumber() * 12;
 
         int scoreLineWidth = keyWidth + alterationWidth + timeSignWidth;
+        firstNoteXPos = windowMargin + keyWidth + alterationWidth + timeSignWidth + notesShift;
         numberOfMeasures = (size.width - (windowMargin * 2) - scoreLineWidth) / (timeSignNumerator * noteDistance);
         numberOfRows = (size.height - scoreYpos - 50) / rowsDistance; // 50 = window bottom margin
         int yPos = scoreYpos;
