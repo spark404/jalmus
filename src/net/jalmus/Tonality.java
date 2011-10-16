@@ -76,7 +76,7 @@ public class Tonality {
 	  g.drawString(type, x+2, y + 22);
   }
 
-  public void paint(int gametype, String key, Graphics g, Font f, int marge, int dportee, int nbline, Component j, ResourceBundle bundle) {
+  public void paint(int gametype, String key, Graphics g, Font f, int marge, int rowYpos, int rowDistance, int nbline, Component j, ResourceBundle bundle) {
 
     int keyDistance = 0;
 
@@ -101,36 +101,36 @@ public class Tonality {
 
     if (this.Alteration.equalsIgnoreCase("#")) {
       if (this.alterationsNumber >= 1) // FA#
-        drawAlteration(g, f, marge, dportee - 15 + keyDistance + i*100, sharp, j); //-9
+        drawAlteration(g, f, marge, rowYpos - 15 + keyDistance + i*rowDistance, sharp, j); //-9
       if (this.alterationsNumber >= 2) // DO#
-        drawAlteration(g, f, marge + 10, dportee + keyDistance + i*100, sharp, j);
+        drawAlteration(g, f, marge + 10, rowYpos + keyDistance + i*rowDistance, sharp, j);
       if (this.alterationsNumber >= 3) // SOL#
-        drawAlteration(g, f, marge + 20, dportee - 20 + keyDistance + i*100, sharp, j);
+        drawAlteration(g, f, marge + 20, rowYpos - 20 + keyDistance + i*rowDistance, sharp, j);
       if (this.alterationsNumber >= 4) // RE#
-        drawAlteration(g, f, marge + 30, dportee - 5 + keyDistance + i*100, sharp, j);
+        drawAlteration(g, f, marge + 30, rowYpos - 5 + keyDistance + i*rowDistance, sharp, j);
       if (this.alterationsNumber >= 5) // LA#
-        drawAlteration(g, f, marge + 40, dportee + 10 + keyDistance + i*100, sharp, j);
+        drawAlteration(g, f, marge + 40, rowYpos + 10 + keyDistance + i*rowDistance, sharp, j);
       if (this.alterationsNumber >= 6) // MI#
-        drawAlteration(g, f, marge + 50, dportee - 10 + keyDistance + i*100, sharp, j);
+        drawAlteration(g, f, marge + 50, rowYpos - 10 + keyDistance + i*rowDistance, sharp, j);
       if (this.alterationsNumber >= 7) // SI#
-        drawAlteration(g, f, marge + 60, dportee + 5 + keyDistance + i*100, sharp, j);
+        drawAlteration(g, f, marge + 60, rowYpos + 5 + keyDistance + i*rowDistance, sharp, j);
     }
 
     if (this.Alteration.equalsIgnoreCase("b")) {
       if (this.alterationsNumber >= 1) // SIb
-        drawAlteration(g, f, marge, dportee + 5 + keyDistance + i*100, flat, j);
+        drawAlteration(g, f, marge, rowYpos + 5 + keyDistance + i*rowDistance, flat, j);
       if (this.alterationsNumber >= 2) // MIb
-        drawAlteration(g, f, marge + 9, dportee - 10 + keyDistance + i*100, flat, j);
+        drawAlteration(g, f, marge + 9, rowYpos - 10 + keyDistance + i*rowDistance, flat, j);
       if (this.alterationsNumber >= 3) // LAb
-        drawAlteration(g, f, marge + 18, dportee + 10 + keyDistance + i*100, flat, j);
+        drawAlteration(g, f, marge + 18, rowYpos + 10 + keyDistance + i*rowDistance, flat, j);
       if (this.alterationsNumber >= 4) // REb
-        drawAlteration(g, f, marge + 27, dportee - 5 + keyDistance + i*100, flat, j);
+        drawAlteration(g, f, marge + 27, rowYpos - 5 + keyDistance + i*rowDistance, flat, j);
       if (this.alterationsNumber >= 5) // SOLb
-        drawAlteration(g, f, marge + 36, dportee + 15 + keyDistance + i*100, flat, j);
+        drawAlteration(g, f, marge + 36, rowYpos + 15 + keyDistance + i*rowDistance, flat, j);
       if (this.alterationsNumber >= 6) // DOb
-        drawAlteration(g, f, marge + 45, dportee + keyDistance + i*100, flat, j);
+        drawAlteration(g, f, marge + 45, rowYpos + keyDistance + i*rowDistance, flat, j);
       if (this.alterationsNumber >= 7) // FAb
-        drawAlteration(g, f, marge + 54, dportee + 20 + keyDistance + i*100, flat, j);
+        drawAlteration(g, f, marge + 54, rowYpos + 20 + keyDistance + i*rowDistance, flat, j);
     }
 
     if (key.equals("both")) {
@@ -138,37 +138,37 @@ public class Tonality {
 
       if (this.Alteration.equalsIgnoreCase("#")) {
         if (this.alterationsNumber >= 1) // FA#
-          drawAlteration(g, f, marge, dportee - 15 + keyDistance, sharp, j);
+          drawAlteration(g, f, marge, rowYpos - 15 + keyDistance, sharp, j);
         if (this.alterationsNumber >= 2) // DO#
-          drawAlteration(g, f, marge + 10, dportee + keyDistance, sharp, j);
+          drawAlteration(g, f, marge + 10, rowYpos + keyDistance, sharp, j);
         if (this.alterationsNumber >= 3) // SOL#
-          drawAlteration(g, f, marge + 20, dportee - 20 + keyDistance, sharp, j);
+          drawAlteration(g, f, marge + 20, rowYpos - 20 + keyDistance, sharp, j);
         if (this.alterationsNumber >= 4) // RE#
-          drawAlteration(g, f, marge + 30, dportee - 5 + keyDistance, sharp, j);
+          drawAlteration(g, f, marge + 30, rowYpos - 5 + keyDistance, sharp, j);
         if (this.alterationsNumber >= 5) // LA#
-          drawAlteration(g, f, marge + 40, dportee + 10 + keyDistance, sharp, j);
+          drawAlteration(g, f, marge + 40, rowYpos + 10 + keyDistance, sharp, j);
         if (this.alterationsNumber >= 6) // MI#
-          drawAlteration(g, f, marge + 50, dportee - 10 + keyDistance, sharp, j);
+          drawAlteration(g, f, marge + 50, rowYpos - 10 + keyDistance, sharp, j);
         if (this.alterationsNumber >= 7) // SI#
-          drawAlteration(g, f, marge + 60, dportee + 5 + keyDistance, sharp, j);
+          drawAlteration(g, f, marge + 60, rowYpos + 5 + keyDistance, sharp, j);
       }
 
       if (this.Alteration.equalsIgnoreCase("b")) {
     	  
         if (this.alterationsNumber >= 1) // SIb
-          drawAlteration(g, f, marge, dportee + 5 + keyDistance, flat, j);
+          drawAlteration(g, f, marge, rowYpos + 5 + keyDistance, flat, j);
         if (this.alterationsNumber >= 2) // MIb
-          drawAlteration(g, f, marge + 9, dportee - 10 + keyDistance, flat, j);
+          drawAlteration(g, f, marge + 9, rowYpos - 10 + keyDistance, flat, j);
         if (this.alterationsNumber >= 3) // LAb
-          drawAlteration(g, f, marge + 18, dportee + 10 + keyDistance, flat, j);
+          drawAlteration(g, f, marge + 18, rowYpos + 10 + keyDistance, flat, j);
         if (this.alterationsNumber >= 4) // REb
-          drawAlteration(g, f, marge + 27, dportee - 5 + keyDistance, flat, j);
+          drawAlteration(g, f, marge + 27, rowYpos - 5 + keyDistance, flat, j);
         if (this.alterationsNumber >= 5) // SOLb
-          drawAlteration(g, f, marge + 36, dportee + 15 + keyDistance, flat, j);
+          drawAlteration(g, f, marge + 36, rowYpos + 15 + keyDistance, flat, j);
         if (this.alterationsNumber >= 6) // DOb
-          drawAlteration(g, f, marge + 45, dportee + keyDistance, flat, j);
+          drawAlteration(g, f, marge + 45, rowYpos + keyDistance, flat, j);
         if (this.alterationsNumber >= 7) // FAb
-          drawAlteration(g, f, marge + 54, dportee + 20 + keyDistance, flat, j);
+          drawAlteration(g, f, marge + 54, rowYpos + 20 + keyDistance, flat, j);
       }
     }
 	}
