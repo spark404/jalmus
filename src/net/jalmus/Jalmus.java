@@ -966,13 +966,17 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
 
         addMouseListener(new MouseAdapter() {
-
+;
+            
             public void mousePressed(MouseEvent e) {
                 requestFocus();
+     
+                Dimension d=getSize();
+                
                 if (selectedGame==NOTEREADING) {
                 	
-                	if (piano.rightbuttonpressed(e.getPoint()))  noteLevel.basenotetoRight(piano);
-                	if (piano.leftbuttonpressed(e.getPoint()))  noteLevel.basenotetoLeft(piano);
+                	if (piano.rightbuttonpressed(e.getPoint(),d.width))  noteLevel.basenotetoRight(piano);
+                	if (piano.leftbuttonpressed(e.getPoint(),d.width))  noteLevel.basenotetoLeft(piano);
                     
                 	repaint();
                 	

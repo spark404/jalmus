@@ -122,15 +122,17 @@ public class Piano {
     return null;
   }
   
-  public boolean rightbuttonpressed(Point point){
-	  
-	  Rectangle rec = new Rectangle(740, 440, 30 ,30); 
+  public boolean rightbuttonpressed(Point point, int width){
+	    int offx = (width/2) - 390;
+	    
+	  Rectangle rec = new Rectangle(740+ offx, 440, 30 ,30); 
   	return (rec.contains(point));  
   }
   
-  public boolean leftbuttonpressed(Point point){
-	  
-	  Rectangle rec = new Rectangle(5, 440, 30 ,30); 
+  public boolean leftbuttonpressed(Point point, int width){
+	    int offx = (width/2) - 390;
+	    
+	  Rectangle rec = new Rectangle(5+ offx, 440, 30 ,30); 
   	return (rec.contains(point));  
   }
 
