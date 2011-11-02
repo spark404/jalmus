@@ -101,11 +101,16 @@ public class ChooseNotePanel extends JPanel {
         int numCols = table.getColumnCount();
         for (int i = 0; i < numRows; i++){
         	for (int j = 1; j < numCols; j++){
-        		//System.out.println(newContentPane.gettable().getValueAt(i, j));
-        		if ((Boolean) table.getValueAt(i, j)) pitchselected.add(24+12*i+(j-1)); // first note Octava -3 C pitch 24
+          		if ((Boolean) table.getValueAt(i, j)) pitchselected.add(24+12*i+(j-1)); // first note Octava -3 C pitch 24
         	}
         }     
         return pitchselected;
+    }
+    
+    
+    public void updateTable(ArrayList<Integer> pitcheslist){
+      
+ 
     }
     
     public boolean  atLeast3Pitches(){
@@ -260,10 +265,14 @@ public class ChooseNotePanel extends JPanel {
         public boolean isCellEditable(int row, int col) {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            if ((col < 1)  //col indicate the octava
-             || (row == 0 & col < 3 )
-             || (row == 6 & col > 8 )
-            )  //pitch 24 25 not supported
+            // pitch 26 D-3 to 96 C+3 
+        	
+            int numCols = getColumnCount();
+            
+            if (
+            	(row == 0 & col < 3 )
+               || (row == 6 & col >  1)
+            ) 
             {
                 return false;
             }          
@@ -316,11 +325,12 @@ public class ChooseNotePanel extends JPanel {
               
               //Note that the data/cell address is constant,
               //no matter where the cell appears onscreen.
+              // pitch 47 b-2 to 96 c+3
               if ((col < 1)  //col indicate the octava
                || (row == 0 & col < numCols )
                || (row == 1 & col < numCols-1 )
-               || (row == 6 & col <  numCols)
-              )  //pitch 24 25 not supported
+               || (row == 6 & col >  1)
+              )  
               {
                   return false;
               }          
@@ -336,7 +346,7 @@ public class ChooseNotePanel extends JPanel {
         int numCols = getColumnCount();
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-        //pitch 26 to 74
+        //pitch 26 D-3 to 74 D+1
             if ((col < 1)  //col indicate the octava
              || (row == 0 & col < 3 )
              || (row == 4 & col > 3 )

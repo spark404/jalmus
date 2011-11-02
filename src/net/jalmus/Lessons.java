@@ -4,7 +4,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 /**
  * <p>Title: Jalmus</p>
@@ -24,7 +26,7 @@ public class Lessons extends DefaultHandler{
    NoteLevel level;
               //flags nous indiquant la position du parseur
    boolean inExercices, inLevel, inGametype, inNotestype, inNbnotes, inMessage, inSpeed, inStartingnote, inClef, inTonality,
-   inIntervals, inChords, inDuration;
+   inIntervals, inChords, inDuration, inPitches;
               //buffer nous permettant de récupérer les données
   private StringBuffer buffer;
 
@@ -84,6 +86,9 @@ public NoteLevel getLevel(){
        else if (qName.equals("notes")) {
          inNotestype = true;
        }
+       else if (qName.equals("pitches")) {
+           inPitches = true;
+         }
        else if (qName.equals("nbnotes")) {
          inNbnotes = true;
        }
@@ -180,12 +185,12 @@ public NoteLevel getLevel(){
 
      else if (qName.equals("notes")) {
        String tmpclef = buffer.toString();
-      if (tmpclef.equals("notes") | tmpclef.equals("accidentals") | tmpclef.equals("intervals") | tmpclef.equals("chords")){
+      if (tmpclef.equals("notes") | tmpclef.equals("accidentals") | tmpclef.equals("custom") | tmpclef.equals("intervals") | tmpclef.equals("chords")){
             level.setNotetype(buffer.toString());
 
       }
       else
-        throw new SAXException("In level " + level.getId() + " notes type should be notes, accidentals, intervals or chords");
+        throw new SAXException("In level " + level.getId() + " notes type should be notes, accidentals, custom,  intervals or chords");
 
 
        buffer = null;
@@ -209,6 +214,45 @@ public NoteLevel getLevel(){
          throw new SAXException(e);
        }
      }
+     
+     else if (qName.equals("pitches")) {
+         
+           String temp = buffer.toString();
+           StringTokenizer st=new StringTokenizer(temp,",;");
+           ArrayList<Integer> pitcheslist =  new ArrayList<Integer>(); 
+           Integer p;
+           
+           while ( st.hasMoreTokens() ) {
+        	   // System.out.println(p);
+        	    p = Integer.parseInt(st.nextToken());
+        	  System.out.println(p);
+        	    if ( level.isCurrentKeyTreble()) {
+        	    	if (p >= 47 & p <= 96)	    pitcheslist.add(p);
+        	    	else   throw new SAXException("In level " + level.getId() + " pitches should be list pitch 47 to 96");
+        	    }
+        	    	
+        	    else if ( level.isCurrentKeyBass()) {
+        	    	if (p >= 26 & p <= 74)	    pitcheslist.add(p);
+      	      		else   throw new SAXException("In level " + level.getId() + " pitches should be list pitch 26 to 74");
+        	    }
+        	    
+      	    else if ( level.isCurrentKeyBoth()) {       	    	
+        	    	if (p >= 26 & p <= 96)	    pitcheslist.add(p);
+        	    	 else   throw new SAXException("In level " + level.getId() + " pitches should be list pitch 26 to 96");
+
+        	    }
+       	     
+        	    
+        	}
+           
+        
+             level.setPitcheslist(pitcheslist);
+ 
+           buffer = null;
+           inPitches = false;
+   
+       }
+     
      else if (qName.equals("intervals")) {
          String tmpintervals = buffer.toString();
        if (tmpintervals.equals("second") | tmpintervals.equals("third") | tmpintervals.equals("fourth") |

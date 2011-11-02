@@ -1,5 +1,7 @@
 package net.jalmus;
 
+import java.util.ArrayList;
+
 /**
  * <p>Title: Jalmus</p>
  *
@@ -33,6 +35,8 @@ public class NoteLevel {
   int basebass; // height of the base note choose by user for bassKey
   int nbnotesunder; // number of notes under basenote
   int nbnotesupper;// number of notes upper basenote
+  
+  ArrayList<Integer> pitcheslist; //list of pitch for custom
 
   /* For chord game only */
   String chordtype;
@@ -196,6 +200,21 @@ public class NoteLevel {
  /*****************************************/
 
  /*****************************************/
+ 
+ public ArrayList<Integer> getPitcheslist(){
+	   return this.pitcheslist;
+	 }
+
+	 public void setPitcheslist(ArrayList<Integer> l){
+		 this.pitcheslist =  new ArrayList<Integer>(); 
+		 this.pitcheslist.addAll(l);
+	}
+
+ 
+ /*****************************************/
+
+ /*****************************************/
+ 
  public boolean getRandomtonality(){
    return this.randomtonality;
  }
