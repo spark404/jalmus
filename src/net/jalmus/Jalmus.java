@@ -2710,6 +2710,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
           // update current level for note reading
           noteLevel.inibasenote();
           initNoteGame();
+          if (noteLevel.isCustomNotesgame()) noteLevel.setPitcheslist(ChooseNoteP.getPitches());
           noteLevel.updatenbnotes(piano);
     	}
     	
@@ -4153,7 +4154,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             
             else if (noteLevel.isCustomNotesgame()){
             	// choosing note with pitch
-            	ncourante.setPitch(ChooseNoteP.getRandomPitch());
+            	
+            	ncourante.setPitch(noteLevel.getRandomPitch());
             	  ncourante.updateNotePitch(noteLevel, scoreYpos, bundle);
             	  precedente=ncourante.getHeight();
             }
@@ -4582,15 +4584,16 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
 
             else if (noteLevel.isCustomNotesgame()) {
-                ligne[0]=new Note("", "", 0, size.width-notemargin, ChooseNoteP.getRandomPitch() );
+            
+                ligne[0]=new Note("", "", 0, size.width-notemargin, noteLevel.getRandomPitch() );
                 ligne[0].updateNotePitch(noteLevel, scoreYpos, bundle);
         
 
                 String tmpa="";
                 for (int i=1; i<ligne.length; i++) {
-                    int tmpp=ChooseNoteP.getRandomPitch();
+                    int tmpp=noteLevel.getRandomPitch();
                     while (tmpp==ligne[i-1].getPitch()) {
-                        tmpp=ChooseNoteP.getRandomPitch(); // to avoid same pitch
+                        tmpp=noteLevel.getRandomPitch(); // to avoid same pitch
                     }
 
                     ligne[i]=new Note(tmpa, "", 0, size.width-notemargin+i*35, tmpp);

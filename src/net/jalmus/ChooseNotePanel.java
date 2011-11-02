@@ -125,17 +125,7 @@ public class ChooseNotePanel extends JPanel {
     	 return (nbpitches >= 3);
     }
     
-    public  Integer getRandomPitch(){
-        ArrayList<Integer> pitchselected = new ArrayList<Integer>(); 
-        
-        pitchselected = getPitches();
-        
-     	Random generator = new Random();
-    	int index = generator.nextInt ( pitchselected.size() );
-    	if( index >-1 )  return (pitchselected.get( index ));  	
-    	else return 0;
-    }
-    
+
     
     public void resettable(){
     	

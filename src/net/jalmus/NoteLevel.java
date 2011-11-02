@@ -1,6 +1,7 @@
 package net.jalmus;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * <p>Title: Jalmus</p>
@@ -90,6 +91,8 @@ public class NoteLevel {
 
     this.chordtype = "root";
     this.intervaltype = "third";
+    
+    this.pitcheslist =  new ArrayList<Integer>(); 
 
   }
 
@@ -205,12 +208,19 @@ public class NoteLevel {
 	   return this.pitcheslist;
 	 }
 
-	 public void setPitcheslist(ArrayList<Integer> l){
-		 this.pitcheslist =  new ArrayList<Integer>(); 
+ public void setPitcheslist(ArrayList<Integer> l){		
+	 	this.pitcheslist =  new ArrayList<Integer>(); 
 		 this.pitcheslist.addAll(l);
 	}
 
- 
+ public  Integer getRandomPitch(){
+			     
+		Random generator = new Random();
+		int index = generator.nextInt ( this.pitcheslist.size() );
+		if( index >-1 )  return (this.pitcheslist.get( index ));  	
+		else return 0;
+	}
+	    
  /*****************************************/
 
  /*****************************************/
@@ -347,6 +357,9 @@ public void copy(NoteLevel nl){
 
  this.chordtype = nl.chordtype;
  this.intervaltype = nl.intervaltype;
+ 
+this.pitcheslist =  new ArrayList<Integer>(); 
+this.pitcheslist.addAll(nl.getPitcheslist());
 
 
 
