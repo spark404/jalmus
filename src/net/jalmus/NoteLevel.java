@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -77,6 +78,7 @@ public class NoteLevel {
 
     this.chordtype = "root";
     this.intervaltype = "third";
+    this.pitcheslist = new ArrayList<Integer>();
 
 
   }
@@ -384,7 +386,7 @@ writer.close();
 writer = null;
 }
 
-public void save(String fileName) 
+public void save(Lessons l, String fileName) 
 	throws IOException {
 	
 	File destDir = new File("");;
@@ -392,54 +394,45 @@ public void save(String fileName)
     String path = "";
     StringBuffer fileContent = new StringBuffer();
     
-    path=getClass().getSimpleName()+".class";
-    URL url=getClass().getResource(path);
-    try {
-        path=URLDecoder.decode(url.toString(), "UTF-8");
-    }
-    catch (UnsupportedEncodingException ex) {
-    }
-
-    // suppression de  la classe ou du jar du path de l'url
-    int index=path.lastIndexOf('/');
-    path=path.substring(0, index);
-
-    if (path.startsWith("jar:file:")) {
-        // suppression de jar:file: de l'url d'un jar
-        // ainsi que du path de la classe dans le jar
-        index=path.indexOf('!');
-        path=path.substring(9, index);
-    } else {
-        // suppresion du file: de l'url si c'est une classe en dehors d'un jar
-        // et suppression du path du package si il est prÃ©sent.
-        path=path.substring(5, path.length());
-        Package pack=getClass().getPackage();
-        if (null!=pack) {
-            String packPath=pack.toString().replace('.', '/');
-            if (path.endsWith(packPath)) {
-                path=path.substring(0, (path.length()-packPath.length()));
-            }
-        }
-    }
-
-    index=path.lastIndexOf('/');
-    path=path.substring(0, index);
-
-    index=path.lastIndexOf('/');
-    path=path.substring(0, index);
-
-    path=path+File.separator+"lessons"+File.separator+"en";
+    path = l.getLessonPath("en");
     
     destDir = new File(path);
     
 //return File.createTempFile(new File(fileName).getName() + "_" + datev,"", destDir);
 File f = new File(destDir, fileName);
-System.out.println("Cr�ation fichier " + destDir + "\\" + fileName + newline);
+System.out.println("Création fichier " + destDir + "\\" + fileName + newline);
 
 fileContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+newline);
 fileContent.append("<levels>"+newline+"<notereading id = '0'>");
-fileContent.append("<message>Exercise save</message>"+newline);
+fileContent.append("<message>Exercise saved "+new Date()+"</message>"+newline);
+fileContent.append("<game>"+this.gametype+"</game>"+newline);
+if (this.isLearninggame()) fileContent.append("<learningduration>30<learningduration>"+newline);
+fileContent.append("<clef>"+this.currentKey+"</clef>"+newline);
+if (this.randomtonality) fileContent.append("<tonality>random</tonality>"+newline);
+else  if (this.currenttonality.getAlterationsNumber()!=0) fileContent.append("<tonality>"+this.currenttonality.getAlterationsNumber()+this.currenttonality.getAlteration()+ "</tonality>"+newline);
+fileContent.append("<notes>"+this.notetype+"</notes>"+newline);
+if (this.isNotesgame() || this.isAccidentalsgame()){
+	fileContent.append("<nbnotes>"+this.nbnotes+"</nbnotes>"+newline);
+	if (this.isCurrentKeyBass()) fileContent.append("<startingnote>"+(5 - this.basebass)/5 +"</startingnote>"+newline);
+	else if (this.isCurrentKeyTreble()) fileContent.append("<startingnote>"+(25 - this.basetreble)/5 +"</startingnote>"+newline);
+	else if (this.isCurrentKeyBoth()) fileContent.append("<startingnote>"+(20 - this.basebass)/5 +"</startingnote>"+newline);
+	   
+}
+if (this.isIntervalsgame()){
+	fileContent.append("<intervals>"+this.intervaltype+"</intervals>"+newline);
+}
+if (this.isChordsgame()){
+	fileContent.append("<chords>"+this.chordtype+"</chords>"+newline);
+}
+if (this.isCustomNotesgame()){
+	fileContent.append("<pitches>");
+	for (Integer pitch : this.pitcheslist) {
+	fileContent.append(pitch+",");
+	}
+	fileContent.append("</pitches>"+newline);
+}
 
+fileContent.append("<speed>"+this.speed+"</speed>"+newline);
 fileContent.append("</notereading>"+newline+"</levels>");
 writeFile(f, fileContent.toString());
 }
