@@ -436,9 +436,12 @@ public void save(String fileName)
 File f = new File(destDir, fileName);
 System.out.println("Création fichier " + destDir + "\\" + fileName + newline);
 
-fileContent.append("test");
-writeFile(f, fileContent.toString());
+fileContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+newline);
+fileContent.append("<levels>"+newline+"<notereading id = '0'>");
+fileContent.append("<message>Exercise save</message>"+newline);
 
+fileContent.append("</notereading>"+newline+"</levels>");
+writeFile(f, fileContent.toString());
 }
 
 	
