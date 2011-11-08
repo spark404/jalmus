@@ -1427,10 +1427,22 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         });
         cancelButton.setIcon(new ImageIcon(getClass().getResource("/images/cancel.png")));
         localizables.add(new Localizable.Button(cancelButton, "_buttoncancel"));
+        
+        JButton saveButton=new JButton();
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handlePreferencesSaveClicked();
+            }
+        });
+        saveButton.setIcon(new ImageIcon(getClass().getResource("/images/save.png")));
+        localizables.add(new Localizable.Button(saveButton, "_buttonsave"));
+        
+
 
         JPanel buttonPanel=new JPanel();
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
+        buttonPanel.add(saveButton);
 
         JPanel contentPanel=new JPanel();
       // contentPanel.setLayout(new GridLayout(2, 2));
@@ -2704,6 +2716,14 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         preferencesDialog.setVisible(false);
     }
 
+    private void handlePreferencesSaveClicked() {
+    	try {
+			noteLevel.save("test.xml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
     private void handlePreferencesOkClicked() {
 
     	if (selectedGame==NOTEREADING) {

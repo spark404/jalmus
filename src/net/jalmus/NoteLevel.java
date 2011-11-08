@@ -1,7 +1,17 @@
 package net.jalmus;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JTextArea;
 
 /**
  * <p>Title: Jalmus</p>
@@ -365,7 +375,73 @@ this.pitcheslist.addAll(nl.getPitcheslist());
 
 }
 
+private static void writeFile(File destFile, String content)
+throws IOException {
+BufferedWriter writer = new BufferedWriter(new FileWriter(destFile));
+writer.write(content);
+writer.flush();
+writer.close();
+writer = null;
+}
 
+public void save(String fileName) 
+	throws IOException {
+	
+	File destDir = new File("");;
+    final String newline = "\r\n";
+    String path = "";
+    StringBuffer fileContent = new StringBuffer();
+    
+    path=getClass().getSimpleName()+".class";
+    URL url=getClass().getResource(path);
+    try {
+        path=URLDecoder.decode(url.toString(), "UTF-8");
+    }
+    catch (UnsupportedEncodingException ex) {
+    }
+
+    // suppression de  la classe ou du jar du path de l'url
+    int index=path.lastIndexOf('/');
+    path=path.substring(0, index);
+
+    if (path.startsWith("jar:file:")) {
+        // suppression de jar:file: de l'url d'un jar
+        // ainsi que du path de la classe dans le jar
+        index=path.indexOf('!');
+        path=path.substring(9, index);
+    } else {
+        // suppresion du file: de l'url si c'est une classe en dehors d'un jar
+        // et suppression du path du package si il est prÃ©sent.
+        path=path.substring(5, path.length());
+        Package pack=getClass().getPackage();
+        if (null!=pack) {
+            String packPath=pack.toString().replace('.', '/');
+            if (path.endsWith(packPath)) {
+                path=path.substring(0, (path.length()-packPath.length()));
+            }
+        }
+    }
+
+    index=path.lastIndexOf('/');
+    path=path.substring(0, index);
+
+    index=path.lastIndexOf('/');
+    path=path.substring(0, index);
+
+    path=path+File.separator+"lessons"+File.separator+"en";
+    
+    destDir = new File(path);
+    
+//return File.createTempFile(new File(fileName).getName() + "_" + datev,"", destDir);
+File f = new File(destDir, fileName);
+System.out.println("Cr�ation fichier " + destDir + "\\" + fileName + newline);
+
+fileContent.append("test");
+writeFile(f, fileContent.toString());
+
+}
+
+	
 public void printtest(){
    System.out.println("Level n°"+this.Id);
     System.out.println(this.currentKey);
@@ -378,6 +454,7 @@ public void printtest(){
   System.out.println("nbnotes upper "+this.nbnotesupper);
   System.out.println("nbnotes under "+this.nbnotesunder);
 }
+
 
 
 public void basenotetoLeft(Piano piano){  //base note is move when user pres key left
