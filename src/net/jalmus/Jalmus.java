@@ -161,6 +161,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 //import javax.swing.WindowConstants;
 import javax.swing.plaf.ColorUIResource;
 import javax.xml.parsers.ParserConfigurationException;
@@ -445,6 +446,19 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private int[] savePrefs=new int[30]; // for cancle button
 
+    
+    
+    //----SAVE DIALOG
+
+    private JDialog saveDialog=new JDialog();
+    private JPanel labelPanel = new JPanel(new GridLayout(2, 1));
+    private JPanel fieldPanel = new JPanel(new GridLayout(2, 1));
+
+    private JPanel savePanel=new JPanel();
+    private JTextField Lessonname = new JTextField(20);
+    private JTextField Lessonmessage = new JTextField(20);
+    private JButton oksaveButton=new JButton();
+    
     //----
 
     private JDialog levelMessage=new JDialog();
@@ -690,6 +704,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         scoreMessage=new JDialog(this, true);
         //scoreMessage.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         scoreMessage.setResizable(false);
+        
+        saveDialog=new JDialog(this, true);
+        //scoreMessage.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        saveDialog.setResizable(false);
 
         menuParameters.add(menuPrefs);
         menuPrefs.addActionListener(this);
@@ -927,6 +945,28 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         scoreMessage.setContentPane(pscoreMessage);
         scoreMessage.setModal(false);
         scoreMessage.setVisible(false);
+        
+        labelPanel.add( new JLabel(bundle.getString("_name"), JLabel.RIGHT));
+        labelPanel.add( new JLabel(bundle.getString("_description"), JLabel.RIGHT));
+        fieldPanel.add(Lessonname);
+        fieldPanel.add(Lessonmessage);
+        
+        savePanel.add(labelPanel, BorderLayout.WEST);
+	   savePanel.add(fieldPanel, BorderLayout.CENTER);
+
+       oksaveButton=new JButton();
+       oksaveButton.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               handleOKSave();
+           }
+       });
+       oksaveButton.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
+       oksaveButton.setText(bundle.getString("_buttonok"));
+        savePanel.add(oksaveButton);
+        saveDialog.setContentPane(savePanel);
+        saveDialog.setVisible(false);
+        
+         
 
         /*******************************************************************/
 
@@ -2706,13 +2746,33 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     }
 
     private void handlePreferencesSaveClicked() {
+
+    		
+    		saveDialog.setTitle(bundle.getString("_buttonsave"));
+    	//	saveDialog.setLayout(new GridLayout(3, 1));    
+    		saveDialog.pack();
+    		saveDialog.setLocationRelativeTo(this);
+    		saveDialog.setVisible(true);
+
+           
+    }
+    
+    private void handleOKSave() {
     	try {
-			noteLevel.save(currentlesson,"test.xml");
+    		
+    		if (Lessonname.getText().length()!=0){
+			noteLevel.save(currentlesson,Lessonname.getText()+".xml", Lessonmessage.getText());
+			saveDialog.setVisible(false);
+    		}
+    		else JOptionPane.showMessageDialog(null, "Give the name of the lesson", "Warning", JOptionPane.ERROR_MESSAGE); 
+    	      
+    		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
+    
     private void handlePreferencesOkClicked() {
 
     	if (selectedGame==NOTEREADING) {

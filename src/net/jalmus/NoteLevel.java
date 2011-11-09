@@ -386,7 +386,7 @@ writer.close();
 writer = null;
 }
 
-public void save(Lessons l, String fileName) 
+public void save(Lessons l, String fileName, String message) 
 	throws IOException {
 	
 	File destDir = new File("");;
@@ -403,8 +403,9 @@ File f = new File(destDir, fileName);
 System.out.println("Création fichier " + destDir + "\\" + fileName + newline);
 
 fileContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+newline);
+fileContent.append("<!--"+newline+"Document : "+ fileName + newline + "Exercise saved : "+new Date()+newline+"-->"+newline+newline);
 fileContent.append("<levels>"+newline+"<notereading id = '0'>");
-fileContent.append("<message>Exercise saved "+new Date()+"</message>"+newline);
+fileContent.append("<message>"+message+"</message>"+newline);
 fileContent.append("<game>"+this.gametype+"</game>"+newline);
 if (this.isLearninggame()) fileContent.append("<learningduration>30<learningduration>"+newline);
 fileContent.append("<clef>"+this.currentKey+"</clef>"+newline);
