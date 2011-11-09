@@ -35,6 +35,7 @@ import javax.swing.table.TableColumn;
 public class ChooseNotePanel extends JPanel {
     private boolean DEBUG = false;
     private JTable table;
+    JButton okButton;
     
     
     public ChooseNotePanel(String key, ResourceBundle bundle) {
@@ -59,21 +60,22 @@ public class ChooseNotePanel extends JPanel {
         //Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(table);
  
-        JButton okButton=new JButton();
-        okButton.setText(bundle.getString("_buttonok"));
-        okButton.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
+        okButton=new JButton();
+       okButton.setText(bundle.getString("_buttonok"));
+       okButton.setIcon(new ImageIcon(getClass().getResource("/images/ok.png")));
 
         JButton clearButton=new JButton();
         clearButton.setText(bundle.getString("_buttonclear"));
-        clearButton.setIcon(new ImageIcon(getClass().getResource("/images/cancel.png")));
+       clearButton.setIcon(new ImageIcon(getClass().getResource("/images/eraser.png")));
         
-        okButton.addActionListener(new ActionListener() {
+
+  /*      okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	 if (!atLeast3Pitches()) JOptionPane.showMessageDialog(null, "Choose at least three notes", "Warning", JOptionPane.ERROR_MESSAGE); 
             	//System.out.println(getFocusCycleRootAncestor());
             	 else getFocusCycleRootAncestor().setVisible(false);
             }
-        });
+        });*/
         
         clearButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -94,6 +96,10 @@ public class ChooseNotePanel extends JPanel {
     	return this.table;
     }
     
+    public  JButton getButton(){
+    	return this.okButton;
+    }
+    
     public ArrayList<Integer> getPitches(){
         ArrayList<Integer> pitchselected = new ArrayList<Integer>(); 
         
@@ -109,7 +115,9 @@ public class ChooseNotePanel extends JPanel {
     
     
     public void updateTable(ArrayList<Integer> pitcheslist){
-      
+    	for (Integer pitch : pitcheslist) {
+    		//to do
+    		}
  
     }
     

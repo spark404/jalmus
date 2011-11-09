@@ -104,6 +104,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -578,6 +579,28 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
         });
 
+        
+        bundle = ResourceBundle.getBundle("language", new Locale(language));
+        System.out.println(new Locale(language));
+    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
+        ChooseNoteP.setOpaque(true); //content panes must be opaque
+        
+     
+        ChooseNoteP.setVisible(true);
+       ChooseNoteP.okButton.addActionListener(new ActionListener() {
+    	   
+           public void actionPerformed(ActionEvent e)
+           {
+               //Execute when button is pressed
+        		 if (! ChooseNoteP.atLeast3Pitches()) JOptionPane.showMessageDialog(null, "Choose at least three notes", "Warning", JOptionPane.ERROR_MESSAGE); 
+        		 else    {
+        			 notesDialog.setVisible(false);
+        			 noteLevel.setPitcheslist(ChooseNoteP.getPitches());
+        		 }
+              
+           }
+       });    
+       
         bdo=new JButton();
         bdo.addActionListener(this);
         pnotes.add(bdo);
@@ -2696,7 +2719,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
           // update current level for note reading
           noteLevel.inibasenote();
           initNoteGame();
-          if (noteLevel.isCustomNotesgame()) noteLevel.setPitcheslist(ChooseNoteP.getPitches());
+        
           noteLevel.updatenbnotes(piano);
     	}
     	
@@ -3214,7 +3237,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteReadingNotesPanel.add(noteGroupComboBox);
                 preferencesDialog.repaint();
                 
-              	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
+          //    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
                 ChooseNoteP.setOpaque(true); //content panes must be opaque
                 
                 notesDialog.setContentPane(ChooseNoteP);
@@ -3223,8 +3246,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 notesDialog.setVisible(true);
                 
                 ChooseNoteP.setVisible(true);
-           
-                
+            
+
                 this.add(notesDialog);
                 
             }
