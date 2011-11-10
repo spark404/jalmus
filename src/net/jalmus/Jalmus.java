@@ -220,8 +220,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     // Lesson variables
     private Lessons currentlesson=new Lessons();
     private boolean isLessonMode;
-    JMenuItem[] lessonsMenuItem=new JMenuItem[26];
+    JMenu[] lessonsMenuDir=new JMenu[16];
+    JMenuItem[][] lessonsMenuItem=new JMenuItem[16][26];
     private String path;
+    private String[] pathsubdir = new String[16];
 
     //----------------------------------------------------------------
     // Note reading variables
@@ -1204,36 +1206,58 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     lessonsMenu.setMnemonic(KeyEvent.VK_L);
     
     	path = currentlesson.getLessonPath(language);
+    	
+    	   File sousrepertoire=new File(path);
 
-    File repertoire=new File(path);
+    	  if (sousrepertoire.isDirectory()) {
+    	        File[] listsp=sousrepertoire.listFiles();
+    	        Arrays.sort(listsp);
+    	        if (listsp!=null && listsp.length <= 15) { //15 directory
+
+    	         for   (int i=0; i<listsp.length; i++) {
+        
+    	                	lessonsMenuDir[i]= new JMenu(listsp[i].getName());
+    	                	lessonsMenu.add(lessonsMenuDir[i]);
+    	                	
+    	                	pathsubdir[i] = path+File.separator+listsp[i].getName();
+    	                    File repertoire=new File(pathsubdir[i]);
+    	                    File[] list=repertoire.listFiles();
+    	                    Arrays.sort(list);
+    	                    if (list!=null && list.length <= 25) { //25 lessons max
+
+    	                        for (int i1=0; i1<list.length; i1++) {
+
+    	                            if ("xml".equals(FileTools.getFileExtension(list[i1]))) {
+    	                            
+    	                            	lessonsMenuItem[i][i1]= new JMenuItem(FileTools.getFileNameWithoutExtension(list[i1]));
+    	                            	 lessonsMenuItem[i][i1].addActionListener(this);
+    	                            	
+    	                                lessonsMenuDir[i].add(lessonsMenuItem[i][i1]);
+    	                                
+    	                            }
+    	                        }
+
+
+    	                    }
+    	                    
+    	         			}
+
+
+    	        }
+    	  }
+    	  
+    	  else {
+    	        System.err.println(sousrepertoire+" : Reading lessons files error.");
+    	    }
+    	  
+   // 	path = path+"/Basic";
+  //  File repertoire=new File(path);
 
   //  bLessons.removeAllItems();
    
     //localizables.add(new Localizable.Button(lessonsMenuItem, "_menuLessons"));
    
 
-    if (repertoire.isDirectory()) {
-        File[] list=repertoire.listFiles();
-        Arrays.sort(list);
-        if (list!=null && list.length <= 25) { //25 lessons max
-
-            for (int i=0; i<list.length; i++) {
-
-                if ("xml".equals(FileTools.getFileExtension(list[i]))) {
-                
-                	lessonsMenuItem[i]= new JMenuItem(FileTools.getFileNameWithoutExtension(list[i]));
-                	 lessonsMenuItem[i].addActionListener(this);
-                	
-                    lessonsMenu.add(lessonsMenuItem[i]);
-                    
-                }
-            }
-
-
-        }
-    } else {
-        System.err.println(repertoire+" : Reading lessons files error.");
-    }
     return lessonsMenu;
     }
     
@@ -2422,11 +2446,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         	updateLang();
         } 
         
-        for (int i=0; i<lessonsMenuItem.length; i++) {
-        	if (e.getSource() == lessonsMenuItem[i]) {
-        		handleLessonMenuItem(lessonsMenuItem[i].getText());
-        		System.out.println("lesson " + i);
+        for (int i0=0; i0<lessonsMenuItem.length; i0++) {
+        for (int i=0; i<lessonsMenuItem[0].length; i++) {
+        	if (e.getSource() == lessonsMenuItem[i0][i]) {
+        		handleLessonMenuItem(lessonsMenuItem[i0][i].getText(),i0);
+        		System.out.println("lesson " + i0 + i + lessonsMenuItem[i0][i].getText());
         	}
+        }
         }
         
          if (e.getSource()==menuPrefs) {
@@ -2530,7 +2556,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
 
     
-    private void handleLessonMenuItem(String lesson) {
+    private void handleLessonMenuItem(String lesson, Integer i) {
     String parseerror;
     
     stopGames();
@@ -2545,7 +2571,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         currentlesson=new Lessons();
         // lecture d'un fichier XML avec un DefaultHandler
 
-        File lessonFile=new File(path+File.separator+lesson+".xml");
+        File lessonFile=new File(pathsubdir[i]+File.separator+lesson+".xml");
         parseur.parse(lessonFile, currentlesson);
 
         noteLevel.copy(currentlesson.getLevel());
@@ -2761,7 +2787,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	try {
     		
     		if (Lessonname.getText().length()!=0){
-			noteLevel.save(currentlesson,Lessonname.getText()+".xml", Lessonmessage.getText());
+			noteLevel.save(currentlesson,Lessonname.getText()+".xml", Lessonmessage.getText(), language);
 			saveDialog.setVisible(false);
     		}
     		else JOptionPane.showMessageDialog(null, "Give the name of the lesson", "Warning", JOptionPane.ERROR_MESSAGE); 

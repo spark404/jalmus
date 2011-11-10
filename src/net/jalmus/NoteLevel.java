@@ -8,10 +8,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
 import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
@@ -386,56 +389,85 @@ writer.close();
 writer = null;
 }
 
-public void save(Lessons l, String fileName, String message) 
+public void save(Lessons l, String fileName, String message, String language) 
 	throws IOException {
 	
 	File destDir = new File("");;
     final String newline = "\r\n";
     String path = "";
     StringBuffer fileContent = new StringBuffer();
+    boolean dirmylessonok = false;
     
-    path = l.getLessonPath("en");
+    path = l.getLessonPath(language);
     
-    destDir = new File(path);
+    File sousrepertoire=new File(path);
     
-//return File.createTempFile(new File(fileName).getName() + "_" + datev,"", destDir);
-File f = new File(destDir, fileName);
-System.out.println("Création fichier " + destDir + "\\" + fileName + newline);
+    // find the personnal lessons directory 99. in the name
+    if (sousrepertoire.isDirectory()) {
+        File[] listsp=sousrepertoire.listFiles();
+        Arrays.sort(listsp);
+        if (listsp!=null) { 
 
-fileContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+newline);
-fileContent.append("<!--"+newline+"Document : "+ fileName + newline + "Exercise saved : "+new Date()+newline+"-->"+newline+newline);
-fileContent.append("<levels>"+newline+"<notereading id = '0'>");
-fileContent.append("<message>"+message+"</message>"+newline);
-fileContent.append("<game>"+this.gametype+"</game>"+newline);
-if (this.isLearninggame()) fileContent.append("<learningduration>30<learningduration>"+newline);
-fileContent.append("<clef>"+this.currentKey+"</clef>"+newline);
-if (this.randomtonality) fileContent.append("<tonality>random</tonality>"+newline);
-else  if (this.currenttonality.getAlterationsNumber()!=0) fileContent.append("<tonality>"+this.currenttonality.getAlterationsNumber()+this.currenttonality.getAlteration()+ "</tonality>"+newline);
-fileContent.append("<notes>"+this.notetype+"</notes>"+newline);
-if (this.isNotesgame() || this.isAccidentalsgame()){
-	fileContent.append("<nbnotes>"+this.nbnotes+"</nbnotes>"+newline);
-	if (this.isCurrentKeyBass()) fileContent.append("<startingnote>"+(5 - this.basebass)/5 +"</startingnote>"+newline);
-	else if (this.isCurrentKeyTreble()) fileContent.append("<startingnote>"+(25 - this.basetreble)/5 +"</startingnote>"+newline);
-	else if (this.isCurrentKeyBoth()) fileContent.append("<startingnote>"+(20 - this.basebass)/5 +"</startingnote>"+newline);
-	   
-}
-if (this.isIntervalsgame()){
-	fileContent.append("<intervals>"+this.intervaltype+"</intervals>"+newline);
-}
-if (this.isChordsgame()){
-	fileContent.append("<chords>"+this.chordtype+"</chords>"+newline);
-}
-if (this.isCustomNotesgame()){
-	fileContent.append("<pitches>");
-	for (Integer pitch : this.pitcheslist) {
-	fileContent.append(pitch+",");
-	}
-	fileContent.append("</pitches>"+newline);
-}
+         for   (int i=0; i<listsp.length; i++) {
+        	 		if (listsp[i].getName().indexOf("99.") != -1)  {
 
-fileContent.append("<speed>"+this.speed+"</speed>"+newline);
-fileContent.append("</notereading>"+newline+"</levels>");
-writeFile(f, fileContent.toString());
+                	
+                	path = path+File.separator+listsp[i].getName();
+        	 	    dirmylessonok = true;
+        	 		}
+        	 		
+                    
+         }
+        }
+    }
+    
+    if ( dirmylessonok) {
+    	destDir = new File(path);
+    
+		//return File.createTempFile(new File(fileName).getName() + "_" + datev,"", destDir);
+		File f = new File(destDir, fileName);
+		System.out.println("Création fichier " + destDir + "\\" + fileName + newline);
+		
+		fileContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+newline);
+		fileContent.append("<!--"+newline+"Document : "+ fileName + newline + "Exercise saved : "+new Date()+newline+"-->"+newline+newline);
+		fileContent.append("<levels>"+newline+"<notereading id = '0'>");
+		fileContent.append("<message>"+message+"</message>"+newline);
+		fileContent.append("<game>"+this.gametype+"</game>"+newline);
+		if (this.isLearninggame()) fileContent.append("<learningduration>30<learningduration>"+newline);
+		fileContent.append("<clef>"+this.currentKey+"</clef>"+newline);
+		if (this.randomtonality) fileContent.append("<tonality>random</tonality>"+newline);
+		else  if (this.currenttonality.getAlterationsNumber()!=0) fileContent.append("<tonality>"+this.currenttonality.getAlterationsNumber()+this.currenttonality.getAlteration()+ "</tonality>"+newline);
+		fileContent.append("<notes>"+this.notetype+"</notes>"+newline);
+		if (this.isNotesgame() || this.isAccidentalsgame()){
+			fileContent.append("<nbnotes>"+this.nbnotes+"</nbnotes>"+newline);
+			if (this.isCurrentKeyBass()) fileContent.append("<startingnote>"+(5 - this.basebass)/5 +"</startingnote>"+newline);
+			else if (this.isCurrentKeyTreble()) fileContent.append("<startingnote>"+(25 - this.basetreble)/5 +"</startingnote>"+newline);
+			else if (this.isCurrentKeyBoth()) fileContent.append("<startingnote>"+(20 - this.basebass)/5 +"</startingnote>"+newline);
+			   
+		}
+		if (this.isIntervalsgame()){
+			fileContent.append("<intervals>"+this.intervaltype+"</intervals>"+newline);
+		}
+		if (this.isChordsgame()){
+			fileContent.append("<chords>"+this.chordtype+"</chords>"+newline);
+		}
+		if (this.isCustomNotesgame()){
+			fileContent.append("<pitches>");
+			for (Integer pitch : this.pitcheslist) {
+			fileContent.append(pitch+",");
+			}
+			fileContent.append("</pitches>"+newline);
+		}
+		
+		fileContent.append("<speed>"+this.speed+"</speed>"+newline);
+		fileContent.append("</notereading>"+newline+"</levels>");
+		writeFile(f, fileContent.toString());
+		
+    }
+    else JOptionPane.showMessageDialog(null, "The personnal lessons directory begin with 99. is missing", "Warning", JOptionPane.ERROR_MESSAGE); 
+    
+
+
 }
 
 	
