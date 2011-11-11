@@ -2,7 +2,7 @@ package net.jalmus;
 
 import java.util.ArrayList;
 
-public class ScoreLevel {
+public class ScoreLevel implements Level {
 	boolean whole;
 	boolean half;
 	boolean quarter; 

@@ -15,7 +15,7 @@ import java.awt.Graphics;
  * @version 1.0
  */
 
-public class RhythmLevel {
+public class RhythmLevel implements Level {
   boolean whole;
   boolean half;
   boolean quarter;

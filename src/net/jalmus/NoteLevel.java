@@ -31,7 +31,7 @@ import javax.swing.JTextArea;
  */
 
 
-public class NoteLevel {
+public class NoteLevel implements Level{
   int Id;
   String message;
   String currentKey;

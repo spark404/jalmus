@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
  * @version 1.0
  */
 public class Lessons extends DefaultHandler{
-   LinkedList<NoteLevel> levelslist;
+   LinkedList<Level> levelslist;
    int currentlevel;
    NoteLevel level;
               //flags nous indiquant la position du parseur
@@ -37,7 +37,7 @@ public class Lessons extends DefaultHandler{
 
    public Lessons() {
 
-     this.levelslist = new LinkedList<NoteLevel>();
+     this.levelslist = new LinkedList<Level>();
      this.currentlevel = 0;
    }
 
@@ -104,7 +104,7 @@ public NoteLevel getLevel(){
                             String qName, Attributes attributes) throws
        SAXException {
      if (qName.equals("levels")) {
-       this.levelslist = new LinkedList<NoteLevel>();
+       this.levelslist = new LinkedList<Level>();
        inExercices = true;
      }
      else if (qName.equals("notereading")) {
