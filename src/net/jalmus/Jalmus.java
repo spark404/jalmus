@@ -220,8 +220,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     // Lesson variables
     private Lessons currentlesson=new Lessons();
     private boolean isLessonMode;
-    JMenu[] lessonsMenuDir=new JMenu[16];
-    JMenuItem[][] lessonsMenuItem=new JMenuItem[16][26];
+    private JMenu lessonsMenu=new JMenu();
+    private JMenu[] lessonsMenuDir=new JMenu[16];
+    private JMenuItem[][] lessonsMenuItem=new JMenuItem[16][26];
     private String path;
     private String[] pathsubdir = new String[16];
 
@@ -460,6 +461,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JTextField Lessonname = new JTextField(20);
     private JTextField Lessonmessage = new JTextField(20);
     private JButton oksaveButton=new JButton();
+    
+
     
     //----
 
@@ -854,7 +857,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         
         maBarre.add(buildExercisesMenu());
-        maBarre.add(buildLessonsMenu());
+        buildLessonsMenu();
+        maBarre.add(lessonsMenu);
         maBarre.add(menuParameters);
         maBarre.add(aide);
 
@@ -1199,9 +1203,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
  
     
-    private JMenu buildLessonsMenu() {
+    private void buildLessonsMenu() {
     	
-    JMenu lessonsMenu=new JMenu();
+
     localizables.add(new Localizable.Button(lessonsMenu, "_menuLessons"));
     lessonsMenu.setMnemonic(KeyEvent.VK_L);
     
@@ -1258,7 +1262,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     //localizables.add(new Localizable.Button(lessonsMenuItem, "_menuLessons"));
    
 
-    return lessonsMenu;
     }
     
     //----------------------------------------------------------------
@@ -2789,6 +2792,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     		if (Lessonname.getText().length()!=0){
 			noteLevel.save(currentlesson,Lessonname.getText()+".xml", Lessonmessage.getText(), language);
 			saveDialog.setVisible(false);
+			
+			lessonsMenu.removeAll();
+			buildLessonsMenu();
+		        
     		}
     		else JOptionPane.showMessageDialog(null, "Give the name of the lesson", "Warning", JOptionPane.ERROR_MESSAGE); 
     	      
