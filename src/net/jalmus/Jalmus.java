@@ -158,10 +158,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 //import javax.swing.WindowConstants;
 import javax.swing.plaf.ColorUIResource;
 import javax.xml.parsers.ParserConfigurationException;
@@ -239,7 +241,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private boolean open;
 
     private Piano piano;
-    private int transpose = 0;  // octave number for MIDI keyboard transposition -2 -1 0 1 2
+    private int transpose = 0;  // number of 1/2tons for MIDI transposition -24 +24
 
     // Animation Resources
 
@@ -271,9 +273,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private int keyWidth = 30; // width of score keys
     private int alterationWidth = 0; // width of alterations symbols. None by default
     private int timeSignWidth = 30; // width of current score time signature symbol. This includes also the first note margin
-    private int timeSignNumerator = 4;
-    private int timeSignDenominator = 4;
-    private int timeDivision = 1; // ratio between time signature numerator and denominator 
+
     private int scoreYpos=110; // Y coordinate of the first row of the score
     private int rowsDistance = 100; // distance in pixel between staff rows
     private int numberOfMeasures = 2; // number of measures in a single row
@@ -312,13 +312,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     //----------------------------------------------------------------
     // Rhythm reading variables
 
+    private RhythmLevel rhythmLevel=new RhythmLevel(true, true, false, false, false, false, 4, 4, 1);
+    
     private ArrayList<Rhythm> rhythms = new ArrayList<Rhythm>(); 
     private int rhythmIndex=-1; // index of the current note in the list
     private ArrayList<RhythmAnswer> answers = new ArrayList<RhythmAnswer>();
     private int rhythmAnswerScoreYpos=100; //distance to paint answer
     private float rhythmCursorXpos = firstNoteXPos - noteDistance; // X position of the cursor on the score during rhythm game
     private int rhythmCursorXStartPos = firstNoteXPos - noteDistance;
-    private int rhythmCursorXlimit = firstNoteXPos + (timeSignNumerator * numberOfMeasures * noteDistance);
+    private int rhythmCursorXlimit = firstNoteXPos + (rhythmLevel.getTimeSignNumerator() * numberOfMeasures * noteDistance);
     private int precision = 10; //precision on control between note and answer
     private boolean samerhythms = true;
     private boolean muterhythms = false;
@@ -342,7 +344,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private Sequence sequence;
     private Sequencer sm_sequencer;
 
-    private RhythmLevel rhythmLevel=new RhythmLevel(true, true, false, false, false, false);
+
 
     private ScoreLevel scoreLevel=new ScoreLevel();
 
@@ -486,7 +488,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JCheckBox soundOnCheckBox;
     private JComboBox instrumentsComboBox;
     private JComboBox keyboardLengthComboBox; // for length-number of touchs of keyboard
-    private JComboBox transpositionComboBox; // for transposition MIDI keyboard
+   //private JComboBox transpositionComboBox; // for transposition MIDI keyboard
+   private JSpinner transpositionSpinner; // for transposition MIDI keyboard
+   private SpinnerNumberModel m_numberSpinnerModel;
 
     private JSlider latencySlider = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
 
@@ -1116,7 +1120,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         updateLang();
         
-        transpositionComboBox.setSelectedIndex(2);
+ 
+       
+       transpositionSpinner.setValue(0);
         
         // load user preferences from settings file
      	try{
@@ -1141,8 +1147,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	      else if (kl == 73) keyboardLengthComboBox.setSelectedIndex(0);
     	      
     	      int kt = Integer.parseInt(settings.getProperty("transposition"));
-    	      if (kt>= 0 & kt < transpositionComboBox.getItemCount()) {
-    	    	  transpositionComboBox.setSelectedIndex(kt);
+    	      if (kt>= -24 & kt < 24) {
+    	    	  transpositionSpinner.setValue(kt);
     	      }
     	      
       	}
@@ -1393,12 +1399,19 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         keyboardLengthComboBox=new JComboBox();
         keyboardLengthComboBox.addItemListener(this);
 
-        transpositionComboBox=new JComboBox();
-        transpositionComboBox.addItemListener(this);
+  
+        
+        Integer current = new Integer(0);
+        Integer min = new Integer(-24);
+        Integer max = new Integer(24);
+        Integer step = new Integer(1);
+        m_numberSpinnerModel = new SpinnerNumberModel(current, min, max, step);
+        transpositionSpinner = new JSpinner(m_numberSpinnerModel);
+        transpositionSpinner.setSize(40, 40);
 
         JPanel keyboardPanel=new JPanel();
         keyboardPanel.add(keyboardLengthComboBox);
-        keyboardPanel.add(transpositionComboBox);
+        keyboardPanel.add(transpositionSpinner);
 
         JPanel midiInPanel=new JPanel();
         localizables.add(new Localizable.NamedGroup(midiInPanel, "_midiclavier"));
@@ -1564,33 +1577,33 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             	if (sel == 0) {
             		wholeCheckBox.setEnabled(true);
             		wholeCheckBox.setSelected(true);
-            		timeSignNumerator = 4;
-            		timeSignDenominator = 4;
-            		timeDivision = 1;
+            		rhythmLevel.setTimeSignNumerator(4);
+            		rhythmLevel.setTimeSignDenominator(4);
+            		rhythmLevel.setTimeDivision(1);
             	}
             	else if (sel == 1) {
             		wholeCheckBox.setSelected(false);
             		wholeCheckBox.setEnabled(false);
             		quarterCheckBox.setSelected(true);
-            		timeSignNumerator = 3;
-            		timeSignDenominator = 4;
-            		timeDivision = 1;
+            		rhythmLevel.setTimeSignNumerator(3);
+            		rhythmLevel.setTimeSignDenominator(4);
+            		rhythmLevel.setTimeDivision(1);
             	}
             	else if (sel == 2) {
             		wholeCheckBox.setSelected(false);
             		wholeCheckBox.setEnabled(false);
             		quarterCheckBox.setSelected(true);
-            		timeSignNumerator = 2;
-            		timeSignDenominator = 4;
-            		timeDivision = 1;
+            		rhythmLevel.setTimeSignNumerator(2);
+            		rhythmLevel.setTimeSignDenominator(4);
+            		rhythmLevel.setTimeDivision(1);
             	}
             	else if (sel == 3) {
             		wholeCheckBox.setSelected(false);
             		wholeCheckBox.setEnabled(false);
             		quarterCheckBox.setSelected(true);
-            		timeSignNumerator = 6;
-            		timeSignDenominator = 8;
-            		timeDivision = 2;
+            		rhythmLevel.setTimeSignNumerator(6);
+            		rhythmLevel.setTimeSignDenominator(8);
+            		rhythmLevel.setTimeDivision(2);
             	}
             }
         });
@@ -1701,32 +1714,32 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
               	if (sel == 0) {
               		scorewholeCheckBox.setEnabled(true);
               		scorewholeCheckBox.setSelected(true);
-              		timeSignNumerator = 4;
-              		timeSignDenominator = 4;
-              		timeDivision = 1;
+              		rhythmLevel.setTimeSignNumerator(4);
+            		rhythmLevel.setTimeSignDenominator(4);
+            		rhythmLevel.setTimeDivision(1);
               	}
               	else if (sel == 1) {
               		scorewholeCheckBox.setSelected(false);
               		scorewholeCheckBox.setEnabled(false);
               		scorequarterCheckBox.setSelected(true);
-              		timeSignNumerator = 3;
-              		timeSignDenominator = 4;
-              		timeDivision = 1;
+              		rhythmLevel.setTimeSignNumerator(3);
+            		rhythmLevel.setTimeSignDenominator(4);
+            		rhythmLevel.setTimeDivision(1);
               	}
               	else if (sel == 2) {
               		scorewholeCheckBox.setSelected(false);
               		scorequarterCheckBox.setSelected(true);
-              		timeSignNumerator = 2;
-              		timeSignDenominator = 4;
-              		timeDivision = 1;
+              		rhythmLevel.setTimeSignNumerator(2);
+            		rhythmLevel.setTimeSignDenominator(4);
+            		rhythmLevel.setTimeDivision(1);
               	}
             	else if (sel == 3) {
             		scorewholeCheckBox.setSelected(false);
             		scorewholeCheckBox.setEnabled(false);
             		scorequarterCheckBox.setSelected(true);
-            		timeSignNumerator = 6;
-            		timeSignDenominator = 8;
-            		timeDivision = 2;
+            		rhythmLevel.setTimeSignNumerator(6);
+            		rhythmLevel.setTimeSignDenominator(8);
+            		rhythmLevel.setTimeDivision(2);
             	}
               }
           });
@@ -1977,8 +1990,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         rhythmIndex=-1;
         scoreYpos=110;
-        rhythmCursorXpos = firstNoteXPos - (noteDistance * timeDivision);
-    	rhythmCursorXStartPos = firstNoteXPos - (noteDistance * timeDivision);
+        rhythmCursorXpos = firstNoteXPos - (noteDistance * rhythmLevel.getTimeDivision());
+    	rhythmCursorXStartPos = firstNoteXPos - (noteDistance * rhythmLevel.getTimeDivision());
         rhythmAnswerScoreYpos=100;
         cursorstart = false;
         metronomeCount = 0;
@@ -2085,7 +2098,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                
                 if ("departthread".equals(strText)) {
                 	System.out.println("Cursor started");
-                	rhythmCursorXlimit = firstNoteXPos + (timeSignNumerator * numberOfMeasures * noteDistance);
+                	rhythmCursorXlimit = firstNoteXPos + (rhythmLevel.getTimeSignNumerator() * numberOfMeasures * noteDistance);
                     cursorstart = true;
                     timestart = System.currentTimeMillis();
                 } 
@@ -2098,10 +2111,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
            	    else if ("beat".equals(strText)) {
                     // show metronome beats
            		    //System.out.println("Added metronome beat");
-           		   	answers.add(new RhythmAnswer(firstNoteXPos + (metronomeCount%((timeSignNumerator/timeDivision) * numberOfMeasures)) * (noteDistance * timeDivision), metronomeYPos - 30, true, 3 ));
+           		   	answers.add(new RhythmAnswer(firstNoteXPos + (metronomeCount%((rhythmLevel.getTimeSignNumerator()/rhythmLevel.getTimeDivision()) * numberOfMeasures)) * (noteDistance * rhythmLevel.getTimeDivision()), metronomeYPos - 30, true, 3 ));
            		   	metronomeCount++;
            		   	//System.out.println("Metronome beat: " + metronomeCount + ", metronomeYPos: " + metronomeYPos);
-           		   	if (metronomeCount == ((timeSignNumerator/timeDivision) * numberOfMeasures) && 
+           		   	if (metronomeCount == ((rhythmLevel.getTimeSignNumerator()/rhythmLevel.getTimeDivision()) * numberOfMeasures) && 
            		   						   metronomeYPos < scoreYpos + (numberOfRows * rowsDistance)) {
            		   		metronomeYPos+=rowsDistance;
            		   		metronomeCount=0;
@@ -2146,7 +2159,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
           
          parti=true; // start game
          startButton.setText(bundle.getString("_stop"));
-         rhythmCursorXpos = firstNoteXPos - (noteDistance * timeDivision);
+         rhythmCursorXpos = firstNoteXPos - (noteDistance * rhythmLevel.getTimeDivision());
          
          cursorstart = false;
     }
@@ -3076,7 +3089,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
     
     private void savesettings(){
-    		settings.setProperty("transposition",String.valueOf(transpositionComboBox.getSelectedIndex())); 
+    		settings.setProperty("transposition",String.valueOf(transpositionSpinner.getValue())); 
 	    	if (keyboardLengthComboBox.getSelectedIndex()==1) 
 	    		settings.setProperty("keyboardlength","61");
 	    	else settings.setProperty("keyboardlength","73");
@@ -3108,7 +3121,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
         sauvmidi[1]=instrumentsComboBox.getSelectedIndex();
         sauvmidi[2]=midiInComboBox.getSelectedIndex();
-        sauvmidi[3]=transpositionComboBox.getSelectedIndex();
+        sauvmidi[3]= ((Number)transpositionSpinner.getValue()).intValue();
         if (keyboardsoundCheckBox.isSelected()) {
             sauvmidi[4]=1;
         } else {
@@ -3125,7 +3138,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
         instrumentsComboBox.setSelectedIndex(sauvmidi[1]);
         midiInComboBox.setSelectedIndex(sauvmidi[2]);
-        transpositionComboBox.setSelectedIndex(sauvmidi[3]);
+        transpositionSpinner.setValue(sauvmidi[3]);
         if (sauvmidi[4]==1) {
             keyboardsoundCheckBox.setSelected(true);
         } else {
@@ -3372,18 +3385,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             } else if (keyboardLengthComboBox.getSelectedIndex()==1) {
                 piano=new Piano(61, 90);
             }
-        } else if (evt.getItemSelectable()==transpositionComboBox) {
-            if (transpositionComboBox.getSelectedIndex()==0) {
-                transpose=-2;
-            } else if (transpositionComboBox.getSelectedIndex()==1) {
-                transpose=-1;
-            } else if (transpositionComboBox.getSelectedIndex()==2) {
-                transpose=0;
-            } else if (transpositionComboBox.getSelectedIndex()==3) {
-                transpose=1;
-            } else if (transpositionComboBox.getSelectedIndex()==4) {
-                transpose=2;
-            }
+
 
         } else if (evt.getItemSelectable()==noteCountComboBox) {
             if (noteCountComboBox.getSelectedIndex()==0) {
@@ -3558,17 +3560,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         keyboardLengthComboBox.addItem("73 "+bundle.getString("_keys"));
         keyboardLengthComboBox.addItem("61 "+bundle.getString("_keys"));
 
-        transpositionComboBox.removeAllItems();
-        transpositionComboBox.addItem("-2 "+bundle.getString("_octave"));
-        transpositionComboBox.addItem("-1 "+bundle.getString("_octave"));
-        transpositionComboBox.addItem(bundle.getString("_notransposition"));
-        transpositionComboBox.addItem("1 "+bundle.getString("_octave"));
-        transpositionComboBox.addItem("2 "+bundle.getString("_octave"));
-        if (transpose == 0) transpositionComboBox.setSelectedIndex(2);
-        else if (transpose == -2) transpositionComboBox.setSelectedIndex(0);
-        else if (transpose == -1) transpositionComboBox.setSelectedIndex(1);
-        else if (transpose == 1) transpositionComboBox.setSelectedIndex(3);
-        else if (transpose == 2) transpositionComboBox.setSelectedIndex(4);
+
 
         seconde=bundle.getString("_second");
         tierce=bundle.getString("_third");
@@ -3718,13 +3710,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	g.setFont(MusiSync.deriveFont(58f));
     	for (int rowNum = 0; rowNum < numberOfRows; rowNum++) {
     		String t = "";
-    		if (timeSignNumerator == 4 && timeSignDenominator == 4)
+    		if (rhythmLevel.getTimeSignNumerator() == 4 && rhythmLevel.getTimeSignDenominator() == 4)
     			t = "$";
-    		if (timeSignNumerator == 3 && timeSignDenominator == 4)
+    		if (rhythmLevel.getTimeSignNumerator() == 3 && rhythmLevel.getTimeSignDenominator() == 4)
     			t = "#";
-    		if (timeSignNumerator == 2 && timeSignDenominator == 4)
+    		if (rhythmLevel.getTimeSignNumerator() == 2 && rhythmLevel.getTimeSignDenominator() == 4)
     			t = "@";
-    		if (timeSignNumerator == 6 && timeSignDenominator == 8)
+    		if (rhythmLevel.getTimeSignNumerator() == 6 && rhythmLevel.getTimeSignDenominator() == 8)
     			t = "P";
     		g.drawString(t, windowMargin + keyWidth + alterationWidth, scoreYpos+41+rowNum*rowsDistance);
     	}
@@ -3763,17 +3755,17 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         int scoreLineWidth = keyWidth + alterationWidth + timeSignWidth;
         firstNoteXPos = windowMargin + keyWidth + alterationWidth + timeSignWidth + notesShift;
-        numberOfMeasures = (size.width - (windowMargin * 2) - scoreLineWidth) / (timeSignNumerator * noteDistance);
+        numberOfMeasures = (size.width - (windowMargin * 2) - scoreLineWidth) / (rhythmLevel.getTimeSignNumerator() * noteDistance);
         numberOfRows = (size.height - scoreYpos - 50) / rowsDistance; // 50 = window bottom margin
         int yPos = scoreYpos;
-        int vXPos = windowMargin + scoreLineWidth + (timeSignNumerator * noteDistance);
+        int vXPos = windowMargin + scoreLineWidth + (rhythmLevel.getTimeSignNumerator() * noteDistance);
 
-        scoreLineWidth += windowMargin + (numberOfMeasures * (timeSignNumerator * noteDistance));
+        scoreLineWidth += windowMargin + (numberOfMeasures * (rhythmLevel.getTimeSignNumerator() * noteDistance));
         
         for (int r = 0; r < numberOfRows; r++) {
         	// draw vertical separators first
         	for (int v = 0; v < numberOfMeasures; v++)
-        		g.drawLine(vXPos + v * (timeSignNumerator * noteDistance), yPos, vXPos + v * (timeSignNumerator * noteDistance), yPos+40);
+        		g.drawLine(vXPos + v * (rhythmLevel.getTimeSignNumerator() * noteDistance), yPos, vXPos + v * (rhythmLevel.getTimeSignNumerator() * noteDistance), yPos+40);
         	// draw the score 5 rows 
         	for (int l = 0;l < 5;l++,yPos+=10) {
         		g.drawLine(windowMargin, yPos, scoreLineWidth, yPos);
@@ -3786,7 +3778,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private boolean isSameNote(int p1, int p2) {
         // compare two pitch when using computer keyboard
-        return p1+(12*transpose)==p2;
+        return p1+(transpose)==p2;
     }
 
     /**
@@ -4363,21 +4355,21 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             //sm.setMessage(ShortMessage.PROGRAM_CHANGE, 1, 115, 0);
             //metronome.add(new MidiEvent(sm, 0));
         	
-        	System.out.println("[createMetronome] timeSignNumerator =  " + timeSignNumerator + ", timeSignDenominator = " + timeSignDenominator);
+        	System.out.println("[createMetronome] timeSignNumerator =  " + rhythmLevel.getTimeSignNumerator() + ", timeSignDenominator = " + rhythmLevel.getTimeSignDenominator());
 
             String textd="depart";
-            addEvent(metronome, TEXT, textd.getBytes(), (int)(timeSignNumerator/timeDivision)*ppq);
+            addEvent(metronome, TEXT, textd.getBytes(), (int)(rhythmLevel.getTimeSignNumerator()/rhythmLevel.getTimeDivision())*ppq);
             
             String textdt="departthread"; //one beat before rhythms
-            addEvent(metronome, TEXT, textdt.getBytes(), (int)((timeSignNumerator/timeDivision)-1)*ppq);
+            addEvent(metronome, TEXT, textdt.getBytes(), (int)((rhythmLevel.getTimeSignNumerator()/rhythmLevel.getTimeDivision())-1)*ppq);
 
             if ((selectedGame == RHYTHMREADING && metronomeCheckBox.isSelected()) || 
             	(selectedGame==SCOREREADING && scoreMetronomeCheckBox.isSelected())) {
-            		nbpulse = (timeSignNumerator * numberOfMeasures * numberOfRows) + timeSignNumerator;
+            		nbpulse = (rhythmLevel.getTimeSignNumerator() * numberOfMeasures * numberOfRows) + rhythmLevel.getTimeSignNumerator();
             }
-            else nbpulse = timeSignNumerator; //only few first to indicate pulse
+            else nbpulse = rhythmLevel.getTimeSignNumerator(); //only few first to indicate pulse
             
-            nbpulse = nbpulse / timeDivision;
+            nbpulse = nbpulse / rhythmLevel.getTimeDivision();
 
             for (int i=0; i < nbpulse; i++) {
           		ShortMessage mess=new ShortMessage();
@@ -4389,7 +4381,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
            		metronome.add(new MidiEvent(mess2, (i*ppq)+1));
             		
            		if (((selectedGame == RHYTHMREADING && metronomeShowCheckBox.isSelected()) ||
-       				(selectedGame == SCOREREADING && scoreMetronomeShowCheckBox.isSelected())) && i > ((timeSignNumerator / timeDivision) - 1)) {
+       				(selectedGame == SCOREREADING && scoreMetronomeShowCheckBox.isSelected())) && i > ((rhythmLevel.getTimeSignNumerator() / rhythmLevel.getTimeDivision()) - 1)) {
             			//System.out.println("adding metronome beat : "+i);
             			String textb="beat";
             			addEvent(metronome, TEXT, textb.getBytes(), (int)i*ppq);
@@ -4465,7 +4457,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             track.add(createNoteOnEvent(pitch, velocity, tick));
             mutetrack.add(createNoteOnEvent(pitch, 0, tick));
-            tick+=(int)((duration*timeDivision)*ppq);
+            tick+=(int)((duration*rhythmLevel.getTimeDivision())*ppq);
             addEvent(track, TEXT, text.getBytes(), tick);
             addEvent(mutetrack, TEXT, text.getBytes(), tick);
             track.add(createNoteOffEvent(pitch, tick));
@@ -4477,7 +4469,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             track.add(createNoteOffEvent(pitch, tick));
             mutetrack.add(createNoteOffEvent(pitch, tick));
 
-            tick+=(int)((duration*timeDivision)*ppq);
+            tick+=(int)((duration*rhythmLevel.getTimeDivision())*ppq);
             addEvent(track, TEXT, text.getBytes(), tick);
             addEvent(mutetrack, TEXT, text.getBytes(), tick);
         }
@@ -4496,8 +4488,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
 
         boolean reponse=false;
-        for (int k=1; k<timeSignNumerator * 2; k++) {
-            if (d==timeSignNumerator*k) {
+        for (int k=1; k<rhythmLevel.getTimeSignNumerator() * 2; k++) {
+            if (d==rhythmLevel.getTimeSignNumerator()*k) {
                 reponse=true;
             }
         }
@@ -4508,7 +4500,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void createSequence() {
     	repaint();
-        int currentTick=(int)((timeSignNumerator/timeDivision)*ppq);
+        int currentTick=(int)((rhythmLevel.getTimeSignNumerator()/rhythmLevel.getTimeDivision())*ppq);
         int rowCount=0; // measures counter
         double tpsmes=0; // number of quarters 
         int currentXPos = windowMargin + keyWidth + alterationWidth + timeSignWidth + notesShift;
@@ -4568,7 +4560,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         for (int r = 1; r <= (numberOfMeasures * numberOfRows); r++) 
         { // creates all the measures
-            while (tpsmes != timeSignNumerator) 
+            while (tpsmes != rhythmLevel.getTimeSignNumerator()) 
             {
             	//System.out.println("tpsmes : " + tpsmes);
                 double tmp=Math.random();
@@ -4577,31 +4569,31 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 else
                 	pitch = scoreLevel.randomPitch();
 
-                if (wholeNote && tpsmes+4<=timeSignNumerator && tmp<0.2) 
+                if (wholeNote && tpsmes+4<=rhythmLevel.getTimeSignNumerator() && tmp<0.2) 
                 { // ronde, whole
                     tpsmes+=4;
                     currentTick=addRhythm(4, pitch, currentTick, rowCount, currentXPos);
                     currentXPos+=(noteDistance*4);
                 } 
-                else if (halfNote && tpsmes+2<=timeSignNumerator && tmp<0.4)
+                else if (halfNote && tpsmes+2<=rhythmLevel.getTimeSignNumerator() && tmp<0.4)
             	{ // blanche, half
                     tpsmes+=2;
                     currentTick=addRhythm(2, pitch,  currentTick, rowCount, currentXPos);
                     currentXPos+=(noteDistance*2);
                 } 
-                else if (quarterNote && tpsmes+1<=timeSignNumerator && tmp<0.6) 
+                else if (quarterNote && tpsmes+1<=rhythmLevel.getTimeSignNumerator() && tmp<0.6) 
                 { // noire, quarter
                     tpsmes+=1;
                     currentTick=addRhythm(1, pitch, currentTick, rowCount, currentXPos);
                     currentXPos+=noteDistance;
                 }
-                else if (eighthNote && tpsmes+0.5<=timeSignNumerator && tmp<0.8)
+                else if (eighthNote && tpsmes+0.5<=rhythmLevel.getTimeSignNumerator() && tmp<0.8)
                 { // croche, eighth
                     tpsmes+=0.5;
                     currentTick=addRhythm(0.5, pitch, currentTick, rowCount, currentXPos);
                     currentXPos+=(noteDistance/2);
                 }
-                else if (triplet && tpsmes+1<=timeSignNumerator && tmp<0.9)
+                else if (triplet && tpsmes+1<=rhythmLevel.getTimeSignNumerator() && tmp<0.9)
                 { // triplet
                   int[] tripletPitches = { pitch, 71, 71 };
                   int lowestPitch = tripletPitches[0];
@@ -5036,7 +5028,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     if ((selectedGame == RHYTHMREADING || selectedGame==SCOREREADING) && rhythmgame == 0 && muterhythms && cursorstart) {
                        
                     	if (timestart != 0) {
-                    	   rhythmCursorXpos = rhythmCursorXStartPos + ((System.currentTimeMillis()-timestart)*(noteDistance*timeDivision))/(60000/tempo);
+                    	   rhythmCursorXpos = rhythmCursorXStartPos + ((System.currentTimeMillis()-timestart)*(noteDistance*rhythmLevel.getTimeDivision()))/(60000/tempo);
                     	   //System.out.println(rhythmCursorXpos);
                     	}
 
@@ -5232,7 +5224,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             output=("   Note On Key: "+((ShortMessage)event).getData1()+
                                 " Velocity: "+((ShortMessage)event).getData2());
                             //pitch de la note jouï¿½e
-                            int notejouee=((ShortMessage)event).getData1()+transpose*12;
+                            int notejouee=((ShortMessage)event).getData1()+transpose;
 
                             //System.out.println(((ShortMessage)event).getData2());
 
