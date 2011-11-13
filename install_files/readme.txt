@@ -1,4 +1,4 @@
-Version 1.8
+Version 2.0
 
 Languages supported : English, French, Spanish, German, Italian, Danish, Turkish, Finnish, Korean, Esperanto, Polish
 Visit the Web site http://www.jalmus.net 
