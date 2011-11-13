@@ -90,7 +90,7 @@ public String  getLessonPath(String language){
   	    path=path+File.separator+"lessons"+File.separator+language;
   	    
   	    //for test	
-  	     path = "/home/christophe/git/code/lessons/en";
+  	  //   path = "/home/christophe/git/code/lessons/en";
   	    
   	    return path;
   }

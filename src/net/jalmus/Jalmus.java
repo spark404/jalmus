@@ -241,7 +241,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private boolean open;
 
     private Piano piano;
-    private int transpose = 0;  // number of 1/2tons for MIDI transposition -24 +24
+  //  private int transpose = 0;  // number of 1/2tons for MIDI transposition -24 +24
 
     // Animation Resources
 
@@ -3778,7 +3778,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private boolean isSameNote(int p1, int p2) {
         // compare two pitch when using computer keyboard
-        return p1+(transpose)==p2;
+        return p1+(((Number)transpositionSpinner.getValue()).intValue())==p2;
     }
 
     /**
@@ -5224,7 +5224,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             output=("   Note On Key: "+((ShortMessage)event).getData1()+
                                 " Velocity: "+((ShortMessage)event).getData2());
                             //pitch de la note jouï¿½e
-                            int notejouee=((ShortMessage)event).getData1()+transpose;
+                            int notejouee=((ShortMessage)event).getData1()+((Number)transpositionSpinner.getValue()).intValue();
 
                             //System.out.println(((ShortMessage)event).getData2());
 
