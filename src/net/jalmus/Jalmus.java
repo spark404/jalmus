@@ -3297,15 +3297,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         // Speed choice note reading
         else if (evt.getItemSelectable()==noteGameSpeedComboBox) {
             if (noteGameSpeedComboBox.getSelectedIndex()==0) {
-                noteLevel.setSpeed(24);
+                noteLevel.setSpeed(28);
             } else if (noteGameSpeedComboBox.getSelectedIndex()==1) {
-                noteLevel.setSpeed(20);
+                noteLevel.setSpeed(22);
             } else if (noteGameSpeedComboBox.getSelectedIndex()==2) {
                 noteLevel.setSpeed(16);
             } else if (noteGameSpeedComboBox.getSelectedIndex()==3) {
                 noteLevel.setSpeed(12);
             } else if (noteGameSpeedComboBox.getSelectedIndex()==4) {
-                noteLevel.setSpeed(6);
+                noteLevel.setSpeed(8);
             }
             // System.out.println("-"+vitesse);
         }
