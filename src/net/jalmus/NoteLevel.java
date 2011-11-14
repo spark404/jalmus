@@ -69,7 +69,7 @@ public class NoteLevel implements Level{
     this.gametype = "normal";
     this.randomtonality = false;
     this.currenttonality = new Tonality(0, "");
-    this.speed = 20; //  moderato
+    this.speed = 28; //  moderato
 
     this.learningduration = 20;
 

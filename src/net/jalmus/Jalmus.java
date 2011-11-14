@@ -312,7 +312,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     //----------------------------------------------------------------
     // Rhythm reading variables
 
-    private RhythmLevel rhythmLevel=new RhythmLevel(true, true, false, false, false, false, 4, 4, 1);
+    private RhythmLevel rhythmLevel=new RhythmLevel();
     
     private ArrayList<Rhythm> rhythms = new ArrayList<Rhythm>(); 
     private int rhythmIndex=-1; // index of the current note in the list

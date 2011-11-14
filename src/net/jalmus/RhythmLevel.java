@@ -25,19 +25,21 @@ public class RhythmLevel implements Level {
   int timeSignNumerator;
   int timeSignDenominator;
   int timeDivision; // ratio between time signature numerator and denominator 
+  int speed; // time sleep of thread = speed of the note
   
 
-  public RhythmLevel(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t, int tn, int td, int di) {
-    this.whole = r;
-    this.half = b;
-    this.quarter = n;
-    this.eighth = c;
-    this.silence = s;
-    this.triplet = t;
-    
-    this.timeSignNumerator = tn;
-    this.timeSignDenominator = td;
-    this.timeDivision = di; 
+  public RhythmLevel() {
+	    this.whole = true;
+	    this.half = true;
+	    this.quarter = true;
+	    this.eighth = true;
+	    this.silence = true;
+	    this.triplet = false;
+	    
+	    this.timeSignNumerator = 4;
+	    this.timeSignDenominator = 4;
+	    this.timeDivision = 1;     
+	    this.speed = 28;
     
   }
 
@@ -51,7 +53,8 @@ public class RhythmLevel implements Level {
     
     this.timeSignNumerator = 4;
     this.timeSignDenominator = 4;
-    this.timeDivision = 1; 
+    this.timeDivision = 1;     
+    this.speed = 28;
   }
 
   public void copy(RhythmLevel n) {
