@@ -16,6 +16,8 @@ import java.awt.Graphics;
  */
 
 public class RhythmLevel implements Level {
+	int Id;
+	String message;
   boolean whole;
   boolean half;
   boolean quarter;
@@ -29,6 +31,8 @@ public class RhythmLevel implements Level {
   
 
   public RhythmLevel() {
+	    this.Id = 0;
+	    this.message = "";
 	    this.whole = true;
 	    this.half = true;
 	    this.quarter = true;
@@ -44,6 +48,8 @@ public class RhythmLevel implements Level {
   }
 
   public void init() {
+	 this.Id = 0;
+	    this.message = "";
     this.whole = true;
     this.half = true;
     this.quarter = true;
@@ -58,6 +64,8 @@ public class RhythmLevel implements Level {
   }
 
   public void copy(RhythmLevel n) {
+	this.Id = n.Id;
+    this.message =  n.message;
     this.whole = n.whole;
     this.half = n.half;
     this.quarter = n.quarter;
@@ -70,6 +78,33 @@ public class RhythmLevel implements Level {
     
     this.timeDivision = n.timeDivision ; 
   }
+
+  /********************************/
+
+  public void setId(int i) {
+    this.Id = i;
+  }
+
+  public int getId() {
+    return this.Id;
+}
+
+  /********************************/
+  
+  /*******************************************/
+  public void setMessage(String s) {
+    this.message = s;
+  }
+
+  public String getMessage() {
+    return this.message;
+}
+
+public boolean isMessageEmpty(){
+  return this.message.equals("");
+}
+
+/*******************************************/
 
   public boolean getWholeNote() {
     return this.whole;
@@ -95,6 +130,8 @@ public class RhythmLevel implements Level {
 	    return this.triplet;
   }  
 
+  /********************************/
+  
   public int getTimeSignNumerator() {
 	    return  this.timeSignNumerator ;
 }
@@ -118,6 +155,8 @@ public int getTimeDivision() {
 public void setTimeDivision(int i) {
 	this.timeDivision = i ;
 }
+
+/********************************/
 
   public void adjustLevel(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
     this.whole = r;
