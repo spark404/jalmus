@@ -2560,10 +2560,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             scoreMessage.dispose();
 
             if (isLessonMode) {
-                if (currentScore.isWin())
+                if ( (currentlesson.isNoteLevel() & currentScore.isWin()) | currentlesson.isRhythmLevel())
 
                 {
                     nextLevel();
+           
                 } else {
                     startLevel();
                 }
