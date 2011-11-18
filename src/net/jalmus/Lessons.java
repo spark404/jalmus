@@ -525,8 +525,7 @@ public boolean isScoreLevel(){
 
 
         	       case RHYTHMLEVEL:
-
-        
+    
         	           StringTokenizer st=new StringTokenizer(tmprhythms,",;");
         	           Integer p;
         	           

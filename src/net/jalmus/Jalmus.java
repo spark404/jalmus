@@ -1469,7 +1469,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         JPanel rhythmReadingPanel=buildRhythmReadingPreferencesPanel();
         JPanel scoreReadingPanel=buildScoreReadingPreferencesPanel();
       
-
+        
         preferencesTabbedPane.addTab(null, new ImageIcon(getClass().getResource("/images/note.png")), noteReadingPanel);
         localizables.add(new Localizable.Tab(preferencesTabbedPane, NOTE_READING_TAB, "_menuNotereading"));
         preferencesTabbedPane.addTab(null, new ImageIcon(getClass().getResource("/images/rythme.png")), rhythmReadingPanel);
@@ -1558,11 +1558,18 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         /* 2nd panel - RYTHM */
 
         wholeCheckBox=new JCheckBox("", true);
+        wholeCheckBox.addItemListener(this);
         halfCheckBox=new JCheckBox("", true);
+        halfCheckBox.addItemListener(this);
         quarterCheckBox=new JCheckBox("", false);
+        quarterCheckBox.addItemListener(this);
         eighthCheckBox=new JCheckBox("", false);
+        eighthCheckBox.addItemListener(this);
         restCheckBox=new JCheckBox("", true);
+        restCheckBox.addItemListener(this);
         tripletCheckBox=new JCheckBox("", false);
+        tripletCheckBox.addItemListener(this);
+        
         timeSignComboBox=new JComboBox();
         timeSignComboBox.setPreferredSize(new Dimension(100, 25));
         timeSignComboBox.addItem("4/4");
@@ -2864,8 +2871,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	try {
     		
     		if (Lessonname.getText().length()!=0){
-			noteLevel.save(currentlesson,Lessonname.getText()+".xml", Lessonmessage.getText(), language);
-			saveDialog.setVisible(false);
+    		if (preferencesTabbedPane.getSelectedIndex() == 0) noteLevel.save(currentlesson,Lessonname.getText()+".xml", Lessonmessage.getText(), language);
+    		else if (preferencesTabbedPane.getSelectedIndex() == 1) {
+    			rhythmLevel.printtest();
+    			rhythmLevel.save(currentlesson,Lessonname.getText()+".xml", Lessonmessage.getText(), language);
+    		}
+    		
+    		saveDialog.setVisible(false);
 			
 			lessonsMenu.removeAll();
 			buildLessonsMenu();
@@ -2892,8 +2904,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	
     	else if (selectedGame==RHYTHMREADING) {
     		
-          // update parameters for rhythm reading
-          if (!wholeCheckBox.isSelected() && !halfCheckBox.isSelected() && 
+          // update parameters for rhythm reading NO MORE NEEDED now on Itemstatechanged
+        /*  if (! wholeCheckBox.isSelected() && !halfCheckBox.isSelected() && 
        		  !quarterCheckBox.isSelected() && !eighthCheckBox.isSelected()) {
 
             JOptionPane.showMessageDialog(this,
@@ -2904,7 +2916,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
           } else {
             rhythmLevel.adjustLevel(wholeCheckBox.isSelected(), halfCheckBox.isSelected(), quarterCheckBox.isSelected(),
                 eighthCheckBox.isSelected(), restCheckBox.isSelected(), tripletCheckBox.isSelected());
-          }
+          }*/
           newButton.doClick();
     	}
     	
@@ -3253,6 +3265,34 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
         }
 
+        // For rhythm level update
+        else if (evt.getItemSelectable()==wholeCheckBox) {
+        	if (wholeCheckBox.isSelected()) rhythmLevel.setWholeNote(true);
+        	else rhythmLevel.setWholeNote(false);
+        }
+        else if (evt.getItemSelectable()==halfCheckBox) {
+        	if (halfCheckBox.isSelected()) rhythmLevel.setHalfNote(true);
+        	else rhythmLevel.setHalfNote(false);
+        } 
+        else if (evt.getItemSelectable()==quarterCheckBox) {
+        	if (quarterCheckBox.isSelected()) rhythmLevel.setQuarterNote(true);
+        	else rhythmLevel.setQuarterNote(false);
+        } 
+        else if (evt.getItemSelectable()==eighthCheckBox) {
+        	if (eighthCheckBox.isSelected()) rhythmLevel.setEighthNote(true);
+        	else rhythmLevel.setEighthNote(false);
+        } 
+        else if (evt.getItemSelectable()==restCheckBox) {
+        	if (restCheckBox.isSelected()) rhythmLevel.setSilence(true);
+        	else rhythmLevel.setSilence(false);
+        } 
+        else if (evt.getItemSelectable()==tripletCheckBox) {
+        	if (tripletCheckBox.isSelected()) rhythmLevel.setTriplet(true);
+        	else rhythmLevel.setTriplet(false);
+        } 
+        
+        
+        
         else if (evt.getItemSelectable()==instrumentsComboBox) {
             if (!midierror && instruments!=null) {
 

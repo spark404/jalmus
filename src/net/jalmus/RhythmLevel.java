@@ -1,6 +1,14 @@
 package net.jalmus;
 
 import java.awt.Graphics;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 /**
  * <p>Title: Java Lecture Musicale</p>
@@ -35,8 +43,8 @@ public class RhythmLevel implements Level {
 	    this.message = "";
 	    this.whole = true;
 	    this.half = true;
-	    this.quarter = true;
-	    this.eighth = true;
+	    this.quarter = false;
+	    this.eighth = false;
 	    this.silence = true;
 	    this.triplet = false;
 	    
@@ -218,11 +226,85 @@ public int getspeed() {
 	  System.out.println("Half note : " + this.half);
 	    System.out.println("Quarter note : " + this.quarter);
 	  System.out.println("Eighth note : " + this.eighth);
-	  System.out.println("Eighth note : " + this.eighth);
 	  System.out.println("Rests : " + this.silence);
 	  System.out.println("Triplets : " + this.triplet);
 	  System.out.println("time signature : " + this.timeSignNumerator + "/" + this.timeSignDenominator + "div " + this.timeDivision);
 	  System.out.println("Speed : " + this.speed);
 	}
+
+  private static void writeFile(File destFile, String content)
+  throws IOException {
+  BufferedWriter writer = new BufferedWriter(new FileWriter(destFile));
+  writer.write(content);
+  writer.flush();
+  writer.close();
+  writer = null;
+  }
+  
+  
+  public void save(Lessons l, String fileName, String message, String language) 
+	throws IOException {
+	
+	File destDir = new File("");;
+  final String newline = "\r\n";
+  String path = "";
+  StringBuffer fileContent = new StringBuffer();
+  boolean dirmylessonok = false;
+  
+  path = l.getLessonPath(language);
+  
+  File sousrepertoire=new File(path);
+  
+  // find the personnal lessons directory 99. in the name
+  if (sousrepertoire.isDirectory()) {
+      File[] listsp=sousrepertoire.listFiles();
+      Arrays.sort(listsp);
+      if (listsp!=null) { 
+
+       for   (int i=0; i<listsp.length; i++) {
+      	 		if (listsp[i].getName().indexOf("99.") != -1)  {
+
+              	
+              	path = path+File.separator+listsp[i].getName();
+      	 	    dirmylessonok = true;
+      	 		}
+      	 		
+                  
+       }
+      }
+  }
+  
+  if ( dirmylessonok) {
+  	destDir = new File(path);
+  
+		//return File.createTempFile(new File(fileName).getName() + "_" + datev,"", destDir);
+		File f = new File(destDir, fileName);
+		System.out.println("Création fichier " + destDir + "\\" + fileName + newline);
+		
+		fileContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+newline);
+		fileContent.append("<!--"+newline+"Document : "+ fileName + newline + "Exercise saved : "+new Date()+newline+"-->"+newline+newline);
+		fileContent.append("<levels>"+newline+"<rhythmreading id = '0'>");
+		fileContent.append("<message>"+message+"</message>"+newline);
+	//	fileContent.append("<game>"+this.gametype+"</game>"+newline);
+		fileContent.append("<time>"+this.getTimeSignNumerator()+"/"+this.getTimeSignDenominator()+"</time>"+newline);
+		fileContent.append("<rhythms>");
+		if (this.getWholeNote()) fileContent.append(1+",");
+		if (this.getHalfNote()) fileContent.append(2+",");
+		if (this.getQuarterNote()) fileContent.append(4+",");
+		if (this.getEighthNote()) fileContent.append(8+",");
+		fileContent.append("</rhythms>"+newline);
+		if (this.getSilence()) fileContent.append("<rests>1,2,4,8</rests>"+newline); // no distinction yet
+		if (this.getTriplet()) fileContent.append("<tuplets>3</tuplets>"+newline); // no distinction yet
+		
+		fileContent.append("<speed>"+this.speed+"</speed>"+newline);
+		fileContent.append("</rhythmreading>"+newline+"</levels>"+newline);
+		writeFile(f, fileContent.toString());
+		
+  }
+  else JOptionPane.showMessageDialog(null, "The personnal lessons directory begin with 99. is missing", "Warning", JOptionPane.ERROR_MESSAGE); 
+  
+
+
+}
 
 }
