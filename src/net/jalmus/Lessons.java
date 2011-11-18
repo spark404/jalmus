@@ -35,7 +35,7 @@ public class Lessons extends DefaultHandler{
    RhythmLevel rlevel;
               //flags nous indiquant la position du parseur
    boolean inExercices, inNLevel, inRLevel, inGametype, inNotestype, inNbnotes, inMessage, inSpeed, inStartingnote, inClef, inTonality,
-   inIntervals, inChords, inDuration, inPitches;
+   inIntervals, inChords, inDuration, inPitches,  inRhythms, inTime, inRests, inTuplets;
    
   TLevel leveltype; 
               //buffer nous permettant de récupérer les données
@@ -97,17 +97,40 @@ public String  getLessonPath(String language){
   	    path=path+File.separator+"lessons"+File.separator+language;
   	    
   	    //for test	
-  	  //   path = "/home/christophe/git/code/lessons/en";
+  	   //  path = "/home/christophe/git/code/lessons/en";
+  	   path = "C:\\Documents and Settings\\crichard\\git\\code\\lessons\\en";
   	    
   	    return path;
   }
 
 
-public NoteLevel getLevel(){
-  return (NoteLevel) this.levelslist.get(this.currentlevel);
+public Level getLevel(){
+	if(this.levelslist.get(this.currentlevel).getClass().getSimpleName().equals("NoteLevel"))
+		return (NoteLevel) this.levelslist.get(this.currentlevel);
+	else
+		return (RhythmLevel) this.levelslist.get(this.currentlevel);
 }
 
+public boolean isNoteLevel(){
+	if(this.levelslist.get(this.currentlevel).getClass().getSimpleName().equals("NoteLevel"))
+		return true;
+	else
+		return false;
+}
 
+public boolean isRhythmLevel(){
+	if(this.levelslist.get(this.currentlevel).getClass().getSimpleName().equals("RhythmLevel"))
+		return true;
+	else
+		return false;
+}
+
+public boolean isScoreLevel(){
+	if(this.levelslist.get(this.currentlevel).getClass().getSimpleName().equals("ScoreLevel"))
+		return true;
+	else
+		return false;
+}
 
    //détection d'ouverture de balise
    public void startElement(String uri, String localName,
@@ -164,6 +187,20 @@ public NoteLevel getLevel(){
        else if (qName.equals("notes")) {
          inNotestype = true;
        }
+       
+       else if (qName.equals("time")) {
+           inTime = true;
+         }
+       
+       else if (qName.equals("rhythms")) {
+           inRhythms = true;
+         }
+       else if (qName.equals("rests")) {
+           inRests = true;
+         }
+       else if (qName.equals("tuplets")) {
+           inTuplets = true;
+         }
        else if (qName.equals("pitches")) {
            inPitches = true;
          }
@@ -318,17 +355,204 @@ public NoteLevel getLevel(){
 
      else if (qName.equals("notes")) {
        String tmpclef = buffer.toString();
-      if (tmpclef.equals("notes") | tmpclef.equals("accidentals") | tmpclef.equals("custom") | tmpclef.equals("intervals") | tmpclef.equals("chords")){
-            nlevel.setNotetype(buffer.toString());
+       switch (leveltype)
+	     {
+	       case NOTELEVEL :
+	    	   if (tmpclef.equals("notes") | tmpclef.equals("accidentals") | tmpclef.equals("custom") | tmpclef.equals("intervals") | tmpclef.equals("chords")){
+	               nlevel.setNotetype(buffer.toString());
 
-      }
-      else
-        throw new SAXException("In level " + nlevel.getId() + " notes type should be notes, accidentals, custom,  intervals or chords");
+	         }
+	         else
+	           throw new SAXException("In level " + nlevel.getId() + " notes type should be notes, accidentals, custom,  intervals or chords");
 
+	    	  break;
+	       case RHYTHMLEVEL:
+	    	 // throw new SAXException("In level " + rlevel.getId() + " game type should be normal");
+	  	         break;
+	       case SCORELEVEL :
+	    	 // throw new SAXException("In level " + slevel.getId() + " game type should be normal, inline or learning");
+	    	   break;
+	     }
+     
 
        buffer = null;
        inNotestype = false;
      }
+     
+     
+/******************** Time signature <time>3/4</time>
+*********************************************************/
+     
+     else if (qName.equals("time")) { //time signature
+         String tmprhythms = buffer.toString();
+         switch (leveltype)
+  	     {
+  	       case NOTELEVEL :
+  	    	
+  	           throw new SAXException("In level " + nlevel.getId() + " no time on note level");
+
+  	       case RHYTHMLEVEL:
+
+  
+  	           StringTokenizer st=new StringTokenizer(tmprhythms,"/");
+  	           Integer p;
+  	           //System.out.println("Tokens"+st.countTokens());
+  	           if (st.countTokens() != 2) throw new SAXException("In level " + rlevel.getId() + " time should be like n/m");
+  	           else {
+  	        	 p = Integer.parseInt(st.nextToken());
+  	        	 	if (p == 2) rlevel.setTimeSignNumerator(2);
+  	        	  else if (p == 3) rlevel.setTimeSignNumerator(3);
+ 	        	  else if (p == 4) rlevel.setTimeSignNumerator(4);
+ 	        	  else if (p == 6) rlevel.setTimeSignNumerator(6);
+ 	        	  else throw new SAXException("In level " + rlevel.getId() + " numerator should be  2, 3, 4, 6  ");
+  	        
+  	        	 	p = Integer.parseInt(st.nextToken());
+  	    
+  	         	 	if (p == 4 & ((rlevel.getTimeSignNumerator() == 2)|(rlevel.getTimeSignNumerator() == 3)|(rlevel.getTimeSignNumerator() == 4))) {
+  	         	 		rlevel.setTimeSignDenominator(4);
+  	         	 		rlevel.setTimeDivision(1);
+  	         	 	}
+  	         	 	
+    	        	else if (p == 8 & (rlevel.getTimeSignNumerator() == 6)) {
+  	         	 		rlevel.setTimeSignDenominator(8);
+  	         	 		rlevel.setTimeDivision(2);
+  	         	 	}
+   	        	  else throw new SAXException("In level " + rlevel.getId() + " denominator should be  4,8  ");
+  	           }
+  	          
+  	           
+  	  	         break;
+  	       case SCORELEVEL :
+  	    	 // throw new SAXException("In level " + slevel.getId() + " game type should be normal, inline or learning");
+  	    	   break;
+  	     }
+         buffer = null;
+         inTime = false;
+       }
+  
+     
+     
+/******************** Rhythms <rhythms>1,2,4,8</rhythms> 1 whole note ...
+************************************************************************/
+     
+     else if (qName.equals("rhythms")) {
+         String tmprhythms = buffer.toString();
+         switch (leveltype)
+  	     {
+  	       case NOTELEVEL :
+  	    	
+  	           throw new SAXException("In level " + nlevel.getId() + " no rhythms on note level");
+
+
+  	       case RHYTHMLEVEL:
+
+  
+  	           StringTokenizer st=new StringTokenizer(tmprhythms,",;");
+  	           Integer p;
+  	           
+  	           rlevel.adjustLevel(false, false, false, false, false, false);
+  	           while ( st.hasMoreTokens() ) {
+  	        	    p = Integer.parseInt(st.nextToken());
+  	        	  if (p == 1) rlevel.setWholeNote(true);
+  	        	  else if (p == 2) rlevel.setHalfNote(true);
+  	        	  else if (p == 4) rlevel.setQuarterNote(true);
+  	        	  else if (p == 8) rlevel.setEighthNote(true);
+  	        	  else throw new SAXException("In level " + rlevel.getId() + " rhythms should be 1, 2, 4, 8  ");
+  	        	    
+  	        	}
+  	           
+  	  	         break;
+  	       case SCORELEVEL :
+  	    	 // throw new SAXException("In level " + slevel.getId() + " game type should be normal, inline or learning");
+  	    	   break;
+  	     }
+
+         buffer = null;
+         inRhythms = false;
+       }
+     
+
+     /******************** Rests <rests>1,2,4,8</rests> actually only boolean
+     ************************************************************************/
+          
+          else if (qName.equals("rests")) {
+              String tmprhythms = buffer.toString();
+              switch (leveltype)
+       	     {
+       	       case NOTELEVEL :
+       	    	
+       	           throw new SAXException("In level " + nlevel.getId() + " no rests on note level");
+
+
+       	       case RHYTHMLEVEL:
+
+       
+       	           StringTokenizer st=new StringTokenizer(tmprhythms,",;");
+       	           Integer p;
+       	           
+       	           while ( st.hasMoreTokens() ) {
+       	        	   // System.out.println(p);
+       	        	    p = Integer.parseInt(st.nextToken());
+       	        	  if (p == 1) rlevel.setSilence(true);
+       	        	  else if (p == 2) rlevel.setSilence(true);
+       	        	  else if (p == 4) rlevel.setSilence(true);
+       	        	  else if (p == 8) rlevel.setSilence(true);
+       	        	  else throw new SAXException("In level " + rlevel.getId() + " rests should be 1, 2, 4, 8  ");
+       	        	    
+       	        	}
+       	           
+       	  	         break;
+       	       case SCORELEVEL :
+       	    	 // throw new SAXException("In level " + slevel.getId() + " game type should be normal, inline or learning");
+       	    	   break;
+       	     }
+
+              buffer = null;
+              inRests = false;
+            }
+     
+     
+/******************** Truplets <tuplets>3</tuplets> actually only 3 for triplet
+************************************************************************/
+           
+           else if (qName.equals("tuplets")) {
+               String tmprhythms = buffer.toString();
+               switch (leveltype)
+        	     {
+        	       case NOTELEVEL :
+        	    	
+        	           throw new SAXException("In level " + nlevel.getId() + " no triplets on note level");
+
+
+        	       case RHYTHMLEVEL:
+
+        
+        	           StringTokenizer st=new StringTokenizer(tmprhythms,",;");
+        	           Integer p;
+        	           
+        	           rlevel.adjustLevel(false, false, false, false, false, false);
+        	           while ( st.hasMoreTokens() ) {
+        	        	    p = Integer.parseInt(st.nextToken());
+
+        	        	  if (p == 3) rlevel.setTriplet(true);
+      
+        	        	  else throw new SAXException("In level " + rlevel.getId() + " rests should be 1, 2, 4, 8  ");
+        	        	    
+        	        	}
+        	           
+        	  	         break;
+        	       case SCORELEVEL :
+        	    	 // throw new SAXException("In level " + slevel.getId() + " game type should be normal, inline or learning");
+        	    	   break;
+        	     }
+
+               buffer = null;
+               inTuplets = false;
+             }
+     
+/******************** Nbnotes for note reading <nbnotes>3</nbnotes>   
+*******************************************************************/    
+     
      else if (qName.equals("nbnotes")) {
        try {
          int temp = Integer.parseInt(buffer.toString());
@@ -347,7 +571,10 @@ public NoteLevel getLevel(){
          throw new SAXException(e);
        }
      }
+ 
      
+/******************** List pitches  <pitches>60,63,68</pitches>   
+*******************************************************************/    
      else if (qName.equals("pitches")) {
          
            String temp = buffer.toString();
@@ -377,13 +604,11 @@ public NoteLevel getLevel(){
        	     
         	    
         	}
-           
-        
+
              nlevel.setPitcheslist(pitcheslist);
- 
+
            buffer = null;
            inPitches = false;
-   
        }
      
      else if (qName.equals("intervals")) {
@@ -413,19 +638,48 @@ public NoteLevel getLevel(){
 
 
      else if (qName.equals("speed")) {
-       try {
-         int temp = Integer.parseInt(buffer.toString());
-         if (temp >= 0 & temp <= 40)
-           nlevel.setSpeed(temp);
-         else
-           throw new SAXException("In level " + nlevel.getId() + " speed should be an integer between 0 and 40");
-         buffer = null;
-         inSpeed = false;
-       }
-       catch (Exception e) {
-         //erreur, le contenu de id n'est pas un entier
-         throw new SAXException(e);
-       }
+    	 
+    	   switch (leveltype)
+    	     {
+    	       case NOTELEVEL :
+    	    	      try {
+    	    	          int temp = Integer.parseInt(buffer.toString());
+    	    	          if (temp >= 0 & temp <= 40)
+    	    	            nlevel.setSpeed(temp);
+    	    	          else
+    	    	            throw new SAXException("In level " + nlevel.getId() + " speed should be an integer between 0 and 40");
+    	    	          buffer = null;
+    	    	          inSpeed = false;
+    	    	        }
+    	    	        catch (Exception e) {
+    	    	          //erreur, le contenu de id n'est pas un entier
+    	    	          throw new SAXException(e);
+    	    	        }
+    	    	        break;
+
+    	       case RHYTHMLEVEL:
+
+    
+    	    	      try {
+    	    	          int temp = Integer.parseInt(buffer.toString());
+    	    	          if (temp >= 0 & temp <= 40)
+    	    	            rlevel.setSpeed(temp);
+    	    	          else
+    	    	            throw new SAXException("In level " + rlevel.getId() + " speed should be an integer between 0 and 40");
+    	    	          buffer = null;
+    	    	          inSpeed = false;
+    	    	        }
+    	    	        catch (Exception e) {
+    	    	          //erreur, le contenu de id n'est pas un entier
+    	    	          throw new SAXException(e);
+    	    	        }
+    	           
+    	  	         break;
+    	       case SCORELEVEL :
+    	    	 // throw new SAXException("In level " + slevel.getId() + " game type should be normal, inline or learning");
+    	    	   break;
+    	     }
+ 
      }
 
      else if (qName.equals("learningduration")) {

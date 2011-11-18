@@ -74,7 +74,7 @@ public class RhythmLevel implements Level {
     this.triplet = n.triplet;
     
     this.timeSignNumerator = n.timeSignNumerator;
-    this.timeSignDenominator = n.timeSignNumerator;
+    this.timeSignDenominator = n.timeSignDenominator;
     
     this.timeDivision = n.timeDivision ; 
   }
@@ -130,6 +130,30 @@ public boolean isMessageEmpty(){
 	    return this.triplet;
   }  
 
+  public void setWholeNote(boolean b) {
+	    this.whole = b;
+	  }
+
+	  public void setHalfNote(boolean b) {
+		    this.half = b;
+		  }
+	
+		  public void setQuarterNote(boolean b) {
+		    this.quarter = b;
+		  }
+	
+		  public void setEighthNote(boolean b) {
+		    this.eighth = b;
+		  }
+	
+		  public void setSilence(boolean b) {
+		    this.silence = b;
+		  }
+		  
+		  public void setTriplet(boolean b) {
+			    this.triplet = b;
+		  }  
+
   /********************************/
   
   public int getTimeSignNumerator() {
@@ -157,6 +181,17 @@ public void setTimeDivision(int i) {
 }
 
 /********************************/
+/********************************/
+
+public void setSpeed(int i) {
+  this.speed = i;
+}
+
+public int getspeed() {
+  return this.speed;
+}
+
+/********************************/
 
   public void adjustLevel(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
     this.whole = r;
@@ -176,4 +211,18 @@ public void setTimeDivision(int i) {
       g.drawString(niv, 125, 461);*/
 
   }
+  
+  public void printtest(){
+	   System.out.println("Level n°"+this.Id);
+	    System.out.println("Whole note : " + this.whole);
+	  System.out.println("Half note : " + this.half);
+	    System.out.println("Quarter note : " + this.quarter);
+	  System.out.println("Eighth note : " + this.eighth);
+	  System.out.println("Eighth note : " + this.eighth);
+	  System.out.println("Rests : " + this.silence);
+	  System.out.println("Triplets : " + this.triplet);
+	  System.out.println("time signature : " + this.timeSignNumerator + "/" + this.timeSignDenominator + "div " + this.timeDivision);
+	  System.out.println("Speed : " + this.speed);
+	}
+
 }

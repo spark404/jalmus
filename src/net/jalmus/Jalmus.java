@@ -1853,13 +1853,29 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
      * parameters and game restart. */
     private void changeScreen() {
 
-        if (isLessonMode) {
-            startButton.setVisible(false);
-            preferencesButton.setVisible(false);
-            newButton.setVisible(false);
-            listenButton.setVisible(false);
+        if (isLessonMode) {			
+        		if (currentlesson.isNoteLevel()) {	
+	            startButton.setVisible(false);
+	            preferencesButton.setVisible(false);
+	            newButton.setVisible(false);
+	            listenButton.setVisible(false);
+	
+	            menuPrefs.setEnabled(false);
+        		}
+        		else if (currentlesson.isRhythmLevel()) {	
+    	            
+    	            pgamebutton.add(newButton);
+    	            pgamebutton.add(listenButton);
+    	            pgamebutton.add(startButton);
+    	            pgamebutton.add(preferencesButton);
+    	            scoreYpos=110;
+    	            repaint();
+    	            pgamebutton.setVisible(true);
+    	            
 
-            menuPrefs.setEnabled(false);
+    	   
+    	            menuPrefs.setEnabled(false);
+            	}
 
         } else {
             startButton.setVisible(true);
@@ -2036,6 +2052,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	
     	System.out.println("[initRhythmGame] latency: " + latency);
     	
+
+
+    
     	initializeMidi(); 
     	if (!renderingThread.isAlive()) {
              renderingThread.start();
@@ -2241,18 +2260,36 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private void startLevel() {
 
-        if (!noteLevel.isMessageEmpty()) {
-
-            levelMessage.setTitle(bundle.getString("_information"));
-
-            textlevelMessage.setText("  "+noteLevel.getMessage()+"  ");
-            levelMessage.pack();
-            levelMessage.setLocationRelativeTo(this);
-            levelMessage.setVisible(true);
-
-        } else {
-            startButton.doClick();
+        if (currentlesson.isNoteLevel()) {       	
+	        if (!noteLevel.isMessageEmpty()) {
+	
+	            levelMessage.setTitle(bundle.getString("_information"));
+	
+	            textlevelMessage.setText("  "+noteLevel.getMessage()+"  ");
+	            levelMessage.pack();
+	            levelMessage.setLocationRelativeTo(this);
+	            levelMessage.setVisible(true);
+	
+	        } else {
+	            startButton.doClick();
+	        }        
         }
+        
+        else if (currentlesson.isRhythmLevel()) {       	
+	        if (!rhythmLevel.isMessageEmpty()) {
+	
+	            levelMessage.setTitle(bundle.getString("_information"));
+	
+	            textlevelMessage.setText("  "+rhythmLevel.getMessage()+"  ");
+	            levelMessage.pack();
+	            levelMessage.setLocationRelativeTo(this);
+	            levelMessage.setVisible(true);
+	
+	        } else {
+	            startButton.doClick();
+	        }        
+        }
+        
     }
 
     private void nextLevel() {
@@ -2261,17 +2298,31 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             stopNoteGame();
             currentlesson.nextLevel();
 
-            noteLevel.copy(currentlesson.getLevel());
-            noteLevel.updatenbnotes(piano);
-   
+            if (currentlesson.isNoteLevel()) {	
+            	noteLevel.copy((NoteLevel)currentlesson.getLevel());
+            	noteLevel.updatenbnotes(piano);
 
+                selectedGame = NOTEREADING ;
             initNoteGame();
             changeScreen();
             noteLevel.printtest();
-            selectedGame = NOTEREADING ;
+
 
             startLevel();
+            }
 
+            else if (currentlesson.isRhythmLevel()) {	
+            	rhythmLevel.copy((RhythmLevel)currentlesson.getLevel());
+            
+
+            	selectedGame = RHYTHMREADING;
+            	initRhythmGame();
+
+            	changeScreen();
+            	rhythmLevel.printtest();
+                newButton.doClick();
+            	startLevel();
+            }	
 
         } else {
             System.out.println("End level");
@@ -2590,18 +2641,28 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         File lessonFile=new File(pathsubdir[i]+File.separator+lesson+".xml");
         parseur.parse(lessonFile, currentlesson);
 
-        noteLevel.copy(currentlesson.getLevel());
-        noteLevel.updatenbnotes(piano);
+        if (currentlesson.isNoteLevel()) {	
+        	noteLevel.copy((NoteLevel)currentlesson.getLevel());
+        	noteLevel.updatenbnotes(piano);
 
+        	selectedGame = NOTEREADING;
+        	initNoteGame();
 
-        initNoteGame();
-        selectedGame = NOTEREADING;
-        changeScreen();
-        noteLevel.printtest();
+        	changeScreen();
+        	noteLevel.printtest();
+        	startLevel();
+        }
+        else if (currentlesson.isRhythmLevel()) {	
+        	rhythmLevel.copy((RhythmLevel)currentlesson.getLevel());
+        
 
-      
-
-        startLevel();
+        	selectedGame = RHYTHMREADING;
+        	initRhythmGame();
+        	changeScreen();
+        	rhythmLevel.printtest();
+            newButton.doClick();
+        	startLevel();
+        }
 
     } catch (ParserConfigurationException pce) {
         parseerror="Configuration Parser error.";
@@ -4633,7 +4694,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 */
         }
 
-        if (selectedGame == RHYTHMREADING) regroupenotes(); //not workin with Scorereading yet
+       if (selectedGame == RHYTHMREADING) regroupenotes(); //not workin with Scorereading yet
 
     }
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Test rhythms.xml
+Created on : 17 novembre 2011, 15:11
+Author : RICHARD Christophe
+Description: test rhythm
+-->
+
+<levels>
+<rhythmreading id = '0'>
+<message>Try rhythm reading exercise </message>
+<game>normal</game>
+<time>4/4</time>
+<rhythms>1,2,4</rhythms>
+<rests>1,2,4,8</rests>
+<speed>20</speed>
+</rhythmreading>
+
+</levels>
