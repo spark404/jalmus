@@ -36,6 +36,7 @@ public class RhythmLevel implements Level {
   int timeSignDenominator;
   int timeDivision; // ratio between time signature numerator and denominator 
   int speed; // time sleep of thread = speed of the note
+  boolean metronome;
   
 
   public RhythmLevel() {
@@ -52,6 +53,7 @@ public class RhythmLevel implements Level {
 	    this.timeSignDenominator = 4;
 	    this.timeDivision = 1;     
 	    this.speed = 28;
+	    this.metronome = true;
     
   }
 
@@ -69,6 +71,7 @@ public class RhythmLevel implements Level {
     this.timeSignDenominator = 4;
     this.timeDivision = 1;     
     this.speed = 28;
+    this.metronome = true;
   }
 
   public void copy(RhythmLevel n) {
@@ -85,6 +88,7 @@ public class RhythmLevel implements Level {
     this.timeSignDenominator = n.timeSignDenominator;
     
     this.timeDivision = n.timeDivision ; 
+    this.metronome =   n.metronome;
   }
 
   /********************************/
@@ -189,7 +193,7 @@ public void setTimeDivision(int i) {
 }
 
 /********************************/
-/********************************/
+
 
 public void setSpeed(int i) {
   this.speed = i;
@@ -200,6 +204,16 @@ public int getspeed() {
 }
 
 /********************************/
+
+public void setMetronome(boolean b) {
+    this.metronome = b;
+  }
+
+  public boolean getMetronome() {
+    return this.metronome;
+}
+
+  /********************************/
 
   public void adjustLevel(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
     this.whole = r;
@@ -230,6 +244,7 @@ public int getspeed() {
 	  System.out.println("Triplets : " + this.triplet);
 	  System.out.println("time signature : " + this.timeSignNumerator + "/" + this.timeSignDenominator + "div " + this.timeDivision);
 	  System.out.println("Speed : " + this.speed);
+	  System.out.println("Metronome : " + this.metronome);
 	}
 
   private static void writeFile(File destFile, String content)

@@ -3291,6 +3291,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         	if (tripletCheckBox.isSelected()) rhythmLevel.setTriplet(true);
         	else rhythmLevel.setTriplet(false);
         } 
+        else if (evt.getItemSelectable()== metronomeCheckBox) {
+        	if (metronomeCheckBox.isSelected()) rhythmLevel.setMetronome(true);
+        	else rhythmLevel.setMetronome(false);
+        } 
         
         
         
@@ -4465,7 +4469,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             String textdt="departthread"; //one beat before rhythms
             addEvent(metronome, TEXT, textdt.getBytes(), (int)((rhythmLevel.getTimeSignNumerator()/rhythmLevel.getTimeDivision())-1)*ppq);
 
-            if ((selectedGame == RHYTHMREADING && metronomeCheckBox.isSelected()) || 
+            if ((selectedGame == RHYTHMREADING && rhythmLevel.getMetronome()) || 
             	(selectedGame==SCOREREADING && scoreMetronomeCheckBox.isSelected())) {
             		nbpulse = (rhythmLevel.getTimeSignNumerator() * numberOfMeasures * numberOfRows) + rhythmLevel.getTimeSignNumerator();
             }

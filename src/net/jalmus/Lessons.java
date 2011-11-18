@@ -35,7 +35,7 @@ public class Lessons extends DefaultHandler{
    RhythmLevel rlevel;
               //flags nous indiquant la position du parseur
    boolean inExercices, inNLevel, inRLevel, inGametype, inNotestype, inNbnotes, inMessage, inSpeed, inStartingnote, inClef, inTonality,
-   inIntervals, inChords, inDuration, inPitches,  inRhythms, inTime, inRests, inTuplets;
+   inIntervals, inChords, inDuration, inPitches,  inRhythms, inTime, inRests, inTuplets, inMetronome;
    
   TLevel leveltype; 
               //buffer nous permettant de récupérer les données
@@ -218,6 +218,9 @@ public boolean isScoreLevel(){
        else if (qName.equals("speed")) {
          inSpeed = true;
        }
+       else if (qName.equals("metronome")) {
+           inMetronome = true;
+         }
        else if (qName.equals("learningduration")) {
        inDuration = true;
      }
@@ -548,6 +551,52 @@ public boolean isScoreLevel(){
                buffer = null;
                inTuplets = false;
              }
+
+     
+/******************** Metronome <metronome>sound</metronome> none sound visual both
+************************************************************************/
+                
+                else if (qName.equals("metronome")) {
+    
+                    switch (leveltype)
+             	     {
+             	       case NOTELEVEL :
+             	    	
+             	           throw new SAXException("In level " + nlevel.getId() + " no metronome on note level");
+
+
+             	       case RHYTHMLEVEL:
+         
+             	    	   String tmpmetronome= buffer.toString();
+             	          if (tmpmetronome.equals("none")){
+             	            rlevel.setMetronome(false);
+             	        // rlevel.setMetronomeBeats(false);
+             	          }
+             	          else if (tmpmetronome.equals("sound")){
+              	            rlevel.setMetronome(true);
+              	            // rlevel.setMetronomeBeats(false);
+              	          }
+             	         else if (tmpmetronome.equals("visual")){
+             	        	   rlevel.setMetronome(false);
+               	           // rlevel.setMetronomeBeats(true);
+               	          }
+             	        else if (tmpmetronome.equals("both")){
+             	        	rlevel.setMetronome(true);
+                	        // rlevel.setMetronomeBeats(true);
+                	          }
+             	          else
+             	         throw new SAXException("In level " + nlevel.getId() + " interval type should be random or second, third ...");
+             	           
+             	  	         break;
+             	       case SCORELEVEL :
+             	    	 // throw new SAXException("In level " + slevel.getId() + " game type should be normal, inline or learning");
+             	    	   break;
+             	     }
+
+                    buffer = null;
+                    inMetronome = false;
+                  }
+     
      
 /******************** Nbnotes for note reading <nbnotes>3</nbnotes>   
 *******************************************************************/    
