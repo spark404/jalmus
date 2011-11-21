@@ -37,6 +37,7 @@ public class RhythmLevel implements Level {
   int timeDivision; // ratio between time signature numerator and denominator 
   int speed; // time sleep of thread = speed of the note
   boolean metronome;
+  boolean beats;
   
 
   public RhythmLevel() {
@@ -54,6 +55,7 @@ public class RhythmLevel implements Level {
 	    this.timeDivision = 1;     
 	    this.speed = 28;
 	    this.metronome = true;
+	    this.beats = false;
     
   }
 
@@ -72,6 +74,7 @@ public class RhythmLevel implements Level {
     this.timeDivision = 1;     
     this.speed = 28;
     this.metronome = true;
+    this.beats = false;
   }
 
   public void copy(RhythmLevel n) {
@@ -89,6 +92,7 @@ public class RhythmLevel implements Level {
     
     this.timeDivision = n.timeDivision ; 
     this.metronome =   n.metronome;
+    this.beats =    n.beats ;
   }
 
   /********************************/
@@ -214,6 +218,18 @@ public void setMetronome(boolean b) {
 }
 
   /********************************/
+  
+
+
+  public void setMetronomeBeats(boolean b) {
+      this.beats = b;
+    }
+
+    public boolean getMetronomeBeats() {
+      return this.beats;
+  }
+
+    /********************************/
 
   public void adjustLevel(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
     this.whole = r;
@@ -244,7 +260,7 @@ public void setMetronome(boolean b) {
 	  System.out.println("Triplets : " + this.triplet);
 	  System.out.println("time signature : " + this.timeSignNumerator + "/" + this.timeSignDenominator + "div " + this.timeDivision);
 	  System.out.println("Speed : " + this.speed);
-	  System.out.println("Metronome : " + this.metronome);
+	  System.out.println("Metronome sound : " + this.metronome+ " visual beats : " + this.beats);
 	}
 
   private static void writeFile(File destFile, String content)
@@ -310,7 +326,10 @@ public void setMetronome(boolean b) {
 		fileContent.append("</rhythms>"+newline);
 		if (this.getSilence()) fileContent.append("<rests>1,2,4,8</rests>"+newline); // no distinction yet
 		if (this.getTriplet()) fileContent.append("<tuplets>3</tuplets>"+newline); // no distinction yet
-		
+		if (this.getMetronome() & this.getMetronomeBeats()) fileContent.append("<metronome>both</metronome>"+newline);
+		else if (this.getMetronome() & !this.getMetronomeBeats()) fileContent.append("<metronome>sound</metronome>"+newline);
+		else if (!this.getMetronome() & !this.getMetronomeBeats()) fileContent.append("<metronome>none</metronome>"+newline);
+		else if (!this.getMetronome() & this.getMetronomeBeats()) fileContent.append("<metronome>visual</metronome>"+newline);
 		fileContent.append("<speed>"+this.speed+"</speed>"+newline);
 		fileContent.append("</rhythmreading>"+newline+"</levels>"+newline);
 		writeFile(f, fileContent.toString());

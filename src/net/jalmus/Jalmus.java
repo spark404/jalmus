@@ -1637,8 +1637,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         /* 3rd panel - metronome */
 
         metronomeCheckBox=new JCheckBox("", true);
+        metronomeCheckBox.addItemListener(this);
         metronomeShowCheckBox=new JCheckBox("", true);
         metronomeShowCheckBox.setSelected(false);
+        metronomeShowCheckBox.addItemListener(this);
 
         JPanel metronomePanel=new JPanel();
         metronomePanel.add(metronomeCheckBox);
@@ -3295,7 +3297,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         	if (metronomeCheckBox.isSelected()) rhythmLevel.setMetronome(true);
         	else rhythmLevel.setMetronome(false);
         } 
-        
+        else if (evt.getItemSelectable()== metronomeShowCheckBox) {
+        	if (metronomeShowCheckBox.isSelected()) rhythmLevel.setMetronomeBeats(true);
+        	else rhythmLevel.setMetronomeBeats(false);
+        } 
         
         
         else if (evt.getItemSelectable()==instrumentsComboBox) {
@@ -4486,7 +4491,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
            		mess2.setMessage(ShortMessage.NOTE_OFF, 9, 77, 0);
            		metronome.add(new MidiEvent(mess2, (i*ppq)+1));
             		
-           		if (((selectedGame == RHYTHMREADING && metronomeShowCheckBox.isSelected()) ||
+           		if (((selectedGame == RHYTHMREADING && rhythmLevel.getMetronomeBeats()) ||
        				(selectedGame == SCOREREADING && scoreMetronomeShowCheckBox.isSelected())) && i > ((rhythmLevel.getTimeSignNumerator() / rhythmLevel.getTimeDivision()) - 1)) {
             			//System.out.println("adding metronome beat : "+i);
             			String textb="beat";
@@ -5296,7 +5301,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 	scoreLevel.getCurrentTonality().paint(3, scoreLevel.getKey(), g, MusiSync, windowMargin + keyWidth, scoreYpos, rowsDistance, numberOfRows, this, bundle);
                 }
                 /* Show cursor if enabled */
-                if ((selectedGame == RHYTHMREADING && metronomeShowCheckBox.isSelected()) ||
+                if ((selectedGame == RHYTHMREADING && rhythmLevel.getMetronomeBeats()) ||
                    	(selectedGame==SCOREREADING && scoreMetronomeShowCheckBox.isSelected())) {
                 	g.setColor(Color.orange);
                     g.fillRect(rhythmCursorXStartPos, rhythmAnswerScoreYpos - 31, (int)rhythmCursorXpos - rhythmCursorXStartPos, 3);

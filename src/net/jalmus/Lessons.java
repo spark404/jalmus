@@ -570,22 +570,22 @@ public boolean isScoreLevel(){
              	    	   String tmpmetronome= buffer.toString();
              	          if (tmpmetronome.equals("none")){
              	            rlevel.setMetronome(false);
-             	        // rlevel.setMetronomeBeats(false);
+             	            rlevel.setMetronomeBeats(false);
              	          }
              	          else if (tmpmetronome.equals("sound")){
               	            rlevel.setMetronome(true);
-              	            // rlevel.setMetronomeBeats(false);
+              	            rlevel.setMetronomeBeats(false);
               	          }
              	         else if (tmpmetronome.equals("visual")){
              	        	   rlevel.setMetronome(false);
-               	           // rlevel.setMetronomeBeats(true);
+             	        	   rlevel.setMetronomeBeats(true);
                	          }
              	        else if (tmpmetronome.equals("both")){
              	        	rlevel.setMetronome(true);
-                	        // rlevel.setMetronomeBeats(true);
+                	         rlevel.setMetronomeBeats(true);
                 	          }
              	          else
-             	         throw new SAXException("In level " + nlevel.getId() + " interval type should be random or second, third ...");
+             	         throw new SAXException("In level " + rlevel.getId() + " metronome should be none sound visual both");
              	           
              	  	         break;
              	       case SCORELEVEL :
