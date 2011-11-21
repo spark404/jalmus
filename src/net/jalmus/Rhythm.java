@@ -53,7 +53,7 @@ public class Rhythm {
     this.duration = 0;
     this.position = 0;
     this.rowNumber = 0;
-    this.pitch = 71; //SI for rhythm game
+    this.pitch = 67; //G for rhythm game
     this.pointee = false;
     this.silence = false;
     this.groupee = 0;
@@ -160,14 +160,16 @@ public class Rhythm {
       }
 
       else { // semiminima
-    	String sm = "" + (char)0xF6;
+  	String sm = "" + (char)0xF6;
     	int voffset = 53;
     	if (noteY > 18) {
     		sm = "" + (char)0xF4;
     		voffset = 23;
     	}
     	g.drawString(sm, this.position, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset);
+    	
       }
+    	  
     }
     
     else if (this.duration == 0.333) {
@@ -204,9 +206,11 @@ public class Rhythm {
        		voffset = 23;
        	 }
        	 g.drawString(sm, this.position, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset);
+    	   
+        	
        	 if (this.groupee == 1) {
            g.setColor(Color.BLACK);
-           g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+noteY, 38, 3);
+           g.fillRect(this.position+11, scoreYpos+ this.rowNumber*rowsDistance+noteY-30, 37, 3);
        	 }
        }
 
