@@ -430,7 +430,7 @@ public void save(Lessons l, String fileName, String message, String language)
 		
 		fileContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+newline);
 		fileContent.append("<!--"+newline+"Document : "+ fileName + newline + "Exercise saved : "+new Date()+newline+"-->"+newline+newline);
-		fileContent.append("<levels>"+newline+"<notereading id = '0'>");
+		fileContent.append("<levels>"+newline+"<notereading id = '0'>"+newline);
 		fileContent.append("<message>"+message+"</message>"+newline);
 		fileContent.append("<game>"+this.gametype+"</game>"+newline);
 		if (this.isLearninggame()) fileContent.append("<learningduration>30<learningduration>"+newline);

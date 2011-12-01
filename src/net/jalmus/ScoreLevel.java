@@ -1,8 +1,18 @@
 package net.jalmus;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 public class ScoreLevel implements Level {
+	int Id;
+	String message;
 	boolean whole;
 	boolean half;
 	boolean quarter; 
@@ -12,6 +22,13 @@ public class ScoreLevel implements Level {
 	String currentKey;
 	Tonality currenttonality;
 	boolean randomtonality;
+	int nbnotes;
+	int timeSignNumerator;
+	int timeSignDenominator;
+	int timeDivision; // ratio between time signature numerator and denominator 
+	int speed; // time sleep of thread = speed of the note
+	boolean metronome;
+	boolean beats;
 	//int[] pitchtab = new int [8];
 	ArrayList<Integer> pitchtab = new ArrayList<Integer>(); 
 
@@ -39,6 +56,8 @@ public class ScoreLevel implements Level {
 		   				 };
 
   public ScoreLevel() {
+	this.Id = 0;
+	this.message = "";
     this.whole = true;
     this.half = true;
     this.quarter = false;
@@ -49,8 +68,40 @@ public class ScoreLevel implements Level {
     this.randomtonality = false;
     this.currenttonality = new Tonality(0, "");
     pitchtab.clear();
+	this.nbnotes = 9;
+    this.timeSignNumerator = 4;
+    this.timeSignDenominator = 4;
+    this.timeDivision = 1;     
+    this.speed = 28;
+    this.metronome = true;
+    this.beats = false;
   }
 
+  /********************************/
+
+  public void setId(int i) {
+    this.Id = i;
+  }
+
+  public int getId() {
+    return this.Id;
+}
+
+  
+  /*******************************************/
+  public void setMessage(String s) {
+    this.message = s;
+  }
+
+  public String getMessage() {
+    return this.message;
+}
+
+public boolean isMessageEmpty(){
+  return this.message.equals("");
+}
+
+/*******************************************/
   public void setCurrentKey(String s) {
     this.currentKey = s;
   }
@@ -85,23 +136,70 @@ public class ScoreLevel implements Level {
      return this.currenttonality;
    }
  /*****************************************/
-  
-  public void initpitchtab(int mode) {
 
-	  int i = 0, noteIdx = 0, notesNum = 15;
+
+   public void setNbnotes(int i) {
+     this.nbnotes = i;
+   }
+
+   public int getNbnotes() {
+     return this.nbnotes;
+ }
+
+   public void copy(ScoreLevel n) {
+		this.Id = n.Id;
+	    this.message =  n.message;
+	    this.whole = n.whole;
+	    this.half = n.half;
+	    this.quarter = n.quarter;
+	    this.eighth = n.eighth;
+	    this.silence = n.silence;
+	    this.triplet = n.triplet;
+	    
+	    this.timeSignNumerator = n.timeSignNumerator;
+	    this.timeSignDenominator = n.timeSignDenominator;
+	    
+	    this.timeDivision = n.timeDivision ; 
+	    this.metronome =   n.metronome;
+	    this.beats =    n.beats ;
+	    
+	    this.currentKey =  n.currentKey;
+	    this.randomtonality = n.randomtonality;
+	    this.currenttonality = n.currenttonality;
+	    
+		this.nbnotes = n.nbnotes;
+		
+		this.pitchtab =  new ArrayList<Integer>(); 
+		this.pitchtab.addAll(n.pitchtab);
+
+	  }
+   
+   
+   public void adjustLevel(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
+	    this.whole = r;
+	    this.half = b;
+	    this.quarter = n;
+	    this.eighth = c;
+	    this.silence = s;
+	    this.triplet = t;
+	  }
+   
+   /********************************/  
+  public void initpitchtab(int notesNum) {
+
+	  int i = 0, noteIdx = 0; 
 	  int octaveOffset = 0;
 	  int altIndex = this.currenttonality.getAlterationsNumber();
 	  pitchtab.clear();
 
-	  if (mode == 0) notesNum = 9;
 
 	  if (this.isCurrentKeyBass()) {
 		  octaveOffset = -2;
-		  if (mode == 0) noteIdx = 4; // starts from G
+		  if (notesNum == 9) noteIdx = 4; // starts from G
 	  }
 	  else if (this.isCurrentKeyTreble()) {
 		  octaveOffset = 0;
-		  if (mode == 0) noteIdx = 2; // starts from E
+		  if (notesNum == 9) noteIdx = 2; // starts from E
 	  }
 
 	  for (i = 0; i < notesNum; i++) {
@@ -209,27 +307,215 @@ public class ScoreLevel implements Level {
     this.triplet = t;
   }
 
-  public boolean getWholeNote() {
-    return this.whole;
+
+  /*******************************************/
+
+    public boolean getWholeNote() {
+      return this.whole;
+    }
+
+    public boolean getHalfNote() {
+      return this.half;
+    }
+
+    public boolean getQuarterNote() {
+      return this.quarter;
+    }
+
+    public boolean getEighthNote() {
+      return this.eighth;
+    }
+
+    public boolean getSilence() {
+      return this.silence;
+    }
+    
+    public boolean getTriplet() {
+  	    return this.triplet;
+    }  
+
+    public void setWholeNote(boolean b) {
+  	this.whole = b;
+    }
+
+    public void setHalfNote(boolean b) {
+  	this.half = b;
+    }
+  	
+    public void setQuarterNote(boolean b) {
+  	this.quarter = b;
+    }
+  	
+    public void setEighthNote(boolean b) {
+  	this.eighth = b;
+    }
+  	
+    public void setSilence(boolean b) {
+  	this.silence = b;
+    }
+  		  
+    public void setTriplet(boolean b) {
+  	this.triplet = b;
+    }  
+
+    /********************************/
+    
+    public int getTimeSignNumerator() {
+  	    return  this.timeSignNumerator ;
+  }
+    
+    public int getTimeSignDenominator() {
+  	    return  this.timeSignDenominator ;
+  }
+    
+    public void setTimeSignNumerator(int i) {
+  	    this.timeSignNumerator = i ;
   }
 
-  public boolean getHalfNote() {
-    return this.half;
+  public void setTimeSignDenominator(int i) {
+  	this.timeSignDenominator = i ;
+  }
+    
+  public int getTimeDivision() {
+      return  this.timeDivision ;
   }
 
-  public boolean getQuarterNote() {
-    return this.quarter;
+  public void setTimeDivision(int i) {
+  	this.timeDivision = i ;
   }
 
-  public boolean getEighthNote() {
-    return this.eighth;
+  /********************************/
+
+
+  public void setSpeed(int i) {
+    this.speed = i;
   }
 
-  public boolean getSilence() {
-    return this.silence;
+  public int getspeed() {
+    return this.speed;
   }
 
-  public boolean getTriplet() {
-	    return this.triplet;
+  /********************************/
+
+  public void setMetronome(boolean b) {
+      this.metronome = b;
+    }
+
+    public boolean getMetronome() {
+      return this.metronome;
   }
+
+    /********************************/
+    
+
+
+    public void setMetronomeBeats(boolean b) {
+        this.beats = b;
+      }
+
+      public boolean getMetronomeBeats() {
+        return this.beats;
+    }
+
+      /********************************/
+ public void printtest(){
+   	   System.out.println("Level n°"+this.Id);
+   	    System.out.println("Whole note : " + this.whole);
+   	  System.out.println("Half note : " + this.half);
+   	    System.out.println("Quarter note : " + this.quarter);
+   	  System.out.println("Eighth note : " + this.eighth);
+   	  System.out.println("Rests : " + this.silence);
+   	  System.out.println("Triplets : " + this.triplet);
+   	  System.out.println("time signature : " + this.timeSignNumerator + "/" + this.timeSignDenominator + "div " + this.timeDivision);
+   	  System.out.println("Speed : " + this.speed);
+   	  System.out.println("Metronome sound : " + this.metronome+ " visual beats : " + this.beats);
+   	  System.out.println("Key : " + this.currentKey);
+
+   	  System.out.println("Tonality : " + this.currenttonality);
+	  System.out.println("Nb notes "+this.nbnotes);
+   	}
+
+      
+      
+  public void save(Lessons l, String fileName, String message, String language) 
+	throws IOException {
+	
+	File destDir = new File("");;
+final String newline = "\r\n";
+String path = "";
+StringBuffer fileContent = new StringBuffer();
+boolean dirmylessonok = false;
+
+path = l.getLessonPath(language);
+
+File sousrepertoire=new File(path);
+
+// find the personnal lessons directory 99. in the name
+if (sousrepertoire.isDirectory()) {
+    File[] listsp=sousrepertoire.listFiles();
+    Arrays.sort(listsp);
+    if (listsp!=null) { 
+
+     for   (int i=0; i<listsp.length; i++) {
+    	 		if (listsp[i].getName().indexOf("99.") != -1)  {
+
+            	
+            	path = path+File.separator+listsp[i].getName();
+    	 	    dirmylessonok = true;
+    	 		}
+    	 		
+                
+     }
+    }
+}
+
+if ( dirmylessonok) {
+	destDir = new File(path);
+
+		//return File.createTempFile(new File(fileName).getName() + "_" + datev,"", destDir);
+		File f = new File(destDir, fileName);
+		System.out.println("Create file " + destDir + "\\" + fileName + newline);
+		
+		fileContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+newline);
+		fileContent.append("<!--"+newline+"Document : "+ fileName + newline + "Exercise saved : "+new Date()+newline+"-->"+newline+newline);
+		fileContent.append("<levels>"+newline+"<scorereading id = '0'>"+newline);
+		fileContent.append("<message>"+message+"</message>"+newline);
+	//	fileContent.append("<game>"+this.gametype+"</game>"+newline);
+		fileContent.append("<time>"+this.getTimeSignNumerator()+"/"+this.getTimeSignDenominator()+"</time>"+newline);
+		fileContent.append("<rhythms>");
+		if (this.getWholeNote()) fileContent.append(1+",");
+		if (this.getHalfNote()) fileContent.append(2+",");
+		if (this.getQuarterNote()) fileContent.append(4+",");
+		if (this.getEighthNote()) fileContent.append(8+",");
+		fileContent.append("</rhythms>"+newline);
+		if (this.getSilence()) fileContent.append("<rests>1,2,4,8</rests>"+newline); // no distinction yet
+		if (this.getTriplet()) fileContent.append("<tuplets>3</tuplets>"+newline); // no distinction yet
+		if (this.getMetronome() & this.getMetronomeBeats()) fileContent.append("<metronome>both</metronome>"+newline);
+		else if (this.getMetronome() & !this.getMetronomeBeats()) fileContent.append("<metronome>sound</metronome>"+newline);
+		else if (!this.getMetronome() & !this.getMetronomeBeats()) fileContent.append("<metronome>none</metronome>"+newline);
+		else if (!this.getMetronome() & this.getMetronomeBeats()) fileContent.append("<metronome>visual</metronome>"+newline);
+		fileContent.append("<clef>"+this.currentKey+"</clef>"+newline);
+		if (this.randomtonality) fileContent.append("<tonality>random</tonality>"+newline);
+		else  if (this.currenttonality.getAlterationsNumber()!=0) fileContent.append("<tonality>"+this.currenttonality.getAlterationsNumber()+this.currenttonality.getAlteration()+ "</tonality>"+newline);
+		fileContent.append("<nbnotes>"+this.getNbnotes()+"</nbnotes>"+newline);
+		fileContent.append("<speed>"+this.speed+"</speed>"+newline);
+		fileContent.append("</scorereading>"+newline+"</levels>"+newline);
+		writeFile(f, fileContent.toString());
+		
+}
+else JOptionPane.showMessageDialog(null, "The personnal lessons directory begin with 99. is missing", "Warning", JOptionPane.ERROR_MESSAGE); 
+
+
+
+}
+
+  private static void writeFile(File destFile, String content)
+  throws IOException {
+  BufferedWriter writer = new BufferedWriter(new FileWriter(destFile));
+  writer.write(content);
+  writer.flush();
+  writer.close();
+  writer = null;
+  }
+
 }

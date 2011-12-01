@@ -147,28 +147,28 @@ public boolean isMessageEmpty(){
   }  
 
   public void setWholeNote(boolean b) {
-	    this.whole = b;
-	  }
+	this.whole = b;
+  }
 
-	  public void setHalfNote(boolean b) {
-		    this.half = b;
-		  }
+  public void setHalfNote(boolean b) {
+	this.half = b;
+  }
 	
-		  public void setQuarterNote(boolean b) {
-		    this.quarter = b;
-		  }
+  public void setQuarterNote(boolean b) {
+	this.quarter = b;
+  }
 	
-		  public void setEighthNote(boolean b) {
-		    this.eighth = b;
-		  }
+  public void setEighthNote(boolean b) {
+	this.eighth = b;
+  }
 	
-		  public void setSilence(boolean b) {
-		    this.silence = b;
-		  }
+  public void setSilence(boolean b) {
+	this.silence = b;
+  }
 		  
-		  public void setTriplet(boolean b) {
-			    this.triplet = b;
-		  }  
+  public void setTriplet(boolean b) {
+	this.triplet = b;
+  }  
 
   /********************************/
   
@@ -314,7 +314,7 @@ public void setMetronome(boolean b) {
 		
 		fileContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+newline);
 		fileContent.append("<!--"+newline+"Document : "+ fileName + newline + "Exercise saved : "+new Date()+newline+"-->"+newline+newline);
-		fileContent.append("<levels>"+newline+"<rhythmreading id = '0'>");
+		fileContent.append("<levels>"+newline+"<rhythmreading id = '0'>"+newline);
 		fileContent.append("<message>"+message+"</message>"+newline);
 	//	fileContent.append("<game>"+this.gametype+"</game>"+newline);
 		fileContent.append("<time>"+this.getTimeSignNumerator()+"/"+this.getTimeSignDenominator()+"</time>"+newline);
