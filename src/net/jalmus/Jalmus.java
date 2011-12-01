@@ -1883,9 +1883,18 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	            if ( currentlesson.isScoreLevel()) {
     	            	alterationWidth = scoreLevel.getCurrentTonality().getAlterationsNumber() * 12;
     	            	firstNoteXPos = windowMargin + keyWidth + alterationWidth + timeSignWidth + notesShift;
+    	            	   Dimension size=getSize();
+    	            	   int scoreLineWidth = keyWidth + alterationWidth + timeSignWidth;
+    	            	 numberOfMeasures = (size.width - (windowMargin * 2) - scoreLineWidth) / (scoreLevel.getTimeSignNumerator() * noteDistance);         	  
     	            }
-    	          
-  
+    	            else if ( currentlesson.isRhythmLevel()) {
+    	            
+    	            	   Dimension size=getSize();
+    	            	   int scoreLineWidth = keyWidth + alterationWidth + timeSignWidth;
+    	            	 numberOfMeasures = (size.width - (windowMargin * 2) - scoreLineWidth) / (rhythmLevel.getTimeSignNumerator() * noteDistance);         	  
+    	       
+    	            }
+    	           
     	            
     	            repaint();
     	            pgamebutton.setVisible(true);
@@ -2716,9 +2725,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         	rhythmLevel.copy((RhythmLevel)currentlesson.getLevel());
         
 
-        	selectedGame = RHYTHMREADING;
-        	initRhythmGame();
+        	selectedGame = RHYTHMREADING;       
         	changeScreen();
+        	initRhythmGame();
         	rhythmLevel.printtest();
             newButton.doClick();
         	startLevel();
@@ -2731,10 +2740,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         	selectedGame = SCOREREADING;
         	changeScreen();
         	initRhythmGame();
-               repaint();
-   
-    
-        
            newButton.doClick();
         	startLevel();
     
@@ -4810,6 +4815,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         int currentXPos = windowMargin + keyWidth + alterationWidth + timeSignWidth + notesShift;
         int pitch;
         boolean wholeNote = false, halfNote = false, quarterNote= false, eighthNote = false, triplet = false;
+        
+        Dimension size=getSize();
+
         	
         if (selectedGame == RHYTHMREADING) 
         {
