@@ -141,6 +141,9 @@ public boolean isScoreLevel(){
    public void startElement(String uri, String localName,
                             String qName, Attributes attributes) throws
        SAXException {
+	   
+	   System.out.println(leveltype + " "+ qName);
+	   
      if (qName.equals("levels")) {
        this.levelslist = new LinkedList<Level>();
        inExercices = true;
@@ -439,7 +442,7 @@ public boolean isScoreLevel(){
   	     {
   	       case NOTELEVEL :
   	    	
-  	           throw new SAXException("In level " + nlevel.getId() + " no time on note level");
+  	        //   throw new SAXException("In level " + nlevel.getId() + " no time on note level");
 
   	       case RHYTHMLEVEL:
 
@@ -759,9 +762,9 @@ public boolean isScoreLevel(){
 		         //erreur, le contenu de id n'est pas un entier
 		         throw new SAXException(e);
 		       }
-		  
+		       break;
  	      case RHYTHMLEVEL:
- 	    	  throw new SAXException("In level " + rlevel.getId() + " no number notes on rhythm level");
+ 	    	//  throw new SAXException("In level " + rlevel.getId() + " no number notes on rhythm level");
  	    
  	     case SCORELEVEL:
  	    	  try {
@@ -943,10 +946,10 @@ public boolean isScoreLevel(){
 
 		  
  	      case RHYTHMLEVEL:
- 	    	  throw new SAXException("In level " + rlevel.getId() + " no number notes on rhythm level");
+ 	    	//  throw new SAXException("In level " + rlevel.getId() + " no number notes on rhythm level");
  	    
  	     case SCORELEVEL:
- 	      throw new SAXException("In level " + slevel.getId() + " no number notes on rhythm level");
+ 	   //   throw new SAXException("In level " + slevel.getId() + " no number notes on rhythm level");
  	     }
   	   buffer = null;
 
@@ -975,10 +978,10 @@ public boolean isScoreLevel(){
 
 	  
       case RHYTHMLEVEL:
-    	  throw new SAXException("In level " + rlevel.getId() + " no number notes on rhythm level");
+    	//  throw new SAXException("In level " + rlevel.getId() + " no number notes on rhythm level");
     
      case SCORELEVEL:
-      throw new SAXException("In level " + slevel.getId() + " no number notes on rhythm level");
+     // throw new SAXException("In level " + slevel.getId() + " no number notes on rhythm level");
      }
 	   buffer = null;
 
