@@ -13,6 +13,8 @@
             <author name="RICHARD Christophe" email="crichard@jalmus.net"/>
         </authors>
         <url>http://www.jalmus.net/</url>
+        <javaversion>1.5</javaversion>
+        <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/> 
     </info> 
 
     <guiprefs width="680" height="550" resizable="yes"/> 
