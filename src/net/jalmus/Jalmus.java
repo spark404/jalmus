@@ -491,6 +491,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
    //private JComboBox transpositionComboBox; // for transposition MIDI keyboard
    private JSpinner transpositionSpinner; // for transposition MIDI keyboard
    private SpinnerNumberModel m_numberSpinnerModel;
+   private JLabel transpositionLabel=new JLabel();
 
     private JSlider latencySlider = new JSlider(JSlider.HORIZONTAL, 0, 250, 0);
 
@@ -1408,9 +1409,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         m_numberSpinnerModel = new SpinnerNumberModel(current, min, max, step);
         transpositionSpinner = new JSpinner(m_numberSpinnerModel);
         transpositionSpinner.setSize(40, 40);
+        transpositionLabel.setText("Tansposition");
 
         JPanel keyboardPanel=new JPanel();
         keyboardPanel.add(keyboardLengthComboBox);
+        keyboardPanel.add(transpositionLabel);
         keyboardPanel.add(transpositionSpinner);
 
         JPanel midiInPanel=new JPanel();
@@ -1446,7 +1449,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         // ----
 
         JPanel contentPanel=new JPanel();
-        //contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        contentPanel.setLayout(new GridLayout(4,1,4,4));
         contentPanel.add(soundPanel);
         contentPanel.add(midiInPanel);
         contentPanel.add(latencyPanel);
@@ -1455,7 +1458,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         JDialog dialog=new JDialog(this, true);
         localizables.add(new Localizable.Dialog(dialog, "_menuMidi"));
         dialog.setContentPane(contentPanel);
-        dialog.setSize(480, 300);
+        dialog.setSize(450, 440);
         //dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         //dialog.setResizable(false);
 
