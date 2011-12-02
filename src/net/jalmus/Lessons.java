@@ -529,14 +529,15 @@ public boolean isScoreLevel(){
   	           StringTokenizer st=new StringTokenizer(tmprhythms,",;");
   	           Integer p;
   	           
-  	           rlevel.adjustLevel(false, false, false, false, false, false);
+  	           rlevel.adjustLevel(false, false, false, false, false, false, false);
   	           while ( st.hasMoreTokens() ) {
   	        	    p = Integer.parseInt(st.nextToken());
   	        	  if (p == 1 && rlevel.getTimeSignNumerator()==4 && rlevel.getTimeSignDenominator()==4) rlevel.setWholeNote(true);
   	        	  else if (p == 2) rlevel.setHalfNote(true);
+  	        	  else if (p == 3 && rlevel.getTimeSignNumerator()>=3 && rlevel.getTimeSignDenominator()==4) rlevel.setDottedHalfNote(true);
   	        	  else if (p == 4) rlevel.setQuarterNote(true);
   	        	  else if (p == 8) rlevel.setEighthNote(true);
-  	        	  else throw new SAXException("In level " + rlevel.getId() + " rhythms should be 1, 2, 4, 8  ");
+  	        	  else throw new SAXException("In level " + rlevel.getId() + " rhythms should be 1, 2, 3, 4, 8  ");
   	        	    
   	        	}
   	           
@@ -552,11 +553,12 @@ public boolean isScoreLevel(){
   	           slevel.adjustLevel(false, false, false, false, false, false);
   	           while ( sts.hasMoreTokens() ) {
   	        	    ps = Integer.parseInt(sts.nextToken());
-  	        	  if (ps == 1 && slevel.getTimeSignNumerator()==4 && slevel.getTimeSignDenominator()==4) slevel.setWholeNote(true);
+  	        	  if (ps == 1 && slevel.getTimeSignNumerator()==4 && slevel.getTimeSignDenominator()==4) slevel.setWholeNote(true);  	        	  
   	        	  else if (ps == 2) slevel.setHalfNote(true);
+  	        	  else if (ps == 3 && slevel.getTimeSignNumerator()>=3 && slevel.getTimeSignDenominator()==4) rlevel.setDottedHalfNote(true);	        	  
   	        	  else if (ps == 4) slevel.setQuarterNote(true);
   	        	  else if (ps == 8) slevel.setEighthNote(true);
-  	        	  else throw new SAXException("In level " + slevel.getId() + " rhythms should be 1, 2, 4, 8  ");
+  	        	  else throw new SAXException("In level " + slevel.getId() + " rhythms should be 1, 2, 3, 4, 8  ");
   	        	    
   	        	}
   	           
@@ -591,9 +593,10 @@ public boolean isScoreLevel(){
        	        	    p = Integer.parseInt(st.nextToken());
        	        	  if (p == 1) rlevel.setSilence(true);
        	        	  else if (p == 2) rlevel.setSilence(true);
+       	        	  else if (p == 3) rlevel.setSilence(true);
        	        	  else if (p == 4) rlevel.setSilence(true);
        	        	  else if (p == 8) rlevel.setSilence(true);
-       	        	  else throw new SAXException("In level " + rlevel.getId() + " rests should be 1, 2, 4, 8  ");
+       	        	  else throw new SAXException("In level " + rlevel.getId() + " rests should be 1, 2,3, 4, 8  ");
        	        	    
        	        	}
        	           
@@ -823,7 +826,8 @@ public boolean isScoreLevel(){
 	        	    }	    
 	        	}
 	           nlevel.setPitcheslist(pitcheslist);
-	             
+	           break;
+	           
    	    case RHYTHMLEVEL:
 	    	  throw new SAXException("In level " + rlevel.getId() + " no pitches on rhythm level");
 	    
@@ -850,7 +854,7 @@ public boolean isScoreLevel(){
    	       }
    	       else
    	      throw new SAXException("In level " + nlevel.getId() + " interval type should be random or second, third ...");
-
+   	    break;
   		  
    	      case RHYTHMLEVEL:
    	    	  throw new SAXException("In level " + rlevel.getId() + " no number notes on rhythm level");
@@ -943,7 +947,7 @@ public boolean isScoreLevel(){
  	             //erreur, le contenu de id n'est pas un entier
  	             throw new SAXException(e);
  	           }
-
+ 	          break;
 		  
  	      case RHYTHMLEVEL:
  	    	//  throw new SAXException("In level " + rlevel.getId() + " no number notes on rhythm level");
@@ -975,6 +979,7 @@ public boolean isScoreLevel(){
     	        //erreur, le contenu de id n'est pas un entier
     	        throw new SAXException(e);
     	      }
+    	     break;
 
 	  
       case RHYTHMLEVEL:

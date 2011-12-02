@@ -423,6 +423,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JComboBox rhythmGameSpeedComboBox;
     private JCheckBox wholeCheckBox;
     private JCheckBox halfCheckBox;
+    private JCheckBox dottedhalfCheckBox;
     private JCheckBox quarterCheckBox;
     private JCheckBox eighthCheckBox;
     private JCheckBox restCheckBox;
@@ -440,6 +441,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
    
     private JCheckBox scorewholeCheckBox;
     private JCheckBox scorehalfCheckBox;
+    private JCheckBox scoredottedhalfCheckBox;
     private JCheckBox scorequarterCheckBox;
     private JCheckBox scoreeighthCheckBox;
     private JCheckBox scorerestCheckBox;
@@ -1563,7 +1565,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         wholeCheckBox=new JCheckBox("", true);
         wholeCheckBox.addItemListener(this);
         halfCheckBox=new JCheckBox("", true);
-        halfCheckBox.addItemListener(this);
+        halfCheckBox.addItemListener(this); 
+        dottedhalfCheckBox=new JCheckBox("", false);
+        dottedhalfCheckBox.addItemListener(this);
         quarterCheckBox=new JCheckBox("", false);
         quarterCheckBox.addItemListener(this);
         eighthCheckBox=new JCheckBox("", false);
@@ -1587,6 +1591,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             	if (sel == 0) {
             		wholeCheckBox.setEnabled(true);
             		wholeCheckBox.setSelected(true);
+            		dottedhalfCheckBox.setSelected(false);
+              		dottedhalfCheckBox.setEnabled(true);
             		rhythmLevel.setTimeSignNumerator(4);
             		rhythmLevel.setTimeSignDenominator(4);
             		rhythmLevel.setTimeDivision(1);
@@ -1594,6 +1600,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             	else if (sel == 1) {
             		wholeCheckBox.setSelected(false);
             		wholeCheckBox.setEnabled(false);
+            		dottedhalfCheckBox.setSelected(true);
+              		dottedhalfCheckBox.setEnabled(true);
             		quarterCheckBox.setSelected(true);
             		rhythmLevel.setTimeSignNumerator(3);
             		rhythmLevel.setTimeSignDenominator(4);
@@ -1602,6 +1610,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             	else if (sel == 2) {
             		wholeCheckBox.setSelected(false);
             		wholeCheckBox.setEnabled(false);
+            		dottedhalfCheckBox.setSelected(false);
+              		dottedhalfCheckBox.setEnabled(false);
             		quarterCheckBox.setSelected(true);
             		rhythmLevel.setTimeSignNumerator(2);
             		rhythmLevel.setTimeSignDenominator(4);
@@ -1610,6 +1620,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             	else if (sel == 3) {
             		wholeCheckBox.setSelected(false);
             		wholeCheckBox.setEnabled(false);
+            		scoredottedhalfCheckBox.setSelected(false);
+              		scoredottedhalfCheckBox.setEnabled(false);
             		quarterCheckBox.setSelected(true);
             		rhythmLevel.setTimeSignNumerator(6);
             		rhythmLevel.setTimeSignDenominator(8);
@@ -1620,6 +1632,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         JPanel rhytmsPanel=new JPanel();
         rhytmsPanel.add(wholeCheckBox);
+        rhytmsPanel.add(dottedhalfCheckBox);
         rhytmsPanel.add(halfCheckBox);
         rhytmsPanel.add(quarterCheckBox);
         rhytmsPanel.add(eighthCheckBox);
@@ -1700,7 +1713,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
           scorewholeCheckBox=new JCheckBox("", true);
           scorewholeCheckBox.addItemListener(this);   
           scorehalfCheckBox=new JCheckBox("", true);
-          scorehalfCheckBox.addItemListener(this);           
+          scorehalfCheckBox.addItemListener(this);
+          scoredottedhalfCheckBox=new JCheckBox("", false);
+          scoredottedhalfCheckBox.addItemListener(this);  
           scorequarterCheckBox=new JCheckBox("", false);
           scorequarterCheckBox.addItemListener(this);            
           scoreeighthCheckBox=new JCheckBox("", false);
@@ -1712,6 +1727,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
           JPanel scorerhytmsPanel=new JPanel();
           scorerhytmsPanel.add(scorewholeCheckBox);
+          scorerhytmsPanel.add(scoredottedhalfCheckBox);
           scorerhytmsPanel.add(scorehalfCheckBox);
           scorerhytmsPanel.add(scorequarterCheckBox);
           scorerhytmsPanel.add(scoreeighthCheckBox);
@@ -1732,6 +1748,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
               	if (sel == 0) {
               		scorewholeCheckBox.setEnabled(true);
               		scorewholeCheckBox.setSelected(true);
+              		scoredottedhalfCheckBox.setEnabled(true);
+              		scoredottedhalfCheckBox.setSelected(false);
               		scoreLevel.setTimeSignNumerator(4);
             		scoreLevel.setTimeSignDenominator(4);
             		scoreLevel.setTimeDivision(1);
@@ -1739,6 +1757,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
               	else if (sel == 1) {
               		scorewholeCheckBox.setSelected(false);
               		scorewholeCheckBox.setEnabled(false);
+              		scoredottedhalfCheckBox.setSelected(true);
+              		scoredottedhalfCheckBox.setEnabled(true);
               		scorequarterCheckBox.setSelected(true);
               		scoreLevel.setTimeSignNumerator(3);
             		scoreLevel.setTimeSignDenominator(4);
@@ -1746,6 +1766,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
               	}
               	else if (sel == 2) {
               		scorewholeCheckBox.setSelected(false);
+              		scoredottedhalfCheckBox.setSelected(false);
+              		scoredottedhalfCheckBox.setEnabled(false);
               		scorequarterCheckBox.setSelected(true);
               		scoreLevel.setTimeSignNumerator(2);
             		scoreLevel.setTimeSignDenominator(4);
@@ -1754,6 +1776,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             	else if (sel == 3) {
             		scorewholeCheckBox.setSelected(false);
             		scorewholeCheckBox.setEnabled(false);
+            		scoredottedhalfCheckBox.setSelected(false);
+              		scoredottedhalfCheckBox.setEnabled(false);
             		scorequarterCheckBox.setSelected(true);
             		scoreLevel.setTimeSignNumerator(6);
             		scoreLevel.setTimeSignDenominator(8);
@@ -3056,6 +3080,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else {
             savePrefs[11]=0;
         }
+        if (dottedhalfCheckBox.isSelected()) {
+            savePrefs[28]=1;
+        } else {
+            savePrefs[28]=0;
+        }
         if (quarterCheckBox.isSelected()) {
             savePrefs[12]=1;
         } else {
@@ -3087,6 +3116,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             savePrefs[19]=1;
         } else {
             savePrefs[19]=0;
+        }
+        if (scoredottedhalfCheckBox.isSelected()) {
+            savePrefs[28]=1;
+        } else {
+            savePrefs[28]=0;
         }
         if (scorequarterCheckBox.isSelected()) {
             savePrefs[20]=1;
@@ -3149,6 +3183,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else {
             halfCheckBox.setSelected(false);
         }
+        if (savePrefs[28]==1) {
+            dottedhalfCheckBox.setSelected(true);
+        } else {
+            dottedhalfCheckBox.setSelected(false);
+        }
         if (savePrefs[12]==1) {
             quarterCheckBox.setSelected(true);
         } else {
@@ -3181,6 +3220,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             scorehalfCheckBox.setSelected(true);
         } else {
             scorehalfCheckBox.setSelected(false);
+        }
+        if (savePrefs[28]==1) {
+            scoredottedhalfCheckBox.setSelected(true);
+        } else {
+            scoredottedhalfCheckBox.setSelected(false);
         }
         if (savePrefs[20]==1) {
             scorequarterCheckBox.setSelected(true);
@@ -3361,6 +3405,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         	if (halfCheckBox.isSelected()) rhythmLevel.setHalfNote(true);
         	else rhythmLevel.setHalfNote(false);
         } 
+        else if (evt.getItemSelectable()==dottedhalfCheckBox) {
+        	if (dottedhalfCheckBox.isSelected()) rhythmLevel.setDottedHalfNote(true);
+        	else rhythmLevel.setDottedHalfNote(false);
+        } 
         else if (evt.getItemSelectable()==quarterCheckBox) {
         	if (quarterCheckBox.isSelected()) rhythmLevel.setQuarterNote(true);
         	else rhythmLevel.setQuarterNote(false);
@@ -3395,6 +3443,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         else if (evt.getItemSelectable()==scorehalfCheckBox) {
         	if (scorehalfCheckBox.isSelected()) scoreLevel.setHalfNote(true);
         	else scoreLevel.setHalfNote(false);
+        } 
+        else if (evt.getItemSelectable()==scoredottedhalfCheckBox) {
+        	if (scoredottedhalfCheckBox.isSelected()) scoreLevel.setDottedHalfNote(true);
+        	else scoreLevel.setDottedHalfNote(false);
         } 
         else if (evt.getItemSelectable()==scorequarterCheckBox) {
         	if (scorequarterCheckBox.isSelected()) scoreLevel.setQuarterNote(true);
@@ -3863,6 +3915,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         wholeCheckBox.setText(bundle.getString("_wholenote"));
         halfCheckBox.setText(bundle.getString("_halfnote"));
+        dottedhalfCheckBox.setText(bundle.getString("_dottedhalfnote"));
         quarterCheckBox.setText(bundle.getString("_quarternote"));
         eighthCheckBox.setText(bundle.getString("_eighthnote"));
         restCheckBox.setText(bundle.getString("_rest"));
@@ -3921,6 +3974,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         scorewholeCheckBox.setText(bundle.getString("_wholenote"));
         scorehalfCheckBox.setText(bundle.getString("_halfnote"));
+        scoredottedhalfCheckBox.setText(bundle.getString("_dottedhalfnote"));
         scorequarterCheckBox.setText(bundle.getString("_quarternote"));
         scoreeighthCheckBox.setText(bundle.getString("_eighthnote"));
         scorerestCheckBox.setText(bundle.getString("_rest"));
@@ -4834,7 +4888,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         double tpsmes=0; // number of quarters 
         int currentXPos = windowMargin + keyWidth + alterationWidth + timeSignWidth + notesShift;
         int pitch;
-        boolean wholeNote = false, halfNote = false, quarterNote= false, eighthNote = false, triplet = false;
+        boolean wholeNote = false, halfNote = false, dottedhalfNote = false, quarterNote= false, eighthNote = false, triplet = false;
         
         Dimension size=getSize();
 
@@ -4843,6 +4897,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         {
         	wholeNote = rhythmLevel.getWholeNote();
         	halfNote = rhythmLevel.getHalfNote();
+        	dottedhalfNote = rhythmLevel.getDottedHalfNote();
         	quarterNote = rhythmLevel.getQuarterNote();
         	eighthNote = rhythmLevel.getEighthNote();
         	triplet = rhythmLevel.getTriplet();
@@ -4855,6 +4910,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         {
         	wholeNote = scoreLevel.getWholeNote();
         	halfNote = scoreLevel.getHalfNote();
+        	dottedhalfNote = scoreLevel.getDottedHalfNote();
         	quarterNote = scoreLevel.getQuarterNote();
         	eighthNote = scoreLevel.getEighthNote();
         	triplet = scoreLevel.getTriplet();
@@ -4917,12 +4973,21 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                     currentTick=addRhythm(4, pitch, currentTick, rowCount, currentXPos);
                     currentXPos+=(noteDistance*4);
                 } 
+                
+                else if (dottedhalfNote && tpsmes+3<=tmpnum && tmp<0.4)
+            	{ // blanche pointee, dotted half
+                    tpsmes+=3;
+                    currentTick=addRhythm(3, pitch,  currentTick, rowCount, currentXPos);
+                    currentXPos+=(noteDistance*3);
+                } 
+                
                 else if (halfNote && tpsmes+2<=tmpnum && tmp<0.4)
             	{ // blanche, half
                     tpsmes+=2;
                     currentTick=addRhythm(2, pitch,  currentTick, rowCount, currentXPos);
                     currentXPos+=(noteDistance*2);
                 } 
+             
                 else if (quarterNote && tpsmes+1<=tmpnum && tmp<0.6) 
                 { // noire, quarter
                     tpsmes+=1;

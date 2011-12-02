@@ -28,6 +28,7 @@ public class RhythmLevel implements Level {
 	String message;
   boolean whole;
   boolean half;
+  boolean dottedhalf;
   boolean quarter;
   boolean eighth;
   boolean silence;
@@ -45,6 +46,7 @@ public class RhythmLevel implements Level {
 	    this.message = "";
 	    this.whole = true;
 	    this.half = true;
+	    this.dottedhalf = false;
 	    this.quarter = false;
 	    this.eighth = false;
 	    this.silence = true;
@@ -64,6 +66,7 @@ public class RhythmLevel implements Level {
 	    this.message = "";
     this.whole = true;
     this.half = true;
+    this.dottedhalf = false;
     this.quarter = true;
     this.eighth = true;
     this.silence = true;
@@ -82,6 +85,7 @@ public class RhythmLevel implements Level {
     this.message =  n.message;
     this.whole = n.whole;
     this.half = n.half;
+    this.dottedhalf = n.dottedhalf;
     this.quarter = n.quarter;
     this.eighth = n.eighth;
     this.silence = n.silence;
@@ -130,6 +134,10 @@ public boolean isMessageEmpty(){
     return this.half;
   }
 
+  public boolean getDottedHalfNote() {
+	    return this.dottedhalf;
+	  }
+
   public boolean getQuarterNote() {
     return this.quarter;
   }
@@ -153,7 +161,11 @@ public boolean isMessageEmpty(){
   public void setHalfNote(boolean b) {
 	this.half = b;
   }
-	
+
+  public void setDottedHalfNote(boolean b) {
+	this.dottedhalf = b;
+  }	
+  
   public void setQuarterNote(boolean b) {
 	this.quarter = b;
   }
@@ -231,9 +243,10 @@ public void setMetronome(boolean b) {
 
     /********************************/
 
-  public void adjustLevel(boolean r, boolean b, boolean n, boolean c, boolean s, boolean t) {
+  public void adjustLevel(boolean r, boolean b, boolean bp, boolean n, boolean c, boolean s, boolean t) {
     this.whole = r;
     this.half = b;
+    this.dottedhalf = bp;
     this.quarter = n;
     this.eighth = c;
     this.silence = s;
@@ -254,6 +267,7 @@ public void setMetronome(boolean b) {
 	   System.out.println("Level n°"+this.Id);
 	    System.out.println("Whole note : " + this.whole);
 	  System.out.println("Half note : " + this.half);
+	  System.out.println("DottedHalf note : " + this.dottedhalf);
 	    System.out.println("Quarter note : " + this.quarter);
 	  System.out.println("Eighth note : " + this.eighth);
 	  System.out.println("Rests : " + this.silence);
@@ -321,10 +335,11 @@ public void setMetronome(boolean b) {
 		fileContent.append("<rhythms>");
 		if (this.getWholeNote()) fileContent.append(1+",");
 		if (this.getHalfNote()) fileContent.append(2+",");
+		if (this.getDottedHalfNote()) fileContent.append(3+",");
 		if (this.getQuarterNote()) fileContent.append(4+",");
 		if (this.getEighthNote()) fileContent.append(8+",");
 		fileContent.append("</rhythms>"+newline);
-		if (this.getSilence()) fileContent.append("<rests>1,2,4,8</rests>"+newline); // no distinction yet
+		if (this.getSilence()) fileContent.append("<rests>1,2,3,4,8</rests>"+newline); // no distinction yet
 		if (this.getTriplet()) fileContent.append("<tuplets>3</tuplets>"+newline); // no distinction yet
 		if (this.getMetronome() & this.getMetronomeBeats()) fileContent.append("<metronome>both</metronome>"+newline);
 		else if (this.getMetronome() & !this.getMetronomeBeats()) fileContent.append("<metronome>sound</metronome>"+newline);

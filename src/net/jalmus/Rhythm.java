@@ -163,6 +163,21 @@ public class Rhythm {
 
     }
 
+    else if (this.duration == 3) {
+        if (this.silence) {
+      	  if (Leveltype == RHYTHMREADING) {
+      		  g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+14, 12, 7);
+      	  }
+      	  else g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+10, 12, 7);
+        }
+
+        else { // minima
+      	g.drawString("d", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
+        }
+
+      }
+    
+    
     else if (this.duration == 1) {
       if (this.silence) { // pause
     	  g.drawString("Q", this.position, scoreYpos + this.rowNumber*rowsDistance +43);
