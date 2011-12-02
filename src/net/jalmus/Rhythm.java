@@ -37,7 +37,10 @@ public class Rhythm {
 
   int groupee; //0 non regroup�e 1 debut de regroupement 2 fin du regroupement
 
-
+  private static int NOTEREADING = 1;
+  private static int RHYTHMREADING = 2;
+  private static int SCOREREADING = 3;
+  
   public Rhythm(double val, int pos, int p, int np, boolean pt, boolean sl, int bm) {
     this.duration = val;
     this.position = pos;
@@ -53,7 +56,7 @@ public class Rhythm {
     this.duration = 0;
     this.position = 0;
     this.rowNumber = 0;
-    this.pitch = 67; //G for rhythm game
+    this.pitch = 71; //B for rhythm game
     this.pointee = false;
     this.silence = false;
     this.groupee = 0;
@@ -118,7 +121,7 @@ public class Rhythm {
 	  this.tripletValue = val;
   }
 
-  public void paint(Graphics g, Font f, ScoreLevel sl, int position, int rowsDistance, boolean courant, int scoreYpos, Component l) {
+  public void paint(Graphics g, int Leveltype,  Font f, ScoreLevel sl, int position, int rowsDistance, boolean courant, int scoreYpos, Component l) {
 
 	if (this.ypos == 0) 
 		this.ypos = sl.getYpos(this.pitch);
@@ -134,7 +137,10 @@ public class Rhythm {
 
     if (this.duration == 4) {
       if (this.silence) {
-    	g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+14, 12, 7);
+    	  if (Leveltype == RHYTHMREADING) {
+    		  g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+20, 12, 7);
+    	  }
+    	  else g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+14, 12, 7);
       }
 
       else { // semibreve
@@ -145,7 +151,10 @@ public class Rhythm {
     }
     else if (this.duration == 2) {
       if (this.silence) {
-      	g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+10, 12, 7);
+    	  if (Leveltype == RHYTHMREADING) {
+    		  g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+14, 12, 7);
+    	  }
+    	  else g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+10, 12, 7);
       }
 
       else { // minima
@@ -162,7 +171,11 @@ public class Rhythm {
       else { // semiminima
   	String sm = "" + (char)0xF6;
     	int voffset = 53;
-    	if (noteY > 18) {
+    	if (Leveltype == RHYTHMREADING) { // always beam to up
+    		sm = "" + (char)0xF4;
+    		voffset = 23;
+    	}
+    	else if (noteY > 18) {
     		sm = "" + (char)0xF4;
     		voffset = 23;
     	}
@@ -173,21 +186,42 @@ public class Rhythm {
     }
     
     else if (this.duration == 0.333) {
-    	String sm = "" + (char)0xF6;
-    	//boolean upward  = false;
-    	int voffset = 53;
-    	int ypos = scoreYpos + this.rowNumber*rowsDistance;
-    	g.drawString(sm, this.position, ypos + noteY + voffset);
-    	if (this.tripletValue != 0) {
-    		int lowestYpos = 0;
-    		if (this.tripletValue < 100) lowestYpos = sl.getYpos(this.tripletValue) + ypos;
-    		else lowestYpos = sl.getYpos(this.tripletValue - 100) + ypos;
-        	g.drawLine(this.position, ypos + noteY + 10, this.position, lowestYpos + 40);
-    		if(this.tripletValue < 100) { // means this is the first note of the triplet. Draw horizontal bar
-        		g.fillRect(this.position, lowestYpos + 37, 49, 5);
-        		g.setFont(new Font("Arial", Font.BOLD, 15));
-        		g.drawString("3", this.position + 20, lowestYpos + 54);
-    		}
+    	if (Leveltype == RHYTHMREADING) { //beam upward
+    		String sm = "" + (char)0xF4;
+	    	//boolean upward  = false;
+	    	int voffset = 23;
+	 
+	    	int ypos = scoreYpos + this.rowNumber*rowsDistance;
+	    	g.drawString(sm, this.position, ypos + noteY + voffset);
+	    	if (this.tripletValue != 0) {
+	    		int lowestYpos = 0;
+	    		if (this.tripletValue < 100) lowestYpos = sl.getYpos(this.tripletValue) + ypos;
+	    		else lowestYpos = sl.getYpos(this.tripletValue - 100) + ypos;
+	        	//g.drawLine(this.position, ypos + noteY + 10, this.position, lowestYpos + 40);
+	    		if(this.tripletValue < 100) { // means this is the first note of the triplet. Draw horizontal bar
+	        		g.fillRect(this.position+11, lowestYpos - 31, 49, 3);
+	        		g.setFont(new Font("Arial", Font.BOLD, 15));
+	        		g.drawString("3", this.position + 32, lowestYpos - 33);
+	    		}
+	    	}
+    	}
+    	else {
+	    	String sm = "" + (char)0xF6;
+	    	//boolean upward  = false;
+	    	int voffset = 53;
+	    	int ypos = scoreYpos + this.rowNumber*rowsDistance;
+	    	g.drawString(sm, this.position, ypos + noteY + voffset);
+	    	if (this.tripletValue != 0) {
+	    		int lowestYpos = 0;
+	    		if (this.tripletValue < 100) lowestYpos = sl.getYpos(this.tripletValue) + ypos;
+	    		else lowestYpos = sl.getYpos(this.tripletValue - 100) + ypos;
+	        	g.drawLine(this.position, ypos + noteY + 10, this.position, lowestYpos + 40);
+	    		if(this.tripletValue < 100) { // means this is the first note of the triplet. Draw horizontal bar
+	        		g.fillRect(this.position, lowestYpos + 37, 49, 5);
+	        		g.setFont(new Font("Arial", Font.BOLD, 15));
+	        		g.drawString("3", this.position + 20, lowestYpos + 54);
+	    		}
+	    	}
     	}
     }
 
@@ -201,7 +235,12 @@ public class Rhythm {
        if (this.groupee == 1 || this.groupee == 2) {
     	 String sm = "" + (char)0xF6;
        	 int voffset = 53;
-       	 if (noteY > 18) {
+       	 
+     	if (Leveltype == RHYTHMREADING) { // always beam to up
+    		sm = "" + (char)0xF4;
+    		voffset = 23;
+    	}
+     	else  if (noteY > 18) {
        		sm = "" + (char)0xF4;
        		voffset = 23;
        	 }
@@ -217,7 +256,11 @@ public class Rhythm {
        else {
       	 String sm = "" + (char)0xCA;
        	 int voffset = 43;
-       	 if (noteY > 18) {
+     	if (Leveltype == RHYTHMREADING) { // always beam to up
+     		sm = "" + (char)0xC8;
+       		voffset = 13;
+    	}
+     	else if (noteY > 18) {
        		sm = "" + (char)0xC8;
        		voffset = 13;
        	 }

@@ -2514,7 +2514,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         else if (selectedGame == RHYTHMREADING && rhythmgame == 0 && muterhythms && parti) {
     	  if (key==KeyEvent.VK_SPACE) {
-    		  rhythmKeyPressed(67);
+    		  rhythmKeyPressed(71);
     	  }
         }
         repaint();
@@ -4045,10 +4045,18 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         	for (int v = 0; v < numberOfMeasures; v++)
         		g.drawLine(vXPos + v * (tmpnum * noteDistance), yPos, vXPos + v * (tmpnum * noteDistance), yPos+40);
         	// draw the score 5 rows 
-        	for (int l = 0;l < 5;l++,yPos+=10) {
-        		g.drawLine(windowMargin, yPos, scoreLineWidth, yPos);
+        	if (selectedGame == SCOREREADING ) {
+	        	for (int l = 0;l < 5;l++,yPos+=10) {
+	        		g.drawLine(windowMargin, yPos, scoreLineWidth, yPos);
+	        	}
+	        	
+        	}
+        	else if (selectedGame == RHYTHMREADING ) { //only one line
+        		g.drawLine(windowMargin, yPos+20, scoreLineWidth, yPos+20);
+        		yPos+=(rowsDistance - 50);
         	}
         	yPos+=(rowsDistance - 50);
+        
         }
     }
     
@@ -4617,7 +4625,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             if (rhythmIndex<rhythms.size()-1) {
                 rhythmIndex++;
                 repaint();
-                /* if (soundOnCheckBox.getState() & !ligne[position].silence) Synthnote(67,80,durationrhythme);*/
+                /* if (soundOnCheckBox.getState() & !ligne[position].silence) Synthnote(71,80,durationrhythme);*/
             }
            
         }
@@ -4728,7 +4736,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     
     private int addRhythm(double duration, int pitch, int currentTick, int row, int newXPos) {
         int tick = currentTick;
-        int velocity = 67;
+        int velocity = 71;
         boolean silence = false;
 
         final int TEXT=0x01;
@@ -4784,10 +4792,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     private boolean isBeginMeasure(int i) {
         double d=0;
+        int id=0;
         for (int j=0; j<i; j++) {
          //   d+=4.0/rhythms.get(j).getDuration();
         	d+=rhythms.get(j).getDuration();
         }
+        id = (int) Math.round(d); // we should round because of 0.33 triplet need to be fix
+        
 
         int tmpnum = 4; int tmpden = 4; int tmpdiv = 1;
         if (selectedGame == RHYTHMREADING ) {
@@ -4803,7 +4814,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         boolean reponse=false;
         for (int k=1; k<tmpnum * 2; k++) {
-            if (d==tmpnum*k) {
+            if (id==tmpnum*k) {
                 reponse=true;
             }
         }
@@ -4893,7 +4904,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             	//System.out.println("tpsmes : " + tpsmes);
                 double tmp=Math.random();
                 if (selectedGame == RHYTHMREADING) 
-                	pitch = 67;
+                	pitch = 71;
                 else
                 	pitch = scoreLevel.randomPitch();
 
@@ -4923,7 +4934,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 }
                 else if (triplet && tpsmes+1<=tmpnum && tmp<0.9)
                 { // triplet
-                  int[] tripletPitches = { pitch, 67, 67 };
+                  int[] tripletPitches = { pitch, 71, 71 };
                   int lowestPitch = tripletPitches[0];
                   if (selectedGame == SCOREREADING) {
                 	  tripletPitches[1] = scoreLevel.tripletRandomPitch(tripletPitches[0]);
@@ -4956,7 +4967,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
 /*
             } else {
-                rhythms.add(new Rhythm(0, 0, 0, 67, false, false, 0));
+                rhythms.add(new Rhythm(0, 0, 0, 71, false, false, 0));
             }
 */
         }
@@ -5102,9 +5113,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             if (rhythms.get(i).getDuration()!=0) {
                
                 if ((rhythmgame == 0) && (i!=rhythmIndex) || (muterhythms)) { //only paint note in learning mode
-                    rhythms.get(i).paint(g, f, scoreLevel, 9, rowsDistance, false, scoreYpos, this);
+                    rhythms.get(i).paint(g, selectedGame, f, scoreLevel, 9, rowsDistance, false, scoreYpos, this);
                 } else {
-                    rhythms.get(i).paint(g, f, scoreLevel, 9, rowsDistance, true, scoreYpos, this);
+                    rhythms.get(i).paint(g, selectedGame, f, scoreLevel, 9, rowsDistance, true, scoreYpos, this);
                 }
             }
         }
@@ -5617,9 +5628,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                             
                             if (selectedGame==RHYTHMREADING && parti) {
                             	if (((ShortMessage)event).getData2()!=0)
-                            		rhythmKeyPressed(67);
+                            		rhythmKeyPressed(71);
                             	else  {
-                            		 rhythmKeyReleased(67);
+                            		 rhythmKeyReleased(71);
                             		 // System.out.println ("released");
                             	}
                             	
