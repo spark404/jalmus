@@ -5510,7 +5510,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                 if ((selectedGame==RHYTHMREADING && rhythmLevel.getTriplet()) ||
                 	(selectedGame==SCOREREADING && scoreLevel.getTriplet()))
-                	rowsDistance = 130;
+                	//rowsDistance = 130;
+                	rowsDistance = 100;
                 else
                 	rowsDistance = 100;
 
