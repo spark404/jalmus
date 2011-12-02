@@ -1695,11 +1695,17 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
           /* 3rd panel - RYTHM */
 
           scorewholeCheckBox=new JCheckBox("", true);
+          scorewholeCheckBox.addItemListener(this);   
           scorehalfCheckBox=new JCheckBox("", true);
+          scorehalfCheckBox.addItemListener(this);           
           scorequarterCheckBox=new JCheckBox("", false);
+          scorequarterCheckBox.addItemListener(this);            
           scoreeighthCheckBox=new JCheckBox("", false);
+          scoreeighthCheckBox.addItemListener(this);          
           scorerestCheckBox=new JCheckBox("", true);
+          scorerestCheckBox.addItemListener(this);      
           scoreTripletCheckBox=new JCheckBox("", false);
+          scoreTripletCheckBox.addItemListener(this);
 
           JPanel scorerhytmsPanel=new JPanel();
           scorerhytmsPanel.add(scorewholeCheckBox);
