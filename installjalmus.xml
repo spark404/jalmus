@@ -49,13 +49,13 @@
     </panels>
 
      <resources>
-	<res src="install_files/logojalmus.png" id="installer.langsel.img"/>
+		<res src="install_files/logojalmus.png" id="installer.langsel.img"/>
         <res id="InfoPanel.info" src="install_files/readme.txt"/>
-
+		<res src="install_files/TargetPathWin.txt" id="TargetPanel.dir.windows"/>
         <res id="LicencePanel.licence" src="install_files/licence.txt"/>
      	<res src="install_files/shortcutSpec.xml" id="shortcutSpec.xml"/>
-	<res src="install_files/Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml"/>
-  	<res src="install_files/border1.png" id="Installer.image.0"/>
+		<res src="install_files/Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml"/>
+  		<res src="install_files/border1.png" id="Installer.image.0"/>
         <res src="install_files/border2.png" id="Installer.image.1"/>
         <res src="install_files/border3.png" id="Installer.image.2"/>
         <res src="install_files/border4.png" id="Installer.image.3"/>
