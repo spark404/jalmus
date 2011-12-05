@@ -158,21 +158,21 @@ public class Rhythm {
       }
 
       else { // minima
-    	g.drawString("h", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
+    	g.drawString("h", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +12);
       }
 
     }
 
     else if (this.duration == 3) {
-        if (this.silence) {
-      	  if (Leveltype == RHYTHMREADING) {
-      		  g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+14, 12, 7);
-      	  }
-      	  else g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+10, 12, 7);
+        if (this.silence) { //pause only when time signature 3/4
+        	  if (Leveltype == RHYTHMREADING) {
+        		  g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+20, 12, 7);
+        	  }
+        	  else g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+14, 12, 7);
         }
 
         else { // minima
-      	g.drawString("d", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
+      	g.drawString("d", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +12);
         }
 
       }

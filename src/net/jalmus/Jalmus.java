@@ -1591,6 +1591,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             	if (sel == 0) {
             		wholeCheckBox.setEnabled(true);
             		wholeCheckBox.setSelected(true);
+             		quarterCheckBox.setSelected(true);
             		dottedhalfCheckBox.setSelected(false);
               		dottedhalfCheckBox.setEnabled(true);
             		rhythmLevel.setTimeSignNumerator(4);
@@ -1748,6 +1749,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
               	if (sel == 0) {
               		scorewholeCheckBox.setEnabled(true);
               		scorewholeCheckBox.setSelected(true);
+              		scorequarterCheckBox.setSelected(true);
               		scoredottedhalfCheckBox.setEnabled(true);
               		scoredottedhalfCheckBox.setSelected(false);
               		scoreLevel.setTimeSignNumerator(4);
@@ -4799,14 +4801,21 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         final int TEXT=0x01;
         String text="off";
         int tmpdiv = 1;
+        int tmpnum = 4;
+        int tmpden = 4;
+        
         if (selectedGame == RHYTHMREADING) {
         	silence = rhythmLevel.getSilence();
         	tmpdiv =  rhythmLevel.getTimeDivision();
+        	tmpnum =  rhythmLevel.getTimeSignNumerator();
+        	tmpden =  rhythmLevel.getTimeSignDenominator();
         	
         }
         else if (selectedGame == SCOREREADING) {
         	silence = scoreLevel.getSilence();
         	tmpdiv =  scoreLevel.getTimeDivision();
+        	tmpnum =  scoreLevel.getTimeSignNumerator();
+        	tmpden =  scoreLevel.getTimeSignDenominator();
         }
         
         if (duration == 0.333) // do not handle pauses into triplets for now 
@@ -4815,7 +4824,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         System.out.println("[addRhythm] pitch: " + pitch);
 
         double tmpsilence=Math.random();
-        if (!silence || (silence && tmpsilence<0.85)) {
+        if (!silence || (silence && tmpsilence<0.85) || (duration == 3 && tmpnum !=3 ) ) {
 
           rhythms.add(new Rhythm(duration, newXPos, pitch,  row, false, false, 0));
 
