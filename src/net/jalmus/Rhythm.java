@@ -164,7 +164,7 @@ public class Rhythm {
     }
 
     else if (this.duration == 3) {
-        if (this.silence) { //pause only when time signature 3/4
+        if (this.silence) { //pause 3 beats only when time signature 3/4
         	  if (Leveltype == RHYTHMREADING) {
         		  g.fillRect(this.position, scoreYpos+ this.rowNumber*rowsDistance+20, 12, 7);
         	  }

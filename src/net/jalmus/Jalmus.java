@@ -522,6 +522,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     //For table to choose notes on exercises
     private JDialog notesDialog;
     ChooseNotePanel ChooseNoteP;
+    
+    private JDialog ScorenotesDialog;
+    ChooseNotePanel ScoreChooseNoteP;
     //----
     
     private JPanel principal=new JPanel(); // panel principal
@@ -608,10 +611,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         bundle = ResourceBundle.getBundle("language", new Locale(language));
         System.out.println(new Locale(language));
-    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
-        ChooseNoteP.setOpaque(true); //content panes must be opaque
         
-     
+    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
+        ChooseNoteP.setOpaque(true); //content panes must be opaque 
         ChooseNoteP.setVisible(true);
        ChooseNoteP.okButton.addActionListener(new ActionListener() {
     	   
@@ -625,7 +627,24 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         		 }
               
            }
-       });    
+       });   
+       
+   	ScoreChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), bundle);
+    ScoreChooseNoteP.setOpaque(true); //content panes must be opaque 
+    ScoreChooseNoteP.setVisible(true);
+   ScoreChooseNoteP.okButton.addActionListener(new ActionListener() {
+	   
+       public void actionPerformed(ActionEvent e)
+       {
+           //Execute when button is pressed
+    		 if (! ScoreChooseNoteP.atLeast3Pitches()) JOptionPane.showMessageDialog(null, "Choose at least three notes", "Warning", JOptionPane.ERROR_MESSAGE); 
+    		 else    {
+    			 ScorenotesDialog.setVisible(false);
+    			 scoreLevel.setPitcheslist(ScoreChooseNoteP.getPitches());
+    		 }
+          
+       }
+   });    
        
         bdo=new JButton();
         bdo.addActionListener(this);
@@ -708,6 +727,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
           notesDialog=new JDialog(this, true);
         //    notesDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         notesDialog.setResizable(false);   
+        
+        ScorenotesDialog=new JDialog(this, true);
+        //    notesDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        ScorenotesDialog.setResizable(false);   
 
         levelMessage=new JDialog(this, true);
         //levelMessage.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -3740,11 +3763,29 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
         
         else if (evt.getItemSelectable()==scoreNotesComboBox) {
-        	 if (scoreNotesComboBox.getSelectedIndex()==1) {
+        	 if (scoreNotesComboBox.getSelectedIndex()==0) {
                  scoreLevel.setNbnotes(9);
              } 
-        	 if (scoreNotesComboBox.getSelectedIndex()==2) {
+        	 if (scoreNotesComboBox.getSelectedIndex()==1) {
                  scoreLevel.setNbnotes(15);
+             } 
+        	 if (scoreNotesComboBox.getSelectedIndex()==2) {
+                 scoreLevel.setNbnotes(0);
+                 
+
+                 
+           //    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
+                 ScoreChooseNoteP.setOpaque(true); //content panes must be opaque
+                 
+                 ScorenotesDialog.setContentPane(ChooseNoteP);
+                ScorenotesDialog.setSize(650, 220);
+                 ScorenotesDialog.setLocationRelativeTo(this);
+                 ScorenotesDialog.setVisible(true);
+                 
+                 ScoreChooseNoteP.setVisible(true);
+             
+
+                 this.add(ScorenotesDialog);
              } 
         }
       
@@ -3820,6 +3861,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         scoreTimeSignLabel.setText(bundle.getString("_timeSignature"));
         aboutDialog.setTitle(bundle.getString("_menuAbout"));
 		notesDialog.setTitle("Choose notes to study");
+		ScorenotesDialog.setTitle("Choose notes to study");
 
 
         tlicence=bundle.getString("_licence");
@@ -3955,6 +3997,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         scoreNotesComboBox.removeAllItems();
         scoreNotesComboBox.addItem("9 "+bundle.getString("_menuNotes"));
         scoreNotesComboBox.addItem("15 "+bundle.getString("_menuNotes"));
+        scoreNotesComboBox.addItem(bundle.getString("_customnotes"));
 
         scoreAlterationsComboBox.removeAllItems();
         scoreAlterationsComboBox.addItem(bundle.getString("_nosharpflat"));
@@ -4962,7 +5005,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         if (selectedGame == SCOREREADING) {
         	updateTonality(); //when selected random tonality       
-        	scoreLevel.initpitchtab( scoreLevel.getNbnotes());
+        	scoreLevel.initPitcheslist( scoreLevel.getNbnotes());
         }
 
         for (int r = 1; r <= (numberOfMeasures * numberOfRows); r++) 

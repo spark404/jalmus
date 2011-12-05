@@ -31,7 +31,7 @@ public class ScoreLevel implements Level {
 	boolean metronome;
 	boolean beats;
 	//int[] pitchtab = new int [8];
-	ArrayList<Integer> pitchtab = new ArrayList<Integer>(); 
+	ArrayList<Integer> pitcheslist = new ArrayList<Integer>(); 
 
   /*                          C3  D3  E3  F3  G3  A3  B3  */
   /*                         ---------------------------- */
@@ -69,7 +69,7 @@ public class ScoreLevel implements Level {
     this.currentKey = "treble";
     this.randomtonality = false;
     this.currenttonality = new Tonality(0, "");
-    pitchtab.clear();
+    pitcheslist.clear();
 	this.nbnotes = 9;
     this.timeSignNumerator = 4;
     this.timeSignDenominator = 4;
@@ -172,8 +172,8 @@ public boolean isMessageEmpty(){
 	    
 		this.nbnotes = n.nbnotes;
 		
-		this.pitchtab =  new ArrayList<Integer>(); 
-		this.pitchtab.addAll(n.pitchtab);
+		this.pitcheslist =  new ArrayList<Integer>(); 
+		this.pitcheslist.addAll(n.pitcheslist);
 
 	  }
    
@@ -188,12 +188,19 @@ public boolean isMessageEmpty(){
 	  }
    
    /********************************/  
-  public void initpitchtab(int notesNum) {
+   
+   
+   public void setPitcheslist(ArrayList<Integer> l){		
+	 	this.pitcheslist =  new ArrayList<Integer>(); 
+		 this.pitcheslist.addAll(l);
+	}
+   
+  public void initPitcheslist(int notesNum) {
 
 	  int i = 0, noteIdx = 0; 
 	  int octaveOffset = 0;
 	  int altIndex = this.currenttonality.getAlterationsNumber();
-	  pitchtab.clear();
+	  pitcheslist.clear();
 
 
 	  if (this.isCurrentKeyBass()) {
@@ -212,7 +219,7 @@ public boolean isMessageEmpty(){
 		else if (this.currenttonality.isflat())
 			alteration =  0 - flatsMatrix[altIndex][noteIdx];
 
-		pitchtab.add(sharpsMatrix[0][noteIdx] + (octaveOffset * 12) + alteration);
+		pitcheslist.add(sharpsMatrix[0][noteIdx] + (octaveOffset * 12) + alteration);
 		
 		if (noteIdx == 6) {
 			octaveOffset++;
@@ -222,8 +229,8 @@ public boolean isMessageEmpty(){
 			noteIdx++;
 	  }
 
-	  for (i = 0; i < pitchtab.size(); i++)
-		  System.out.println("pitchtab #" + i + ": " + pitchtab.get(i));
+	  for (i = 0; i < pitcheslist.size(); i++)
+		  System.out.println("pitchtab #" + i + ": " + pitcheslist.get(i));
   }
 
   public int getYpos(int pitch) {
@@ -261,7 +268,7 @@ public boolean isMessageEmpty(){
   public int randomPitch(){
 	int pitch = 71;
 
-	pitch =  pitchtab.get((int) (pitchtab.size() * Math.random()));
+	pitch =  pitcheslist.get((int) (pitcheslist.size() * Math.random()));
 	//System.out.println("New random pitch = " + pitch);
 	  
 	return pitch;
@@ -272,8 +279,8 @@ public boolean isMessageEmpty(){
 	int delta = 4; // within +2 and -2 tones from basePitch
 	int shift = -2;
 	int pitch = 0;
-	for (int i = 0; i < pitchtab.size(); i++)
-		if (pitchtab.get(i) == basePitch) {
+	for (int i = 0; i < pitcheslist.size(); i++)
+		if (pitcheslist.get(i) == basePitch) {
 			baseIndex = i;
 			break;
 		}
@@ -281,7 +288,7 @@ public boolean isMessageEmpty(){
 		delta = 2; // only +2
 		shift = 2;
 	}
-	else if (baseIndex == pitchtab.size() - 1) {
+	else if (baseIndex == pitcheslist.size() - 1) {
 		delta = 2; // only -2
 		shift = -2;
 	}
@@ -289,7 +296,7 @@ public boolean isMessageEmpty(){
 		delta = 3; // only -1/+2
 		shift = -1;
 	}
-	else if (baseIndex == pitchtab.size() - 2) {
+	else if (baseIndex == pitcheslist.size() - 2) {
 		delta = 3; // only -2/+1
 		shift = -2;
 	}
@@ -297,7 +304,7 @@ public boolean isMessageEmpty(){
 	int randIndex = baseIndex + shift + (int)(Math.random() * delta);
 	System.out.println("Triplet: base: " + basePitch + ", baseIndex: " + baseIndex + ", randIdx: " + randIndex);
 	
-	pitch = pitchtab.get(randIndex);
+	pitch = pitcheslist.get(randIndex);
 	return pitch;
   }
 
