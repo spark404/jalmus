@@ -612,7 +612,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         bundle = ResourceBundle.getBundle("language", new Locale(language));
         System.out.println(new Locale(language));
         
-    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
+    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(),NOTEREADING,  bundle);
         ChooseNoteP.setOpaque(true); //content panes must be opaque 
         ChooseNoteP.setVisible(true);
        ChooseNoteP.okButton.addActionListener(new ActionListener() {
@@ -629,7 +629,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
            }
        });   
        
-   	ScoreChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), bundle);
+   	ScoreChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), SCOREREADING, bundle);
     ScoreChooseNoteP.setOpaque(true); //content panes must be opaque 
     ScoreChooseNoteP.setVisible(true);
    ScoreChooseNoteP.okButton.addActionListener(new ActionListener() {
@@ -3661,6 +3661,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 preferencesDialog.repaint();
                 
           //    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
+            	ChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), NOTEREADING, bundle);
                 ChooseNoteP.setOpaque(true); //content panes must be opaque
                 
                 notesDialog.setContentPane(ChooseNoteP);
@@ -3775,9 +3776,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                  
            //    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
+                 ScoreChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), SCOREREADING, bundle);
                  ScoreChooseNoteP.setOpaque(true); //content panes must be opaque
                  
-                 ScorenotesDialog.setContentPane(ChooseNoteP);
+                 ScorenotesDialog.setContentPane(ScoreChooseNoteP);
                 ScorenotesDialog.setSize(650, 220);
                  ScorenotesDialog.setLocationRelativeTo(this);
                  ScorenotesDialog.setVisible(true);

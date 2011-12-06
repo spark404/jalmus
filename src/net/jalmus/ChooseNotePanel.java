@@ -37,13 +37,19 @@ public class ChooseNotePanel extends JPanel {
     private JTable table;
     JButton okButton;
     
+    private static int NOTEREADING = 1;
+    private static int RHYTHMREADING = 2;
+    private static int SCOREREADING = 3;
     
-    public ChooseNotePanel(String key, ResourceBundle bundle) {
-
+    public ChooseNotePanel(String key, int leveltype , ResourceBundle bundle) {
+    	System.out.println(key+leveltype);
     	
-    	if (key == "treble")     	 table = new JTable(new TableKeyTrebble());
-    	else if (key == "bass")     	 table = new JTable(new TableKeyBass());
-    	else    	 table = new JTable(new NotesTableModel());
+    	if (leveltype == NOTEREADING && key == "treble")     	 table = new JTable(new TableKeyTrebble());
+    	else if (leveltype == NOTEREADING && key == "bass")     	 table = new JTable(new TableKeyBass());
+     	else if (leveltype == NOTEREADING && key == "both")     	table = new JTable(new NotesTableModel());
+    	else if (leveltype == SCOREREADING && key == "treble")     	 table = new JTable(new TableKeyScoreTrebble());
+    	else if (leveltype == SCOREREADING && key == "bass")     	 table = new JTable(new TableKeyScoreBass());
+    	else table = new JTable(new NotesTableModel());
     	 
         table.setPreferredScrollableViewportSize(new Dimension(610, 115));
         table.setFillsViewportHeight(false);
@@ -359,5 +365,53 @@ public class ChooseNotePanel extends JPanel {
             }
         }
   }
+    
+    class TableKeyScoreTrebble extends NotesTableModel {
+    	
+    	
+  	  public boolean isCellEditable(int row, int col) {
+  		  
+  		  int numRows = getRowCount();
+            int numCols = getColumnCount();
+            
+            //Note that the data/cell address is constant,
+            //no matter where the cell appears onscreen.
+            // pitch 47 b-2 to 96 c+3
+            if ((col < 1) //col indicate the octava
+             || (row == 0 ) || (row == 1)
+             || (row == 2 & col < numCols-1 )
+             || (row == 6 & col >  1)
+            )  
+            {
+                return false;
+            }          
+            else {
+                return true;
+            }
+        }
+  }
+    
+    class TableKeyScoreBass extends NotesTableModel {
+    	  public boolean isCellEditable(int row, int col) {
+    		int numRows = getRowCount();
+          int numCols = getColumnCount();
+              //Note that the data/cell address is constant,
+              //no matter where the cell appears onscreen.
+          //pitch 26 D-3 to 74 D+1
+              if ((col < 1)  //col indicate the octava
+               || (row == 0 & col < 3 )
+               || (row == 4 & col > 3 )
+               || (row == 5 & col < numCols )
+               || (row == 6 & col < numCols )
+              )  //pitch 24 25 not supported
+              {
+                  return false;
+              }          
+              else {
+                  return true;
+              }
+          }
+    }
+  
 
 }
