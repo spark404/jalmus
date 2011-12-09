@@ -424,7 +424,13 @@ public boolean isScoreLevel(){
 	    	  throw new SAXException("In level " + rlevel.getId() + " no notes type on rhythm level");
 	  	       
 	       case SCORELEVEL :
-	    	   throw new SAXException("In level " + rlevel.getId() + " no notes type on score level");
+	    	   if (tmpclef.equals("notes") |  tmpclef.equals("custom")){
+	               slevel.setNotetype(buffer.toString());
+	         }
+	    	   else
+		           throw new SAXException("In level " + slevel.getId() + " notes type should be notes or custom");
+  
+	    	 break;
 	     }
      
 
@@ -832,9 +838,24 @@ public boolean isScoreLevel(){
 	    	  throw new SAXException("In level " + rlevel.getId() + " no pitches on rhythm level");
 	    
 	    case SCORELEVEL: //to do
-	    	  throw new SAXException("In level " + slevel.getId() + " no pitches yet on score level");
-	    
-            
+	    	 while ( st.hasMoreTokens() ) {
+	        	   // System.out.println(p);
+	        	    p = Integer.parseInt(st.nextToken());
+	        	  System.out.println(p);
+	        	    if ( slevel.isCurrentKeyTreble()) {
+	        	    	if (p >= 60 & p <= 84)	    pitcheslist.add(p); //C0 C2
+	        	    	else   throw new SAXException("In level " + slevel.getId() + " pitches should be list pitch 47 to 96");
+	        	    }
+	        	    	
+	        	    else if ( slevel.isCurrentKeyBass()) {
+	        	    	if (p >= 40 & p <= 64)	    pitcheslist.add(p); //E-2 E0
+	      	      		else   throw new SAXException("In level " + slevel.getId() + " pitches should be list pitch 26 to 74");
+	        	    }
+	        	    
+	      	    
+	        	}
+	           slevel.setPitcheslist(pitcheslist);
+	           break;
            }
 
            buffer = null;

@@ -3057,7 +3057,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	}
     	
     	else if ( selectedGame==SCOREREADING) {
-
+    		
+    		 scoreLevel.printtest();
             // update parameters for rhythm reading
           /*  if (!scorewholeCheckBox.isSelected() && !scorehalfCheckBox.isSelected() && !scorequarterCheckBox.isSelected() && !scoreeighthCheckBox.isSelected()) {
 
@@ -3765,14 +3766,16 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         else if (evt.getItemSelectable()==scoreNotesComboBox) {
         	 if (scoreNotesComboBox.getSelectedIndex()==0) {
+        		  scoreLevel.setNotetype("notes");
                  scoreLevel.setNbnotes(9);
              } 
         	 if (scoreNotesComboBox.getSelectedIndex()==1) {
+        		  scoreLevel.setNotetype("notes");
                  scoreLevel.setNbnotes(15);
              } 
         	 if (scoreNotesComboBox.getSelectedIndex()==2) {
                  scoreLevel.setNbnotes(0);
-                 
+                 scoreLevel.setNotetype("custom");
 
                  
 
@@ -5005,7 +5008,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         updateTonality(); //when selected random tonality
 
-        if (selectedGame == SCOREREADING) {
+        if (selectedGame == SCOREREADING && !scoreLevel.isCustomNotes()) {
         	updateTonality(); //when selected random tonality       
         	scoreLevel.initPitcheslist( scoreLevel.getNbnotes());
         }
@@ -5019,7 +5022,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 if (selectedGame == RHYTHMREADING) 
                 	pitch = 71;
                 else
-                	pitch = scoreLevel.randomPitch();
+                	pitch = scoreLevel.getRandomPitch();
 
                 if (wholeNote && tpsmes+4<=tmpnum && tmp<0.2) 
                 { // ronde, whole

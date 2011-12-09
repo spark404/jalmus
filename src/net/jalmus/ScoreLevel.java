@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -15,7 +16,7 @@ public class ScoreLevel implements Level {
 	String message;
 	boolean whole;
 	boolean half;
-	  boolean dottedhalf;
+	boolean dottedhalf;
 	boolean quarter; 
 	boolean eighth;
 	boolean silence;
@@ -23,6 +24,7 @@ public class ScoreLevel implements Level {
 	String currentKey;
 	Tonality currenttonality;
 	boolean randomtonality;
+	String notetype;
 	int nbnotes;
 	int timeSignNumerator;
 	int timeSignDenominator;
@@ -69,7 +71,8 @@ public class ScoreLevel implements Level {
     this.currentKey = "treble";
     this.randomtonality = false;
     this.currenttonality = new Tonality(0, "");
-    pitcheslist.clear();
+    this.pitcheslist = new ArrayList<Integer>(); 
+    this.notetype = "notes";
 	this.nbnotes = 9;
     this.timeSignNumerator = 4;
     this.timeSignDenominator = 4;
@@ -90,6 +93,20 @@ public class ScoreLevel implements Level {
 }
 
   
+  /*****************************************/
+  public void setNotetype(String s) {
+ this.notetype = s;
+}
+  public boolean isNotes() {
+   return this.notetype.equals("notes");
+ }
+
+ public boolean isCustomNotes() {
+	return this.notetype.equals("custom");
+}
+ 
+
+ 
   /*******************************************/
   public void setMessage(String s) {
     this.message = s;
@@ -229,8 +246,8 @@ public boolean isMessageEmpty(){
 			noteIdx++;
 	  }
 
-	  for (i = 0; i < pitcheslist.size(); i++)
-		  System.out.println("pitchtab #" + i + ": " + pitcheslist.get(i));
+	//  for (i = 0; i < pitcheslist.size(); i++)
+	//	  System.out.println("pitchtab #" + i + ": " + pitcheslist.get(i));
   }
 
   public int getYpos(int pitch) {
@@ -265,13 +282,18 @@ public boolean isMessageEmpty(){
 	return ypos;
   }
   
-  public int randomPitch(){
+  public int getRandomPitch(){
 	int pitch = 71;
 
-	pitch =  pitcheslist.get((int) (pitcheslist.size() * Math.random()));
+//	pitch =  pitcheslist.get((int) (pitcheslist.size() * Math.random()));
+	
+	Random generator = new Random();
+	int index = generator.nextInt ( this.pitcheslist.size() );
+	if( index >-1 )  return (this.pitcheslist.get( index ));  	
+	else return 0;
+	
 	//System.out.println("New random pitch = " + pitch);
 	  
-	return pitch;
   }
 
   public int tripletRandomPitch(int basePitch) {
@@ -450,6 +472,7 @@ public boolean isMessageEmpty(){
    	  System.out.println("Speed : " + this.speed);
    	  System.out.println("Metronome sound : " + this.metronome+ " visual beats : " + this.beats);
    	  System.out.println("Key : " + this.currentKey);
+   	  System.out.println("Piches liste : " + this.pitcheslist);
 
    	  System.out.println("Tonality : " + this.currenttonality);
 	  System.out.println("Nb notes "+this.nbnotes);
@@ -518,7 +541,15 @@ if ( dirmylessonok) {
 		fileContent.append("<clef>"+this.currentKey+"</clef>"+newline);
 		if (this.randomtonality) fileContent.append("<tonality>random</tonality>"+newline);
 		else  if (this.currenttonality.getAlterationsNumber()!=0) fileContent.append("<tonality>"+this.currenttonality.getAlterationsNumber()+this.currenttonality.getAlteration()+ "</tonality>"+newline);
-		fileContent.append("<nbnotes>"+this.getNbnotes()+"</nbnotes>"+newline);
+		fileContent.append("<notes>"+this.notetype+"</notes>"+newline);
+		if (this.isNotes()) fileContent.append("<nbnotes>"+this.getNbnotes()+"</nbnotes>"+newline);
+		if (this.isCustomNotes()){
+			fileContent.append("<pitches>");
+			for (Integer pitch : this.pitcheslist) {
+			fileContent.append(pitch+",");
+			}
+			fileContent.append("</pitches>"+newline);
+		}
 		fileContent.append("<speed>"+this.speed+"</speed>"+newline);
 		fileContent.append("</scorereading>"+newline+"</levels>"+newline);
 		writeFile(f, fileContent.toString());
