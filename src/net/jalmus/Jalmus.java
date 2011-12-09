@@ -3661,7 +3661,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 preferencesDialog.repaint();
                 
           //    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
-            	ChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), NOTEREADING, bundle);
+            //	ChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), NOTEREADING, bundle);
                 ChooseNoteP.setOpaque(true); //content panes must be opaque
                 
                 notesDialog.setContentPane(ChooseNoteP);
@@ -3775,8 +3775,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                  
 
                  
-           //    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
-                 ScoreChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), SCOREREADING, bundle);
+
+            //     ScoreChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), SCOREREADING, bundle);
                  ScoreChooseNoteP.setOpaque(true); //content panes must be opaque
                  
                  ScorenotesDialog.setContentPane(ScoreChooseNoteP);
