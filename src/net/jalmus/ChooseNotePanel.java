@@ -98,6 +98,10 @@ public class ChooseNotePanel extends JPanel {
     }
  
 
+
+        
+
+        
     public  JTable gettable(){
     	return this.table;
     }

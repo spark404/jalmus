@@ -3661,9 +3661,23 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 noteReadingNotesPanel.add(noteGroupComboBox);
                 preferencesDialog.repaint();
                 
-          //    	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(), bundle);
-            //	ChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), NOTEREADING, bundle);
-                ChooseNoteP.setOpaque(true); //content panes must be opaque
+
+            	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(),NOTEREADING,  bundle);
+                ChooseNoteP.setOpaque(true); //content panes must be opaque 
+                ChooseNoteP.setVisible(true);
+               ChooseNoteP.okButton.addActionListener(new ActionListener() {
+            	   
+                   public void actionPerformed(ActionEvent e)
+                   {
+                       //Execute when button is pressed
+                		 if (! ChooseNoteP.atLeast3Pitches()) JOptionPane.showMessageDialog(null, "Choose at least three notes", "Warning", JOptionPane.ERROR_MESSAGE); 
+                		 else    {
+                			 notesDialog.setVisible(false);
+                			 noteLevel.setPitcheslist(ChooseNoteP.getPitches());
+                		 }
+                      
+                   }
+               });   
                 
                 notesDialog.setContentPane(ChooseNoteP);
                notesDialog.setSize(650, 220);
@@ -3778,9 +3792,24 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                  scoreLevel.setNotetype("custom");
 
                  
-
-            //     ScoreChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), SCOREREADING, bundle);
-                 ScoreChooseNoteP.setOpaque(true); //content panes must be opaque
+              	ScoreChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), SCOREREADING, bundle);
+                ScoreChooseNoteP.setOpaque(true); //content panes must be opaque 
+                ScoreChooseNoteP.setVisible(true);
+               ScoreChooseNoteP.okButton.addActionListener(new ActionListener() {
+            	   
+                   public void actionPerformed(ActionEvent e)
+                   {
+                       //Execute when button is pressed
+                		 if (! ScoreChooseNoteP.atLeast3Pitches()) JOptionPane.showMessageDialog(null, "Choose at least three notes", "Warning", JOptionPane.ERROR_MESSAGE); 
+                		 else    {
+                			 ScorenotesDialog.setVisible(false);
+                			 scoreLevel.setPitcheslist(ScoreChooseNoteP.getPitches());
+                		 }
+                      
+                   }
+               });    
+               
+   
                  
                  ScorenotesDialog.setContentPane(ScoreChooseNoteP);
                 ScorenotesDialog.setSize(650, 220);
