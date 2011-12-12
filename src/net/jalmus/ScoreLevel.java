@@ -260,6 +260,7 @@ public boolean isMessageEmpty(){
     	ypos = 53; // Y position of C1 on bass key
     	octave = -2;
     	if (pitch > 47) { octave = -1; octaveOffset = 35; }
+    	if (pitch > 59) { octave = 0; octaveOffset = 0; }
 	}
 	else if (this.isCurrentKeyTreble()) {
 		if (pitch > 83) { octave = 2; octaveOffset = 70; }
