@@ -1730,7 +1730,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
           scoreKeyPanel.add(scoreKeyComboBox);
           scoreKeyPanel.add(scoreAlterationsComboBox);
           scoreKeyPanel.add(scoreNotesComboBox);
-          localizables.add(new Localizable.NamedGroup(scoreKeyPanel, "_menuClef"));
+          localizables.add(new Localizable.NamedGroup(scoreKeyPanel, "_menuNotes"));
 
           /* 3rd panel - RYTHM */
 
@@ -5864,7 +5864,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         }
 
         // Force the window size
-        jalmus.setSize(790, 590);
+        jalmus.setSize(800, 600);
         jalmus.setMinimumSize(dim);
 
         // Draw

@@ -848,7 +848,7 @@ public boolean isScoreLevel(){
 	        	    }
 	        	    	
 	        	    else if ( slevel.isCurrentKeyBass()) {
-	        	    	if (p >= 36 & p <= 60)	    pitcheslist.add(p); //E-2 E0
+	        	    	if (p >= 38 & p <= 63)	    pitcheslist.add(p); //E-2 E0
 	      	      		else   throw new SAXException("In level " + slevel.getId() + " pitches should be list pitch 26 to 74");
 	        	    }
 	        	    

@@ -158,7 +158,11 @@ public class Rhythm {
       }
 
       else { // minima
-    	g.drawString("h", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
+    	  if (noteY > 8) {
+    		  g.drawString("h", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
+    		
+      	}
+    	  else   g.drawString("r", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13 +41);
       }
 
     }
@@ -172,8 +176,12 @@ public class Rhythm {
         }
 
         else { // minima
-      	g.drawString("d", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
-        }
+        	  if (noteY > 8) {
+        		  g.drawString("d", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
+        		
+          	}
+        	  else   g.drawString("l", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13 +41);
+          }
 
       }
     
@@ -190,7 +198,7 @@ public class Rhythm {
     		sm = "" + (char)0xF4;
     		voffset = 23;
     	}
-    	else if (noteY > 18) {
+    	else if (noteY > 8) {
     		sm = "" + (char)0xF4;
     		voffset = 23;
     	}

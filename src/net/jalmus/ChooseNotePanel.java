@@ -404,7 +404,8 @@ public class ChooseNotePanel extends JPanel {
           //pitch 26 D-3 to 74 D+1
               if ((col < 1)  //col indicate the octava
                || (row == 0 )
-               || (row == 3 & col > 1 )
+               || (row == 1 & col < 3 )
+               || (row == 3 & col > 3 )
                 || (row == 4 & col < numCols )
                || (row == 5 & col < numCols )
                || (row == 6 & col < numCols )
