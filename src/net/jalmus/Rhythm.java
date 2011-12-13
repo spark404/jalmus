@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
@@ -121,13 +122,135 @@ public class Rhythm {
 	  this.tripletValue = val;
   }
 
+  
+  public boolean samenotePitch(int pitchbase){
+      int x;
+       boolean b = false;
+       for (x=0;x<=9;x++){ 
+         if ((this.pitch+x*12==pitchbase) | (this.pitch-x*12==pitchbase))  b = true;                                                   }
+           return b;
+           }
+
+   
+
+     
+ 
+
+      
+  
   public void paint(Graphics g, int Leveltype,  Font f, ScoreLevel sl, int position, int rowsDistance, boolean courant, int scoreYpos, Component l) {
 
 	if (this.ypos == 0) 
 		this.ypos = sl.getYpos(this.pitch);
 	int noteY = this.ypos;
-    //@SuppressWarnings("unused")
 
+	
+	
+	  String alt="";
+	  int notex = 0;
+	  int keyoffset = 0;
+      Tonality t = sl.getCurrentTonality();
+
+
+        if (this.samenotePitch(0)) {  // DO 
+        	if ((t.issharp() && t.getAlterationsNumber() >=2) || (t.isflat() && t.getAlterationsNumber() >=6))
+        			alt = "n"; else alt = ""; 
+        			notex = (60-this.pitch)*35/12+43 + keyoffset;
+        	}
+        
+        else if (this.samenotePitch(1)) { // DO# REb
+      	  if (t.isflat()) {
+      		  	notex = (61-this.pitch)*35/12 + 43 + keyoffset;
+      	  		if (t.getAlterationsNumber() >=4) alt = ""; else alt = "b"; 
+      	  		}
+      	  else {
+      		  notex = (61-this.pitch)*35/12 + 38 + keyoffset; 
+        	  if (t.getAlterationsNumber() >=2) alt = ""; else alt = "#"; 
+        	}          		
+        }	
+        
+        else   if (this.samenotePitch(2)) { // RE
+        	if ((t.issharp() && t.getAlterationsNumber() >=4) || (t.isflat() && t.getAlterationsNumber() >=4))
+    			alt = "n"; else alt = ""; 
+    			notex = (62-this.pitch)*35/12 + 38 + keyoffset;
+        }
+                   
+        
+        else if (this.samenotePitch(3)) { //RE# MIb 
+      	  if (t.issharp()) {
+      		notex = (63-this.pitch)*35/12 + 38 + keyoffset;  
+      	  	if (t.getAlterationsNumber() >=4) alt = ""; else alt = "#"; 
+      	  	}
+      	  else {
+      		notex = (63-this.pitch)*35/12 + 33 + keyoffset;  
+        	if (t.getAlterationsNumber() >=2) alt = ""; else alt = "b"; }          		
+        }	
+        
+        else   if (this.samenotePitch(4)) {  //MI
+        	if ((t.issharp() && t.getAlterationsNumber() >=6) || (t.isflat() && t.getAlterationsNumber() >=2))
+    			alt = "n"; else alt = ""; 
+        	notex = (64-this.pitch)*35/12 + 33 + keyoffset; 
+        }
+				
+     
+        else   if (this.samenotePitch(5)) { // FA
+        	if ((t.issharp() && t.getAlterationsNumber() >=1) || (t.isflat() && t.getAlterationsNumber() >=7))
+    			alt = "n"; else alt = ""; 
+          	notex = (65-this.pitch)*35/12 + 28 + keyoffset; 
+        }
+     
+        else if (this.samenotePitch(6)) { //FA# SOLb
+        	  if (t.issharp()) {
+            		notex = (66-this.pitch)*35/12 + 28 + keyoffset;  
+            	  	if (t.getAlterationsNumber() >=1) alt = ""; else alt = "#"; 
+            	  	}
+            	  else {
+            		notex = (66-this.pitch)*35/12 + 23 + keyoffset;  
+              	if (t.getAlterationsNumber() >=7) alt = ""; else alt = "b"; }          		
+              }	
+        
+        else   if (this.samenotePitch(7)) { //SOL
+        	if ((t.issharp() && t.getAlterationsNumber() >=3) || (t.isflat() && t.getAlterationsNumber() >=5))
+			alt = "n"; else alt = ""; 
+        	notex = (67-this.pitch)*35/12 + 23 + keyoffset; 
+    }
+        else if (this.samenotePitch(8)) { //SOL# LAb
+        	  if (t.issharp()) {
+          		notex = (68-this.pitch)*35/12 + 23 + keyoffset;  
+          	  	if (t.getAlterationsNumber() >=3) alt = ""; else alt = "#"; 
+          	  	}
+          	  else {
+          		notex = (68-this.pitch)*35/12 + 18 + keyoffset;  
+            	if (t.getAlterationsNumber() >=3) alt = ""; else alt = "b"; }          		
+            }	
+       
+        else   if (this.samenotePitch(9)) { 	//LA
+        if ((t.issharp() && t.getAlterationsNumber() >=5) || (t.isflat() && t.getAlterationsNumber() >=3))
+			alt = "n"; else alt = ""; 
+    	notex = (69-this.pitch)*35/12 + 18 + keyoffset; 
+        }
+        
+        
+        else if (this.samenotePitch(10)) { // LA# SIb
+        	  if (t.issharp()) {
+            		notex = (70-this.pitch)*35/12 + 18 + keyoffset;  
+            	  	if (t.getAlterationsNumber() >=3) alt = ""; else alt = "#"; 
+            	  	}
+            	  else {
+            		notex = (70-this.pitch)*35/12 + 3 + keyoffset;  
+              	if (t.getAlterationsNumber() >=3) alt = ""; else alt = "b"; }          		
+              }	
+        
+        else   if (this.samenotePitch(11)) {  //SI
+        	if ((t.issharp() && t.getAlterationsNumber() >=7) || (t.isflat() && t.getAlterationsNumber() >=1))
+			alt = "n"; else alt = ""; 
+    	notex = (71-this.pitch)*35/12 + 3 + keyoffset; 
+        }
+        
+         noteY= notex;
+              	
+    //@SuppressWarnings("unused")
+     	System.out.println("pitch" + this.pitch + "Notey" + noteY);
     //  g.setColor(couleur);
     g.setFont(f.deriveFont(57f));
     if (courant)
@@ -198,11 +321,23 @@ public class Rhythm {
     		sm = "" + (char)0xF4;
     		voffset = 23;
     	}
-    	else if (noteY > 8) {
+    	else {
+    		
+    		if (noteY > 8) {
+    	
     		sm = "" + (char)0xF4;
     		voffset = 23;
+    		}
+    		if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset -10);
+    		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset -8);
+    		if (alt.equals("n")) {
+    			  String bq = "" + (char)0xBD;
+    			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset -9);
+    		}
     	}
     	g.drawString(sm, this.position, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset);
+    	
+    	
     	
       }
     	  
