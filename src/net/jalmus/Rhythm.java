@@ -140,14 +140,14 @@ public class Rhythm {
   
   public void paint(Graphics g, int Leveltype,  Font f, ScoreLevel sl, int position, int rowsDistance, boolean courant, int scoreYpos, Component l) {
 
-	if (this.ypos == 0) 
-		this.ypos = sl.getYpos(this.pitch);
-	int noteY = this.ypos;
+	//if (this.ypos == 0) 
+//		this.ypos = sl.getYpos(this.pitch);
+//	int noteY = this.ypos;
  //	System.out.println("pitch1" + this.pitch + "Notey" + noteY);
 	
 	
 	  String alt="";
-	  int notex = 0;
+	  int noteY = 0;
 	  int keyoffset = 0; //for bass key
       Tonality t = sl.getCurrentTonality();
       
@@ -156,16 +156,16 @@ public class Rhythm {
         if (this.samenotePitch(0)) {  // DO 
         	if ((t.issharp() && t.getAlterationsNumber() >=2) || (t.isflat() && t.getAlterationsNumber() >=6))
         			alt = "n"; else alt = ""; 
-        			notex = (60-this.pitch)*35/12+43 + keyoffset;
+        			noteY = (60-this.pitch)*35/12+43 + keyoffset;
         	}
         
         else if (this.samenotePitch(1)) { // DO# REb
       	  if (t.isflat()) {
-      		  	notex = (61-this.pitch)*35/12 + 43 + keyoffset;
+      		  	noteY = (61-this.pitch)*35/12 + 43 + keyoffset;
       	  		if (t.getAlterationsNumber() >=4) alt = ""; else alt = "b"; 
       	  		}
       	  else {
-      		  notex = (61-this.pitch)*35/12 + 38 + keyoffset; 
+      		  noteY = (61-this.pitch)*35/12 + 38 + keyoffset; 
         	  if (t.getAlterationsNumber() >=2) alt = ""; else alt = "#"; 
         	}          		
         }	
@@ -173,82 +173,82 @@ public class Rhythm {
         else   if (this.samenotePitch(2)) { // RE
         	if ((t.issharp() && t.getAlterationsNumber() >=4) || (t.isflat() && t.getAlterationsNumber() >=4))
     			alt = "n"; else alt = ""; 
-    			notex = (62-this.pitch)*35/12 + 38 + keyoffset;
+    			noteY = (62-this.pitch)*35/12 + 38 + keyoffset;
         }
                    
         
         else if (this.samenotePitch(3)) { //RE# MIb 
       	  if (t.issharp()) {
-      		notex = (63-this.pitch)*35/12 + 38 + keyoffset;  
+      		noteY = (63-this.pitch)*35/12 + 38 + keyoffset;  
       	  	if (t.getAlterationsNumber() >=4) alt = ""; else alt = "#"; 
       	  	}
       	  else {
-      		notex = (63-this.pitch)*35/12 + 33 + keyoffset;  
+      		noteY = (63-this.pitch)*35/12 + 33 + keyoffset;  
         	if (t.getAlterationsNumber() >=2) alt = ""; else alt = "b"; }          		
         }	
         
         else   if (this.samenotePitch(4)) {  //MI
         	if ((t.issharp() && t.getAlterationsNumber() >=6) || (t.isflat() && t.getAlterationsNumber() >=2))
     			alt = "n"; else alt = ""; 
-        	notex = (64-this.pitch)*35/12 + 33 + keyoffset; 
+        	noteY = (64-this.pitch)*35/12 + 33 + keyoffset; 
         }
 				
      
         else   if (this.samenotePitch(5)) { // FA
         	if ((t.issharp() && t.getAlterationsNumber() >=1) || (t.isflat() && t.getAlterationsNumber() >=7))
     			alt = "n"; else alt = ""; 
-          	notex = (65-this.pitch)*35/12 + 28 + keyoffset; 
+          	noteY = (65-this.pitch)*35/12 + 28 + keyoffset; 
         }
      
         else if (this.samenotePitch(6)) { //FA# SOLb
         	  if (t.issharp()) {
-            		notex = (66-this.pitch)*35/12 + 28 + keyoffset;  
+            		noteY = (66-this.pitch)*35/12 + 28 + keyoffset;  
             	  	if (t.getAlterationsNumber() >=1) alt = ""; else alt = "#"; 
             	  	}
             	  else {
-            		notex = (66-this.pitch)*35/12 + 23 + keyoffset;  
+            		noteY = (66-this.pitch)*35/12 + 23 + keyoffset;  
               	if (t.getAlterationsNumber() >=7) alt = ""; else alt = "b"; }          		
               }	
         
         else   if (this.samenotePitch(7)) { //SOL
         	if ((t.issharp() && t.getAlterationsNumber() >=3) || (t.isflat() && t.getAlterationsNumber() >=5))
 			alt = "n"; else alt = ""; 
-        	notex = (67-this.pitch)*35/12 + 23 + keyoffset; 
+        	noteY = (67-this.pitch)*35/12 + 23 + keyoffset; 
     }
         else if (this.samenotePitch(8)) { //SOL# LAb
         	  if (t.issharp()) {
-          		notex = (68-this.pitch)*35/12 + 23 + keyoffset;  
+          		noteY = (68-this.pitch)*35/12 + 23 + keyoffset;  
           	  	if (t.getAlterationsNumber() >=3) alt = ""; else alt = "#"; 
           	  	}
           	  else {
-          		notex = (68-this.pitch)*35/12 + 18 + keyoffset;  
+          		noteY = (68-this.pitch)*35/12 + 18 + keyoffset;  
             	if (t.getAlterationsNumber() >=3) alt = ""; else alt = "b"; }          		
             }	
        
         else   if (this.samenotePitch(9)) { 	//LA
         if ((t.issharp() && t.getAlterationsNumber() >=5) || (t.isflat() && t.getAlterationsNumber() >=3))
 			alt = "n"; else alt = ""; 
-    	notex = (69-this.pitch)*35/12 + 18 + keyoffset; 
+    	noteY = (69-this.pitch)*35/12 + 18 + keyoffset; 
         }
         
         
         else if (this.samenotePitch(10)) { // LA# SIb
         	  if (t.issharp()) {
-            		notex = (70-this.pitch)*35/12 + 18 + keyoffset;  
+            		noteY = (70-this.pitch)*35/12 + 18 + keyoffset;  
             	  	if (t.getAlterationsNumber() >=3) alt = ""; else alt = "#"; 
             	  	}
             	  else {
-            		notex = (70-this.pitch)*35/12 + 3 + keyoffset;  
+            		noteY = (70-this.pitch)*35/12 + 3 + keyoffset;  
               	if (t.getAlterationsNumber() >=3) alt = ""; else alt = "b"; }          		
               }	
         
         else   if (this.samenotePitch(11)) {  //SI
         	if ((t.issharp() && t.getAlterationsNumber() >=7) || (t.isflat() && t.getAlterationsNumber() >=1))
 			alt = "n"; else alt = ""; 
-    	notex = (71-this.pitch)*35/12 + 3 + keyoffset; 
+    	noteY = (71-this.pitch)*35/12 + 3 + keyoffset; 
         }
         
-         noteY= notex;
+    
               	
     //@SuppressWarnings("unused")
 
@@ -268,7 +268,15 @@ public class Rhythm {
       }
 
       else { // semibreve
-    	  g.setFont(f.deriveFont(50f));
+  		// draw accidental
+		if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + 13);
+  		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + 15);
+  		if (alt.equals("n")) {
+  			String bq = "" + (char)0xBD;
+  			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
+  			}  
+    	//draw note  
+    	g.setFont(f.deriveFont(50f));
     	g.drawString("w", this.position - 3, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
       }
 
@@ -282,11 +290,19 @@ public class Rhythm {
       }
 
       else { // minima
-    	  if (noteY > 8) {
+    		// draw accidental
+  			if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + 13);
+    		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + 15);
+    		if (alt.equals("n")) {
+    			String bq = "" + (char)0xBD;
+    			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
+    			}  
+    		
+    		if (noteY > 8) {
     		  g.drawString("h", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
     		
-      	}
-    	  else   g.drawString("r", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13 +41);
+    		}    	  
+    		else   g.drawString("r", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13 +41);
       }
 
     }
@@ -300,11 +316,18 @@ public class Rhythm {
         }
 
         else { // minima
-        	  if (noteY > 8) {
-        		  g.drawString("d", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
-        		
+    		// draw accidental
+  			if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + 13);
+    		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + 15);
+    		if (alt.equals("n")) {
+    			String bq = "" + (char)0xBD;
+    			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
+    			} 
+    		
+        	if (noteY > 8) {
+        		  g.drawString("d", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);	
           	}
-        	  else   g.drawString("l", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13 +41);
+        	else   g.drawString("l", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13 +41);
           }
 
       }
@@ -316,27 +339,29 @@ public class Rhythm {
       }
 
       else { // semiminima
-  	String sm = "" + (char)0xF6;
-    	int voffset = 53;
-    	if (Leveltype == RHYTHMREADING) { // always beam to up
-    		sm = "" + (char)0xF4;
-    		voffset = 23;
-    	}
-    	else {
+    	  String sm = "" + (char)0xF6;
+    	  int voffset = 53;
+    	  if (Leveltype == RHYTHMREADING) { // always beam to up
+    		  sm = "" + (char)0xF4;
+    		  voffset = 23;
+    	  }
+    	  else {
+    		// draw accidental
+    		if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset + 13);
+      		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + 15);
+      		if (alt.equals("n")) {
+      			String bq = "" + (char)0xBD;
+      			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
+      			}  
+      		// beam up
+    		if (noteY > 8) {    	
+	    		sm = "" + (char)0xF4;
+	    		voffset = 23;
+    		}
     		
-    		if (noteY > 8) {
-    	
-    		sm = "" + (char)0xF4;
-    		voffset = 23;
-    		}
-    		if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset -10);
-    		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset -8);
-    		if (alt.equals("n")) {
-    			  String bq = "" + (char)0xBD;
-    			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset -9);
-    		}
-    	}
-    	g.drawString(sm, this.position, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset);
+    	  }
+    	  // draw note
+    	  g.drawString(sm, this.position, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset);
     	
     	
     	
@@ -350,6 +375,13 @@ public class Rhythm {
 	    	//boolean upward  = false;
 	    	int voffset = 23;
 	 
+    		if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset + 13);
+      		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + 15);
+      		if (alt.equals("n")) {
+      			String bq = "" + (char)0xBD;
+      			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
+      			}
+      		
 	    	int ypos = scoreYpos + this.rowNumber*rowsDistance;
 	    	g.drawString(sm, this.position, ypos + noteY + voffset);
 	    	if (this.tripletValue != 0) {
