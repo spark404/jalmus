@@ -143,14 +143,15 @@ public class Rhythm {
 	if (this.ypos == 0) 
 		this.ypos = sl.getYpos(this.pitch);
 	int noteY = this.ypos;
-
+ //	System.out.println("pitch1" + this.pitch + "Notey" + noteY);
 	
 	
 	  String alt="";
 	  int notex = 0;
-	  int keyoffset = 0;
+	  int keyoffset = 0; //for bass key
       Tonality t = sl.getCurrentTonality();
-
+      
+      if (Leveltype  == SCOREREADING && sl.isCurrentKeyBass()) keyoffset = -60;
 
         if (this.samenotePitch(0)) {  // DO 
         	if ((t.issharp() && t.getAlterationsNumber() >=2) || (t.isflat() && t.getAlterationsNumber() >=6))
@@ -250,7 +251,7 @@ public class Rhythm {
          noteY= notex;
               	
     //@SuppressWarnings("unused")
-     	System.out.println("pitch" + this.pitch + "Notey" + noteY);
+
     //  g.setColor(couleur);
     g.setFont(f.deriveFont(57f));
     if (courant)
