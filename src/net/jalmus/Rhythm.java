@@ -347,7 +347,7 @@ public class Rhythm {
     	  }
     	  else {
     		// draw accidental
-    		if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset + 13);
+    		if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + 13);
       		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + 15);
       		if (alt.equals("n")) {
       			String bq = "" + (char)0xBD;
