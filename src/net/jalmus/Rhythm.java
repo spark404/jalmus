@@ -451,7 +451,13 @@ public class Rhythm {
 	      g.drawString("E", this.position, scoreYpos + this.rowNumber*rowsDistance + 40);
       }
       else {
-
+    	  if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + 13);
+    		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + 15);
+    		if (alt.equals("n")) {
+    			String bq = "" + (char)0xBD;
+    			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
+    			}
+    		
        if (this.groupee == 1 || this.groupee == 2) {
     	 String sm = "" + (char)0xF6;
        	 int voffset = 53;
@@ -464,6 +470,8 @@ public class Rhythm {
        		sm = "" + (char)0xF4;
        		voffset = 23;
        	 }
+    	
+  		
        	 g.drawString(sm, this.position, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset);
     	   
         	
