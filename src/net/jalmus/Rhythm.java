@@ -32,6 +32,7 @@ public class Rhythm {
   int pitch;
   int rowNumber; // 0 for the first row on the staff
   int tripletValue;
+  boolean stemup; // true stem up false stem down
   boolean pointee;
   boolean silence;
   int ypos;
@@ -42,11 +43,12 @@ public class Rhythm {
   private static int RHYTHMREADING = 2;
   private static int SCOREREADING = 3;
   
-  public Rhythm(double val, int pos, int p, int np, boolean pt, boolean sl, int bm) {
+  public Rhythm(double val, int pos, int p, int np, boolean su, boolean pt, boolean sl, int bm) {
     this.duration = val;
     this.position = pos;
     this.pitch = p;
     this.rowNumber = np;
+    this.stemup = su;
     this.pointee = pt;
     this.silence = sl;
     this.groupee = bm;
@@ -57,6 +59,7 @@ public class Rhythm {
     this.duration = 0;
     this.position = 0;
     this.rowNumber = 0;
+    this.stemup = true;
     this.pitch = 71; //B for rhythm game
     this.pointee = false;
     this.silence = false;
@@ -68,6 +71,8 @@ public class Rhythm {
     this.duration = r.duration;
     this.position = r.position;
     this.pitch = r.pitch;
+    this.stemup = r.stemup;
+    this.tripletValue = r.tripletValue;
     this.rowNumber = r.rowNumber;
     this.silence = r.silence;
     this.pointee = r.pointee;
@@ -238,14 +243,14 @@ public class Rhythm {
             	  	if (t.getAlterationsNumber() >=3) alt = ""; else alt = "#"; 
             	  	}
             	  else {
-            		noteY = (70-this.pitch)*35/12 + 3 + keyoffset;  
+            		noteY = (70-this.pitch)*35/12 + 13 + keyoffset;  
               	if (t.getAlterationsNumber() >=3) alt = ""; else alt = "b"; }          		
               }	
         
         else   if (this.samenotePitch(11)) {  //SI
         	if ((t.issharp() && t.getAlterationsNumber() >=7) || (t.isflat() && t.getAlterationsNumber() >=1))
 			alt = "n"; else alt = ""; 
-    	noteY = (71-this.pitch)*35/12 + 3 + keyoffset; 
+    	noteY = (71-this.pitch)*35/12 + 13 + keyoffset; 
         }
         
     
@@ -298,10 +303,7 @@ public class Rhythm {
     			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
     			}  
     		
-    		if (noteY > 8) {
-    		  g.drawString("h", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);
-    		
-    		}    	  
+    		if (this.stemup)     		  g.drawString("h", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);  
     		else   g.drawString("r", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13 +41);
       }
 
@@ -324,9 +326,7 @@ public class Rhythm {
     			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
     			} 
     		
-        	if (noteY > 8) {
-        		  g.drawString("d", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);	
-          	}
+    		if (this.stemup)    	  g.drawString("d", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13);	   
         	else   g.drawString("l", this.position, scoreYpos + this.rowNumber*rowsDistance + noteY +13 +41);
           }
 
@@ -341,7 +341,7 @@ public class Rhythm {
       else { // semiminima
     	  String sm = "" + (char)0xF6;
     	  int voffset = 53;
-    	  if (Leveltype == RHYTHMREADING) { // always beam to up
+    	  if (Leveltype == RHYTHMREADING) { // always stem to up
     		  sm = "" + (char)0xF4;
     		  voffset = 23;
     	  }
@@ -353,8 +353,8 @@ public class Rhythm {
       			String bq = "" + (char)0xBD;
       			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
       			}  
-      		// beam up
-    		if (noteY > 8) {    	
+      		// stem up
+    		if (this.stemup) {    	
 	    		sm = "" + (char)0xF4;
 	    		voffset = 23;
     		}
@@ -370,18 +370,12 @@ public class Rhythm {
     }
     
     else if (this.duration == 0.333) {
-    	if (Leveltype == RHYTHMREADING) { //beam upward
+    	if (Leveltype == RHYTHMREADING ) { //stem upward
     		String sm = "" + (char)0xF4;
 	    	//boolean upward  = false;
 	    	int voffset = 23;
 	 
-    		if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + voffset + 13);
-      		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + 15);
-      		if (alt.equals("n")) {
-      			String bq = "" + (char)0xBD;
-      			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
-      			}
-      		
+    	
 	    	int ypos = scoreYpos + this.rowNumber*rowsDistance;
 	    	g.drawString(sm, this.position, ypos + noteY + voffset);
 	    	if (this.tripletValue != 0) {
@@ -396,9 +390,44 @@ public class Rhythm {
 	    		}
 	    	}
     	}
+    	
+    	else if (Leveltype == SCOREREADING && this.stemup ) { //stem upward
+    		String sm = "" + (char)0xF4;
+	    	//boolean upward  = false;
+	    	int voffset = 23;
+	 
+	    	if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + 13);
+      		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + 15);
+      		if (alt.equals("n")) {
+      			String bq = "" + (char)0xBD;
+      			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
+      			}
+      		
+	    	int ypos = scoreYpos + this.rowNumber*rowsDistance;
+	    	g.drawString(sm, this.position, ypos + noteY + voffset);
+	    	if (this.tripletValue != 0) {
+	    		int lowestYpos = 0;
+	    		if (this.tripletValue < 100) lowestYpos = sl.getYpos(this.tripletValue) + ypos;
+	    		else lowestYpos = sl.getYpos(this.tripletValue - 100) + ypos;
+	        	g.drawLine(this.position+11, ypos + noteY - 10, this.position+11, lowestYpos - 30);
+	    		if(this.tripletValue < 100) { // means this is the first note of the triplet. Draw horizontal bar
+	        		g.fillRect(this.position+11, lowestYpos - 31, 49, 3);
+	        		g.setFont(new Font("Arial", Font.BOLD, 15));
+	        		g.drawString("3", this.position + 32, lowestYpos - 33);
+	    		}
+	    	}
+    	}
     	else {
 	    	String sm = "" + (char)0xF6;
 	    	//boolean upward  = false;
+	    	
+	    	if (alt.equals("#")) g.drawString("B", this.position -11, scoreYpos + this.rowNumber*rowsDistance + noteY + 13);
+      		if (alt.equals("b")) g.drawString("b", this.position -9, scoreYpos + this.rowNumber*rowsDistance + noteY + 15);
+      		if (alt.equals("n")) {
+      			String bq = "" + (char)0xBD;
+      			g.drawString(bq, this.position -8, scoreYpos + this.rowNumber*rowsDistance + noteY + 14);
+      			}
+      		
 	    	int voffset = 53;
 	    	int ypos = scoreYpos + this.rowNumber*rowsDistance;
 	    	g.drawString(sm, this.position, ypos + noteY + voffset);
@@ -427,11 +456,11 @@ public class Rhythm {
     	 String sm = "" + (char)0xF6;
        	 int voffset = 53;
        	 
-     	if (Leveltype == RHYTHMREADING) { // always beam to up
+     	if (Leveltype == RHYTHMREADING) { // always stem to up
     		sm = "" + (char)0xF4;
     		voffset = 23;
     	}
-     	else  if (noteY > 18) {
+     	else  if (this.stemup) {
        		sm = "" + (char)0xF4;
        		voffset = 23;
        	 }
@@ -447,7 +476,7 @@ public class Rhythm {
        else {
       	 String sm = "" + (char)0xCA;
        	 int voffset = 43;
-     	if (Leveltype == RHYTHMREADING) { // always beam to up
+     	if (Leveltype == RHYTHMREADING) { // always stem to up
      		sm = "" + (char)0xC8;
        		voffset = 13;
     	}

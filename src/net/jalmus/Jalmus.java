@@ -4870,7 +4870,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
     
     
-    private int addRhythm(double duration, int pitch, int currentTick, int row, int newXPos) {
+    private int addRhythm(double duration, int pitch, boolean stemup, int currentTick, int row, int newXPos) {
         int tick = currentTick;
         int velocity = 71;
         boolean silence = false;
@@ -4898,12 +4898,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         if (duration == 0.333) // do not handle pauses into triplets for now 
         	silence = false;
 
-        System.out.println("[addRhythm] pitch: " + pitch);
+        System.out.println("[addRhythm] pitch: " + pitch + "duration: " + duration + "stemup " + stemup);
 
         double tmpsilence=Math.random();
         if (!silence || (silence && tmpsilence<0.85) || (duration == 3 && tmpnum !=3 ) ) {
 
-          rhythms.add(new Rhythm(duration, newXPos, pitch,  row, false, false, 0));
+          rhythms.add(new Rhythm(duration, newXPos, pitch,  row, stemup, false, false, 0));
 
             track.add(createNoteOnEvent(pitch, velocity, tick));
             mutetrack.add(createNoteOnEvent(pitch, 0, tick));
@@ -4916,7 +4916,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
            
 
         } else { // silence
-          	rhythms.add(new Rhythm(duration, newXPos, pitch, row, false, true, 0));
+          	rhythms.add(new Rhythm(duration, newXPos, pitch, row, false, false, true, 0));
 
             track.add(createNoteOffEvent(pitch, tick));
             mutetrack.add(createNoteOffEvent(pitch, tick));
@@ -4975,7 +4975,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         int currentXPos = windowMargin + keyWidth + alterationWidth + timeSignWidth + notesShift;
         int pitch;
         boolean wholeNote = false, halfNote = false, dottedhalfNote = false, quarterNote= false, eighthNote = false, triplet = false;
-        
+        boolean stemup = true;
         Dimension size=getSize();
 
         	
@@ -5048,42 +5048,50 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             {
             	//System.out.println("tpsmes : " + tpsmes);
                 double tmp=Math.random();
-                if (selectedGame == RHYTHMREADING) 
+                if (selectedGame == RHYTHMREADING) {
                 	pitch = 71;
-                else
+                	stemup = true;
+                }
+                else {
                 	pitch = scoreLevel.getRandomPitch();
+                	if (scoreLevel.isCurrentKeyTreble() && pitch >= 71) stemup = false; //SI
+                	else if (scoreLevel.isCurrentKeyTreble() && pitch < 71) stemup = true;
+                	else if (scoreLevel.isCurrentKeyBass() && pitch >= 50) stemup = false; //RE
+                	else if (scoreLevel.isCurrentKeyBass() && pitch < 50) stemup = true;
+                	// it will be better to use noteY than pitch
+                }
 
                 if (wholeNote && tpsmes+4<=tmpnum && tmp<0.2) 
                 { // ronde, whole
                     tpsmes+=4;
-                    currentTick=addRhythm(4, pitch, currentTick, rowCount, currentXPos);
+                    currentTick=addRhythm(4, pitch, stemup, currentTick, rowCount, currentXPos);
                     currentXPos+=(noteDistance*4);
                 } 
                 
                 else if (dottedhalfNote && tpsmes+3<=tmpnum && tmp<0.4)
             	{ // blanche pointee, dotted half
                     tpsmes+=3;
-                    currentTick=addRhythm(3, pitch,  currentTick, rowCount, currentXPos);
+                    currentTick=addRhythm(3, pitch, stemup, currentTick, rowCount, currentXPos);
                     currentXPos+=(noteDistance*3);
                 } 
                 
                 else if (halfNote && tpsmes+2<=tmpnum && tmp<0.4)
             	{ // blanche, half
                     tpsmes+=2;
-                    currentTick=addRhythm(2, pitch,  currentTick, rowCount, currentXPos);
+                    currentTick=addRhythm(2, pitch, stemup, currentTick, rowCount, currentXPos);
                     currentXPos+=(noteDistance*2);
                 } 
              
                 else if (quarterNote && tpsmes+1<=tmpnum && tmp<0.6) 
                 { // noire, quarter
                     tpsmes+=1;
-                    currentTick=addRhythm(1, pitch, currentTick, rowCount, currentXPos);
+                    currentTick=addRhythm(1, pitch, stemup, currentTick, rowCount, currentXPos);
                     currentXPos+=noteDistance;
                 }
                 else if (eighthNote && tpsmes+0.5<=tmpnum && tmp<0.8)
                 { // croche, eighth
                     tpsmes+=0.5;
-                    currentTick=addRhythm(0.5, pitch, currentTick, rowCount, currentXPos);
+                    currentTick=addRhythm(0.5, pitch, stemup, currentTick, rowCount, currentXPos);
                     currentXPos+=(noteDistance/2);
                 }
                 else if (triplet && tpsmes+1<=tmpnum && tmp<0.9)
@@ -5094,20 +5102,23 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 	  tripletPitches[1] = scoreLevel.tripletRandomPitch(tripletPitches[0]);
                 	  tripletPitches[2] = scoreLevel.tripletRandomPitch(tripletPitches[0]);
                   }
-                  for (int i = 1; i < 3; i++)
-                	  if (tripletPitches[i] < lowestPitch)
+                  for (int i = 1; i < 3; i++) {
+                	  if (tripletPitches[i] < lowestPitch && !stemup)
                 		  lowestPitch = tripletPitches[i];
+                	  else if (tripletPitches[i] > lowestPitch && stemup)
+            		  lowestPitch = tripletPitches[i];
+                  }
                   
                   System.out.println("Triplet pitches: " + tripletPitches[0] + ", " + tripletPitches[1] + ", " + tripletPitches[2]);
                   System.out.println("Triplet lowest: " + lowestPitch);
 
-                  currentTick=addRhythm(0.333, pitch, currentTick, rowCount, currentXPos);
+                  currentTick=addRhythm(0.333, pitch, stemup, currentTick, rowCount, currentXPos);
                   setTripletValue(lowestPitch);
                   currentXPos+=(noteDistance/3);
-                  currentTick=addRhythm(0.333, tripletPitches[1], currentTick, rowCount, currentXPos);
+                  currentTick=addRhythm(0.333, tripletPitches[1], stemup, currentTick, rowCount, currentXPos);
                   setTripletValue(100 + lowestPitch);
                   currentXPos+=(noteDistance/3);
-                  currentTick=addRhythm(0.333, tripletPitches[2], currentTick, rowCount, currentXPos);
+                  currentTick=addRhythm(0.333, tripletPitches[2], stemup, currentTick, rowCount, currentXPos);
                   setTripletValue(100 + lowestPitch);
                   tpsmes+=1;
                   currentXPos+=(noteDistance/3);
