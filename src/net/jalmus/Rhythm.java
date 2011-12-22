@@ -321,7 +321,7 @@ public class Rhythm {
     	noteY = (71-this.pitch)*35/12 + 13 + keyoffset; 
         }
         
-     	System.out.println("pitch1" + this.pitch + "Notey" + noteY);
+   //  	System.out.println("pitch1" + this.pitch + "Notey" + noteY);
               	
     //@SuppressWarnings("unused")
 
@@ -481,7 +481,7 @@ public class Rhythm {
 	        	
 	        	g.drawLine(this.position+11, ypos + noteY - 10, this.position+11, lowestYpos - 30);
 	    		if(this.tripletValue < 100) { // means this is the first note of the triplet. Draw horizontal bar
-	    			System.out.println("pitch: "+this.pitch+"triplet: "+this.tripletValue+"position:"+this.position);
+	    			//System.out.println("pitch: "+this.pitch+"triplet: "+this.tripletValue+"position:"+this.position);
 	        		g.fillRect(this.position+11, lowestYpos - 31, 49, 3);
 	        		g.setFont(new Font("Arial", Font.BOLD, 15));
 	        		g.drawString("3", this.position + 32, lowestYpos - 33);
