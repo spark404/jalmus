@@ -14,6 +14,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.awt.Polygon;
 
@@ -178,7 +179,7 @@ public class Piano {
    */
 
   public void paint(Graphics g, int width, boolean paintbutton, int basenotepitch1,  int basenotepitch2,  
-		  int basenotepitchb1,  int basenotepitchb2, int pitchcourant0, int pitchcourant1, int pitchcourant2) {
+		  int basenotepitchb1,  int basenotepitchb2, int pitchcourant0, int pitchcourant1, int pitchcourant2, boolean iscustom, ArrayList<Integer> pitchesl) {
     Graphics2D g2 = (Graphics2D) g;
     //  Dimension d = getSize();
     
@@ -221,11 +222,20 @@ public class Piano {
         g2.setColor(jfcBlue);
         g2.fill(key);
       }
-      else if (paintbutton & ((key.kNum <= basenotepitch1  & key.kNum >= basenotepitch2) | 
+      else if ( !iscustom && paintbutton & ((key.kNum <= basenotepitch1  & key.kNum >= basenotepitch2) | 
     		  (key.kNum <= basenotepitchb1  & key.kNum >= basenotepitchb2))) {
     	  g2.setColor(cg);
     	  g2.fill(key);
       }
+      else if (iscustom) 
+    		for (Integer pitch : pitchesl) {
+	    	  if (key.kNum == pitch) {
+	    	  g2.setColor(cg);
+	    	  g2.fill(key);
+	    	  }
+    		}		
+      
+      
       else if (key.kNum == pitchcourant0 | key.kNum == pitchcourant1 |
                key.kNum == pitchcourant2) {
           g2.setColor(red);
@@ -264,10 +274,22 @@ public class Piano {
         g2.setColor(Color.black);
         g2.draw(key);
       }
+	
       else {
         g2.setColor(Color.black);
         g2.fill(key);
       }
+      
+      
+      if (iscustom) 
+    		for (Integer pitch : pitchesl) {
+  	    	  if (key.kNum == pitch) {
+  	    	  g2.setColor(cg);
+  	    	  g2.fill(key);
+  	    	  g2.setColor(Color.black);
+  	    	  g2.draw(key);
+  	    	  }
+    		}	
     }
 
   }

@@ -5656,21 +5656,24 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 if (noteLevel.isLearninggame() ) {
                     if (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame()) {
                         piano.paint(g, d.width, !isLessonMode & !parti, basenotet1.getPitch(), basenotet2.getPitch(),
-                        		    basenoteb1.getPitch(), basenoteb2.getPitch(), ncourante.getPitch(), 0, 0);
+                        		    basenoteb1.getPitch(), basenoteb2.getPitch(), ncourante.getPitch(), 0, 0, noteLevel.isCustomNotesgame(), noteLevel.getPitcheslist());
                     } else if (noteLevel.isIntervalsgame()) {
                         piano.paint(g, d.width, false, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), 
                         		    basenoteb2.getPitch(), icourant.getNote(0).getPitch(),
-                        		    icourant.getNote(1).getPitch(), 0);
+                        		    icourant.getNote(1).getPitch(), 0,noteLevel.isCustomNotesgame(), noteLevel.getPitcheslist());
                     } else if (noteLevel.isChordsgame()) {
                         piano.paint(g, d.width, false, basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), 
                         		    basenoteb2.getPitch(), acourant.getNote(0).getPitch(),
                         		    acourant.getNote(1).getPitch(),
-                        		    acourant.getNote(2).getPitch());
+                        		    acourant.getNote(2).getPitch(),
+                        		    noteLevel.isCustomNotesgame(), noteLevel.getPitcheslist());
                     }
                     applyButtonColor();
                 } 
                 else {
-                    piano.paint(g, d.width, !isLessonMode & !parti & (noteLevel.isNotesgame()|| noteLevel.isAccidentalsgame()), basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(),  0, 0, 0);
+                    piano.paint(g, d.width, !isLessonMode & !parti & (noteLevel.isNotesgame()|| noteLevel.isAccidentalsgame()),
+                    		basenotet1.getPitch(), basenotet2.getPitch(),basenoteb1.getPitch(), basenoteb2.getPitch(),  0, 0, 0,
+                    		noteLevel.isCustomNotesgame(), noteLevel.getPitcheslist());
                 }
 
             } else if (selectedGame==FIRSTSCREEN) {
