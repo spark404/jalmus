@@ -477,7 +477,7 @@ public class Rhythm {
 	    		int lowestYpos = 0;
 	    		if (this.tripletValue < 100) lowestYpos = getYpos(sl,this.tripletValue) + ypos;
 	    		else lowestYpos = getYpos(sl, this.tripletValue - 100) + ypos;
-	    		System.out.println("newYpos: " + getYpos(sl, this.tripletValue)+ "oldYpos: " + sl.getYpos(this.tripletValue));
+	    	//	System.out.println("newYpos: " + getYpos(sl, this.tripletValue)+ "oldYpos: " + sl.getYpos(this.tripletValue));
 	        	
 	        	g.drawLine(this.position+11, ypos + noteY - 10, this.position+11, lowestYpos - 30);
 	    		if(this.tripletValue < 100) { // means this is the first note of the triplet. Draw horizontal bar

@@ -3663,6 +3663,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 
 
             	ChooseNoteP = new  ChooseNotePanel(noteLevel.getKey(),NOTEREADING,  bundle);
+                ChooseNoteP.updateTable(noteLevel.getPitcheslist());
                 ChooseNoteP.setOpaque(true); //content panes must be opaque 
                 ChooseNoteP.setVisible(true);
                ChooseNoteP.okButton.addActionListener(new ActionListener() {
@@ -3683,7 +3684,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                notesDialog.setSize(650, 220);
                 notesDialog.setLocationRelativeTo(this);
                 notesDialog.setVisible(true);
-                
+
                 ChooseNoteP.setVisible(true);
             
 
@@ -3793,6 +3794,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
                  
               	ScoreChooseNoteP = new  ChooseNotePanel(scoreLevel.getKey(), SCOREREADING, bundle);
+                ScoreChooseNoteP.updateTable(scoreLevel.getPitcheslist());
                 ScoreChooseNoteP.setOpaque(true); //content panes must be opaque 
                 ScoreChooseNoteP.setVisible(true);
                ScoreChooseNoteP.okButton.addActionListener(new ActionListener() {
@@ -3816,6 +3818,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                  ScorenotesDialog.setLocationRelativeTo(this);
                  ScorenotesDialog.setVisible(true);
                  
+              
                  ScoreChooseNoteP.setVisible(true);
              
 

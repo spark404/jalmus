@@ -125,8 +125,21 @@ public class ChooseNotePanel extends JPanel {
     
     
     public void updateTable(ArrayList<Integer> pitcheslist){
+    	int tmp = 0;
     	for (Integer pitch : pitcheslist) {
     		//to do
+    		  int numRows = table.getRowCount();
+    	        int numCols = table.getColumnCount();
+    	        for (int i = 0; i < numRows; i++){
+    	        	for (int j = 1; j < numCols; j++){
+    	        		tmp = 24+12*i+(j-1);
+    	          		if (tmp == pitch) {
+    	          			table.setValueAt(true,i, j);
+    	          			//System.out.println("i: "+i+" j: "+j );
+    	          		}
+    	        	}
+    	        }     
+    		
     		}
  
     }

@@ -212,6 +212,11 @@ public boolean isMessageEmpty(){
 		 this.pitcheslist.addAll(l);
 	}
    
+   
+   public ArrayList<Integer> getPitcheslist(){		
+	  return	this.pitcheslist;
+	}
+   
   public void initPitcheslist(int notesNum) {
 
 	  int i = 0, noteIdx = 0; 
@@ -250,7 +255,7 @@ public boolean isMessageEmpty(){
 	//	  System.out.println("pitchtab #" + i + ": " + pitcheslist.get(i));
   }
 
-  public int getYpos(int pitch) {
+ /* public int getYpos(int pitch) {
 	int ypos = 43; // Y position of C3 on treble key
     int octave = 0;
     int octaveOffset = 0;
@@ -281,7 +286,7 @@ public boolean isMessageEmpty(){
     }
 
 	return ypos;
-  }
+  }*/
   
   public int getRandomPitch(){
 	int pitch = 71;
