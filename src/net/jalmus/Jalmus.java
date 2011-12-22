@@ -4824,9 +4824,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
            		mess2.setMessage(ShortMessage.NOTE_OFF, 9, 77, 0);
            		metronome.add(new MidiEvent(mess2, (i*ppq)+1));
             		
-           		if (((selectedGame == RHYTHMREADING && rhythmLevel.getMetronomeBeats()) ||
-       				(selectedGame == SCOREREADING && scoreLevel.getMetronomeBeats()) && i > ((tmpnum / tmpdiv) - 1))) {
-            			//System.out.println("adding metronome beat : "+i);
+           		if ((selectedGame == RHYTHMREADING && rhythmLevel.getMetronomeBeats() && i > ((tmpnum / tmpdiv) - 1)) 
+           				||	(selectedGame == SCOREREADING && scoreLevel.getMetronomeBeats()) && i > ((tmpnum / tmpdiv) - 1))
+           				 {
+            			//System.out.println("adding metronome beat : "+i + "tmpnum : " + tmpnum + "tmpdiv : "+tmpdiv);
             			String textb="beat";
             			addEvent(metronome, TEXT, textb.getBytes(), (int)i*ppq);
            		}
