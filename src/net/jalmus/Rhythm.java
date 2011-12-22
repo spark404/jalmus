@@ -136,8 +136,76 @@ public class Rhythm {
            return b;
            }
 
-   
+  public boolean samenotePitch(int pitchbase, int p){
+      int x;
+       boolean b = false;
+       for (x=0;x<=9;x++){ 
+         if ((p+x*12==pitchbase) | (p-x*12==pitchbase))  b = true;                                                   }
+           return b;
+           }
 
+   
+ int getYpos(ScoreLevel sl, int p) {
+	 int noteY = 0;
+	  int keyoffset = 0; //for bass key
+      Tonality t = sl.getCurrentTonality();
+      
+	  if (sl.isCurrentKeyBass()) keyoffset = -60;
+
+      if (this.samenotePitch(0,p)) {  // DO 
+      			noteY = (60-p)*35/12+43 + keyoffset;
+      	}
+      
+      else if (this.samenotePitch(1,p)) { // DO# REb
+    	  if (t.isflat()) noteY = (61-p)*35/12 + 43 + keyoffset;
+    	    else   noteY = (61-p)*35/12 + 38 + keyoffset; 
+      	        		
+      }	
+      
+      else   if (this.samenotePitch(2,p)) 	noteY = (62-p)*35/12 + 38 + keyoffset;
+     
+                 
+      
+      else if (this.samenotePitch(3,p)) { //RE# MIb 
+    	  if (t.issharp()) noteY = (63-p)*35/12 + 38 + keyoffset;  
+    	  else noteY = (63-p)*35/12 + 33 + keyoffset;  
+    		
+      }	
+      
+      else   if (this.samenotePitch(4,p)) noteY = (64-p)*35/12 + 33 + keyoffset; 
+   
+				
+   
+      else   if (this.samenotePitch(5,p)) noteY = (65-p)*35/12 + 28 + keyoffset; 
+     
+   
+      else if (this.samenotePitch(6,p)) { //FA# SOLb
+      	  if (t.issharp()) noteY = (66-p)*35/12 + 28 + keyoffset;  
+          	  else noteY = (66-p)*35/12 + 23 + keyoffset;  
+            }	
+      
+      else   if (this.samenotePitch(7,p)) 	noteY = (67-p)*35/12 + 23 + keyoffset; 
+ 
+      else if (this.samenotePitch(8,p)) { //SOL# LAb
+      	  if (t.issharp()) noteY = (68-p)*35/12 + 23 + keyoffset;  
+        	  else noteY = (68-p)*35/12 + 18 + keyoffset;  
+      		
+          }	
+     
+      else   if (this.samenotePitch(9,p)) {  	noteY = (69-p)*35/12 + 18 + keyoffset; 
+      }
+      
+      
+      else if (this.samenotePitch(10,p)) { // LA# SIb
+      	  if (t.issharp())      		noteY = (70-p)*35/12 + 18 + keyoffset;  
+          	  else      		noteY = (70-p)*35/12 + 13 + keyoffset;  
+      }	
+      
+      else   if (this.samenotePitch(11,p))  noteY = (71-p)*35/12 + 13 + keyoffset; 
+
+	 
+	 return noteY;
+ }
      
  
 
@@ -380,9 +448,9 @@ public class Rhythm {
 	    	g.drawString(sm, this.position, ypos + noteY + voffset);
 	    	if (this.tripletValue != 0) {
 	    		int lowestYpos = 0;
-	    		if (this.tripletValue < 100) lowestYpos = sl.getYpos(this.tripletValue) + ypos;
-	    		else lowestYpos = sl.getYpos(this.tripletValue - 100) + ypos;
-	        	//g.drawLine(this.position, ypos + noteY + 10, this.position, lowestYpos + 40);
+	    		if (this.tripletValue < 100) lowestYpos = getYpos(sl, this.tripletValue) + ypos;
+	    		else lowestYpos = getYpos(sl, this.tripletValue - 100) + ypos;
+	    		//g.drawLine(this.position, ypos + noteY + 10, this.position, lowestYpos + 40);
 	    		if(this.tripletValue < 100) { // means this is the first note of the triplet. Draw horizontal bar
 	        		g.fillRect(this.position+11, lowestYpos - 31, 49, 3);
 	        		g.setFont(new Font("Arial", Font.BOLD, 15));
@@ -407,10 +475,13 @@ public class Rhythm {
 	    	g.drawString(sm, this.position, ypos + noteY + voffset);
 	    	if (this.tripletValue != 0) {
 	    		int lowestYpos = 0;
-	    		if (this.tripletValue < 100) lowestYpos = sl.getYpos(this.tripletValue) + ypos;
-	    		else lowestYpos = sl.getYpos(this.tripletValue - 100) + ypos;
+	    		if (this.tripletValue < 100) lowestYpos = getYpos(sl,this.tripletValue) + ypos;
+	    		else lowestYpos = getYpos(sl, this.tripletValue - 100) + ypos;
+	    		System.out.println("newYpos: " + getYpos(sl, this.tripletValue)+ "oldYpos: " + sl.getYpos(this.tripletValue));
+	        	
 	        	g.drawLine(this.position+11, ypos + noteY - 10, this.position+11, lowestYpos - 30);
 	    		if(this.tripletValue < 100) { // means this is the first note of the triplet. Draw horizontal bar
+	    			System.out.println("pitch: "+this.pitch+"triplet: "+this.tripletValue+"position:"+this.position);
 	        		g.fillRect(this.position+11, lowestYpos - 31, 49, 3);
 	        		g.setFont(new Font("Arial", Font.BOLD, 15));
 	        		g.drawString("3", this.position + 32, lowestYpos - 33);
@@ -433,8 +504,8 @@ public class Rhythm {
 	    	g.drawString(sm, this.position, ypos + noteY + voffset);
 	    	if (this.tripletValue != 0) {
 	    		int lowestYpos = 0;
-	    		if (this.tripletValue < 100) lowestYpos = sl.getYpos(this.tripletValue) + ypos;
-	    		else lowestYpos = sl.getYpos(this.tripletValue - 100) + ypos;
+	    		if (this.tripletValue < 100) lowestYpos = getYpos(sl, this.tripletValue) + ypos;
+	    		else lowestYpos = getYpos(sl, this.tripletValue - 100) + ypos;
 	        	g.drawLine(this.position, ypos + noteY + 10, this.position, lowestYpos + 40);
 	    		if(this.tripletValue < 100) { // means this is the first note of the triplet. Draw horizontal bar
 	        		g.fillRect(this.position, lowestYpos + 37, 49, 5);
