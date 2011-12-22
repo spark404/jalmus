@@ -843,13 +843,13 @@ public boolean isScoreLevel(){
 	        	    p = Integer.parseInt(st.nextToken());
 	        	  System.out.println(p);
 	        	    if ( slevel.isCurrentKeyTreble()) {
-	        	    	if (p >= 60 & p <= 84)	    pitcheslist.add(p); //C0 C2
-	        	    	else   throw new SAXException("In level " + slevel.getId() + " pitches should be list pitch 47 to 96");
+	        	    	if (p >= 55 & p <= 84)	    pitcheslist.add(p); //SOL DO
+	        	    	else   throw new SAXException("In level " + slevel.getId() + " pitches should be list pitch 55 to 84");
 	        	    }
 	        	    	
 	        	    else if ( slevel.isCurrentKeyBass()) {
-	        	    	if (p >= 38 & p <= 63)	    pitcheslist.add(p); //E-2 E0
-	      	      		else   throw new SAXException("In level " + slevel.getId() + " pitches should be list pitch 26 to 74");
+	        	    	if (p >= 35 & p <= 64)	    pitcheslist.add(p); //E-2 E0
+	      	      		else   throw new SAXException("In level " + slevel.getId() + " pitches should be list pitch 35 to 64");
 	        	    }
 	        	    
 	      	    

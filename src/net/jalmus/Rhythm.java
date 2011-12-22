@@ -216,7 +216,7 @@ public class Rhythm {
 	//if (this.ypos == 0) 
 //		this.ypos = sl.getYpos(this.pitch);
 //	int noteY = this.ypos;
- //	System.out.println("pitch1" + this.pitch + "Notey" + noteY);
+
 	
 	
 	  String alt="";
@@ -321,7 +321,7 @@ public class Rhythm {
     	noteY = (71-this.pitch)*35/12 + 13 + keyoffset; 
         }
         
-    
+     	System.out.println("pitch1" + this.pitch + "Notey" + noteY);
               	
     //@SuppressWarnings("unused")
 
@@ -569,6 +569,7 @@ public class Rhythm {
       }                
     }
 
+    // DRAW LINE UNDER STAFF
     if (!this.silence) {
     	if (noteY < -22)
     		g.drawLine(this.position - 5, scoreYpos + this.rowNumber*rowsDistance - 20, this.position + 15, scoreYpos + this.rowNumber*rowsDistance - 20);
@@ -576,6 +577,9 @@ public class Rhythm {
     		g.drawLine(this.position - 5, scoreYpos + this.rowNumber*rowsDistance - 10, this.position + 15, scoreYpos + this.rowNumber*rowsDistance - 10);
     	if (noteY > 38)
     		g.drawLine(this.position - 5, scoreYpos + this.rowNumber*rowsDistance + 50, this.position + 15, scoreYpos + this.rowNumber*rowsDistance + 50);
+    	if (noteY > 48)
+    		g.drawLine(this.position - 5, scoreYpos + this.rowNumber*rowsDistance + 60, this.position + 15, scoreYpos + this.rowNumber*rowsDistance + 60);
+    
     }
 
     g.setColor(Color.black);

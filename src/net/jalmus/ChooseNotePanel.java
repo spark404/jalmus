@@ -395,7 +395,8 @@ public class ChooseNotePanel extends JPanel {
             //no matter where the cell appears onscreen.
             // pitch c0 60 c2 84
             if ((col < 1) //col indicate the octava
-             || (row == 0 ) || (row == 1)  || (row == 2) 
+             || (row == 0 ) || (row == 1) 
+             || (row == 2 & col <  8)
              || (row == 5 & col >  1)
              || (row == 6) 
             )  
@@ -416,9 +417,8 @@ public class ChooseNotePanel extends JPanel {
               //no matter where the cell appears onscreen.
           //pitch 26 D-3 to 74 D+1
               if ((col < 1)  //col indicate the octava
-               || (row == 0 )
-               || (row == 1 & col < 3 )
-               || (row == 3 & col > 3 )
+               || (row == 0 & col < 12)
+               || (row == 3 & col > 5 )
                 || (row == 4 & col < numCols )
                || (row == 5 & col < numCols )
                || (row == 6 & col < numCols )

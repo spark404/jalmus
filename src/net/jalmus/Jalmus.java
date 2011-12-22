@@ -3508,10 +3508,13 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else if (evt.getItemSelectable()==keyComboBox) {
             if (keyComboBox.getSelectedIndex()==0) {
                 noteLevel.setCurrentKey("treble");
+                noteLevel.resetPitcheslist();
             } else if (keyComboBox.getSelectedIndex()==1) {
                 noteLevel.setCurrentKey("bass");
+                noteLevel.resetPitcheslist();
             } else if (keyComboBox.getSelectedIndex()==2) {
                 noteLevel.setCurrentKey("both");
+                noteLevel.resetPitcheslist();
             }
 
         }
@@ -3519,8 +3522,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         else if (evt.getItemSelectable()==scoreKeyComboBox) {
             if (scoreKeyComboBox.getSelectedIndex()==0) {
                 scoreLevel.setCurrentKey("treble");
+                scoreLevel.initPitcheslist(9);
             } else if (scoreKeyComboBox.getSelectedIndex()==1) {
                 scoreLevel.setCurrentKey("bass");
+                scoreLevel.initPitcheslist(9);
             }
 
         }

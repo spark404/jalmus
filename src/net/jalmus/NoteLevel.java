@@ -228,6 +228,12 @@ public class NoteLevel implements Level{
 		 this.pitcheslist.addAll(l);
 	}
 
+ public void resetPitcheslist(){		
+	 	this.pitcheslist =  new ArrayList<Integer>(); 
+	}
+
+
+
  public  Integer getRandomPitch(){
 			     
 		Random generator = new Random();
