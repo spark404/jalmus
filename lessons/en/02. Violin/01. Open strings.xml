@@ -21,7 +21,7 @@ Description: first lesson to learn open strings
 <rhythmreading id = '1'>
 <message>Rhythm exercise  : quarter notes with full bow</message>
 <time>4/4</time>
-<rhythms>2,</rhythms>
+<rhythms>4,</rhythms>
 <rests>1,2,3,4,8</rests>
 <metronome>both</metronome>
 <speed>28</speed>
