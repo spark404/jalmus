@@ -85,6 +85,7 @@ import org.xml.sax.SAXException;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -1282,10 +1283,37 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	        }
     	  }
     	  
+    	 
+    	  
     	  else {
     	        System.err.println(sousrepertoire+" : Reading lessons files error.");
     	    }
     	  
+    	  
+   	        final Desktop desktop = null;
+   	        // Before more Desktop API is used, first check
+   	        // whether the API is supported by this particular
+   	        // virtual machine (VM) on this particular host.
+   	 
+
+
+   	        
+   	    
+   	         lessonsMenu.addSeparator();
+   	
+   	   	     
+   	         JMenuItem manageMenuItem=new JMenuItem(new ImageIcon(getClass().getResource("/images/folder.png")));
+     	       localizables.add(new Localizable.Button(manageMenuItem, "_menuBrowse"));
+     	        manageMenuItem.addActionListener(new ActionListener() {
+     	            public void actionPerformed(ActionEvent e) {
+     	            	  File sousrepertoire=new File(path);
+     	            	 OpenDirectory(sousrepertoire);
+     	            }
+     	        });	
+     	   	     lessonsMenu.add(manageMenuItem);
+   	        
+   	        
+   	   
    // 	path = path+"/Basic";
   //  File repertoire=new File(path);
 
@@ -3318,6 +3346,29 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 }       
         }
     
+     
+     public  void OpenDirectory(File dir) {
+
+         if( !java.awt.Desktop.isDesktopSupported() ) {
+             System.err.println( "Desktop is not supported (fatal)" );
+             System.exit( 1 );
+         }
+
+         java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+
+         if( !desktop.isSupported( java.awt.Desktop.Action.OPEN ) ) {
+             System.err.println( "Desktop doesn't support the open action (fatal)" );
+             System.exit( 1 );
+         }
+   
+         try {
+       
+              desktop.open(dir);
+             }
+         catch ( Exception e ) {
+                 System.err.println( e.getMessage() );
+             }       
+     } 
     private void savesettings(){
     		settings.setProperty("transposition",String.valueOf(transpositionSpinner.getValue())); 
 	    	if (keyboardLengthComboBox.getSelectedIndex()==1) 
