@@ -561,7 +561,7 @@ public boolean isScoreLevel(){
   	        	    ps = Integer.parseInt(sts.nextToken());
   	        	  if (ps == 1 && slevel.getTimeSignNumerator()==4 && slevel.getTimeSignDenominator()==4) slevel.setWholeNote(true);  	        	  
   	        	  else if (ps == 2) slevel.setHalfNote(true);
-  	        	  else if (ps == 3 && slevel.getTimeSignNumerator()>=3 && slevel.getTimeSignDenominator()==4) rlevel.setDottedHalfNote(true);	        	  
+  	        	  else if (ps == 3 && slevel.getTimeSignNumerator()>=3 && slevel.getTimeSignDenominator()==4) slevel.setDottedHalfNote(true);	        	  
   	        	  else if (ps == 4) slevel.setQuarterNote(true);
   	        	  else if (ps == 8) slevel.setEighthNote(true);
   	        	  else throw new SAXException("In level " + slevel.getId() + " rhythms should be 1, 2, 3, 4, 8  ");
@@ -602,7 +602,7 @@ public boolean isScoreLevel(){
        	        	  else if (p == 3) rlevel.setSilence(true);
        	        	  else if (p == 4) rlevel.setSilence(true);
        	        	  else if (p == 8) rlevel.setSilence(true);
-       	        	  else throw new SAXException("In level " + rlevel.getId() + " rests should be 1, 2,3, 4, 8  ");
+       	        	  else throw new SAXException("In level " + rlevel.getId() + " rests should be 1, 2, 3, 4, 8  ");
        	        	    
        	        	}
        	           
@@ -616,9 +616,10 @@ public boolean isScoreLevel(){
        	        	    ps = Integer.parseInt(sts.nextToken());
        	        	  if (ps == 1) slevel.setSilence(true);
        	        	  else if (ps == 2) slevel.setSilence(true);
+       	        	  else if (ps == 3) slevel.setSilence(true);
        	        	  else if (ps == 4) slevel.setSilence(true);
        	        	  else if (ps == 8) slevel.setSilence(true);
-       	        	  else throw new SAXException("In level " + slevel.getId() + " rests should be 1, 2, 4, 8  ");
+       	        	  else throw new SAXException("In level " + slevel.getId() + " rests should be 1, 2, 3, 4, 8  ");
        	        	    
        	        	}
        	           
