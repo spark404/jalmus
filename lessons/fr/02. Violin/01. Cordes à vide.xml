@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Cordes à vide.xml
+Created on : 22 decembre 2011, 15:11
+Author : RICHARD Christophe
+Description: premiere leçon pour les cordes à vide
+-->
+
+<levels>
+<notereading id = '0'>
+<message>Cordes à vide SOL RE LA MI</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>55,62,69,76,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<rhythmreading id = '1'>
+<message>Exercice de rythme  : noires avec tout l'archet</message>
+<time>4/4</time>
+<rhythms>4,</rhythms>
+<rests>1,2,3,4,8</rests>
+<metronome>both</metronome>
+<speed>28</speed>
+</rhythmreading>
+
+<scorereading id = '2'>
+<message>Noires tout l'archet sur cordes à vide </message>
+<time>4/4</time>
+<rhythms>4,</rhythms>
+<metronome>sound</metronome>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>55,62,69,76,</pitches>
+<speed>28</speed>
+</scorereading>
+
+</levels>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Document : test.xml
+Exercise saved : Fri Dec 23 11:55:18 CET 2011
+-->
+
+<levels>
+<notereading id = '0'>
+<message></message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>67,69,71,</pitches>
+<speed>28</speed>
+</notereading>
+</levels>

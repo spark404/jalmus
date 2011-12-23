@@ -1,0 +1,39 @@
+<!--
+Document : First notes.xml
+Created on : 22 decembre 2011, 15:11
+Author : RICHARD Christophe
+Description: first notes on sax alto
+-->
+
+<levels>
+<notereading id = '0'>
+<message>First notes B (1st finger left hand) A (two finger) G (three finger)</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>67,69,71,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<rhythmreading id = '1'>
+<message>Rhythm exercise  : quarter notes with rests</message>
+<time>4/4</time>
+<rhythms>4,</rhythms>
+<rests>1,2,3,4,8</rests>
+<metronome>both</metronome>
+<speed>28</speed>
+</rhythmreading>
+
+<scorereading id = '2'>
+<message>First notes G A B</message>
+<time>4/4</time>
+<rhythms>4,</rhythms>
+<metronome>sound</metronome>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>67,69,71,</pitches>
+<speed>28</speed>
+</scorereading>
+
+</levels>

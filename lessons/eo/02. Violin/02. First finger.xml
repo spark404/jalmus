@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : First finger.xml
+Created on : 22 decembre 2011, 15:11
+Author : RICHARD Christophe
+Description: first finger
+-->
+
+<levels>
+<notereading id = '0'>
+<message>First finger (index) on G string : G A</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>55,57,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<notereading id = '1'>
+<message>First finger (index) on D string : D E</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>62,64,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<notereading id = '2'>
+<message>First finger (index) on A string : A B</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>69,71,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<notereading id = '3'>
+<message>First finger (index) on E string : E F#</message>
+<game>normal</game>
+<clef>treble</clef>
+<tonality>1#</tonality>
+<notes>custom</notes>
+<pitches>76,78,</pitches>
+<speed>28</speed>
+</notereading>
+
+<notereading id = '4'>
+<message>First finger (index) on all strings</message>
+<game>normal</game>
+<clef>treble</clef>
+<tonality>1#</tonality>
+<notes>custom</notes>
+<pitches>57,64,71,78,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<rhythmreading id = '5'>
+<message>Rhythm exercise  : quarter notes with full bow plus rests</message>
+<time>4/4</time>
+<rhythms>4,</rhythms>
+<rests>1,2,3,4,8</rests>
+<metronome>both</metronome>
+<speed>28</speed>
+</rhythmreading>
+
+<scorereading id = '6'>
+<message>Quarter notes with full bow and open strings on first finger</message>
+<time>4/4</time>
+<rhythms>4,</rhythms>
+<rests>1,2,3,4,8</rests>
+<tonality>1#</tonality>
+<metronome>sound</metronome>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>55,62,69,76,57,64,71,78,</pitches>
+<speed>28</speed>
+</scorereading>
+
+</levels>

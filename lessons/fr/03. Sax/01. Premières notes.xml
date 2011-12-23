@@ -1,0 +1,39 @@
+<!--
+Document : Premières notes.xml
+Created on : 22 decembre 2011, 15:11
+Author : RICHARD Christophe
+Description: premières notes au sax alto
+-->
+
+<levels>
+<notereading id = '0'>
+<message>Premières notes Si (1er doigt main gauche) La (deux doigts) Sol (trois doigts)</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>67,69,71,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<rhythmreading id = '1'>
+<message>Exercice de rythme : noires et silences</message>
+<time>4/4</time>
+<rhythms>4,</rhythms>
+<rests>1,2,3,4,8</rests>
+<metronome>both</metronome>
+<speed>28</speed>
+</rhythmreading>
+
+<scorereading id = '2'>
+<message>Premières notes Sol, La , Si</message>
+<time>4/4</time>
+<rhythms>4,</rhythms>
+<metronome>sound</metronome>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>67,69,71,</pitches>
+<speed>28</speed>
+</scorereading>
+
+</levels>

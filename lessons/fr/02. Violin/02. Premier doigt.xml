@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : Premier doigt.xml
+Created on : 22 decembre 2011, 15:11
+Author : RICHARD Christophe
+Description: premier doigt
+-->
+
+<levels>
+<notereading id = '0'>
+<message>Premier doigt (index) sur corde de Sol : Sol - La</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>55,57,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<notereading id = '1'>
+<message>Premier doigt (index) sur corde de Ré : Ré - Mi</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>62,64,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<notereading id = '2'>
+<message>Premier doigt (index) sur corde de La : La - Si</message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>69,71,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<notereading id = '3'>
+<message>Premier doigt (index) sur corde de Mi : Mi - Fa# à la clef</message>
+<game>normal</game>
+<clef>treble</clef>
+<tonality>1#</tonality>
+<notes>custom</notes>
+<pitches>76,78,</pitches>
+<speed>28</speed>
+</notereading>
+
+<notereading id = '4'>
+<message>Premier doigt sur toutes les cordes</message>
+<game>normal</game>
+<clef>treble</clef>
+<tonality>1#</tonality>
+<notes>custom</notes>
+<pitches>57,64,71,78,</pitches>
+<speed>28</speed>
+</notereading>
+
+
+<rhythmreading id = '5'>
+<message>Exercide de rythme : noires tout l'archet avec silences</message>
+<time>4/4</time>
+<rhythms>4,</rhythms>
+<rests>1,2,3,4,8</rests>
+<metronome>both</metronome>
+<speed>28</speed>
+</rhythmreading>
+
+<scorereading id = '6'>
+<message>Noires tout l'archet sur cordes à vide et premier doigt</message>
+<time>4/4</time>
+<rhythms>4,</rhythms>
+<rests>1,2,3,4,8</rests>
+<tonality>1#</tonality>
+<metronome>sound</metronome>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>55,62,69,76,57,64,71,78,</pitches>
+<speed>28</speed>
+</scorereading>
+
+</levels>
