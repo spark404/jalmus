@@ -2543,6 +2543,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             }
         }
+        
+ 
 
         if (selectedGame==NOTEREADING && parti && !paused && noteLevel.isNotesgame()) {
 
@@ -2582,6 +2584,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         // a special key such as an arrow key.
         int key=evt.getKeyCode(); // keyboard code for the key that was pressed
        
+        if (isLessonMode && parti && key == KeyEvent.VK_ESCAPE) {
+        	
+       	 parti=false;
+            nextLevel();
+       }
+        
         if (selectedGame==NOTEREADING && !isLessonMode && !parti && (noteLevel.isNotesgame() || noteLevel.isAccidentalsgame() || noteLevel.isCustomNotesgame()) &&
             !noteLevel.isAllnotesgame())
         {
