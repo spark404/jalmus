@@ -281,7 +281,7 @@ public class Piano {
       }
       
       
-      if (iscustom) 
+      if (iscustom && paintbutton ) 
     		for (Integer pitch : pitchesl) {
   	    	  if (key.kNum == pitch) {
   	    	  g2.setColor(cg);
