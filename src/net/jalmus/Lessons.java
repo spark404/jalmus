@@ -99,7 +99,7 @@ public String  getLessonPath(String language){
   	    
   	    //for test	
   	   //  path = "/home/christophe/git/code/lessons/en";
-  	   path = "C:\\Documents and Settings\\crichard\\git\\code\\lessons\\fr";
+  	//   path = "C:\\Documents and Settings\\crichard\\git\\code\\lessons\\fr";
   	    
   	    return path;
   }
