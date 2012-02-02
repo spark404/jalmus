@@ -235,6 +235,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     // Midi Resources
 
     private MidiDevice inputDevice;
+    private MidiDevice outputDevice = null;
     private Synthesizer syn;
     private Instrument[] instruments;
     private int noteDuration=2000;
@@ -501,9 +502,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JCheckBox keyboardsoundCheckBox;
 
     private JComboBox midiInComboBox;
+    private JComboBox midiOutComboBox;
+ 
+    private DefaultComboBoxModel midiOutComboBoxModel=new DefaultComboBoxModel();    
     private DefaultComboBoxModel midiInComboBoxModel=new DefaultComboBoxModel();
 
-    private boolean selectmidi_forlang;
+    private boolean selectmidi_forlang; // is true when combobox selection occures during language initialization
 
     private int[] sauvmidi=new int[16]; // for save midi options when cancel
 
@@ -1169,6 +1173,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	    	  midiInComboBoxModel.setSelectedItem(midiInComboBoxModel.getElementAt(k));
     	    	  System.out.println(midiInComboBox.getSelectedItem());
     	      }
+    	      int ko = Integer.parseInt(settings.getProperty("midiout"));
+    	      if (ko> 0 & ko < midiOutComboBox.getItemCount()) {
+    	    	  midiOutComboBox.setSelectedIndex(ko);
+    	    	  midiOutComboBoxModel.setSelectedItem(midiOutComboBoxModel.getElementAt(ko));
+    	    	  System.out.println(midiOutComboBox.getSelectedItem());
+    	      }
     	      int kl = Integer.parseInt(settings.getProperty("keyboardlength"));
     	      if (kl == 61) keyboardLengthComboBox.setSelectedIndex(1);
     	      else if (kl == 73) keyboardLengthComboBox.setSelectedIndex(0);
@@ -1430,26 +1440,37 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         // ----
 
         midiInComboBoxModel.addElement(pasclavier);
+        midiOutComboBoxModel.addElement(pasclavier);
         MidiDevice.Info[] aInfos=MidiSystem.getMidiDeviceInfo();
         for (int i=0; i<aInfos.length; i++) {
             try {
                 MidiDevice device=MidiSystem.getMidiDevice(aInfos[i]);
                 boolean bAllowsInput=(device.getMaxTransmitters()!=0);
-
+                boolean bAllowsOutput=(device.getMaxReceivers()!=0);
+                
                 if (bAllowsInput) {
                     midiInComboBoxModel.addElement(aInfos[i].getName());
+                }
+                
+                if (bAllowsOutput) {
+                	midiOutComboBoxModel.addElement(aInfos[i].getName());
                 }
 
             }
             catch (MidiUnavailableException e) {
             }
         }
-        
+               
       
         midiInComboBox=new JComboBox();
         midiInComboBox.setModel(midiInComboBoxModel);
         midiInComboBox.addItemListener(this);
 
+        midiOutComboBox=new JComboBox();
+        midiOutComboBox.setModel(midiOutComboBoxModel);
+        midiOutComboBox.addItemListener(this);
+        
+        
         keyboardLengthComboBox=new JComboBox();
         keyboardLengthComboBox.addItemListener(this);
 
@@ -1475,6 +1496,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         midiInPanel.add(midiInComboBox, BorderLayout.NORTH);
         midiInPanel.add(keyboardPanel, BorderLayout.CENTER);
 
+        JPanel midiOutPanel=new JPanel();
+        midiOutPanel.setName("Midi out");
+        localizables.add(new Localizable.NamedGroup(midiOutPanel, "_midiout"));
+        midiOutPanel.setLayout(new BorderLayout());
+        midiOutPanel.add(midiOutComboBox, BorderLayout.NORTH);
+        
         // ----
 
         JButton okButton=new JButton();
@@ -1502,16 +1529,17 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         // ----
 
         JPanel contentPanel=new JPanel();
-        contentPanel.setLayout(new GridLayout(4,1,4,4));
+        contentPanel.setLayout(new GridLayout(5,1,4,4));
         contentPanel.add(soundPanel);
         contentPanel.add(midiInPanel);
+        contentPanel.add(midiOutPanel);
         contentPanel.add(latencyPanel);
         contentPanel.add(buttonPanel);
 
         JDialog dialog=new JDialog(this, true);
         localizables.add(new Localizable.Dialog(dialog, "_menuMidi"));
         dialog.setContentPane(contentPanel);
-        dialog.setSize(450, 440);
+        dialog.setSize(450, 550);
         //dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         //dialog.setResizable(false);
 
@@ -3383,6 +3411,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 	    		settings.setProperty("keyboardlength","61");
 	    	else settings.setProperty("keyboardlength","73");
 	    	settings.setProperty("keyboard",String.valueOf(midiInComboBox.getSelectedIndex())); 
+	    	settings.setProperty("midiout",String.valueOf(midiOutComboBox.getSelectedIndex()));
 	    	settings.setProperty("instrument",String.valueOf(instrumentsComboBox.getSelectedIndex())); 
 	    	if (soundOnCheckBox.isSelected())   settings.setProperty("sound","on");
 		    else settings.setProperty("sound","off"); 
@@ -3403,7 +3432,8 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
    }
 
     private void backupMidiOptions() {
-        if (soundOnCheckBox.isSelected()) {
+        //TODO: This approach does not work when midi device order is changed!!
+    	if (soundOnCheckBox.isSelected()) {
             sauvmidi[0]=1;
         } else {
             sauvmidi[0]=0;
@@ -3416,10 +3446,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else {
             sauvmidi[4]=0;
         }
+        sauvmidi[5]=midiOutComboBox.getSelectedIndex();
 
     }
 
     private void restoreMidiOptions() {
+        //TODO: This approach does not work when midi device order is changed!!
         if (sauvmidi[0]==1) {
             soundOnCheckBox.setSelected(true);
         } else {
@@ -3433,6 +3465,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         } else {
             keyboardsoundCheckBox.setSelected(false);
         }
+        midiOutComboBox.setSelectedIndex(sauvmidi[5]);
 
     }
 
@@ -3440,8 +3473,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         if (evt.getItemSelectable()==midiInComboBox && !selectmidi_forlang) {
             String smidiin=(String)midiInComboBox.getSelectedItem();
-            if (smidiin!=pasclavier && !open) {
-                String midimessage="Initialisation "+smidiin;
+            if (smidiin!=pasclavier) {
+            	
+            	if (open)
+            	{
+            		inputDevice.close();
+            		open=false;
+            	}
+                
+            	String midimessage="Initialisation "+smidiin;
 
                 MidiDevice.Info info=MidiCommon.getMidiDeviceInfo(smidiin, false);
                 if (info==null) {
@@ -3481,6 +3521,49 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             }
         }
 
+        if (evt.getItemSelectable()==midiOutComboBox && !selectmidi_forlang) {
+            String smidiout=(String)midiOutComboBox.getSelectedItem();
+            if (smidiout!=pasclavier){// && !open) {
+                String midimessage="Initialisation "+smidiout;
+
+                MidiDevice.Info info=MidiCommon.getMidiDeviceInfo(smidiout, true);
+                if (info==null) {
+
+                    midimessage="nodevice";
+                    System.out.println(midimessage);
+                } else {
+	
+                    try {
+                        outputDevice=MidiSystem.getMidiDevice(info);
+                        outputDevice.open();
+
+                        // open = true;
+                    }
+                    catch (MidiUnavailableException e) {
+                        midimessage="nodevice";
+                        System.out.println(midimessage);
+                    }
+
+                    //Receiver r=new DumpReceiver();
+                    //try {
+                    //    Receiver t=outputDevice.getReceiver();
+                    //}
+                    //catch (MidiUnavailableException e) {
+                    //    midimessage="wasn't able to connect the device's Receiver to the Receiver:";
+                    //    System.out.println(e);
+                    //    inputDevice.close();
+                    //    System.exit(1);
+                    //}
+                    //midimessage="End initialisation";
+                }
+                //if (inputDevice.isOpen()) {
+                //    System.out.println("Midi Device open : play a key, if this key don't change his color at screen, verify the MIDI port name");
+                //}
+                //open=true;
+            }
+        }
+        
+        
         // For rhythm level update
         else if (evt.getItemSelectable()==wholeCheckBox) {
         	if (wholeCheckBox.isSelected()) rhythmLevel.setWholeNote(true);
@@ -3684,15 +3767,15 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         // Speed choice rhythm reading
         else if (evt.getItemSelectable()==rhythmGameSpeedComboBox) {
-        	   if (scoreGameSpeedComboBox.getSelectedIndex()==0) {
+        	   if (rhythmGameSpeedComboBox.getSelectedIndex()==0) {
                    rhythmLevel.setSpeed(40);
-               } else if (scoreGameSpeedComboBox.getSelectedIndex()==1) {
+               } else if (rhythmGameSpeedComboBox.getSelectedIndex()==1) {
                	 rhythmLevel.setSpeed(60);
-               } else if (scoreGameSpeedComboBox.getSelectedIndex()==2) {
+               } else if (rhythmGameSpeedComboBox.getSelectedIndex()==2) {
                	 rhythmLevel.setSpeed(100);
-               } else if (scoreGameSpeedComboBox.getSelectedIndex()==3) {
+               } else if (rhythmGameSpeedComboBox.getSelectedIndex()==3) {
                	 rhythmLevel.setSpeed(120);
-               } else if (scoreGameSpeedComboBox.getSelectedIndex()==4) {
+               } else if (rhythmGameSpeedComboBox.getSelectedIndex()==4) {
                	 rhythmLevel.setSpeed(160);
                }
         }
@@ -4056,6 +4139,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         midiInComboBoxModel.removeElementAt(0);
         midiInComboBoxModel.insertElementAt(bundle.getString("_nomidiin"), 0);
         midiInComboBox.setSelectedIndex(indextmp);
+        indextmp = midiOutComboBox.getSelectedIndex();
+        midiOutComboBoxModel.removeElementAt(0);
+        midiOutComboBoxModel.insertElementAt(bundle.getString("_nomidiin"), 0);
+        midiOutComboBox.setSelectedIndex(indextmp);
         selectmidi_forlang=false;
 
         wholeCheckBox.setText(bundle.getString("_wholenote"));
@@ -5799,6 +5886,16 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
             String output="";
 
+            if (outputDevice != null)
+            {
+            	try {
+					outputDevice.getReceiver().send(event, time);
+				} catch (MidiUnavailableException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+            
             if (selectedGame==NOTEREADING || selectedGame==RHYTHMREADING || selectedGame==SCOREREADING) {
 
                 if (event instanceof ShortMessage) {
@@ -5840,11 +5937,14 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
 
                             } else {
-                                if (((ShortMessage)event).getData2()!=0) {
-                                    piano.playNote(currentChannel, !midierror, notejouee, 1);
-                                } else {
-                                    piano.playNote(currentChannel, !midierror, notejouee, 0);
-                                }
+                            	if (keyboardsoundCheckBox.isSelected())
+                            	{
+	                                if (((ShortMessage)event).getData2()!=0) {
+	                                    piano.playNote(currentChannel, !midierror, notejouee, 1);
+	                                } else {
+	                                    piano.playNote(currentChannel, !midierror, notejouee, 0);
+	                                }
+                            	}
 
                                 repaint();
 
@@ -5855,7 +5955,10 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                                     if (isSameNote(((ShortMessage)event).getData1(), ncourante.getPitch()))
                                         rightAnswer();
                                     else
+                                    {
+                                    	System.out.println("Input:" + ((ShortMessage)event).getData1() +" Correct note:" + ncourante.getPitch() );
                                         wrongAnswer();
+                                    }
 
                                     repaint();
                                 }
