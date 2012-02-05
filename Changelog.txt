@@ -1,3 +1,22 @@
+February, 5th  2011
+
+* BUG FIX: turn off keyboard sound.
+* BUG FIX: Tempo settings for rhythms reading.
+* NEW FEATURE: "route" keyboard sound to an external midi device to avoid latency when playing notes.
+
+December, 2011 : Version 2.0
+
+* All exercises could be saved on Preferences panel. After saving your exercise, you can load it from your personal lessons directory.
+* Exercises (note reading, rhythm reading and score reading) can be mixed in a same lesson.
+* Custom notes with accidentals on Score Reading exercise. Accidentals doesn’t affect other identical notes in the measure like they do (it’s in to do list).
+* Some graphics improvements for rhythms (stem up or down according to pitch ...)
+* Adding dotted half on rhythm exercises
+* Jalmus could work with any acoustic instrument by using Prodipe Solo
+* Few lessons for violin and sax alto (more to come)
+* New shortcut in lesson’s menu to open lesson’s directory and modify/create/delete directly the XML files (with any text editor).
+* In lesson mode you can pass an exercise by Escape key
+* Fixing permission problem installer for Windows 7
+
 October, 2011: Version tdb
 
 * MAJOR: implementation of triplets. Working with any time signature
