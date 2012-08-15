@@ -917,10 +917,10 @@ public boolean isScoreLevel(){
     
     	    	      try {
     	    	          int temp = Integer.parseInt(buffer.toString());
-    	    	          if (temp >= 0 & temp <= 40)
+    	    	          if (temp >= 0 & temp <= 200)
     	    	            rlevel.setSpeed(temp);
     	    	          else
-    	    	            throw new SAXException("In level " + rlevel.getId() + " speed should be an integer between 0 and 40");
+    	    	            throw new SAXException("In level " + rlevel.getId() + " speed should be an integer between 0 and 200");
 	         
     	    	        }
     	    	        catch (Exception e) {
@@ -932,10 +932,10 @@ public boolean isScoreLevel(){
     	       case SCORELEVEL :
     	    	   try {
  	    	          int temp = Integer.parseInt(buffer.toString());
- 	    	          if (temp >= 0 & temp <= 40)
+ 	    	          if (temp >= 0 & temp <= 200)
  	    	            slevel.setSpeed(temp);
  	    	          else
- 	    	            throw new SAXException("In level " + slevel.getId() + " speed should be an integer between 0 and 40");
+ 	    	            throw new SAXException("In level " + slevel.getId() + " speed should be an integer between 0 and 200");
  	    	
  	    	        }
  	    	        catch (Exception e) {
