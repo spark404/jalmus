@@ -5207,7 +5207,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
 
         updateTonality(); //when selected random tonality
 
-        if (!isLessonMode && selectedGame == SCOREREADING && !scoreLevel.isCustomNotes()) {
+        if (selectedGame == SCOREREADING && !scoreLevel.isCustomNotes()) {
         	updateTonality(); //when selected random tonality       
         	scoreLevel.initPitcheslist( scoreLevel.getNbnotes());
         }
