@@ -372,6 +372,7 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     private JRadioButtonMenuItem rblanguageeo=new JRadioButtonMenuItem();
     private JRadioButtonMenuItem rblanguagepl=new JRadioButtonMenuItem();
     private JRadioButtonMenuItem rblanguageiw=new JRadioButtonMenuItem();
+    private JRadioButtonMenuItem rblanguagegr=new JRadioButtonMenuItem();
 
 
     private JMenu aide=new JMenu();
@@ -827,6 +828,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         rblanguageeo.addActionListener(this);
         group.add(rblanguageeo);
         languages.add(rblanguageeo);
+        
+        rblanguagegr=new JRadioButtonMenuItem("Greek");
+        rblanguagegr.setMnemonic(KeyEvent.VK_G);
+        rblanguagegr.addActionListener(this);
+        group.add(rblanguagegr);
+        languages.add(rblanguagegr);
 
         if ("es".equals(paramlanguage)) {
             rblanguagees.setSelected(true);
@@ -861,6 +868,9 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
     	} else if ("iw".equals(paramlanguage)) {
     		rblanguageiw.setSelected(true);
     		language="iw";
+    	}  else if ("gr".equals(paramlanguage)) {
+    		rblanguagegr.setSelected(true);
+    		language="gr";
     	}else {
             // must be "en"
             rblanguageen.setSelected(true);
@@ -2700,6 +2710,11 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
         
         if (e.getSource()==rblanguageeo) {
         	language="eo";
+        	updateLang();
+        } 
+        
+        if (e.getSource()==rblanguagegr) {
+        	language="gr";
         	updateLang();
         } 
         

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Document : An octave on treble clef.xml
+Created on : 18 avril 2007, 15:11
+Author : RICHARD Christophe
+Description: custom notes
+-->
+
+<levels>
+<notereading id = '0'>
+<message>Try custom notes </message>
+<game>normal</game>
+<clef>treble</clef>
+<notes>custom</notes>
+<pitches>62,64,65,66</pitches>
+<speed>20</speed>
+</notereading>
+
+</levels>
