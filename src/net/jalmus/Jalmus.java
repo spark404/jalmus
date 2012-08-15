@@ -3680,9 +3680,12 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             if (scoreKeyComboBox.getSelectedIndex()==0) {
                 scoreLevel.setCurrentKey("treble");
                 scoreLevel.initPitcheslist(9);
+                if (selectedGame == SCOREREADING ) initRhythmGame();
+                
             } else if (scoreKeyComboBox.getSelectedIndex()==1) {
                 scoreLevel.setCurrentKey("bass");
                 scoreLevel.initPitcheslist(9);
+                if (selectedGame == SCOREREADING ) initRhythmGame();
             }
 
         }
