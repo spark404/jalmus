@@ -3387,10 +3387,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             String smidiin = (String)midiInComboBox.getSelectedItem();
             if (smidiin != pasclavier) {
 
-                if (open) {
-                    inputDevice.close();
-                    open = false;
-                }
 
                 String midimessage = "Initialisation " + smidiin;
 
@@ -3402,25 +3398,26 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
                 } else {
 
                     try {
-                        inputDevice = MidiSystem.getMidiDevice(info);
-                        inputDevice.open();
+                        MidiDevice newInputDevice = MidiSystem.getMidiDevice(info);
+                        if (inputDevice == null) {
+                            inputDevice = newInputDevice;
+                        } else if (!newInputDevice.equals(inputDevice)) {
+                            inputDevice.close();
+                            inputDevice = newInputDevice;
+                        }
 
+                        if (!inputDevice.isOpen()) {
+                            inputDevice.open();
+                            Receiver r = new DumpReceiver();
+                            Transmitter t = inputDevice.getTransmitter();
+                            t.setReceiver(r);
+                        }
                         // open = true;
                     } catch (MidiUnavailableException e) {
                         midimessage = "nodevice";
                         System.out.println(midimessage);
                     }
 
-                    Receiver r = new DumpReceiver();
-                    try {
-                        Transmitter t = inputDevice.getTransmitter();
-                        t.setReceiver(r);
-                    } catch (MidiUnavailableException e) {
-                        midimessage = "wasn't able to connect the device's Transmitter to the Receiver:";
-                        System.out.println(e);
-                        inputDevice.close();
-                        System.exit(1);
-                    }
                     midimessage = "End initialisation";
                 }
                 if (inputDevice.isOpen()) {
