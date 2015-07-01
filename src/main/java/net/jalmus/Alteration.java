@@ -13,6 +13,6 @@ package net.jalmus;
  * @version 1.0
  */
 public class Alteration {
-  public Alteration() {
-  }
+    public Alteration() {
+    }
 }

@@ -1,18 +1,18 @@
 package net.jalmus;
 
-import java.util.ResourceBundle;
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 import javax.swing.border.Border;
+import java.util.ResourceBundle;
 
 //--------------------------------------------------------------------
-/** (description of class)
- * @author Created by Louis Thomas on Sep 26, 2008. */
+
+/**
+ * (description of class)
+ *
+ * @author Created by Louis Thomas on Sep 26, 2008.
+ */
 public interface Localizable {
     void update(ResourceBundle resourceBundle);
-
 
     //----------------------------------------------------------------
     class Button implements Localizable {
@@ -20,8 +20,8 @@ public interface Localizable {
         private final String m_sKey;
 
         public Button(AbstractButton button, String sKey) {
-            m_button=button;
-            m_sKey=sKey;
+            m_button = button;
+            m_sKey = sKey;
         }
 
         public void update(ResourceBundle resourceBundle) {
@@ -35,8 +35,8 @@ public interface Localizable {
         private final String m_sKey;
 
         public Dialog(java.awt.Dialog dialog, String sKey) {
-            m_dialog=dialog;
-            m_sKey=sKey;
+            m_dialog = dialog;
+            m_sKey = sKey;
         }
 
         public void update(ResourceBundle resourceBundle) {
@@ -51,9 +51,9 @@ public interface Localizable {
         private final String m_sKey;
 
         public Tab(JTabbedPane tabbedPane, int nTabIndex, String sKey) {
-            m_tabbedPane=tabbedPane;
-            m_nTabIndex=nTabIndex;
-            m_sKey=sKey;
+            m_tabbedPane = tabbedPane;
+            m_nTabIndex = nTabIndex;
+            m_sKey = sKey;
         }
 
         public void update(ResourceBundle resourceBundle) {
@@ -67,13 +67,13 @@ public interface Localizable {
         private final String m_sKey;
 
         public NamedGroup(JComponent component, String sKey) {
-            m_component=component;
-            m_sKey=sKey;
+            m_component = component;
+            m_sKey = sKey;
         }
 
         public void update(ResourceBundle resourceBundle) {
-            Border titledBorder=BorderFactory.createTitledBorder(resourceBundle.getString(m_sKey));
-            Border emptyBorder=BorderFactory.createEmptyBorder(5, 5, 5, 5);
+            Border titledBorder = BorderFactory.createTitledBorder(resourceBundle.getString(m_sKey));
+            Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
             m_component.setBorder(BorderFactory.createCompoundBorder(titledBorder, emptyBorder));
 
         }
