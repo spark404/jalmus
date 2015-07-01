@@ -955,13 +955,7 @@ public class Lessons extends DefaultHandler {
         System.out.println("Start of parsing");
     }
 
-    //détection de caractères
-    public void characters(char[] ch, int start, int length) throws SAXException {
-        String lecture = new String(ch, start, length);
-        if (buffer != null) {
-            buffer.append(lecture);
-        }
-    }    //fin du parsing
+    //fin du parsing
     public void endDocument() throws SAXException {
         System.out.println("End of parsing");
         System.out.println("Results of parsing");
