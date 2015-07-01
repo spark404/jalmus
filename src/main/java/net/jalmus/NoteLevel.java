@@ -398,7 +398,7 @@ writer = null;
 public void save(Lessons l, String fileName, String message, String language) 
 	throws IOException {
 	
-	File destDir = new File("");;
+	File destDir = new File("");
     final String newline = "\r\n";
     String path = "";
     StringBuffer fileContent = new StringBuffer();
@@ -516,9 +516,8 @@ public void basenotetoLeft(Piano piano){  //base note is move when user pres key
       basebass = basebass + 5; //fa = 17kw
 
     }
-    ;
 
-    if (piano.is61keys() &
+      if (piano.is61keys() &
         ( (this.nbnotesupper == 7 & basebass < 15)
          | (this.nbnotesupper == 4 & basebass < 30)
          | (this.nbnotesupper == 3 & basebass < 35)
@@ -527,7 +526,6 @@ public void basenotetoLeft(Piano piano){  //base note is move when user pres key
       basebass = basebass + 5; //fa = 17kw
 
     }
-    ;
 
   }
 

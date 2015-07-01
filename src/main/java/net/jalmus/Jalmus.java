@@ -3802,7 +3802,6 @@ public class Jalmus extends JFrame implements KeyListener, ActionListener, ItemL
             } else if (noteCountComboBox.getSelectedIndex() == 4) {
                 noteLevel.setNbnotes(0);
             }
-            ;
         } else if (evt.getItemSelectable() == chordTypeComboBox) {
             if (chordTypeComboBox.getSelectedIndex() == 0) {
                 noteLevel.setChordtype("root");

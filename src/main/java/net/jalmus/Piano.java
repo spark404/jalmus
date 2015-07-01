@@ -116,8 +116,8 @@ public class Piano {
     p.setLocation(point.getX() - 4, point.getY() - 100);
 
     for (int i = 0; i < keys.size(); i++) {
-      if ( ( (net.jalmus.Key) keys.get(i)).contains(p)) {
-        return (net.jalmus.Key) keys.get(i);
+      if ( keys.get(i).contains(p)) {
+        return keys.get(i);
       }
     }
     return null;
@@ -150,7 +150,7 @@ public class Piano {
     // System.out.println("note jouee");
 
     for (int i = 0; i < whiteKeys.size(); i++) {
-      net.jalmus.Key key = (net.jalmus.Key) whiteKeys.get(i);
+      net.jalmus.Key key = whiteKeys.get(i);
       if (onoff == 1 & key.kNum == pitch)
         key.on(cc, midiok);
       else if (onoff == 0 & key.kNum == pitch)
@@ -158,7 +158,7 @@ public class Piano {
     }
     for (int i = 0; i < blackKeys.size(); i++) 
     {
-      net.jalmus.Key key = (net.jalmus.Key) blackKeys.get(i);
+      net.jalmus.Key key = blackKeys.get(i);
       if (onoff == 1 & key.kNum == pitch)
         key.on(cc, midiok);
       else if (onoff == 0 & key.kNum == pitch)
@@ -216,7 +216,7 @@ public class Piano {
     g2.setColor(Color.black);
     // g2.drawRect(marge+3,ypos,42*kw,kh);
     for (int i = 0; i < whiteKeys.size(); i++) {
-      net.jalmus.Key key = (net.jalmus.Key) whiteKeys.get(i);
+      net.jalmus.Key key = whiteKeys.get(i);
       key.x = 2 + marge + offx + (kw * i);
       if (key.isNoteOn()) {
         g2.setColor(jfcBlue);
@@ -254,7 +254,7 @@ public class Piano {
 
     for (int i = 0; i < blackKeys.size(); i++) 
     {
-      net.jalmus.Key key = (net.jalmus.Key) blackKeys.get(i);
+      net.jalmus.Key key = blackKeys.get(i);
       //if ((i+1)%1 == 0)
     	//  key.x = marge + offx + (11 * i);
       //else if ((i+1)%2 == 0)

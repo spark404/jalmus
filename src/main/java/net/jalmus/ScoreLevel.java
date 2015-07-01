@@ -466,7 +466,7 @@ public boolean isMessageEmpty(){
 
       /********************************/
  public void printtest(){
-   	   System.out.println("Level n°"+this.Id);
+   	   System.out.println("Level n\u00B0"+this.Id);
    	    System.out.println("Whole note : " + this.whole);
    	  System.out.println("Half note : " + this.half);
 	  System.out.println("DottedHalf note : " + this.dottedhalf);
@@ -489,8 +489,8 @@ public boolean isMessageEmpty(){
   public void save(Lessons l, String fileName, String message, String language) 
 	throws IOException {
 	
-	File destDir = new File("");;
-final String newline = "\r\n";
+	File destDir = new File("");
+	  final String newline = "\r\n";
 String path = "";
 StringBuffer fileContent = new StringBuffer();
 boolean dirmylessonok = false;

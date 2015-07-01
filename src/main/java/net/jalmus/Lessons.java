@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
  */
 
 
-enum TLevel {NOTELEVEL, RHYTHMLEVEL, SCORELEVEL};
+enum TLevel {NOTELEVEL, RHYTHMLEVEL, SCORELEVEL}
 
 public class Lessons extends DefaultHandler{
    LinkedList<Level> levelslist;
@@ -107,25 +107,19 @@ public String  getLessonPath(String language){
 
 public Level getLevel(){
 	if(this.levelslist.get(this.currentlevel).getClass().getSimpleName().equals("NoteLevel"))
-		return (NoteLevel) this.levelslist.get(this.currentlevel);
+		return this.levelslist.get(this.currentlevel);
 	else if(this.levelslist.get(this.currentlevel).getClass().getSimpleName().equals("RhythmLevel"))
-		return (RhythmLevel) this.levelslist.get(this.currentlevel);
+		return this.levelslist.get(this.currentlevel);
 	else //Scorelevel
-		return (ScoreLevel) this.levelslist.get(this.currentlevel);
+		return this.levelslist.get(this.currentlevel);
 }
 
 public boolean isNoteLevel(){
-	if(this.levelslist.get(this.currentlevel).getClass().getSimpleName().equals("NoteLevel"))
-		return true;
-	else
-		return false;
+	return this.levelslist.get(this.currentlevel).getClass().getSimpleName().equals("NoteLevel");
 }
 
 public boolean isRhythmLevel(){
-	if(this.levelslist.get(this.currentlevel).getClass().getSimpleName().equals("RhythmLevel"))
-		return true;
-	else
-		return false;
+	return this.levelslist.get(this.currentlevel).getClass().getSimpleName().equals("RhythmLevel");
 }
 
 public boolean isScoreLevel(){

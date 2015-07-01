@@ -289,17 +289,8 @@ public class ChooseNotePanel extends JPanel {
             // pitch 26 D-3 to 96 C+3 
         	
             int numCols = getColumnCount();
-            
-            if (
-            	(row == 0 & col < 3 )
-               || (row == 6 & col >  1)
-            ) 
-            {
-                return false;
-            }          
-            else {
-                return true;
-            }
+
+            return !((row == 0 & col < 3) || (row == 6 & col > 1));
         }
 
         public void setValueAt(Object value, int row, int col) {
@@ -347,17 +338,8 @@ public class ChooseNotePanel extends JPanel {
               //Note that the data/cell address is constant,
               //no matter where the cell appears onscreen.
               // pitch 47 b-2 to 96 c+3
-              if ((col < 1)  //col indicate the octava
-               || (row == 0 & col < numCols )
-               || (row == 1 & col < numCols-1 )
-               || (row == 6 & col >  1)
-              )  
-              {
-                  return false;
-              }          
-              else {
-                  return true;
-              }
+              return !((col < 1)  //col indicate the octava
+                      || (row == 0 & col < numCols) || (row == 1 & col < numCols - 1) || (row == 6 & col > 1));
           }
     }
     
@@ -368,18 +350,8 @@ public class ChooseNotePanel extends JPanel {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
         //pitch 26 D-3 to 74 D+1
-            if ((col < 1)  //col indicate the octava
-             || (row == 0 & col < 3 )
-             || (row == 4 & col > 3 )
-             || (row == 5 & col < numCols )
-             || (row == 6 & col < numCols )
-            )  //pitch 24 25 not supported
-            {
-                return false;
-            }          
-            else {
-                return true;
-            }
+          return !((col < 1)  //col indicate the octava
+                  || (row == 0 & col < 3) || (row == 4 & col > 3) || (row == 5 & col < numCols) || (row == 6 & col < numCols));
         }
   }
     
@@ -394,18 +366,8 @@ public class ChooseNotePanel extends JPanel {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
             // pitch c0 60 c2 84
-            if ((col < 1) //col indicate the octava
-             || (row == 0 ) || (row == 1) 
-             || (row == 2 & col <  8)
-             || (row == 5 & col >  1)
-             || (row == 6) 
-            )  
-            {
-                return false;
-            }          
-            else {
-                return true;
-            }
+          return !((col < 1) //col indicate the octava
+                  || (row == 0) || (row == 1) || (row == 2 & col < 8) || (row == 5 & col > 1) || (row == 6));
         }
   }
     
@@ -416,19 +378,8 @@ public class ChooseNotePanel extends JPanel {
               //Note that the data/cell address is constant,
               //no matter where the cell appears onscreen.
           //pitch 26 D-3 to 74 D+1
-              if ((col < 1)  //col indicate the octava
-               || (row == 0 & col < 12)
-               || (row == 3 & col > 5 )
-                || (row == 4 & col < numCols )
-               || (row == 5 & col < numCols )
-               || (row == 6 & col < numCols )
-              )  //pitch 24 25 not supported
-              {
-                  return false;
-              }          
-              else {
-                  return true;
-              }
+              return !((col < 1)  //col indicate the octava
+                      || (row == 0 & col < 12) || (row == 3 & col > 5) || (row == 4 & col < numCols) || (row == 5 & col < numCols) || (row == 6 & col < numCols));
           }
     }
   

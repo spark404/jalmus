@@ -140,7 +140,7 @@ import java.util.ResourceBundle;
                    else g.setColor(couleur);
                    g.drawLine(this.X-2+decalagen,i,this.X+18+decalagen, i);  // dessine la portee en dessus de la port�e normale
                  }
-               };
+               }
              }
 
              // CAS DE LA DOUBLE CLE SOL ET FA
@@ -166,7 +166,7 @@ import java.util.ResourceBundle;
                else if (this.Height<=dportee+75 & this.Height >=dportee+60) {
                  for(i=dportee+80; i>=this.Height+5; i=i-10){
                  g.drawLine(this.X-2+decalagen,i,this.X+18+decalagen, i); }      // dessine la portee en dessus de la port�e normale
-               };
+               }
              }
            }
 
@@ -212,8 +212,8 @@ import java.util.ResourceBundle;
               else if (this.Nom == RE & t.getAlterationsNumber() >=4) return true;
               else if (this.Nom == LA & t.getAlterationsNumber() >=5) return true;
               else if (this.Nom == MI & t.getAlterationsNumber() >=6) return true;
-              else if (this.Nom == SI & t.getAlterationsNumber() >=7) return true;
-              else return false;
+              else
+                  return this.Nom == SI & t.getAlterationsNumber() >= 7;
             else if (t.Alteration.equalsIgnoreCase("b"))
               if (this.Nom == SI & t.getAlterationsNumber() >=1) return true;
               else if (this.Nom == MI & t.getAlterationsNumber() >=2) return true;
@@ -221,8 +221,8 @@ import java.util.ResourceBundle;
               else if (this.Nom == RE & t.getAlterationsNumber() >=4) return true;
               else if (this.Nom == SOL & t.getAlterationsNumber() >=5) return true;
               else if (this.Nom == DO & t.getAlterationsNumber() >=6) return true;
-              else if (this.Nom == FA & t.getAlterationsNumber() >=7) return true;
-              else return false;
+              else
+                  return this.Nom == FA & t.getAlterationsNumber() >= 7;
 
             else return false;
           }
@@ -381,8 +381,8 @@ import java.util.ResourceBundle;
               else  if  (this.samenoteHeight(dportee+35)) { this.Nom = SOL;this.Pitch = 43-(this.Height-(dportee+35))/28*12;}
               else if (this.samenoteHeight(dportee+5)) { this.Nom = FA;this.Pitch = 53-(this.Height-(dportee+5))/28*12;}
               else if (this.samenoteHeight(dportee+10)) { this.Nom = MI;this.Pitch = 52-(this.Height-(dportee+10))/28*12;}
-              else if (this.samenoteHeight(dportee+15)) { this.Nom = RE;this.Pitch = 50-(this.Height-(dportee+15))/28*12;};
-              }
+              else if (this.samenoteHeight(dportee+15)) { this.Nom = RE;this.Pitch = 50-(this.Height-(dportee+15))/28*12;}
+            }
 
             else if (nrlevel.isCurrentKeyBoth()){
               if (this.Height<=dportee+55){   // Trebble key
@@ -401,8 +401,8 @@ import java.util.ResourceBundle;
                 else  if  (this.samenoteHeight(dportee+125)) { this.Nom = SOL;this.Pitch = 43-(this.Height-(dportee+125))/28*12;}
                 else if (this.samenoteHeight(dportee+95)) { this.Nom = FA;this.Pitch = 53-(this.Height-(dportee+95))/28*12;}
                 else if (this.samenoteHeight(dportee+100)) { this.Nom = MI;this.Pitch = 52-(this.Height-(dportee+100))/28*12;}
-                else if (this.samenoteHeight(dportee+105)) { this.Nom = RE;this.Pitch = 50-(this.Height-(dportee+105))/28*12;};
-                }
+                else if (this.samenoteHeight(dportee+105)) { this.Nom = RE;this.Pitch = 50-(this.Height-(dportee+105))/28*12;}
+              }
               }
             }
 
